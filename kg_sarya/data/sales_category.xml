@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <data noupdate="1">
+
+    <record id="retail_category_journal" model="account.journal">
+        <field name="company_id" ref="base.main_company"/>
+        <field name="name">Retail</field>
+        <field name="code">RTL</field>
+        <field name="type">sale</field>
+        <field name="show_on_dashboard" eval="False"/>
+    </record>
+    <record id="wholesale_category_journal" model="account.journal">
+        <field name="company_id" ref="base.main_company"/>
+        <field name="name">Wholesale</field>
+        <field name="code">WLS</field>
+        <field name="type">sale</field>
+        <field name="show_on_dashboard" eval="False"/>
+    </record>
+
+    <record id="export_category_journal" model="account.journal">
+        <field name="company_id" ref="base.main_company"/>
+        <field name="name">Export</field>
+        <field name="code">XPT</field>
+        <field name="type">sale</field>
+        <field name="show_on_dashboard" eval="False"/>
+    </record>
+
+    <record id="retail_category" model="sales.category">
+        <field name="journal" ref="kg_sarya.retail_category_journal"/>
+        <field name="category">Retail</field>
+    </record>
+
+    <record id="wholesale_category" model="sales.category">
+        <field name="journal" ref="kg_sarya.wholesale_category_journal"/>
+        <field name="category">Wholesale</field>
+    </record>
+
+    <record id="export_category" model="sales.category">
+        <field name="journal" ref="kg_sarya.export_category_journal"/>
+        <field name="category">Export</field>
+    </record>
+
+    </data>
+</odoo>

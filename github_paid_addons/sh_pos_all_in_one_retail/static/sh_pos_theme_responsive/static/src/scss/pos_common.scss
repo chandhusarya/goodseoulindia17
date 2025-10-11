@@ -1,0 +1,348 @@
+.pos {
+    font-family: $sh_pos_body_font_family !important;
+
+    @if $sh_pos_body_font_family =="custom_google_font" {
+        @import url("https://fonts.googleapis.com/css?family=#{unquote($sh_pos_body_google_font_family)}");
+        font-family: $sh_pos_body_google_font_family !important;
+    }
+
+    // Button //
+    .btn.btn-lg.btn-primary:not(.pay),
+    .btn-primary.send.highlight {
+        @include pos_primary_button;
+    }
+
+    .btn.btn-secondary:not(.red-highlight.btn-danger):not(.clear),
+    .btn-secondary.send {
+        @include pos_secondary_button;
+
+        &:hover {
+            @include pos_secondary_button_hover;
+        }
+    }
+
+    .btn.btn-lg.btn-light {
+        @include pos_light_button;
+
+        &:hover {
+            @include pos_light_button_hover;
+        }
+    }
+
+    .btn.btn-outline-secondary {
+        @include pos_outline_secondary_button;
+
+        &:hover {
+            @include pos_outline_secondary_button_hover;
+        }
+    }
+
+    @if $sh_pos_button_style =="style_1" {
+
+        .btn.btn-lg.btn-primary:not(.pay),
+        .btn-primary.send.highlight,
+        .btn.btn-secondary,
+        .btn-secondary.send,
+        .btn.btn-lg.btn-light,
+        .btn.btn-outline-secondary {
+            border-radius: 4px !important;
+        }
+    }
+
+    @if $sh_pos_button_style =="style_2" {
+
+        .btn.btn-lg.btn-primary:not(.pay),
+        .btn-primary.send.highlight,
+        .btn.btn-secondary,
+        .btn-secondary.send,
+        .btn.btn-lg.btn-light,
+        .btn.btn-outline-secondary {
+            border-radius: 10px 0px 10px 0px !important;
+        }
+    }
+
+    @if $sh_pos_button_style =="style_3" {
+
+        .btn.btn-lg.btn-primary:not(.pay),
+        .btn-primary.send.highlight,
+        .btn.btn-secondary,
+        .btn-secondary.send,
+        .btn.btn-lg.btn-light,
+        .btn.btn-outline-secondary {
+            border-radius: 0px !important;
+        }
+    }
+
+    // Form Element/Input //
+    .form-control,
+    select.form-select,
+    input.value.payment-input-number {
+        @include pos_form_element;
+
+        @if $sh_form_element_style =="style_1" {
+            border-radius: 4px !important;
+        }
+
+        @if $sh_form_element_style =="style_2" {
+            border-radius: 10px 0px 10px 0px !important;
+        }
+
+        @if $sh_form_element_style =="style_3" {
+            border-radius: 0px !important;
+        }
+
+        &:hover,
+        &:focus {
+            @include pos_form_element_hover;
+        }
+    }
+
+    // List view // 
+    table.table {
+        thead {
+            th {
+                vertical-align: middle;
+                @include list_view_thead_th;
+
+                @if $sh_header_sticky =="True" {
+                    position: sticky;
+                    top: 0;
+                }
+            }
+        }
+
+        tbody {
+            tr {
+                transition: all .5s;
+
+                &:nth-of-type(even) {
+                    background: $sh_even_row_color;
+                }
+
+                &:nth-of-type(odd) {
+                    background: $sh_odd_row_color;
+                }
+
+                td {
+                    vertical-align: middle;
+                }
+
+                &.highlight {
+                    td {
+                        font-weight: bold;
+                        color: $sh_pos_primary_color;
+                    }
+                }
+
+                @if $sh_list_view_border =="without_border" {
+                    border-bottom: 0px;
+                }
+
+                @if $sh_list_view_border =="bordered" {
+                    border-bottom: 1px solid $sh_pos_secondary_color;
+                }
+
+                @if $sh_list_row_hover =="True" {
+                    &:hover {
+                        background: $sh_hover_background_color;
+                    }
+                }
+            }
+        }
+    }
+
+    .pos-content {
+        height: 100%;
+
+        // Action Button //
+        .sh_action_button,
+        .control-buttons {
+            background: $sh_pos_secondary_color;
+            padding: 7px 0 7px;
+            text-transform: capitalize;
+
+            .control-button {
+                @include action_button;
+
+                @if $sh_pos_button_style =="style_1" {
+                    border-radius: 5px !important;
+                }
+
+                @if $sh_pos_button_style =="style_2" {
+                    border-radius: 10px 0px 10px 0px !important;
+                }
+
+                @if $sh_pos_button_style =="style_3" {
+                    border-radius: 0px !important;
+                }
+
+                svg {
+                    width: 15px;
+                    fill: #414141;
+                }
+
+                &:hover,
+                &.active {
+                    background: $sh_pos_primary_color;
+                    color: #FFFFFF;
+
+                    svg {
+                        fill: #FFFFFF;
+                    }
+                }
+
+                @include media-breakpoint-down(lg) {
+                    width: auto;
+                    white-space: nowrap !important;
+                    flex: unset;
+                }
+            }
+
+            @include media-breakpoint-down(lg) {
+                display: none !important;
+            }
+        }
+
+        @if $sh_action_button_position =="bottom" {
+
+            .product-screen.sh_control_button_bottom:not(.sh_hide_control_button_screen),
+            .ticket-screen.sh_control_button_bottom:not(.sh_hide_control_button_screen) {
+                @include media-breakpoint-up(lg) {
+                    height: 93% !important;
+
+                    +.sh_action_button,
+                    +.control-buttons {
+                        position: fixed;
+                        bottom: 0;
+                        height: 7% !important;
+                        display: flex;
+                        align-items: center;
+                        justify-content: flex-start;
+                        white-space: nowrap;
+                        width: 100%;
+                        +.sh_action_button {
+                            position: fixed;
+                            bottom: 0;
+                            height: 7% !important;
+                            display: flex;
+                            align-items: center;
+                            justify-content: flex-start;
+                            white-space: nowrap;
+                        }
+                        .owl-nav,
+                        .owl-dots {
+                            display: none !important;
+                        }
+                    }
+                }
+            }
+        }
+            
+        @if $sh_action_button_position =="right_side" or $sh_action_button_position =="left_side" {
+
+            .sh_control_button_right,
+            .sh_control_button_left {
+                .control-buttons {
+                    flex-direction: column;
+                    padding: 8px;
+                    width: 10%;
+                    flex-wrap: nowrap !important;
+                    overflow-y: auto !important;
+
+                    .control-button {
+                        margin: 5px 0;
+                        flex: 0;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        white-space: normal;
+                        word-break: break-word;
+                    }
+                }
+
+                .rightpane {
+                    @include media-breakpoint-up(lg) {
+                        width: 60% !important;
+                    }
+                }
+
+                .leftpane {
+                    @include media-breakpoint-up(lg) {
+                        width: 30% !important;
+                    }
+                }
+            }
+        }
+
+        @include media-breakpoint-down(lg) {
+            .sh_mobile_control_button {
+                display: flex !important;
+                flex-direction: row !important;
+                width: 100% !important;
+                flex-wrap: nowrap !important;
+
+                @if $sh_pos_body_background_type =="bg_color" {
+                    background: $sh_pos_body_background_color !important;
+                }
+
+                @if $sh_pos_body_background_type =="bg_img" {
+                    background-color: transparent !important;
+                }
+
+                .sh_mobile_view_control_button_sub_div {
+                    overflow: auto !important;
+                    display: flex;
+
+                    @include media-breakpoint-down(lg) {
+                        gap: 15px;
+                        &::-webkit-scrollbar{
+                            height: 0 !important;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Login Overlay Screen // 
+        .login-overlay {
+            background-color: $sh_pos_primary_color !important;
+
+            .screen-login {
+                .login-title {
+                    .text-primary {
+                        color: $sh_pos_primary_color !important;
+                    }
+                }
+
+                .login-body {
+                    .login-element.border {
+                        border: 0px !important;
+                    }
+
+                    .login-element {
+                        .login-button.select-cashier.btn {
+                            height: auto;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Landscape // 
+@if $sh_action_button_position =="right_side" or $sh_action_button_position =="left_side" {
+    @media only screen and (max-device-height: 991.98px) and (orientation: landscape) {
+        body.o_touch_device .pos .pos-content .control-buttons {
+            width: 15% !important;
+        }
+
+        body.o_touch_device .pos .pos-content .leftpane {
+            width: 42% !important;
+        }
+
+        body.o_touch_device .pos .pos-content .rightpane {
+            width: 48% !important;
+        }
+    }
+}

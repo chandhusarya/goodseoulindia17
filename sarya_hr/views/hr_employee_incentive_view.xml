@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="employee_incentive_form_view" model="ir.ui.view">
+            <field name="name">employee_incentive.form.view</field>
+            <field name="model">employee.incentive</field>
+            <field name="arch" type="xml">
+                <form string="Employee Incentive">
+                    <header>
+                        <button name="action_confirm" type="object" class="oe_highlight" string="Confirm" invisible="state != 'new'"/>
+                        <button name="action_cancel" type="object" class="oe_highlight" string="Cancel" invisible="state != 'new'"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name" placeholder="Incentive" required="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="date" readonly="state != 'new'"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page>
+                                <field name="line_ids">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="employee_id"/>
+                                        <field name="amount"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="employee_incentive_tree_view" model="ir.ui.view">
+            <field name="name">employee_incentive.tree.view</field>
+            <field name="model">employee.incentive</field>
+            <field name="arch" type="xml">
+                <tree string="Asset History" decoration-info="state == 'new'" decoration-success="state == 'confirm'" decoration-danger="state == 'cancel'" >
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="employee_incentive_search_view" model="ir.ui.view">
+            <field name="name">employee_incentive.search</field>
+            <field name="model">employee.incentive</field>
+            <field name="arch" type="xml">
+                <search string="Incentive">
+                    <filter name="state" string="New" domain="[('state','=','new')]"/>
+                    <filter name="state" string="Confirmed" domain="[('state','=','confirm')]"/>
+                    <filter name="state" string="Cancelled" domain="[('state','=','cancel')]"/>
+                    <group expand="1" string="Group By">
+                        <filter string="Date" name="date" domain="[]"
+                                context="{'group_by':'date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="employee_incentive_action" model="ir.actions.act_window">
+            <field name="name">Employee Incentive</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">employee.incentive</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    There is no examples click here to add new ModelTitle.
+                </p>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

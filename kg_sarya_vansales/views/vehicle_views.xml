@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<record id='user_vehicle_view_form' model='ir.ui.view'>
+		<field name="name">user.vehicle.form</field>
+		<field name="model">user.vehicle</field>
+		<field name="arch" type="xml">
+			<form string="Vehicle" js_class="fleet_form">
+				<sheet>
+					<widget name="web_ribbon" title="Archived" bg_color="bg-danger"
+							invisible="active"/>
+					<field name="image_128" widget='image' class="oe_avatar"/>
+					<div class="oe_title">
+						<label for="model"/>
+						<h1>
+							<field name="name" placeholder="e.g. Model S"/>
+						</h1>
+						<label for="license_plate"/>
+						<h2>
+							<field name="license_plate" class="oe_inline" placeholder="e.g. PAE 326"/>
+						</h2>
+					</div>
+					<group col="2">
+						<group string="Driver">
+							<field name="active" invisible="True"/>
+							<field name="driver_id"/>
+						</group>
+						<group string="Vehicle">
+							<field name="vin_sn"/>
+							<field name="country_id"/>
+							<field name="country_code"/>
+							<field name="company_id" groups="base.group_multi_company"/>
+						</group>
+					</group>
+					<notebook>
+						<page string="Specification">
+							<group>
+								<group >
+									<field name="model"/>
+									<field name="model_year"/>
+								</group>
+								<group>
+									<field name="brand"/>
+									<field name="color"/>
+								</group>
+							</group>
+						</page>
+						<page string="Others">
+							<group>
+								<group string="Vehicle Locations">
+									<field name="location_id" required="1"/>
+									<field name="non_saleable_location_id" required="1"/>
+									<field name="sales_picking_id" required="1"/>
+									<field name="sales_return_picking_id" required="1"/>
+									<field name="payment_journal" />
+									<field name="writeoff_account_id" />
+								</group>
+								<group string="Unload/Load Operations">
+									<field name="counterpart_location_id" required="1"/>
+									<field name="stock_adjustment_location" required="1"/>
+									<field name="scrap_location_unloading" required="1"/>
+									<field name="to_check_location_unloading" required="1"/>
+
+									<button name="update_reserved_qty_in_quants" type="object" string="Update Reserved"/>
+
+
+								</group>
+							</group>
+							<group>
+								<group string="Load Request Location">
+									<field name="stock_for_load_request"/>
+								</group>
+							</group>
+							<group>
+								<field name="description"
+							       placeholder="Write here any other information related to this vehicle"/>
+							</group>
+						</page>
+					</notebook>
+				</sheet>
+				<div class="oe_chatter">
+					<field name="message_follower_ids"/>
+					<field name="message_ids"/>
+				</div>
+			</form>
+		</field>
+	</record>
+
+	<record id='user_vehicle_view_tree' model='ir.ui.view'>
+		<field name="name">user.vehicle.tree</field>
+		<field name="model">user.vehicle</field>
+		<field name="arch" type="xml">
+			<tree string="Vehicle"
+			      multi_edit="1">
+				<field name="active" invisible="1"/>
+				<field name="license_plate" readonly="1"/>
+				<field name="model" widget="many2one_avatar" readonly="1"/>
+				<field name="driver_id" widget="many2one_avatar" readonly="1"/>
+				<field name="vin_sn" readonly="1" optional="hide"/>
+			</tree>
+		</field>
+	</record>
+
+	<record id='user_vehicle_action' model='ir.actions.act_window'>
+		<field name="name">Vehicles</field>
+		<field name="res_model">user.vehicle</field>
+		<field name="view_mode">tree,form</field>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">
+				There is no vehicles to show.
+			</p>
+		</field>
+	</record>
+
+	<menuitem name="Vehicles" parent="van_sale_conf_menu" id="user_vehicles_menu" sequence="2"
+	          action="user_vehicle_action"/>
+</odoo>

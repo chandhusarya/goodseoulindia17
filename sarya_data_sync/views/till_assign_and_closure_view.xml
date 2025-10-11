@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--    Till Assign & Closure List view-->
+
+        <record id="till_assign_and_closure_list_view" model="ir.ui.view">
+            <field name="name">till.assign.and.closure.list.view</field>
+            <field name="model">till.assign.and.closure</field>
+            <field name="arch" type="xml">
+                <tree string="Till Assign &amp; Closure List">
+                    <field name="create_date" string="Create Date"/>
+                    <field name="name"/>
+                    <field name="outlet_code"/>
+                    <field name="pos_config_id"/>
+                    <field name="outlet_terminal_code"/>
+                    <field name="pos_session_id"/>
+                    <field name="employee_name"/>
+                    <field name="opening_employee_name"/>
+                    <field name="closing_employee_name"/>
+                    <field name="till_assign_date"/>
+                    <field name="till_opening_cash"/>
+                    <field name="till_close_date"/>
+                    <field name="state" decoration-info="state == 'open'" decoration-success="state == 'closed'"
+                           widget="badge"/>
+                    <field name="company_id" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--    Till Assign & Closure form view    -->
+
+        <record id="till_assign_and_closure_form_view" model="ir.ui.view">
+            <field name="name">till.assign.and.closure.form.view</field>
+            <field name="model">till.assign.and.closure</field>
+            <field name="arch" type="xml">
+                <form string="Till Assign &amp; Closure form">
+                    <header>
+<!--                        <button name="action_till_audit"-->
+<!--                                string="Till Audit"-->
+<!--                                type="object"-->
+<!--                                class="oe_highlight"-->
+<!--                                invisible="state in ('closed')"/>-->
+                        <field name="state" widget="statusbar" statusbar_visible="open,closed" nolabel="1"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_till_audit_records" class="oe_stat_button" icon="fa-dollar" type="object">
+                                <field name="till_audit_count" widget="statinfo" string="Till Audits"/>
+                            </button>
+                            <button name="action_view_till_closure_records" class="oe_stat_button" icon="fa-dollar" type="object">
+                                <field name="till_closure_count" widget="statinfo" string="Till Closures"/>
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" required="1" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="pos_config_id" readonly="1"/>
+                                <field name="pos_session_id" readonly="1"/>
+                                <field name="employee_name" readonly="1"/>
+                                <field name="opening_employee_name" readonly="1" invisible="1"/>
+                                <field name="closing_employee_name" readonly="1" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="create_date" string="Create Date" readonly="1"/>
+                                <field name="company_id" readonly="1"/>
+                                <field name="currency_id" invisible="1" readonly="1"/>
+                                <field name="outlet_code" readonly="1"/>
+                                <field name="outlet_terminal_code" readonly="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Till Assign info">
+                                <field name="till_assign_date" readonly="1"/>
+                                <field name="till_opening_cash" readonly="1"/>
+                                <field name="opening_notes" readonly="1"/>
+                            </group>
+                            <group string="Till Close info">
+                                <field name="till_close_date" readonly="1"/>
+                                <field name="closing_notes" readonly="state in ('closed')"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!--   Till Assign & Closure search view     -->
+
+        <record id="till_assign_and_closure_search_view" model="ir.ui.view">
+            <field name="name">till.assign.and.clossure.search.view</field>
+            <field name="model">till.assign.and.closure</field>
+            <field name="arch" type="xml">
+                <search string="Search Name">
+                    <field name="name" string="Name"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Create Date" name="group_by_create_date" domain="[]"
+                                context="{'group_by':'create_date'}"/>
+                        <filter string="Till Assign Date" name="till_assign_date" domain="[]"
+                                context="{'group_by': 'till_assign_date'}"/>
+                        <filter string="Till Close Date" name="till_close_date" domain="[]"
+                                context="{'group_by': 'till_close_date'}"/>
+                        <filter string="Status" name="group_by_state" domain="[]" context="{'group_by':'state'}"/>
+                        <filter string="Company" name="group_by_company" domain="[]"
+                                context="{'group_by': 'company_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!--    Till Assign & Closure action     -->
+
+        <record id="till_assign_and_closure_action" model="ir.actions.act_window">
+            <field name="name">Till Assign &amp; Closure</field>
+            <field name="res_model">till.assign.and.closure</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'create':False}</field>
+            <field name="search_view_id" ref="till_assign_and_closure_search_view"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create New Till Assign &amp; Closure Record.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

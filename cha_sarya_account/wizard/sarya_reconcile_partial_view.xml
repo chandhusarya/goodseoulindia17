@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- wizard view -->
+        <record id="sarya_reconcile_partial_view" model="ir.ui.view">
+            <field name="name">Sarya Reconcile Partial</field>
+            <field name="model">sarya.reconcile.partial</field>
+            <field name="arch" type="xml">
+                <form name="Custom Statement">
+                    <group name="details">
+                        <field name="partner_id" readonly="1"/>
+                        <field name="payment_id" domain="[('move_id.state', '=', 'posted'),
+                                    ('partner_id', '=', partner_id), ('amount_residual', '&lt;', 0)]"/>
+                        <field name="payment_amount_residual"/>
+                    </group>
+                     <group name="allocation">
+                        <field name="percentage_wise" column_invisible="True"/>
+                        <button name="do_auto_allocation"
+                                string="Auto Allocate"
+                                confirm="System will auto allocate payment amount to invoice based on the due amount, do you want continue?"
+                                type="object"
+                                class="oe_highlight"/>
+                    </group>
+                    <group>
+                        <field name="line_ids" nolabel="1" colspan="2">
+                            <tree editable="bottom">
+                                <field name="inv_date" readonly="1"/>
+                                <field name="move_id" readonly="1"/>
+                                <field name="amount_residual" readonly="1" sum="Due Amount" string="Due Amount"/>
+                                <field name="amount_to_reconcile" sum="Amount to Reconcile" string="Amount to Reconcile"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <footer>
+                         <button name="do_reconcile" string="Do Reconcile"
+                                 type="object" default_focus="1" class="oe_highlight"/>
+                    </footer>
+
+                </form>
+            </field>
+        </record>
+
+       <record id="action_sarya_reconcile_partial_wizard" model="ir.actions.act_window">
+            <field name="name">Sarya Reconcile Partial</field>
+            <field name="res_model">sarya.reconcile.partial</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+       </record>
+
+
+
+    </data>
+</odoo>

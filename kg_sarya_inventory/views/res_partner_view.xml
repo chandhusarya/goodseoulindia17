@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--<record id="res_partner_form_inherit_kg_sarya_inventory" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.kg.sarya.inventory</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="kg_sarya.res_partner_form_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='vendor_type']" position='after'>
+                <field name="is_clearing_agent"
+                       string="Is Clearing Agent"
+                       invisible="supplier_rank > 1"/>
+                <field name="clearing_agents" string="Clearing Agents" widget="many2many_tags"/>
+            </xpath>
+        </field>
+    </record> -->
+
+</odoo>

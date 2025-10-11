@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="email_template_cha_sarya_po_english" model="mail.template">
+            <field name="name">Sarya Purchase Order: English</field>
+            <field name="model_id" ref="purchase.model_purchase_order"/>
+            <field name="subject">UAE - {{ object.partner_id.name }} {{ object.date_approve_text }} Purchase Order</field>
+            <field name="partner_to">{{ object.partner_id.id }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear <t t-out="object.partner_id.name"/>,
+                        <br/><br/>
+                        Here is in attachment a purchase order <strong t-out="object.name"/> for <t t-out="object.date_approve_text"/> Purchase Order
+                        <br/>
+                        Please send PI against our <t t-out="object.name"/> within 3 days.
+                        <br/>
+                        If you have any questions or concern, please let me know.
+                        <br/><br/>
+                        Thank you
+                    </p>
+                </div>
+            </field>
+            <field name="report_template_ids" eval="[(4, ref('kg_sarya_purchase_order_report.purchase_order'))]"/>
+            <field name="lang">{{ object.partner_id.lang }}</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+        
+
+        <record id="email_template_cha_sarya_po_korean" model="mail.template">
+            <field name="name">Sarya Purchase Order: Korean</field>
+            <field name="model_id" ref="purchase.model_purchase_order"/>
+            <field name="subject">UAE - {{ object.partner_id.name }} {{ object.date_approve_text }} 발주서</field>
+            <field name="partner_to">{{ object.partner_id.id }}</field>
+            <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                    안녕하세요
+                    <br/><br/>
+                    사르야 이정인 입니다.
+                    <br/><br/>
+                    <t t-out="object.date_approve_text"/> 발주서 <strong t-out="object.name"/> 보내드립니다.
+                    <br/>
+                    확인 부탁드리며 확인 후 Proforma Invoice 를 3일이내 보내주시길 바랍니다.
+                    <br/>
+                    다른 궁금하시거나 필요하신 사안 있으시면 언제든지 연락 부탁드립니다.
+                    <br/><br/>
+                    감사합니다.
+                </p>
+            </div>
+            </field>
+            <field name="report_template_ids" eval="[(4, ref('kg_sarya_purchase_order_report.purchase_order'))]"/>
+            <field name="lang">{{ object.partner_id.lang }}</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+
+        <record id="email_template_vendor_document_request_english_new" model="mail.template">
+            <field name="name">Vendor Document Request : English</field>
+            <field name="model_id" ref="purchase.model_purchase_order"/>
+            <field name="subject">BL# {{ object.bl_number }} Shipping Documents Request</field>
+           <field name="email_to">{{ object.partner_id.email }}</field>
+            <field name="email_from">jung@sarya.ae</field>
+            <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                    Dear <t t-out="object.partner_id.name or ''"></t>
+                    <br/><br/>
+                    We are requesting shipping documents for BL#<strong t-out="object.bl_number or ''"></strong>
+                    <br/> <br/>
+                    Please make sure to send below documents
+                    <t t-foreach="object.partner_id.shipping_documents" t-as="shipping_doc">
+                        <br/>
+                        <t t-out="shipping_doc.name"/>
+                    </t>
+                    <br/><br/>
+                    Thank you, Regards
+
+                </p>
+            </div>
+            </field>
+            <field name="lang">{{ object.partner_id.lang }}</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+
+        <record id="email_template_vendor_document_request_korean" model="mail.template">
+            <field name="name">Vendor Document Request : Korean</field>
+            <field name="model_id" ref="purchase.model_purchase_order"/>
+            <field name="subject">BL# {{ object.bl_number }} 선적서류 요청</field>
+           <field name="email_to">{{ object.partner_id.email }}</field>
+            <field name="email_from">jung@sarya.ae</field>
+            <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                    안녕하세요.
+                    <br/><br/>
+                    사르야 입니다.
+                    <br/><br/>
+                    출항한 BL#<strong t-out="object.bl_number or ''"></strong> 의 선적서류 요청드립니다.
+                    <br/> <br/>
+                    아래서류들
+                    <t t-foreach="object.partner_id.shipping_documents" t-as="shipping_doc">
+                        <br/>
+                        <t t-out="shipping_doc.name"/>
+                    </t>
+                    <br/><br/>
+                    전달 부탁드립니다.
+                    <br/>
+                    감사합니다
+
+                </p>
+            </div>
+            </field>
+            <field name="lang">{{ object.partner_id.lang }}</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+
+
+
+
+    </data>
+</odoo>

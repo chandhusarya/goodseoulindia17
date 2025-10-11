@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_location_form_inherit" model="ir.ui.view">
+            <field name="name">stock.location.form</field>
+            <field name="model">stock.location</field>
+            <field name="inherit_id" ref="stock.view_location_form"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='replenish_location']" position="after">
+                    <field name="is_factory"/>
+                    <field name="is_factory_storage_location" invisible="not is_factory"/>
+                    <field name="is_factory_production_location" invisible="not is_factory"/>
+                    <field name="is_factory_fryer_location" invisible="not is_factory"/>
+                    <field name="is_factory_grn_location" invisible="not is_factory"/>
+                    <field name="is_factory_scrap_location" invisible="not is_factory"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="view_stock_move_operations_sarya_factory" model="ir.ui.view">
+            <field name="name">stock.move.operations.sarya.factory.form</field>
+            <field name="model">stock.move</field>
+            <field name="priority">1</field>
+            <field name="inherit_id" ref="stock.view_stock_move_operations" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='product_id']" position="after" >
+                    <field name="raw_material_production_id"/>
+                    <field name="should_consume_qty"/>
+            </xpath>
+            </field>
+        </record>
+
+
+
+        <record id="view_stock_move_operations_sarya_factory_cust" model="ir.ui.view">
+            <field name="name">stock.move.operations.form.sarya.factory.cust</field>
+            <field name="model">stock.move</field>
+            <field name="priority">1000</field>
+            <field name="arch" type="xml">
+                <form string="Move Detail">
+                    <field name="sequence" invisible="1"/>
+                    <field name="company_id" invisible="1"/>
+                    <field name="state" invisible="1"/>
+                    <field name="location_id" invisible="1"/>
+                    <field name="location_dest_id" invisible="1"/>
+                    <field name="picking_id" invisible="1" readonly="state == 'done'"/>
+                    <field name="picking_type_id" invisible="1"/>
+                    <field name="is_locked" invisible="1"/>
+                    <field name="picking_type_entire_packs" invisible="1"/>
+                    <field name="display_assign_serial" invisible="1"/>
+                    <field name="display_import_lot" invisible="1"/>
+                    <field name="product_uom_category_id" invisible="1"/>
+                    <field name="product_uom" invisible="1" groups="!uom.group_uom"/>
+                    <field name="picking_code" invisible="1"/>
+                    <field name="has_tracking" invisible="1"/>
+                    <field name="show_reserved" invisible="1"/>
+                    <field name="show_quant" invisible="1"/>
+                    <field name="show_lots_text" invisible="1"/>
+                    <field name="show_lots_m2o" invisible="1"/>
+                    <group>
+                        <group>
+                            <field name="product_id" readonly="id or move_line_ids"/>
+                            <label for="product_uom_qty" string="Raw Material Required"/>
+                            <div class="o_row">
+                                <span><field name="product_uom_qty" readonly="state != 'draft'" nolabel="1"/></span>
+                                <span><field name="primary_packaging_id" groups="uom.group_uom" readonly="state != 'draft'" nolabel="1" options="{'no_open': True}"/></span>
+                            </div>
+
+                            <label for="should_consume_qty" string="Raw Material Required As of  Now"/>
+                            <div class="o_row">
+                                <span><field name="should_consume_qty" readonly="state != 'draft'" nolabel="1"/></span>
+                                <span><field name="primary_packaging_id" groups="uom.group_uom" readonly="state != 'draft'" nolabel="1" options="{'no_open': True}"/></span>
+                            </div>
+
+                        </group>
+                        <group/>
+                    </group>
+                    <div class="d-flex">
+                        <widget class="btn btn-link btn-group" name="generate_serials" invisible="not display_assign_serial"/>
+                        <widget class="btn btn-link btn-group" name="import_lots" invisible="not display_import_lot"/>
+                    </div>
+                    <field name="move_line_ids"
+                           readonly="state == 'cancel' or (state == 'done' and is_locked) or not product_id"
+                           context="{'tree_view_ref': 'stock.view_stock_move_line_operation_tree', 'form_view_ref': 'stock.view_move_line_mobile_form', 'default_picking_id': picking_id, 'default_move_id': id, 'default_product_id': product_id, 'default_location_id': location_id, 'default_location_dest_id': location_dest_id, 'default_company_id': company_id, 'active_picking_id': picking_id}"
+                           widget="sml_x2_many"/>
+                </form>
+            </field>
+        </record>
+
+
+
+
+
+
+        <record model="ir.actions.act_window" id="mrp_current_stock_action">
+            <field name="name">Current Stock</field>
+            <field name="context">{'search_default_internal_loc': 1, 'search_default_locationgroup':1, 'search_default_productgroup':1, 'inventory_mode':True}</field>
+            <field name="res_model">stock.quant</field>
+             <field name="domain">[('location_id.is_factory', '=', True), ('location_id.usage','=','internal')]</field>
+            <field name="view_id" ref="stock.view_stock_quant_tree_editable"/>
+        </record>
+
+
+        <menuitem id="menu_mrp_current_stock" name="Current Stock" action="mrp_current_stock_action" parent="mrp.menu_mrp_manufacturing" sequence="11"/>
+
+
+
+
+
+
+    </data>
+</odoo>

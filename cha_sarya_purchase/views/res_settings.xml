@@ -1,0 +1,51 @@
+<odoo>
+    <record id="res_config_settings_view_form_purchase_inh" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.purchase</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="purchase.res_config_settings_view_form_purchase"/>
+        <field name="arch" type="xml">
+             <xpath expr="//app[@name='purchase']" position="inside">
+                <h2>Local Purchase</h2>
+                <div class="row mt16 o_settings_container">
+                    <div class="col-12 col-lg-6 o_setting_box" title="Finance">
+                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_right_pane">
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <label string="Local Purchase Journal" for="local_purchase_journal_id" class="col-lg-3 o_light_label"/>
+                                    <field name="local_purchase_journal_id" options="{'no_create': True}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+<!--                    <div class="col-12 col-lg-6 o_setting_box" title="HR">-->
+<!--                        <div class="o_setting_left_pane"/>-->
+<!--                        <div class="o_setting_right_pane">-->
+<!--                            <div class="content-group">-->
+<!--                                <div class="row mt16">-->
+<!--                                    <label string="HR Emails" for="fine_hr_email" class="col-lg-3 o_light_label"/>-->
+<!--                                    <field name="fine_hr_email" />-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                </div>
+                 <h2>Office Purchase</h2>
+                 <div class="row mt16 o_settings_container">
+                     <div class="col-12 col-lg-6 o_setting_box" title="Finance">
+                         <div class="o_setting_left_pane"/>
+                         <div class="o_setting_right_pane">
+                             <div class="content-group">
+                                 <div class="row mt16">
+                                     <label string="Analytic Account" for="office_analytic_account_id" class="col-lg-3 o_light_label"/>
+                                     <field name="office_analytic_account_id" options="{'no_create': True}" />
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

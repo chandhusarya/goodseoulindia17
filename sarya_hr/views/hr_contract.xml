@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="hr_contract_form_in_inherit" model="ir.ui.view">
+            <field name="name">hr.contract.form.in.inherit</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="l10n_in_hr_payroll.hr_contract_form_in_inherit"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+               
+
+
+                <xpath expr="//field[@name='l10n_in_driver_salay']" position="replace">
+                </xpath>
+                <xpath expr="//field[@name='l10n_in_house_rent_allowance_metro_nonmetro']" position="replace">
+                </xpath>
+                <xpath expr="//field[@name='l10n_in_supplementary_allowance']" position="replace">
+                </xpath>
+                <xpath expr="//field[@name='l10n_in_gratuity']" position="replace">
+                </xpath>
+
+                <xpath expr="//field[@name='l10n_in_tds']" position="replace">
+                </xpath>
+                <xpath expr="//field[@name='l10n_in_voluntary_provident_fund']" position="replace">
+                </xpath>
+                <xpath expr="//field[@name='l10n_in_medical_insurance']" position="replace">
+                </xpath>
+                <xpath expr="//field[@name='l10n_in_leave_allowance']" position="replace">
+                </xpath>
+                <xpath expr="//field[@name='l10n_in_esic_amount']" position="replace">
+                </xpath>
+
+                <xpath expr="//group[@name='salary_info']" position="before">
+                    <group>
+                        <group>
+                            <field name="tax_config_id" readonly="state != 'draft'"/>
+                            <button type="object"
+                                    string="Compute TDS"
+                                    name="action_compute_tds"
+                                    invisible="state != 'draft' or not tax_config_id"
+                                    colspan="2"
+                                    confirm="All computation will be reset. Also make sure to input Conveyance Allowance if eligible"
+                            />
+                        </group>
+                        <group></group>
+                    </group>
+                </xpath>
+
+                <xpath expr="//group[@name='salary_info']" position="inside">
+<!--                    <field name="tax_config_id"/>-->
+                    <group name="total" string="Monthly Salary  ">
+                        <field name="total_ctc" readonly="state != 'draft'"/>
+                        <button type="object"
+                                string="Compute Net Salary"
+                                name="compute_net_salary"
+                                invisible="state != 'draft'"
+                                colspan="2"
+                                confirm="All computation will be reset. Also make sure to input Conveyance Allowance if eligible"
+                        />
+                        <field name="total_deduction" readonly="state != 'draft'"/>
+                        <field name="net_salary" readonly="state != 'draft'"/>
+                        <button type="object"
+                                string="Compute CTC"
+                                name="compute_ctc_from_net_salary"
+                                invisible="state != 'draft'"
+                                colspan="2"
+                                confirm="All computation will be reset. Also make sure to input Conveyance Allowance if eligible"
+                        />
+                    </group>
+                    <group string="Annual Salary" invisible="country_code != 'IN'">
+                        <field name="total_annual_ctc" readonly="state != 'draft'"/>
+                        <button type="object"
+                                string="Compute Annual Net Salary"
+                                name="compute_annual_net_salary"
+                                invisible="state != 'draft'"
+                                colspan="2"
+                                confirm="All computation will be reset. Also make sure to input Conveyance Allowance if eligible"
+                        />
+
+                        <field name="total_annual_deduction" readonly="state != 'draft'"/>
+                        <field name="total_annual_net_salary" readonly="state != 'draft'"/>
+                        <button type="object"
+                                string="Compute Annual CTC"
+                                name="compute_annual_ctc_salary"
+                                invisible="state != 'draft'"
+                                colspan="2"
+                                confirm="All computation will be reset. Also make sure to input Conveyance Allowance if eligible"
+                        />
+                    </group>
+                    <group string="Allowance (Monthly)" invisible="country_code != 'IN'">
+                        <field name="basic" readonly="state != 'draft'"/>
+                        <field name="hr_allowance" readonly="state != 'draft'"/>
+                        <field name="special_allowance" readonly="state != 'draft'"/>
+                        <field name="conveyance_allowance" readonly="state != 'draft'"/>
+                        <field name="l10n_in_gratuity" readonly="state != 'draft'"/>
+                        <field name="pf_employee_employer" readonly="state != 'draft'"/>
+                        <field name="esic_employer" readonly="state != 'draft'"/>
+                    </group>
+                    <group string="Total Allowance (Yearly)" invisible="country_code != 'IN'">
+                        <field name="total_annual_basic" readonly="state != 'draft'"/>
+                        <field name="total_annual_hr_allowance" readonly="state != 'draft'"/>
+                        <field name="total_annual_special_allowance" readonly="state != 'draft'"/>
+                        <field name="total_annual_conveyance_allowance" readonly="state != 'draft'"/>
+                        <field name="total_annual_gratuity" readonly="state != 'draft'"/>
+                        <field name="total_annual_pf_employer_contribution" readonly="state != 'draft'"/>
+                        <field name="total_annual_esic_employer" readonly="state != 'draft'"/>
+                    </group>
+<!--                    <group string="Allowance" invisible="country_code != 'IN'">-->
+<!--                        <field name="basic" readonly="state != 'draft'"/>-->
+<!--                        <field name="hr_allowance" readonly="state != 'draft'"/>-->
+<!--                        <field name="special_allowance" readonly="state != 'draft'"/>-->
+<!--                        <field name="conveyance_allowance" readonly="state != 'draft'"/>-->
+<!--                        <field name="l10n_in_gratuity" readonly="state != 'draft'"/>-->
+<!--                        <field name="pf_employee_employer" readonly="state != 'draft'"/>-->
+<!--                        <field name="esic_employer" readonly="state != 'draft'"/>-->
+<!--                    </group>-->
+                    <group string="Deduction (Monthly)" invisible="country_code != 'IN'">
+                        <field name="pf_employee" readonly="state != 'draft'"/>
+                        <field name="professional_tax" readonly="state != 'draft'"/>
+                        <field name="l10n_in_tds" readonly="state != 'draft'"/>
+                        <field name="esic_employee" readonly="state != 'draft'"/>
+                    </group>
+                    <group string="Total Deduction (Yearly)" invisible="country_code != 'IN'">
+                        <field name="total_annual_pf_employee_contribution" readonly="state != 'draft'"/>
+                        <field name="total_annual_professional_tax" readonly="state != 'draft'"/>
+                        <field name="total_annual_tds" readonly="state != 'draft'"/>
+                        <field name="total_annual_esic_employee" readonly="state != 'draft'"/>
+                    </group>
+<!--                    <group string="Total Annual Salary" invisible="country_code != 'IN'">-->
+<!--                        <field name="total_annual_ctc" readonly="state != 'draft'"/>-->
+<!--                        <button type="object"-->
+<!--                                string="Compute Annual CTC"-->
+<!--                                name="compute_annual_ctc_salary"-->
+<!--                                invisible="state != 'draft'"-->
+<!--                                colspan="2"-->
+<!--                                confirm="All computation will be reset. Also make sure to input Conveyance Allowance if eligible"-->
+<!--                        />-->
+<!--                        <field name="total_annual_deduction" readonly="state != 'draft'"/>-->
+<!--                        <field name="total_annual_net_salary" readonly="state != 'draft'"/>-->
+<!--                        <button type="object"-->
+<!--                                string="Compute Annual Net Salary"-->
+<!--                                name="compute_annual_net_salary"-->
+<!--                                invisible="state != 'draft'"-->
+<!--                                colspan="2"-->
+<!--                                confirm="All computation will be reset. Also make sure to input Conveyance Allowance if eligible"-->
+<!--                        />-->
+<!--                    </group>-->
+<!--                    <group></group>-->
+<!--                    <group string="Total" invisible="country_code != 'IN'">-->
+<!--                        <field name="total_annual_ctc" readonly="state != 'draft'"/>-->
+<!--                        <button type="object"-->
+<!--                                string="Compute Annual CTC"-->
+<!--                                name="compute_annual_ctc_salary"-->
+<!--                                invisible="state != 'draft'"-->
+<!--                                colspan="2"-->
+<!--                                confirm="All computation will be reset. Also make sure to input Conveyance Allowance if eligible"-->
+<!--                        />-->
+<!--                        <field name="total_annual_deduction" readonly="state != 'draft'"/>-->
+<!--                        <field name="total_annual_net_salary" readonly="state != 'draft'"/>-->
+<!--                    </group>-->
+<!--                    <group></group>-->
+<!--                    <group string="Total Allowance" invisible="country_code != 'IN'">-->
+<!--                        <field name="total_annual_basic" readonly="state != 'draft'"/>-->
+<!--                        <field name="total_annual_hr_allowance" readonly="state != 'draft'"/>-->
+<!--                        <field name="total_annual_special_allowance" readonly="state != 'draft'"/>-->
+<!--                        <field name="total_annual_conveyance_allowance" readonly="state != 'draft'"/>-->
+<!--                        <field name="total_annual_gratuity" readonly="state != 'draft'"/>-->
+<!--                        <field name="total_annual_pf_employer_contribution" readonly="state != 'draft'"/>-->
+<!--                        <field name="total_annual_esic_employer" readonly="state != 'draft'"/>-->
+<!--                    </group>-->
+<!--                    <group string="Total Deduction" invisible="country_code != 'IN'">-->
+<!--                        <field name="total_annual_pf_employee_contribution" readonly="state != 'draft'"/>-->
+<!--                        <field name="total_annual_professional_tax" readonly="state != 'draft'"/>-->
+<!--                        <field name="total_annual_tds" readonly="state != 'draft'"/>-->
+<!--                        <field name="total_annual_esic_employee" readonly="state != 'draft'"/>-->
+<!--                    </group>-->
+                </xpath>
+                <xpath expr="//header" position="inside">
+                    <field name="is_contract_updated" invisible="1"/>
+                    <button name="action_open_survey"
+                            type="object"
+                            string="Open Declaration Form"
+                            class="oe_highlight"/>
+                    <button name="action_terminate_contract"
+                            type="object"
+                            string="Terminate Contract"
+                            groups="hr_contract.group_hr_contract_manager"
+                            class="btn-danger"
+                            invisible="is_contract_updated"
+                            icon="fa-times"/>
+                    <button name="action_renew_contract"
+                            type="object"
+                            string="Renew Contract"
+                            groups="hr_contract.group_hr_contract_manager"
+                            class="btn-primary"
+                            invisible="is_contract_updated"
+                            icon="fa-refresh"/>
+                </xpath>
+                <xpath expr="//sheet//div[@name='button_box']" position="inside">
+                    <button name="action_view_filtered_participants"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-file-text-o"
+                            string="Declaration"/>
+                </xpath>
+                <xpath expr="//field[@name='contract_type_id']" position="after">
+                    <field name="contract_change_reason"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="hr_contract_view_form_inherit" model="ir.ui.view">
+            <field name="name">hr.contract.form.in.inherit</field>
+            <field name="model">hr.contract</field>
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='yearly_benefits']" position="replace">
+
+                    <group>
+<!--                        <field name="total_ctc" readonly="state != 'draft'"/>-->
+<!--                        <button type="object"-->
+<!--                                string="Compute Net Salary"-->
+<!--                                name="compute_net_salary"-->
+<!--                                invisible="state != 'draft'"-->
+<!--                                colspan="2"-->
+<!--                                confirm="All computation will be reset. Also make sure to input Conveyance Allowance if eligible"-->
+<!--                        />-->
+<!--                        <field name="total_deduction" readonly="state != 'draft'"/>-->
+<!--                        <field name="net_salary" readonly="state != 'draft'"/>-->
+<!--                        <button type="object"-->
+<!--                                string="Compute CTC"-->
+<!--                                name="compute_ctc_from_net_salary"-->
+<!--                                invisible="state != 'draft'"-->
+<!--                                colspan="2"-->
+<!--                                confirm="All computation will be reset. Also make sure to input Conveyance Allowance if eligible"-->
+<!--                        />-->
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

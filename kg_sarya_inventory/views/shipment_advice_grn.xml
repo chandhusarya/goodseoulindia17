@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="shipment_advice_form_grn" model="ir.ui.view">
+        <field name="name">shipment.advice.form.grn</field>
+        <field name="model">shipment.advice</field>
+        <field name="priority">500</field>
+        <field name="arch" type="xml">
+            <form string="Shipment Advice" class="o_purchase_advice">
+                <header>
+
+                    <field name="grn_entry_status" invisible="1"/>
+                    <field name="show_grn_status" invisible="1"/>
+
+                    <field name="grn_status_pending_visibility" invisible="1"/>
+                    <field name="grn_status_completed_visibility" invisible="1"/>
+
+                    <button name="mark_grn_entry_completed"
+                            class="oe_highlight"
+                            confirm="Please make sure you have input the item GRN with correct quantities against expiry Date. If you want to re-check click Cancel"
+                            invisible="grn_entry_status != 'pending'"
+                            string="GRN Input Completed"
+                            type="object"/>
+
+
+                    <button name="mark_grn_rechecking_completed"
+                            class="oe_highlight"
+                            confirm="Please make sure you have input the item GRN with correct quantities against expiry Date. If you want to re-check click Cancel"
+                            invisible="grn_entry_status != 'recheck'"
+                            string="GRN Rechecking Completed"
+                            type="object"/>
+
+
+                    <field name="grn_entry_status" widget="statusbar"
+                           statusbar_visible="pending,completed" readonly="1"/>
+                </header>
+                <sheet>
+
+                    <widget name="web_ribbon"
+                            title="Pending GRN"
+                            bg_color="bg-danger"
+                            invisible="grn_status_completed_visibility"/>
+
+                    <widget name="web_ribbon"
+                            title="GRN Completed"
+                            invisible="grn_status_pending_visibility"/>
+
+                    <div class="oe_title">
+                        <span class="o_form_label">Shipment Advice</span>
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="vendor_id" readonly="1" options="{'no_open': True}"/>
+                            <field name="bl_entry_id" readonly="1"/>
+                            <field name="bl_entry_container_id" readonly="1"/>
+                            <field name="clearing_agent" readonly="1" options="{'no_open': True}"/>
+
+                            <field name="company_id" invisible="1"/>
+                            <field name="departure_date" readonly="1" options="{'no_open': True}"/>
+                            <field name="expected_date" readonly="1" options="{'no_open': True}"/>
+                            <field name="arrival_date" readonly="1" options="{'no_open': True}"/>
+
+                        </group>
+                        <group>
+                            <field name="user_id" readonly="1" options="{'no_open': True}"/>
+                            <field name="inspection_method" readonly="1"/>
+                            <field name="inspection_date" readonly="1"/>
+                            <field name="is_on_inspection" readonly="1" invisible="1"/>
+                            <field name="shipment_no" readonly="1"/>
+                            <field name="boe_number" readonly="1"/>
+                            <field name="zdlm" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="grn_documents" widget="many2many_binary"/>
+                    </group>
+                    <notebook>
+                        <page string="Shipment Summary" name="summary">
+                            <field name="shipment_summary_lines" readonly="grn_entry_status == 'completed'">
+                                <tree create="false" string="Shipment Advice Summary">
+                                    <field name="product_id" readonly="1"/>
+                                    <field name="product_packaging_id" readonly="1"/>
+                                    <field name="shipped_packaging_qty" readonly="1" force_save="1"/>
+                                    <field name="inspected_qty" string="Received Qty" force_save="1"/>
+                                    <field name="scrapped_package_qty"/>
+                                </tree>
+
+
+                                <form string="Shipment Advice" class="o_purchase_advice">
+                                    <sheet>
+                                        <div class="oe_title">
+                                            <span class="o_form_label">Shipment Advice Summary</span>
+                                            <h1>
+                                                <field name="shipment_id" readonly="1"/>
+                                            </h1>
+                                        </div>
+                                        <group>
+                                            <group>
+                                                <field name="purchase_ids" widget="many2many_tags" invisible="1"/>
+                                                <field name="purchase_line_ids"
+                                                       options="{'no_edit': True, 'no_create': True}"
+                                                       invisible="1"
+                                                       widget="many2many_tags"/>
+
+                                                <field name="product_id" readonly="1"/>
+                                                <field name="product_packaging_id" readonly="1"/>
+                                                <field name="reason"/>
+                                            </group>
+                                            <group>
+                                                <field name="shipped_packaging_qty" readonly="1"/>
+                                                <field name="inspected_qty" string="Received Qty" force_save="1"/>
+                                                <field name="scrapped_package_qty"/>
+                                                <field name="inspection_status" invisible="1"/>
+                                                <field name="inspection_method" invisible="1"/>
+                                                <field name="balance_qty_in_inspection"
+                                                       invisible="inspection_method != 'inspection_at_warehouse'"/>
+                                            </group>
+                                        </group>
+                                        <notebook>
+                                            <page string="Lot and Expiry" name="products">
+                                                <field name="summary_lines"
+                                                       readonly="inspection_status == 'inspected'">
+                                                    <tree create="false" string="Shipment products" editable="bottom">
+                                                        <field name="product_id"/>
+                                                        <field name="lot_id" column_invisible="True"/>
+                                                        <field name="lot_name" column_invisible="True" force_save="1"/>
+                                                        <field name="expiry_date" readonly="1" force_save="1"/>
+                                                        <field name="production_date" readonly="1" force_save="1"/>
+                                                        <field name="expiry_date_actual" required="1" force_save="1"/>
+                                                        <field name="production_date_actual" required="1"
+                                                               force_save="1"/>
+                                                        <field name="qty_done" string="Qty to Receive" readonly="1"
+                                                               force_save="1"/>
+                                                        <field name="inspected_qty" string="Received Qty"/>
+                                                        <field name="received_qty_actual"
+                                                               readonly="1" force_save="1"/>
+                                                        <field name="qty_short" readonly="1" force_save="1"/>
+                                                        <field name="qty_excess" readonly="1" force_save="1"/>
+                                                        <field name="scrapped_qty"/>
+                                                        <field name="municipality_inspection_qty"/>
+                                                        <field name="image" widget="many2many_binary"/>
+                                                    </tree>
+                                                    <form>
+                                                        <sheet>
+                                                            <group>
+                                                                <field name="product_id" readonly="1"/>
+                                                                <field name="lot_id" invisible="1"/>
+                                                                <field name="lot_name" invisible="1" force_save="1"/>
+                                                                <field name="expiry_date" readonly="1" force_save="1"/>
+                                                                <field name="production_date" readonly="1" force_save="1"/>
+                                                                <field name="expiry_date_actual" required="1" force_save="1"/>
+                                                                <field name="production_date_actual" required="1"
+                                                                       force_save="1"/>
+                                                                <field name="qty_done" string="Qty to Receive" readonly="1"
+                                                                       force_save="1"/>
+                                                                <field name="inspected_qty" string="Received Qty"/>
+                                                                <field name="qty_short" readonly="1" force_save="1"/>
+                                                                <field name="qty_excess" readonly="1" force_save="1"/>
+                                                                <field name="scrapped_qty"/>
+                                                                <field name="municipality_inspection_qty"/>
+                                                                <field name="image" widget="many2many_binary"/>
+                                                            </group>
+                                                        </sheet>
+                                                    </form>
+
+                                                    <kanban create="false" class="o_kanban_mobile">
+                                                         <field name="product_id"/>
+                                                        <field name="lot_id"/>
+                                                        <field name="lot_name"/>
+                                                        <field name="expiry_date"/>
+                                                        <field name="production_date"/>
+                                                        <field name="expiry_date_actual"/>
+                                                        <field name="production_date_actual"/>
+                                                        <field name="qty_done"/>
+                                                        <field name="inspected_qty"/>
+                                                        <field name="qty_short"/>
+                                                        <field name="qty_excess"/>
+                                                        <field name="scrapped_qty"/>
+                                                        <field name="municipality_inspection_qty"/>
+                                                        <templates>
+                                                            <t t-name="kanban-box">
+                                                                <div t-attf-class="oe_kanban_card oe_kanban_global_click pl-0 pr-0">
+                                                                    <t>
+                                                                        <div class="row no-gutters">
+
+                                                                            <div class="col-10">
+
+                                                                                <div class="row">
+                                                                                    <div class="col-12">
+                                                                                        Exp Date:
+                                                                                        <strong t-esc="record.expiry_date.value"/>
+                                                                                         , Actual Exp Qty:
+                                                                                        <strong t-esc="record.expiry_date_actual.value"/>
+
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-12">
+                                                                                       Production Date:
+                                                                                        <strong t-esc="record.production_date.value"/>
+                                                                                        , Actual Production Date:
+                                                                                        <strong t-esc="record.production_date_actual.value"/>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="row">
+                                                                                    <div class="col-12">
+                                                                                        Qty to receive:
+                                                                                        <strong t-esc="record.qty_done.value"/>
+                                                                                        , Qty Received:
+                                                                                        <strong t-esc="record.inspected_qty.value"/>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="row">
+                                                                                    <div class="col-12">
+                                                                                        Qty Short:
+                                                                                        <strong t-esc="record.qty_short.value"/>
+                                                                                        , Qty Excess:
+                                                                                        <strong t-esc="record.qty_excess.value"/>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="row">
+                                                                                    <div class="col-12">
+                                                                                        Damaged Qty:
+                                                                                        <strong t-esc="record.scrapped_qty.value"/>
+                                                                                        , Municipality Qty:
+                                                                                        <strong t-esc="record.municipality_inspection_qty.value"/>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </t>
+
+                                                                </div>
+                                                            </t>
+                                                        </templates>
+                                                    </kanban>
+
+                                                </field>
+                                            </page>
+                                            <page string="Images">
+                                                <field name="image" widget="many2many_binary"/>
+                                            </page>
+                                        </notebook>
+                                    </sheet>
+                                </form>
+
+                                <kanban create="false" class="o_kanban_mobile">
+                                    <field name="product_id"/>
+                                    <field name="product_packaging_id"/>
+                                    <field name="shipped_packaging_qty"/>
+                                    <field name="inspected_qty"/>
+                                    <field name="scrapped_package_qty"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div t-attf-class="oe_kanban_card oe_kanban_global_click pl-0 pr-0">
+                                                <t>
+                                                    <div class="row no-gutters">
+                                                        <div class="col-2 pr-3">
+                                                            <img t-att-src="kanban_image('product.product', 'image_128', record.product_id.raw_value)"
+                                                                 t-att-title="record.product_id.value"
+                                                                 t-att-alt="record.product_id.value"
+                                                                 style="max-width: 100%;"/>
+                                                        </div>
+                                                        <div class="col-10">
+                                                            <div class="row">
+                                                                <div class="col">
+                                                                    <strong t-esc="record.product_id.value"/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-12 text-muted">
+                                                                    Qty to Receive:
+                                                                    <t t-esc="record.shipped_packaging_qty.value"/>
+                                                                    <t t-esc="record.product_packaging_id.value"/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-12 text-muted">
+                                                                    Received Qty:
+                                                                    <t t-esc="record.inspected_qty.value"/>
+                                                                    <t t-esc="record.product_packaging_id.value"/>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-12 text-muted">
+                                                                    Damaged Qty:
+                                                                    <t t-esc="record.scrapped_package_qty.value"/>
+                                                                    <t t-esc="record.product_packaging_id.value"/>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </t>
+
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+
+
+                            </field>
+                        </page>
+
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="shipment_advice_tree_grn" model="ir.ui.view">
+        <field name="name">shipment.advice.tree.grn</field>
+        <field name="model">shipment.advice</field>
+        <field name="priority">500</field>
+        <field name="arch" type="xml">
+            <tree string="Shipment Advice" default_order="id desc">
+
+                <field name="bl_entry_id"/>
+                <field name="bl_entry_container_id"/>
+
+                <field name="vendor_id" readonly="1" options="{'no_open': True}"/>
+                <field name="clearing_agent" readonly="1" options="{'no_open': True}"/>
+                <field name="departure_date" readonly="1" options="{'no_open': True}"/>
+                <field name="arrival_date" readonly="1" options="{'no_open': True}"/>
+                <field name="inspection_method" readonly="1"/>
+                <field name="shipment_no" readonly="1"/>
+                <field name="boe_number" readonly="1"/>
+                <field name="zdlm" readonly="1"/>
+                <field name="grn_entry_status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="shipment_advice_action_grn" model="ir.actions.act_window">
+        <field name="name">Shipment Advice GRN</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">shipment.advice</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="shipment_advice_tree_grn"/>
+        <field name="domain">[('grn_entry_status', 'in', ['pending', 'recheck'])]</field>
+        <field name="search_view_id" ref="view_shipment_advice_filter"/>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                There is no GRN to Do.
+            </p>
+        </field>
+    </record>
+
+    <record id="shipment_advice_action_grn_tree" model="ir.actions.act_window.view">
+        <field eval="1" name="sequence"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="shipment_advice_tree_grn"/>
+        <field name="act_window_id" ref="shipment_advice_action_grn"/>
+    </record>
+
+    <record id="shipment_advice_action_grn_form" model="ir.actions.act_window.view">
+        <field eval="1" name="sequence"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="shipment_advice_form_grn"/>
+        <field name="act_window_id" ref="shipment_advice_action_grn"/>
+    </record>
+
+
+    <menuitem id="shipment_advice_root_menu_grn" name="WH GRN" sequence="20"
+              web_icon="kg_sarya_inventory,static/description/icon.png"
+              groups="kg_sarya_inventory.sarya_can_do_wh_grn"/>
+
+    <menuitem id="shipment_advice_menu_grn" name="GRN" sequence="20"
+              parent="kg_sarya_inventory.shipment_advice_root_menu_grn"
+              action="shipment_advice_action_grn" groups="stock.group_stock_manager,stock.group_stock_user"/>
+
+
+</odoo>

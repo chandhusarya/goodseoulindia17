@@ -1,0 +1,73 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<odoo>
+
+    <record id="prg_rebate_tree" model="ir.ui.view">
+        <field name="name">prg.rebate.realtime.tree</field>
+        <field name="model">prg.rebate.realtime</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="rebate_id" required="1"/> 
+                <field name="partner_id" required="1" readonly="1"/>
+                <field name="current_sale_amount" required="1" readonly="1"/>
+                <field name="total_sale" />
+                <field name="slab_reach"/>
+                <field name="rebate_applied"/>
+                <field name="rebate_updated"/>
+                <field name="rebate_amount"/>
+                <field name="date"/>
+                <field name="move_id" string="Invoice"/>
+                <field name="child_partner" string="Child customer"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="prg_rebate_form" model="ir.ui.view">
+        <field name="name">prg.rebate.realtime.form</field>
+        <field name="model">prg.rebate.realtime</field>
+        <field name="arch" type="xml">
+            <form string="Customer Rebate Form">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="posted,cancel"/>
+                </header>
+                <sheet>
+                     
+                    <group name="cust_rebate main">
+                        <group name="cust_rebate_child" readonly="1" force_save="1">
+                            <field name="rebate_id"  readonly="1" force_save="1"/>
+                            <field name="partner_id"  readonly="1" force_save="1"/>
+                            <field name="current_sale_amount" readonly="1" force_save="1"/>
+                            <field name="date"  readonly="1" force_save="1"/>
+                            <field name="move_id" string="Invoice"   readonly="1" force_save="1"/>
+                            <field name="child_partner" string="Child customer"  readonly="1" force_save="1"/>
+                        </group>
+                        <group>
+                            <field name="total_sale"  readonly="1" force_save="1"/>
+                            <field name="slab_reach" readonly="1" force_save="1"/>
+                            <field name="rebate_applied" readonly="1" force_save="1" />
+                            <field name="rebate_updated"  readonly="1" force_save="1" />
+                            <field name="sale_order" readonly="1" force_save="1"/>
+                            <field name="rebate_amount" readonly="1" force_save="1"/>
+                        </group>
+                    </group>
+                    
+                </sheet>
+            </form>
+
+        </field>
+    </record>
+
+    <record id="action_prg_rbt" model="ir.actions.act_window">
+        <field name="name">Progressive rebate</field>
+        <field name="res_model">prg.rebate.realtime</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem name="Realtime Progressive rebate"
+              id="prg_rebate_menu"
+              action="action_prg_rbt"
+              sequence="55"
+              parent="sale.menu_sale_config"/>
+
+</odoo>
+

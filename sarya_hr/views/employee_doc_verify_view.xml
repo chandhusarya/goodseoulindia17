@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="employee_doc_verify_form_view" model="ir.ui.view">
+            <field name="name">employee.doc.verify.form</field>
+            <field name="model">employee.doc.verify</field>
+            <field name="arch" type="xml">
+                <form string="Employee Document Verify">
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="pending,verified"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name" placeholder="Name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="employee_id"/>
+<!--                                <field name="l10n_in_uan"/>-->
+<!--                                <field name="l10n_in_esic_number"/>-->
+                            </group>
+                            <group>
+<!--                                <field name="l10n_in_pan"/>-->
+<!--                                <field name="pf_number"/>-->
+                                <field name="verify_token"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="employee_doc_verify_tree_view" model="ir.ui.view">
+            <field name="name">employee.doc.verify.tree</field>
+            <field name="model">employee.doc.verify</field>
+            <field name="arch" type="xml">
+                <tree string="Employee Document Verify">
+                    <field name="create_date"/>
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="employee_doc_verify_search_view" model="ir.ui.view">
+            <field name="name">employee.doc.verify.search</field>
+            <field name="model">employee.doc.verify</field>
+            <field name="arch" type="xml">
+                <search string="Employee Document Verify">
+                    <group expand="1" string="Group By">
+                        <filter string="Employee" name="employee_id" domain="[]"
+                                context="{'group_by':'employee_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="employee_doc_verify_act_window" model="ir.actions.act_window">
+            <field name="name">Employee Document Verify</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">employee.doc.verify</field>
+<!--            <field name="view_type">form</field>-->
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    There is no examples click here to add new Employee Document Verify.
+                </p>
+            </field>
+        </record>
+
+        <menuitem name="Employee Document Verify" id="employee_doc_verify_menu"
+                  sequence="10" parent="hr.menu_hr_employee_payroll" action="employee_doc_verify_act_window"/>
+
+    </data>
+</odoo>

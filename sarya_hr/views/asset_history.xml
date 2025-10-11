@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="asset_history_form_view" model="ir.ui.view">
+            <field name="name">asset_history.form.view</field>
+            <field name="model">asset.history</field>
+            <field name="arch" type="xml">
+                <form string="Asset History">
+                    <header><button name="action_running" type="object" class="oe_highlight" string="Allocate" invisible="state != 'draft'"/>
+                        <button name="action_closed" type="object" class="oe_highlight" string="Release" invisible="state != 'running'"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="employee_id" placeholder="Employee" options="{'no_open':True, 'no_create':True}"
+                                readonly="state != 'draft'"/>
+                                <field name="asset_id" options="{'no_open':True, 'no_create':True}" readonly="state != 'draft'" domain="[('is_allocated','=',False),('is_active','=',True)]"/>
+                                <field name="working_condition"  readonly="state != 'draft'"/>
+                            </group>
+                            <group>
+                                <field name="start_date" readonly="state != 'draft'"/>
+                                <field name="rtn_employee_id" options="{'no_open':True, 'no_create':True}" required="state == 'running'" readonly="state != 'running'"/>
+                                <field name="end_date" required="state == 'running'" readonly="state != 'running'"
+                                       />
+                                <field name="asset_category_id"/>
+                                <field name="company_id"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="asset_history_tree_view" model="ir.ui.view">
+            <field name="name">asset_history.tree.view</field>
+            <field name="model">asset.history</field>
+            <field name="arch" type="xml">
+                <tree string="Asset History" decoration-info="state == 'draft'" decoration-success="state == 'running'" decoration-danger="state == 'closed'" >
+                    <field name="asset_id"/>
+                    <field name="employee_id"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="rtn_employee_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="asset_history_search_view" model="ir.ui.view">
+            <field name="name">asset_history.search</field>
+            <field name="model">asset.history</field>
+            <field name="arch" type="xml">
+                <search string="Asset History">
+                    <field name="asset_id"/>
+                    <field name="employee_id"/>
+                    <field name="rtn_employee_id"/>
+                    <filter name="state" string="Draft" domain="[('state','=','draft')]"/>
+                    <filter name="state" string="Running" domain="[('state','=','running')]"/>
+                    <filter name="state" string="Closed" domain="[('state','=','closed')]"/>
+                    <group expand="1" string="Group By">
+                        <filter string="Asset" name="asset_id" domain="[]"
+                                context="{'group_by':'asset_id'}"/>
+                        <filter string="Asset Category" name="asset_id" domain="[]"
+                                context="{'group_by':'asset_category_id'}"/>
+                        <filter string="Status" name="state" domain="[]"
+                                context="{'group_by':'state'}"/>
+                         <filter string="Employee" name="employee" domain="[]"
+                                context="{'group_by':'employee_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- adding filters in tree view-->
+        <!--<record id="asset_log_filters" model="ir.ui.view">
+            <field name="name">asset history filters</field>
+            <field name="model">asset.history</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="asset_category_id"/>
+                    <filter string="Asset Category" name="my_category"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Categories" name="asset_category_id"
+                                context="{'group_by':'asset_category_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>-->
+
+        <record id="asset_history_action" model="ir.actions.act_window">
+            <field name="name">Asset History</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">asset.history</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    There is no examples click here to add new ModelTitle.
+                </p>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

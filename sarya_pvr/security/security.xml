@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="can_approve_pvr_stock_req" model="res.groups">
+        <field name="name">Can Approve PVR Stock Request</field>
+    </record>
+
+    <record id="can_transfer_pvr_stock_req" model="res.groups">
+        <field name="name">Can Transfer PVR Stock Request</field>
+    </record>
+
+    <record id="group_pvr_operator" model="res.groups">
+        <field name="name">PVR Users</field>
+    </record>
+
+    <record id="group_pvr_admin" model="res.groups">
+        <field name="name">PVR Admin</field>
+    </record>
+
+
+    <record id="portal_mail_stock_picking_rule" model="ir.rule">
+        <field name="name">Portal: Stock Picking Activities</field>
+        <field name="model_id" ref="stock.model_stock_picking"/>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="portal_res_partner" model="ir.rule">
+        <field name="name">Portal: Res partner</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="portal_account_move_line" model="ir.rule">
+        <field name="name">Portal: Account Move Line</field>
+        <field name="model_id" ref="account.model_account_move_line"/>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="portal_account_move" model="ir.rule">
+        <field name="name">Portal: Account Move</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+
+
+
+
+        <!-- Record Rule for PVR Stock Requests -->
+<!--    <record id="pvr_stock_request_rule_own_location" model="ir.rule">-->
+<!--        <field name="name">PVR Stock Request: By User's PVR Location</field>-->
+<!--        <field name="model_id" ref="stock.model_stock_quant"/>-->
+<!--        &lt;!&ndash; This domain is key: &ndash;&gt;-->
+<!--        &lt;!&ndash; It says: only read records where the request's PVR Location ID &ndash;&gt;-->
+<!--        &lt;!&ndash; matches the current user's default PVR Location ID. &ndash;&gt;-->
+<!--        <field name="domain_force">[('location_id', '=', user.pvr_location_id.id)]</field>-->
+<!--        <field name="groups" eval="[(4, ref('sarya_pvr.group_pvr_operator'))]"/> &lt;!&ndash; Apply to all users or specific groups &ndash;&gt;-->
+<!--        <field name="perm_read" eval="1"/>-->
+<!--        <field name="perm_write" eval="1"/>-->
+<!--        <field name="perm_create" eval="1"/>-->
+<!--        <field name="perm_unlink" eval="0"/>-->
+<!--    </record>-->
+
+<!--    <record id="stock_quant_rule_general_users_see_all" model="ir.rule">-->
+<!--        <field name="name">Stock Quant: General users see all internal locations</field>-->
+<!--        <field name="model_id" ref="stock.model_stock_quant"/>-->
+<!--        <field name="domain_force">[('location_id.usage', '=', 'internal')]</field>-->
+<!--        &lt;!&ndash;-->
+<!--            Apply this rule to the 'Internal User' group (or 'Portal User' if they access via portal,-->
+<!--            or a specific group for your general staff).-->
+<!--            This rule is NOT restricted to PVR Operator group.-->
+<!--        &ndash;&gt;-->
+<!--        <field name="groups" eval="[(4, ref('stock.group_stock_user'))]"/> &lt;!&ndash; Or a more specific group &ndash;&gt;-->
+<!--        <field name="perm_read" eval="1"/>-->
+<!--        <field name="perm_write" eval="0"/>-->
+<!--        <field name="perm_create" eval="0"/>-->
+<!--        <field name="perm_unlink" eval="0"/>-->
+<!--    </record>-->
+
+</odoo>

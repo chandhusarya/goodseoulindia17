@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_portal_product_variant,portal_product_variant,product.model_product_product,base.group_portal,1,1,0,0
+access_portal_product_template,portal_product_template,product.model_product_template,base.group_portal,1,1,0,0
+access_portal_product_package,portal_product_package,product.model_product_packaging,base.group_portal,1,1,0,0
+access_portal_pricelist_item,portal_pricelist_item,product.model_product_pricelist_item,base.group_portal,1,1,0,0

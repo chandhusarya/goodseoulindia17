@@ -1,0 +1,15 @@
+.container {
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+}
+
+th, td {
+    text-align: center;
+}
+
+input[type="number"] {
+    width: 80px;
+}

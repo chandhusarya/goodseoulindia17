@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_wms_stock_details,wms_stock_details,model_wms_stock_details,,1,1,1,1
+
+

@@ -1,0 +1,17 @@
+<odoo>
+	<record id="rebate_pdf_report_simplified" model="ir.actions.report">
+		<field name="name">Rebate Simplified Report</field>
+		<field name="model">rebate.report.wizard</field>
+		<field name="report_type">qweb-html</field>
+		<field name="report_name">kg_sarya_rebate.rebate_pdf_report_simplified_document</field>
+		<field name="report_file">rebate_pdf_report_simplified</field>
+	</record>
+
+	<record id="rebate_pdf_report_detailed" model="ir.actions.report">
+		<field name="name">Rebate Detailed Report</field>
+		<field name="model">rebate.report.wizard</field>
+		<field name="report_type">qweb-html</field>
+		<field name="report_name">kg_sarya_rebate.rebate_pdf_report_detailed_document</field>
+		<field name="report_file">rebate_pdf_report_detailed</field>
+	</record>
+</odoo>

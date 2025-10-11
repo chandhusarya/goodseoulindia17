@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sarya_pos_report_food_cost_report,sarya_pos_report_food_cost_report,model_food_cost_report,base.group_user,1,1,1,1
+access_sarya_pos_report_daily_sales_report,sarya_pos_report_daily_sales_report,model_pos_daily_sales_report,base.group_user,1,1,1,1

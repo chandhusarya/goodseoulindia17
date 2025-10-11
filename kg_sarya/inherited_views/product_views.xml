@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="product_template_only_form_view_inherit" model="ir.ui.view">
+        <field name="name">product.template.product.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <!--<page name="sales" position="attributes">
+                <attribute name="groups">base.group_no_one</attribute>
+            </page>
+            <page name="variants" position="attributes">
+                <attribute name="groups">base.group_no_one</attribute>
+            </page>
+            <page name="inventory" position="attributes">
+                <attribute name="string">Configuration</attribute>
+            </page>
+            <button name="action_product_tmpl_forecast_report" position="attributes">
+                <attribute name="groups">base.group_no_one</attribute>
+            </button>
+            <xpath expr="//button[@name='action_view_orderpoints'][2]" position="attributes">
+                <attribute name="groups">base.group_no_one</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_view_related_putaway_rules']" position="attributes">
+                <attribute name="groups">base.group_no_one</attribute>
+            </xpath>
+
+            <field name="volume" position="attributes">
+                <attribute name="groups">base.group_no_one</attribute>
+            </field>
+            <xpath expr="//div[@name='volume']" position="attributes">
+                <attribute name="groups">base.group_no_one</attribute>
+            </xpath>
+            <xpath expr="//label[@for='volume']" position="attributes">
+                <attribute name="groups">base.group_no_one</attribute>
+            </xpath> -->
+            <xpath expr="//page[@name='general_information']" position="after">
+                <page name="product_specification" string="Product Specification">
+                    <group>
+                        <group string="Details">
+                            <field name="food_category"/>
+                            <field name="manufactured_by"/>
+                            <field name="address"/>
+                            <field name="ps_brand_arabic"/>
+                            <field name="ps_ar_desc"/>
+                            <field name="ps_hs_code"/>
+                            <field name="ps_origin"/>
+                            <field name="ps_shelf_life"/>
+                        </group>
+                        <group string="Barcode">
+                            <field name="ps_each_barcode"/>
+                            <field name="ps_multipack_barcode"/>
+                            <field name="ps_carton_barcode"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="UOM">
+                            <field name="ps_primary_uom"/>
+                            <field name="ps_carton_uom_box"/>
+                            <field name="ps_pc_box"/>
+                        </group>
+                        <group string="Product Listing Short Description">
+                            <field name="ps_prd_listing_shot_desc_eng" string="English"/>
+                            <field name="ps_prd_listing_shot_desc_ar" string="Arabic"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Product Listing Long Description With Brand">
+                            <field name="ps_long_desc_eng_with_brand" string="English"/>
+                            <field name="ps_long_desc_ar_with_brand" string="Arabic"/>
+                        </group>
+                        <group string="Product Listing Long Description Without Brand">
+                            <field name="ps_long_desc_eng_without_brand" string="English"/>
+                            <field name="ps_long_desc_ar_without_brand" string="Arabic"/>
+                        </group>
+                    </group>
+
+                    <group>
+                        <group string="Ingredients">
+                            <field name="ps_ingredients_eng" string="English"/>
+                            <field name="ps_ingredients_ar" string="Arabic"/>
+                        </group>
+                        <group string="Nutritional Facts">
+                            <field name="ps_nutritional_facts_eng" string="English"/>
+                            <field name="ps_nutritional_facts_ar" string="Arabic"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Storage Condition">
+                            <field name="ps_storage_condition"/>
+                        </group>
+                        <group string="Dimension - Unit (CM)">
+                            <field name="ps_dime_unit_length" string="Length"/>
+                            <field name="ps_dime_unit_width" string="Width"/>
+                            <field name="ps_dime_unit_height" string="Height"/>
+                            <field name="ps_dime_unit_diameter" string="Diameter"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Dimension - Carton (CM)">
+                            <field name="ps_dime_ctn_length" string="Length"/>
+                            <field name="ps_dime_ctn_width" string="Width"/>
+                            <field name="ps_dime_ctn_height" string="Height"/>
+                        </group>
+                        <group string="Pallet Size(CM)">
+                            <field name="ps_pallet_length" string="Length"/>
+                            <field name="ps_pallet_width" string="Width"/>
+                            <field name="ps_pallet_height" string="Height"/>
+                        </group>
+                    </group>
+                    <group string="Attachments">
+                        <field name="product_attachment_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="document_name" string="Type" required="1"/>
+                                <field name="document_type"
+                                       domain="[('document_name', '=', document_name)]"
+                                       options="{'no_create': True}"/>
+                                <field name="product_attachment" widget="many2many_binary" string="Attachments"/>
+                            </tree>
+                        </field>
+
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

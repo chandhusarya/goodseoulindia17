@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="inherit_res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.form.view.inherit</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//block[@id='pos_accounting_section']" position="inside">
+                <setting id="post_pos_cash_transaction_setting" string="Post POS Cash transactions">
+                    <div class="content-group">
+                        <div class="row mt8">
+                            <label for="pos_cash_statement_journal_id" class="col-lg-5 o_light_label"/>
+                            <field name="pos_cash_statement_journal_id" domain="[('type', '=', 'general')]" options="{'no_create': True, 'no_open': True}"/>
+                        </div>
+                        <div class="row mt8" invisible="1">
+                            <label for="pos_bank_transfer_journal_id" class="col-lg-5 o_light_label"/>
+                            <field name="pos_bank_transfer_journal_id" domain="[('type', '=', 'bank')]" options="{'no_create': True, 'no_open': True}"/>
+                        </div>
+                    </div>
+                </setting>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

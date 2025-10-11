@@ -1,0 +1,14 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_sry_coverage_master,sry.coverage.master,model_sry_coverage_master,base.group_user,1,1,1,1
+access_sry_coverage_master_line,sry_coverage_master_line,model_sry_coverage_master_line,base.group_user,1,1,1,1
+access_sry_coverage_plan,sry_coverage_plan_line,model_sry_coverage_plan,base.group_user,1,1,1,1
+access_sry_customer_load_wizard,sry_customer_load_wizard,model_sry_customer_load_wizard,base.group_user,1,1,1,1
+
+
+access_sry_coverage_master_portal,sry.coverage.master,model_sry_coverage_master,,1,0,0,0
+access_sry_coverage_master_line_portal,sry_coverage_master_line,model_sry_coverage_master_line,,1,0,0,0
+access_sry_coverage_plan_portal,sry_coverage_plan_line,model_sry_coverage_plan,,1,0,0,0
+
+access_change_merchandiser_wizard,change_merchandiser_wizard,model_change_merchandiser_wizard,base.group_user,1,1,1,1
+
+

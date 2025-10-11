@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="bl_entry_cost_tree" model="ir.ui.view">
+        <field name="name">bl.entry.cost.tree</field>
+        <field name="model">bl.entry.cost</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <tree string="BL Cost Approval" default_order="id desc">
+                <field name="bl_entry_id"/>
+                <field name="partner_id"/>
+                <field name="product_id"/>
+                <field name="amount"/>
+                <field name="tax_ids"/>
+                <field name="total_amount"/>
+                <field name="estimated_total_amount"/>
+                <field name="state"/>
+                 <button string="Approve"
+                        type="object"
+                        name="approve_cost"
+                        class="btn btn-primary"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="bl_entry_cost_action" model="ir.actions.act_window">
+        <field name="name">BL Cost Approval</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">bl.entry.cost</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="bl_entry_cost_tree"/>
+        <field name="domain">[('state', '=', 'pending_approval')]</field>
+    </record>
+
+    <menuitem id="shipment_advice_landed_cost_menu"
+              name="BL Cost Approval"
+              sequence="40"
+              parent="kg_sarya_inventory.shipment_advice_root_menu"
+              action="bl_entry_cost_action"
+              groups="kg_sarya_inventory.get_bl_cost_variation_approval"/>
+
+</odoo>

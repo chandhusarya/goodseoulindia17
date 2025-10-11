@@ -1,0 +1,404 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<odoo>
+
+    <record id="region_tree" model="ir.ui.view">
+        <field name="name">customer.region.tree</field>
+        <field name="model">customer.region</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" required="1"/>
+                <field name="code" required="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="region_form" model="ir.ui.view">
+        <field name="name">customer.region.form</field>
+        <field name="model">customer.region</field>
+        <field name="arch" type="xml">
+            <form string="Region Form">
+                <sheet>
+                    <group name="region_form main">
+                        <group name="region_form_child">
+                            <field name="name" required="1"/>
+                            
+                        </group>
+                        <group name="region_form_child">
+                            
+                            <field name="code" required="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                
+            </form>
+        </field>
+    </record>
+
+    <record id="region_menu_action" model="ir.actions.act_window">
+        <field name="name">Region</field>
+        <field name="res_model">customer.region</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem name="Region" id="region_master_menu" action="region_menu_action" sequence="51" parent="sale.menu_sale_config"/>
+
+
+    <record id="subregion_tree" model="ir.ui.view">
+        <field name="name">region.subregion.tree</field>
+        <field name="model">region.subregion</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" required="1"/>
+                <field name="code" required="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="subregion_form" model="ir.ui.view">
+        <field name="name">region.subregion.form</field>
+        <field name="model">region.subregion</field>
+        <field name="arch" type="xml">
+            <form string="Sub Region Form">
+                <sheet>
+                    <group name="region_form main">
+                        <group name="region_form_child">
+                            <field name="name" required="1"/>
+                            <field name="region" required="1"/>
+                        </group>
+                        <group name="region_form_child">
+                            
+                            <field name="code" required="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                
+            </form>
+        </field>
+    </record>
+
+    <record id="subregion_menu_action" model="ir.actions.act_window">
+        <field name="name">Sub Region</field>
+        <field name="res_model">region.subregion</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem name="Sub Region" id="subregion_master_menu" action="subregion_menu_action" sequence="52" parent="sale.menu_sale_config"/>
+
+
+    <record id="contract_tree" model="ir.ui.view">
+        <field name="name">partner.contract.tree</field>
+        <field name="model">partner.contract</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" required="1"/>
+                <field name="date_start" required="1"/>
+                <field name="date_end" required="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="contract_form" model="ir.ui.view">
+        <field name="name">partner.contract.form</field>
+        <field name="model">partner.contract</field>
+        <field name="arch" type="xml">
+            <form string="Contract Form">
+                <sheet>
+                    <group name="region_form main">
+                        <group name="region_form_child">
+                            <field name="name" required="1"/>
+                        </group>
+                    </group>
+                    <group name="region_form main">
+                        <group name="region_form_child">
+                            <field name="date_start" required="1"/>
+                            
+                        </group>
+                        <group name="region_form_child">
+                            
+                            <field name="date_end" required="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                
+            </form>
+        </field>
+    </record>
+
+    <record id="contract_menu_action" model="ir.actions.act_window">
+        <field name="name">Contract</field>
+        <field name="res_model">partner.contract</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem name="Contract" id="contract_master_menu" action="contract_menu_action" sequence="53" parent="sale.menu_sale_config"/>
+
+    <record id="trade_tree" model="ir.ui.view">
+        <field name="name">trade.channel.tree</field>
+        <field name="model">trade.channel</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" required="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="trade_form" model="ir.ui.view">
+        <field name="name">trade.channel.form</field>
+        <field name="model">trade.channel</field>
+        <field name="arch" type="xml">
+            <form string="Trade Channel Form">
+                <sheet>
+                    <group name="region_form main">
+                        <group name="region_form_child">
+                            <field name="name" required="1"/>
+                        </group>
+                         <group name="region_form_child">
+                            <field name="journal" required="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                
+            </form>
+        </field>
+    </record>
+
+    <record id="trade_menu_action" model="ir.actions.act_window">
+        <field name="name">Trade Channel</field>
+        <field name="res_model">trade.channel</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Customer Classification" id="customer_classifi_menu" sequence="56" parent="sale.menu_sale_config"/>
+
+    <menuitem name="Trade Channel" id="trade_chnl_menu" action="trade_menu_action" sequence="6" parent="kg_sarya.customer_classifi_menu"/>
+
+
+    <record id="classification_tree" model="ir.ui.view">
+        <field name="name">customer.classification.tree</field>
+        <field name="model">customer.classification</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" required="1"/>
+                <field name="trade_channel_id" required="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="classification_form" model="ir.ui.view">
+        <field name="name">customer.classification.form</field>
+        <field name="model">customer.classification</field>
+        <field name="arch" type="xml">
+            <form string="Trade Channel Form">
+                <sheet>
+                    <group name="region_form main">
+                        <group name="region_form_child">
+                            <field name="name" required="1"/>
+                        </group>
+                        <group name="region_form_child">
+                             <field name="trade_channel_id" required="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                
+            </form>
+        </field>
+    </record>
+
+    <record id="classifi_menu_action" model="ir.actions.act_window">
+        <field name="name">Classification</field>
+        <field name="res_model">customer.classification</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem name="Classification" id="classifi_chnl_menu" action="classifi_menu_action" sequence="6" parent="kg_sarya.customer_classifi_menu"/>
+
+    <record id="sub_classification_tree" model="ir.ui.view">
+        <field name="name">customer.sub.classification.tree</field>
+        <field name="model">customer.sub.classification</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" required="1"/>
+                <field name="trade_channel_id" required="1"/>
+                <field name="classification_id" required="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="sub_classification_form" model="ir.ui.view">
+        <field name="name">customer.sub.classification.form</field>
+        <field name="model">customer.sub.classification</field>
+        <field name="arch" type="xml">
+            <form string="Trade Channel Form">
+                <sheet>
+                    <group name="region_form main">
+                        <group name="region_form_child">
+                            <field name="name" required="1"/>
+                            <field name="classification_id"  domain="[('trade_channel_id','=',trade_channel_id)]"  required="1"/>
+                        </group>
+                        <group name="region_form_child">
+                             <field name="trade_channel_id" required="1"/>
+                             <field name="picking_type_id"/>
+                        </group>
+                    </group>
+                </sheet>
+                
+            </form>
+        </field>
+    </record>
+
+    <record id="sub_classific_menu_action" model="ir.actions.act_window">
+        <field name="name">Sub Classification</field>
+        <field name="res_model">customer.sub.classification</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem name="Sub Classification" id="sub_classifi_chnll_menu" action="sub_classific_menu_action" sequence="6" parent="kg_sarya.customer_classifi_menu"/>
+
+
+    <record id="sub_classification2_tree" model="ir.ui.view">
+        <field name="name">customer.sub.classification2.tree</field>
+        <field name="model">customer.sub.classification2</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" required="1"/>
+                <field name="trade_channel_id" required="1"/>
+                <field name="classification_id" required="1"/>
+                <field name="sub_classification_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="sub_classification2_form" model="ir.ui.view">
+        <field name="name">customer.sub.classification2.form</field>
+        <field name="model">customer.sub.classification2</field>
+        <field name="arch" type="xml">
+            <form string="Trade Channel Form">
+                <sheet>
+                    <group name="region_form main">
+                        <group name="region_form_child">
+                            <field name="name" required="1"/>
+                            <field name="classification_id"  domain="[('trade_channel_id','=',trade_channel_id)]"  required="1"/>
+                        </group>
+                        <group name="region_form_child">
+                             <field name="trade_channel_id" required="1"/>
+                             <field name="sub_classification_id"  domain="[('classification_id','=',classification_id)]"  required="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                
+            </form>
+        </field>
+    </record>
+
+    <record id="sub_classific2_menu_action" model="ir.actions.act_window">
+        <field name="name">Sub Classification2</field>
+        <field name="res_model">customer.sub.classification2</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem name="Sub Classification2" id="sub_classifi2_chnll_menu" action="sub_classific2_menu_action" sequence="6" parent="kg_sarya.customer_classifi_menu"/>
+
+
+
+    <record id="sub_classification3_tree" model="ir.ui.view">
+        <field name="name">customer.sub.classification3.tree</field>
+        <field name="model">customer.sub.classification3</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" required="1"/>
+                <field name="trade_channel_id" required="1"/>
+                <field name="classification_id" required="1"/>
+                <field name="sub_classification_id"/>
+                <field name="sub_classification2_id"/>
+                <field name="picking_type_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="sub_classification3_form" model="ir.ui.view">
+        <field name="name">customer.sub.classification3.form</field>
+        <field name="model">customer.sub.classification3</field>
+        <field name="arch" type="xml">
+            <form string="Trade Channel Form">
+                <sheet>
+                    <group name="region_form main">
+                        <group name="region_form_child">
+                            <field name="name" required="1"/>
+                            <field name="classification_id"
+                                   domain="[('trade_channel_id','=',trade_channel_id)]"
+                                   required="1"/>
+                            <field name="sub_classification2_id" domain="[('sub_classification_id','=',sub_classification_id)]" />
+                        </group>
+                        <group name="region_form_child">
+                            <field name="trade_channel_id" required="1"/>
+                            <field name="sub_classification_id"
+                                   domain="[('classification_id','=',classification_id)]"
+                                   required="1"/>
+                            <field name="picking_type_id"/>
+                        </group>
+                    </group>
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="sub_classification3_menu_action" model="ir.actions.act_window">
+        <field name="name">Sub Classification3</field>
+        <field name="res_model">customer.sub.classification3</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem name="Sub Classification3" id="sub_classification3_chnll_menu" action="sub_classification3_menu_action" sequence="7" parent="kg_sarya.customer_classifi_menu"/>
+
+
+    <record id="category_tree" model="ir.ui.view">
+        <field name="name">customer.category.tree</field>
+        <field name="model">customer.category</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" required="1"/>
+                <field name="code" required="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="category_form" model="ir.ui.view">
+        <field name="name">customer.category.form</field>
+        <field name="model">customer.category</field>
+        <field name="arch" type="xml">
+            <form string="Region Form">
+                <sheet>
+                    <group name="category_form main">
+                        <group name="category_form_child">
+                            <field name="name" required="1"/>
+                            
+                        </group>
+                        <group name="category_form_child">
+                            
+                            <field name="code" required="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                
+            </form>
+        </field>
+    </record>
+
+    <record id="cat_menu_action" model="ir.actions.act_window">
+        <field name="name">Customer Category</field>
+        <field name="res_model">customer.category</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem name="Customer Category" id="cat_master_menu" action="cat_menu_action" sequence="54" parent="sale.menu_sale_config"/>
+</odoo>
+

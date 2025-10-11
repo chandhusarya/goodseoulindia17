@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="seq_rebate_entry" model="ir.sequence">
+            <field name="name">Rebate Entry</field>
+            <field name="code">rebate.entry</field>
+            <field name="prefix">RE/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+
+    <data noupdate="1">
+        <record id="seq_rebate_item" model="ir.sequence">
+            <field name="name">Rebate Item</field>
+            <field name="code">rebate.item</field>
+            <field name="prefix">RI/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

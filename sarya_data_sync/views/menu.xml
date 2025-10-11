@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--    Data Sync Main Menu    -->
+
+        <menuitem id="main_menu_data_sync"
+                  name="Data Sync"
+                  parent="point_of_sale.menu_point_config_product"
+                  sequence="11"/>
+
+        <!--    Data Sync Log Menu    -->
+
+        <menuitem id="menu_data_sync_log"
+                  name="Data Sync Logs"
+                  parent="sarya_data_sync.main_menu_data_sync"
+                  action="sarya_data_sync.data_sync_log_action"
+                  sequence="11"/>
+
+        <!--    Outlet Customer Menu    -->
+
+        <menuitem id="menu_point_of_sale_outlet_customer"
+                  name="Outlet Customers"
+                  parent="point_of_sale.menu_point_of_sale"
+                  action="sarya_data_sync.res_partner_action_outlet_customer"
+                  sequence="101"/>
+
+        <!--    Till Assign & Closure Menu    -->
+
+        <menuitem id="menu_till_assign_and_closure"
+                  name="Till Assign &amp; Closure"
+                  parent="point_of_sale.menu_point_of_sale"
+                  action="sarya_data_sync.till_assign_and_closure_action"
+                  sequence="80"/>
+
+        <!--    Cash Statement Menu    -->
+
+        <menuitem id="menu_cash_statements"
+                  name="Cash Statements"
+                  parent="point_of_sale.menu_point_of_sale"
+                  action="sarya_data_sync.cash_statement_action"
+                  sequence="81"/>
+
+         <!--    Bank Statement Menu    -->
+
+        <menuitem id="menu_bank_transfers"
+                  name="Bank Transfers"
+                  parent="point_of_sale.menu_point_of_sale"
+                  action="sarya_data_sync.bank_transfer_action"
+                  sequence="82"
+                  active="False"/>
+
+        <!--    Bank Statement Menu    -->
+
+        <menuitem id="menu_pos_kitchen_screen_report"
+                  action="sarya_data_sync.main_menu_pos_kitchen_screen_report"
+                  name="Kitchen Screens Report"
+                  parent="point_of_sale.menu_point_rep"
+                  sequence="10"/>
+
+        <!--    POS Order Report Menu    -->
+
+        <menuitem id="menu_pos_order_report"
+                  action="sarya_data_sync.action_pos_order_report"
+                  name="POS Order Report"
+                  parent="point_of_sale.menu_point_rep"
+                  sequence="11"/>
+
+    </data>
+</odoo>

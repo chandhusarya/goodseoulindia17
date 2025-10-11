@@ -1,0 +1,32 @@
+<odoo>
+    <data>
+        <record id="purchase_order_view" model="ir.ui.view">
+            <field name="name">Purchase Order View</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_ref']" position='after'>
+                    <field name="amount_in_words" string="Amount Words" force_save="1" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="purchase_order_instruction" model="ir.ui.view">
+            <field name="name">Purchase Order Instruction</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='general_info']" position='after'>
+                    <page string="Purchase Order Instruction">
+                        <form>
+                            <sheet>
+                                <group>
+                                    <field name="purchase_special_instruction"/>
+                                </group>
+                            </sheet>
+                        </form>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

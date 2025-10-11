@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="view_sale_form_inherit_kg_sarya_inspection" model="ir.ui.view">
+        <field name="name">sale.order.kg.sarya.inspection.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_term_id']" position='after'>
+                <field name="delivery_lead_time"/>
+                <field name="customer_lpo_date" required="1"/>
+                <field name="delivery_plan_new"/>
+                <field name="commitment_date" required="1" string="Delivery Date"/>
+                <field name="delivery_deadline_date" required="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/form//field[@name='price_unit']" position='replace'>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/form//div[@name='discount']" position='after'>
+                <field name="price_subtotal" widget="monetary" />
+                <field column_invisible="True" name="tax_id" widget="many2many_tags" options="{'no_create': True}"
+                       context="{'search_view_ref': 'account.account_tax_view_search'}"
+                       domain="[('type_tax_use','=','sale'), ('company_id','=',parent.company_id)]"
+                       readonly="qty_invoiced > 0"/>
+                <field name="price_tax" string="Tax Amount"/>
+                <field name="price_total" widget="monetary"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/form//group[2]" position='replace'>
+                <group invisible="1">
+                    <label for="customer_lead"/>
+                    <div name="lead">
+                        <field name="customer_lead" class="oe_inline"/> days
+                    </div>
+                </group>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/form//div[@name='invoice_lines']" position='replace'>
+                <div name="invoice_lines" groups="base.group_no_one" invisible="display_type != False">
+                    <label for="invoice_lines"/>
+                    <field name="invoice_lines"/>
+                </div>
+            </xpath>
+
+        </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="cha_sarya_sale_margin_sale_order_line">
+        <field name="name">sale.order.cha_sarya_sale.line.margin.view.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_margin.sale_margin_sale_order_line"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='purchase_price']" position="replace">
+                <field name="purchase_price" column_invisible="True"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="res_partner_form_inherit_cha_sarya_sales" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.cha_sarya_sales</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='function']" position='after'>
+                <field name="delivery_lead_time"/>
+                <field name="stock_count_date"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="action_ytd_report_url" model="ir.actions.act_url">
+        <field name="name">YTD Report</field>
+        <field name="url">https://app.powerbi.com/links/ALtzeQ0G9e?ctid=3a8c79d1-ccdb-43d4-b19b-2f4733e78389</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem name="YTD Report"
+          id="menu_ytd_report"
+          action="action_ytd_report_url"
+          sequence="100"
+          groups="cha_sarya_sales.can_see_ytd_report"
+          parent="sale.sale_order_menu"/>
+
+</odoo>

@@ -1,0 +1,16 @@
+<odoo>
+    <record id="res_config_settings_view_form_hr_inh" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.hr</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="hr.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+             <xpath expr="//block[@name='work_organization_setting_container']" position="inside">
+                 <setting company_dependent="1" help="Set default company schedule to manage your Time Off working time" id="default_company_timeoff_schedule_setting">
+                     <field name="timeoff_resource_calendar_id" required="1" class="o_light_label"
+                            domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]"
+                            context="{'default_company_id': company_id}" options="{'no_quick_create':True,'no_create_edit':True}"/>
+                 </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Action for Container Request -->
+    <record id="action_container_transfer" model="ir.actions.act_window">
+        <field name="name">Container Transfer</field>
+        <field name="res_model">container.transfer.pvr</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Container Transfer.
+            </p><p>
+            Manage container transfer for your PVR locations here.
+        </p>
+        </field>
+    </record>
+
+    <!-- Tree View for Container Request -->
+    <record id="view_container_transfer_tree" model="ir.ui.view">
+        <field name="name">container.transfer.pvr.tree</field>
+        <field name="model">container.transfer.pvr</field>
+        <field name="arch" type="xml">
+            <tree string="Container Transfer" decoration-bf="state == 'draft'" decoration-success="state == 'done'">
+                <field name="name"/>
+                <field name="pvr_location_id"/>
+                <field name="request_date"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'" decoration-info="state == 'draft'" decoration-muted="state == 'cancel'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View for Container Request -->
+    <record id="view_container_transfer_form" model="ir.ui.view">
+        <field name="name">container.transfer.pvr.form</field>
+        <field name="model">container.transfer.pvr</field>
+        <field name="arch" type="xml">
+            <form string="Container Transfer">
+                <header>
+                    <button string="Transfer" type="object" name="action_transfer" class="oe_highlight" invisible="state != 'draft'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_pickings" type="object" class="oe_stat_button" icon="fa-truck" string="Pickings" invisible="not picking_ids">
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="pvr_location_id" domain="[('usage', '=', 'internal')]" options="{'no_create': True, 'no_create_edit': True}" readonly="1"/>
+                            <field name="pvr_master" options="{'no_create': True, 'no_create_edit': True}" invisible="1"/>
+                            <field name="remarks"/>
+                        </group>
+                        <group>
+                            <field name="request_date"/>
+                            <field name="company_id" readonly="1"/>
+                                                        <field name="picking_ids" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Container Details" name="container_details">
+                            <field name="request_line_ids" context="{'default_pvr_master': pvr_master}" >
+                                    <tree editable="bottom">
+                                        <field name="product_id" />
+                                        <field name="packaging_id" />
+                                        <field name="requested_qty"/>
+                                    </tree>
+                                <kanban create="False">
+                                    <field name="id"/>
+                                    <field name="product_id"/>
+                                    <field name="requested_qty"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <t t-set="color" t-value="kanban_color(record.id.raw_value)"/>
+                                            <div t-att-class="color + ' oe_kanban_global_click'">
+                                                <div class="oe_kanban_details">
+                                                    <!-- Product -->
+                                                    <strong><field name="product_id"/></strong>
+
+<!--                                                     Available -->
+                                                    <div>
+                                                        <b>On Hand: </b>
+                                                        <t t-esc="record.qty_available_at_pvr.value"/>
+                                                    </div>
+
+                                                    <!-- Requested -->
+                                                    <div>
+                                                        <b>Transferred Qty: </b>
+                                                        <t t-esc="record.requested_qty.value"/>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                                <form string="Container Transfer Line">
+                                    <group>
+                                        <field name="container_transfer_id" invisible="1"/>
+
+                                        <group>
+                                            <field name="product_id" readonly="1" options="{'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
+                                            <field name="qty_available_at_pvr"/>
+                                            <field name="requested_qty"/>
+
+                                        </group>
+                                        <group>
+
+
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+        <record id="view_container_transfer_form_portal" model="ir.ui.view">
+        <field name="name">container.transfer.pvr.form.portal</field>
+        <field name="model">container.transfer.pvr</field>
+        <field name="arch" type="xml">
+            <form string="Container Transfer">
+                <header>
+                    <a href="/my/home" class="btn btn-secondary">
+                        <span class="fa fa-home"/> Home
+                    </a>
+                    <button string="Transfer" type="object" name="action_transfer" class="oe_highlight" invisible="state != 'draft'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_pickings" type="object" class="oe_stat_button" icon="fa-truck" string="Pickings" invisible="not picking_ids">
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="pvr_location_id" domain="[('usage', '=', 'internal')]" options="{'no_create': True, 'no_create_edit': True}" readonly="1"/>
+                            <field name="pvr_master" options="{'no_create': True, 'no_create_edit': True}" invisible="1"/>
+                            <field name="remarks"/>
+                        </group>
+                        <group>
+                            <field name="request_date"/>
+                            <field name="company_id" readonly="1"/>
+                                                        <field name="picking_ids" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Container Details" name="container_details">
+                            <field name="request_line_ids" context="{'default_pvr_master': pvr_master}" mode="kanban">
+                                    <tree editable="bottom">
+                                        <field name="product_id" />
+                                        <field name="packaging_id" />
+                                        <field name="requested_qty"/>
+                                    </tree>
+                                <kanban create="False">
+                                    <field name="id"/>
+                                    <field name="product_id"/>
+                                    <field name="requested_qty"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <t t-set="color" t-value="kanban_color(record.id.raw_value)"/>
+                                            <div t-att-class="color + ' oe_kanban_global_click'">
+                                                <div class="oe_kanban_details">
+                                                    <!-- Product -->
+                                                    <strong><field name="product_id"/></strong>
+
+<!--                                                     Available -->
+                                                    <div>
+                                                        <b>On Hand: </b>
+                                                        <t t-esc="record.qty_available_at_pvr.value"/>
+                                                    </div>
+
+                                                    <!-- Requested -->
+                                                    <div>
+                                                        <b>Transferred Qty: </b>
+                                                        <t t-esc="record.requested_qty.value"/>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                                <form string="Container Transfer Line">
+                                    <group>
+                                        <field name="container_transfer_id" invisible="1"/>
+
+                                        <group>
+                                            <field name="product_id" readonly="1" options="{'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
+                                            <field name="qty_available_at_pvr" string="On Hand"/>
+                                            <field name="requested_qty" string="Transferred Qty"/>
+
+                                        </group>
+                                        <group>
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <menuitem id="menu_container_transfer"
+              name="Container Transfer to PVR"
+              parent="sarya_pvr.menu_pvr_stock_request"
+              action="action_container_transfer"
+              sequence="15"/>
+
+
+</odoo>

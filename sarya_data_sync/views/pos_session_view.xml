@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_pos_session_form_inherit" model="ir.ui.view">
+            <field name="name">pos.session.form.inherit</field>
+            <field name="model">pos.session</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_session_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//button[@name='action_view_order']" position='before'>
+                    <button name="action_view_till_assign_and_closure_records" type="object" class="oe_stat_button"
+                            icon="fa-dollar">
+                        <field name="till_assign_and_closure_count" widget="statinfo" string="Till Assign And Closure"/>
+                    </button>
+                </xpath>
+
+                <xpath expr="//button[@name='action_view_order']" position='before'>
+                    <button name="action_view_cash_statement_records" type="object" class="oe_stat_button"
+                            icon="fa-dollar">
+                        <field name="cash_statement_count" widget="statinfo" string="Cash Statements"/>
+                    </button>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

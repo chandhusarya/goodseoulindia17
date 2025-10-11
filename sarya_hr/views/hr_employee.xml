@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_employee_form_inherit" model="ir.ui.view">
+            <field name="name">hr.employee.form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="l10n_in_hr_payroll.hr_employee_view_form_in_inherit"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='l10n_in_pan']" position="after">
+<!--                    <field name="pf_number" placeholder='22 digit PF Number'/>-->
+                    <field name="is_pf_eligible"/>
+                    <field name="has_passport"/>
+                    <field name="is_willing_to_relocate"/>
+                    <field name="is_any_disability"/>
+<!--                    <field name="is_excess_epf"/>-->
+<!--                    <field name="is_existing_pf_member"/>-->
+<!--                    <field name="is_lwf_covered"/>-->
+                    <field name="tax_regime"/>
+                    <field name="name_on_aadhaar"/>
+                    <field name="aadhaar_number"/>
+                </xpath>
+                <xpath expr="//field[@name='l10n_in_esic_number']" position="replace">
+<!--                    <field name="is_esic_applicable"/>-->
+                    <field name="l10n_in_esic_number" placeholder="17 digit ESIC Number"/>
+                </xpath>
+                <field name="work_location_id" position="after">
+                    <field name="outstation_travel"/>
+                    <field name="analytic_account_ids" widget="many2many_tags" domain="[('plan_id.name','=','REGION')]"/>
+                </field>
+                <field name="job_id" position="after">
+                    <field name="grade_id"/>
+                </field>
+
+                <xpath expr="//field[@name='work_phone']" position="before">
+                    <field name="whatsapp_number"/>
+                </xpath>
+
+                <xpath expr="//group[@name='managers']" position="inside">
+                    <field name="is_gm_notify_leave"/>
+                </xpath>
+                <xpath expr="//field[@name='birthday']" position="before">
+                    <field name="date_of_joining"/>
+                </xpath>
+                <xpath expr="//field[@name='children']" position="after">
+                    <field name="fathers_name"/>
+                    <field name="mothers_name"/>
+                    <field name="husbands_name"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_employee_base_form_inherit" model="ir.ui.view">
+            <field name="name">hr.employee.form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+<!--                <xpath expr="//group[@name='application_group']" position="after">-->
+<!--                    <group name="verification" string="Verification">-->
+<!--                        <field name="verify_token"/>-->
+<!--                    </group>-->
+<!--                </xpath>-->
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_open_asset" class="oe_stat_button" icon="fa-file-text" type="object">
+                        <field name="asset_count" widget="statinfo" string="Asset"/>
+                    </button>
+                </xpath>
+                <xpath expr="//header" position="inside">
+                    <field name="employee_verified" invisible="1"/>
+                    <field name="employee_verification_mail_sent" invisible="1"/>
+                    <field name="leaves_allocated" invisible="1"/>
+                    <button name="send_for_verification" invisible="employee_verified == True" type="object" string="Send For Verification"/>
+                    <button name="create_leave_for_particular_employee" invisible="leaves_allocated" type="object" string="Allocate Leaves"/>
+                    <div class="badge rounded-pill text-bg-warning float-end fs-6 border-0" invisible="employee_verified">
+                        <i class="fa fa-sent-o"/>
+                        Pending Verification
+                    </div>
+                    <div class="badge rounded-pill text-bg-success float-end fs-6 border-0" invisible="employee_verification_mail_sent == False or employee_verified == True">
+                        <i class="fa fa-sent-o"/>
+                        Verification Email Sent
+                    </div>
+                </xpath>
+                <xpath expr="//group[@name='active_group']" position="inside">
+                    <field name="first_contract_date" readonly="1"/>
+                    <field name="probation_period"/>
+                    <field name="probation_completion_date"/>
+                </xpath>
+                <xpath expr="//group[@name='active_group']/field[@name='user_id']" position="attributes">
+                    <attribute name="domain">[('company_ids', 'in', company_id)]</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="product_template_form_view_inherited" model="ir.ui.view">
+        <field name="name">product.template.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//page[@name='inventory']" position="after">
+                <page string="Food Info">
+                    <group>
+                        <group string="Food Information">
+                            <field name="food_type"/>
+                            <field name="spice_level"/>
+                            <field name="description_sale" string="Outlet Product Name"/>
+                            <field name="receipt_product_name" string="Receipt Product Name"/>
+                            <field name="kitchen_product_name" string="Kot Print Product Name"/>
+                        </group>
+                        <group string="Kitchen Information">
+                            <field name="product_name_kds_1"/>
+                            <field name="product_name_kds_2"/>
+                            <field name="product_name_kds_3"/>
+                            <field name="product_name_kds_4"/>
+                            <field name="product_name_kds_5"/>
+                            <field name="product_name_kds_6"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- Inherit Product Template Tree View -->
+<!--    <record id="view_product_template_tree_inherit_kitchen" model="ir.ui.view">-->
+<!--        <field name="name">product.template.tree.inherit.kitchen</field>-->
+<!--        <field name="model">product.template</field>-->
+<!--        <field name="inherit_id" ref="product.product_template_tree_view"/>-->
+<!--        <field name="arch" type="xml">-->
+
+<!--            &lt;!&ndash; Insert new fields after 'name' column &ndash;&gt;-->
+<!--            <xpath expr="//tree/field[@name='name']" position="after">-->
+<!--                <field name="kitchen_product_name" optional="hide"/>-->
+<!--                <field name="product_name_kds_1" optional="hide"/>-->
+<!--                <field name="product_name_kds_2" optional="hide"/>-->
+<!--                <field name="product_name_kds_3" optional="hide"/>-->
+<!--                <field name="product_name_kds_4" optional="hide"/>-->
+<!--                <field name="product_name_kds_5" optional="hide"/>-->
+<!--                <field name="product_name_kds_6" optional="hide"/>-->
+<!--                <field name="receipt_product_name" optional="hide"/>-->
+<!--                <field name="description_sale" optional="hide"/>-->
+<!--            </xpath>-->
+
+<!--        </field>-->
+<!--    </record>-->
+
+</odoo>

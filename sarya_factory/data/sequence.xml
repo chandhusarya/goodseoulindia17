@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="seq_material_request_dist" model="ir.sequence">
+			<field name="name">Material Request</field>
+			<field name="code">material.request.dist</field>
+			<field name="prefix">MR/%(year)s/</field>
+			<field name="padding">5</field>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+		<record id="seq_material_request_retail" model="ir.sequence">
+			<field name="name">Material Request</field>
+			<field name="code">material.request.ret</field>
+			<field name="prefix">MR/%(year)s/</field>
+			<field name="padding">5</field>
+		</record>
+
+
+		<record id="seq_production_request_retail" model="ir.sequence">
+			<field name="name">Production Request</field>
+			<field name="code">production.request.ret</field>
+			<field name="prefix">PR/%(year)s/</field>
+			<field name="padding">5</field>
+		</record>
+
+
+		<record id="seq_mrp_stock_transfer" model="ir.sequence">
+			<field name="name">MRP Stock Transfer</field>
+			<field name="code">mrp.stock.transfer</field>
+			<field name="prefix">MST/%(year)s/</field>
+			<field name="padding">5</field>
+		</record>
+
+    </data>
+</odoo>

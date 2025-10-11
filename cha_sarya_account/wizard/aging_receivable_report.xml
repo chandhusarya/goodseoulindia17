@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="sarya_aging_receivable_view" model="ir.ui.view">
+            <field name="name">Sarya Aging Receivable</field>
+            <field name="model">sarya.aging.receivable</field>
+            <field name="arch" type="xml">
+                <form name="Sarya Aging Receivable">
+                    <group name="details">
+                        <field name="as_of_date"/>
+                        <field name="master_parent_id"/>
+                    </group>
+                    <footer>
+                         <button name="print_report" string="Print"
+                                 type="object" default_focus="1" class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+       <record id="action_sarya_aging_receivable_wizard" model="ir.actions.act_window">
+            <field name="name">Sarya Aging Receivable</field>
+            <field name="res_model">sarya.aging.receivable</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+       </record>
+
+
+         <menuitem id="menu_sarya_aging_receivable_wizard"
+            name="Sarya Aging Receivable"
+            action="action_sarya_aging_receivable_wizard"
+            parent="account_reports.account_reports_partners_reports_menu"
+            sequence="100"/>
+
+
+
+    </data>
+</odoo>

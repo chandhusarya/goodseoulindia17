@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="shipment_advice_tree_inspection" model="ir.ui.view">
+        <field name="name">shipment.advice.tree.inspection</field>
+        <field name="model">shipment.advice</field>
+        <field name="priority">800</field>
+        <field name="arch" type="xml">
+            <tree string="Inspection" default_order="id desc" create="0">
+                <field name="vendor_id" readonly="1" options="{'no_open': True}"/>
+                <field name="clearing_agent" readonly="1" options="{'no_open': True}"/>
+                <field name="departure_date" readonly="1" options="{'no_open': True}"/>
+                <field name="expected_date" readonly="1" options="{'no_open': True}"/>
+                <field name="inspection_method" readonly="1"/>
+                <field name="shipment_no" readonly="1"/>
+                <field name="container_no" readonly="1"/>
+                <field name="boe_number" readonly="1"/>
+                <field name="bill_no" readonly="1"/>
+                <field name="zdlm" readonly="1"/>
+                <field name="inspection_date" readonly="1"/>
+                <field name="state" invisible="1"/>
+                <field name="is_on_inspection" invisible="1"/>
+
+                <button name="apply_for_inspection"
+                            string="Apply for inspection"
+                            class="oe_highlight"
+                            type="object"
+                            invisible="state != 'inspection' or inspection_method != 'inspection_at_warehouse' or is_on_inspection"/>
+
+                <button name="apply_for_reinspection"
+                        string="Reinspection"
+                        class="oe_highlight"
+                        type="object"
+                        invisible="not is_on_inspection"/>
+
+            </tree>
+        </field>
+    </record>
+
+    <record id="shipment_advice_action_inspection" model="ir.actions.act_window">
+        <field name="name">Inspection</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">shipment.advice</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="shipment_advice_tree_inspection"/>
+        <field name="domain">[('state', '=', 'inspection'), ('inspection_method', '=', 'inspection_at_warehouse')]</field>
+        <field name="search_view_id" ref="view_shipment_advice_filter"/>
+        <field name="context">{}</field>
+    </record>
+
+    <record id="shipment_advice_action_inspection_tree" model="ir.actions.act_window.view">
+        <field eval="1" name="sequence"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="shipment_advice_tree_inspection"/>
+        <field name="act_window_id" ref="shipment_advice_action_inspection"/>
+    </record>
+
+
+    <menuitem id="shipment_advice_root_menu_inspection" name="WH Inspection" sequence="20"
+              web_icon="kg_sarya_inventory,static/description/icon.png"
+              groups="kg_sarya_inventory.sarya_can_book_inspection"/>
+
+    <menuitem id="shipment_advice_menu_inspection" name="Inspection" sequence="20"
+              parent="kg_sarya_inventory.shipment_advice_root_menu_inspection"
+              action="shipment_advice_action_inspection"/>
+
+
+</odoo>

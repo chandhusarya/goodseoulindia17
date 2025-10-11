@@ -1,0 +1,686 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="shipment_advice_form" model="ir.ui.view">
+        <field name="name">shipment.advice.form</field>
+        <field name="model">shipment.advice</field>
+        <field name="arch" type="xml">
+            <form string="Shipment Advice" class="o_purchase_advice">
+                <header>
+                    <field name="invoice_status" invisible="1"/>
+                    <field name="is_inspection_override_visible" invisible="1"/>
+                    <field name="is_docs_send_to_agent" invisible="1"/>
+
+                    <field name="grn_entry_status" invisible="1" />
+                    <field name="show_grn_status" invisible="1" />
+
+                    <field name="grn_status_pending_visibility" invisible="1" />
+                    <field name="grn_status_completed_visibility" invisible="1" />
+                    <field name="is_any_variation_on_grn" invisible="1" />
+                    <field name="grn_status_completed_visibility_difference" invisible="1"/>
+                    <field name="is_stock_unloaded_in_outside_warehouse" invisible="1"/>
+
+                     <!--<button name="generate_landed_cost_from_bl"
+                            class="oe_highlight"
+                            string="Gen Landed Cost"
+                            type="object"/> -->
+
+                    <button name="do_inspection_at_port"
+                            class="oe_highlight"
+                            invisible="state != 'draft'"
+                            string="Inspection at port"
+                            type="object"/>
+
+                    <button name="do_inspection_at_warehouse"
+                            class="oe_highlight"
+                            invisible="state != 'draft'"
+                            string="Inspection at warehouse"
+                            type="object"/>
+
+
+                    <button name="button_receive_stock_and_generate_bill_port"
+                            string="Receive stock"
+                            class="oe_highlight"
+                            type="object"
+                            invisible="state != 'inspection' or inspection_method != 'inspection_at_port' or grn_entry_status != 'completed'"
+                            />
+
+                    <!-- <button name="scrap_items"
+                            string="Scrap items"
+                            class="oe_highlight"
+                            type="object"
+                            confirm="Are you completed entering all landed cost? Scrap only after landed cost"
+                            invisible="state != 'item_received' or is_scrapping_completed"/> -->
+
+
+                    <button name="button_receive_stock_and_generate_bill_warehouse"
+                            string="Receive stock"
+                            confirm="You are receiving stock to the inspection location. Stock won't be available in the main stock.
+                            Also, please make sure all landed costs are applied to the shipment before moving it to the main stock."
+                            class="oe_highlight"
+                            type="object"
+                            invisible="state != 'inspection' or grn_entry_status != 'completed' or not is_on_inspection"/>
+
+
+                    <button name="inspection_completed_warehouse"
+                            string="Inspection completed?"
+                            class="oe_highlight"
+                            type="object"
+                            invisible="not is_on_inspection or state != 'item_received'"/>
+
+                    <button name="override_inspection_warehouse"
+                            string="Partial Receive to MainStock"
+                            confirm="You are moving stock from Inspection location to Main Stock.
+                                     Please make sure you have applied landed costs"
+                            class="oe_highlight"
+                            type="object"
+                            invisible="not is_inspection_override_visible"/>
+
+                    <button name="wh_inspection_completed"
+                            string="Inspection completed?"
+                            class="oe_highlight"
+                            confirm="You are moving all the stock from Inspection location to Main Stock.
+                                     Please make sure you have applied landed costs"
+                            type="object"
+                            invisible="state != 'item_in_receiving' or not is_on_inspection"/>
+
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,waiting_finance_approval,finance_approved,done" readonly="1"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="action_view_stock_moves" type="object"
+                                icon="fa-exchange"
+                                invisible="state != 'done'">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Stock Moves</span>
+                            </div>
+                        </button>
+
+                        <button class="oe_stat_button" name="action_view_pickings" type="object"
+                                icon="fa-truck"
+                                invisible="picking_count == 0">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Receipts</span>
+                            </div>
+                        </button>
+                        <button class="oe_stat_button" name="action_view_purchase" type="object"
+                                icon="fa-credit-card"
+                                invisible="purchase_count == 0">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Purchases</span>
+                            </div>
+                        </button>
+                        <button class="oe_stat_button" name="action_view_invoices" type="object"
+                                icon="fa-money"
+                                invisible="invoice_count == 0">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Vendor Bills</span>
+                            </div>
+                        </button>
+                        <button class="oe_stat_button" name="action_view_discount" type="object"
+                                icon="fa-money"
+                                invisible="discount_count == 0">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Additional Discount</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <widget name="web_ribbon"
+                            title="CI Not Matching"
+                            bg_color="bg-danger"
+                            invisible="not is_ci_not_matching"/>
+
+                    <widget name="web_ribbon"
+                            title="Inspection at warehouse"
+                            invisible="inspection_method != 'inspection_at_warehouse'"/>
+
+                    <widget name="web_ribbon"
+                            title="Inspection at port"
+                            invisible="inspection_method != 'inspection_at_port'"/>
+
+
+                    <widget name="web_ribbon"
+                            title="Pending inspection at warehouse"
+                            bg_color="bg-danger"
+                            invisible="not is_on_inspection or inspection_method != 'inspection_at_warehouse'"/>
+
+
+                    <widget name="web_ribbon"
+                            title="Pending GRN"
+                            bg_color="bg-danger"
+                            invisible="not grn_status_pending_visibility"/>
+
+                    <widget name="web_ribbon"
+                            title="GRN Completed"
+                            invisible="not grn_status_completed_visibility"/>
+
+                    <widget name="web_ribbon"
+                            title="Variation on GRN"
+                            bg_color="bg-danger"
+                            invisible="not grn_status_completed_visibility_difference"/>
+
+                    <div class="oe_title">
+                                <span class="o_form_label">Shipment Advice</span>
+                                <h1>
+                                    <field name="name" readonly="1"/>
+                                </h1>
+                            </div>
+
+                    <group>
+                        <group string="BL and Container">
+                            <field name="bl_entry_id"
+                                   required="1"
+                                   readonly="state != 'draft'"/>
+                            <field name="bl_entry_container_id"
+                                   domain="[('bl_entry_id', '=' , bl_entry_id)]"
+                                   required="1"
+                                   readonly="state != 'draft'"/>
+                        </group>
+                        <group string="PO Details">
+                            <field name="vendor_id" required="1"
+                                   readonly="state != 'draft'"/>
+
+                            <field name="purchase_ids"
+                                   widget="many2many_tags"
+                                   readonly="state != 'draft'"/>
+                            <field name="clearing_agent" domain="[('is_clearing_agent', '=' , True)]"/>
+
+                        </group>
+                    </group>
+
+                    <group string="Details">
+                        <group>
+
+
+                            <field name="user_id" readonly="state != 'draft'"/>
+                            <field name="company_id" groups="base.group_multi_company"
+                                   readonly="state != 'draft'"/>
+                            <field name="departure_date" string="ETD" readonly="state != 'draft'"/>
+                            <field name="expected_date" string="ETA" readonly="state != 'draft'"/>
+                            <field name="arrival_date"/>
+                            <field name="arrival_date_wh"/>
+                            <field name="picking_count" invisible="1"/>
+                            <field name="purchase_count" invisible="1"/>
+                            <field name="invoice_count" invisible="1"/>
+                            <field name="discount_count" invisible="1"/>
+                        </group>
+                        <group>
+
+
+                            <field name="inspection_method"
+                                   invisible="state in ['draft', 'waiting_finance_approval', 'finance_approved']"
+                                   readonly="1"/>
+                            <field name="inspection_date" readonly="1"
+                                   invisible="state in ['draft', 'waiting_finance_approval', 'finance_approved']"/>
+                            <field name="is_on_inspection" readonly="1"/>
+
+                            <field name="is_full_override_allowed"
+                                   invisible="not is_on_inspection"
+                                   groups="kg_sarya_inventory.can_override_fifty_perc_lock"/>
+
+                            <field name="shipment_no" readonly="state == 'done'"
+                                   required="1"/>
+                            <field name="container_no"
+                                   readonly="state == 'done'"
+                                   invisible="1"/>
+                            <field name="boe_number"
+                                   readonly="state == 'done'"/>
+
+                            <field name="bill_no"
+                                   readonly="state == 'draft'"
+                                   invisible="1"/>
+
+                            <field name="zdlm"/>
+
+                            <field name="invoice_id" invisible="1"/>
+
+                            <field name="shipment_summary_generated" invisible="1"/>
+
+                        </group>
+                    </group>
+
+                    <group invisible="not is_ci_not_matching">
+                        <field name="is_ci_not_matching" invisible="1"/>
+                        <field name="ci_not_matching_reason" readonly="1"/>
+                    </group>
+
+                     <group colspan="99" invisible="is_stock_unloaded_in_outside_warehouse != True">
+                         <div class="oe_title">
+                            <h4><span>Outside Warehouse Receiving</span></h4>
+                         </div>
+                    </group>
+
+                    <group invisible="is_stock_unloaded_in_outside_warehouse != True">
+                         <div class="oe_title">
+                            <h4><span>OWN Warehouse Receiving</span></h4>
+                        </div>
+
+                    </group>
+
+
+                    <notebook>
+                        <page string="Shipment Summary" name="summary"
+                              invisible="not shipment_summary_generated">
+                            <field name="shipment_summary_lines">
+                                <tree string="Shipment Advice Summary" decoration-danger="is_any_variation_on_grn">
+
+                                    <field name="purchase_ids" widget="many2many_tags" />
+
+                                    <field name="purchase_line_ids" options="{'no_edit': True, 'no_create': True}"
+                                           widget="many2many_tags"/>
+
+                                    <field name="qty_not_matching" column_invisible="1"/>
+                                    <field name="is_any_variation_on_grn" column_invisible="1"/>
+                                    <field name="product_id" column_invisible="1" readonly="1"/>
+                                    <field name="product_packaging_id" readonly="1"/>
+                                    <field name="shipped_packaging_qty" readonly="1" force_save="1"/>
+                                    <field name="inspected_qty" string="Received Qty" force_save="1"/>
+                                    <field name="scrapped_package_qty"/>
+                                    <field name="inspection_method" column_invisible="1"/>
+                                    <field name="type_of_variation_on_grn" readonly="1"/>
+                                    <field name="balance_qty_in_inspection_new"
+                                           invisible="inspection_method == 'inspection_at_warehouse'"/>
+                                </tree>
+                            </field>
+
+                        </page>
+                        <page string="Items" name="commercial_invoice">
+                            <field name="shipment_lines" readonly="state != 'draft'">
+                                <tree string="Shipment products" decoration-danger="is_ci_not_matching">
+                                    <field name="is_ci_not_matching" column_invisible="1"/>
+
+                                    <field name="purchase_ids" widget="many2many_tags" />
+
+                                    <field name="purchase_line_ids" options="{'no_edit': True, 'no_create': True}"
+                                           widget="many2many_tags"
+                                           readonly="state != 'draft'"/>
+                                    <field name="product_id"
+                                           readonly="1"
+                                           force_save="1"
+                                           options="{'no_edit': True, 'no_create': True}"/>
+
+                                    <field name="product_packaging_id"
+                                           options="{'no_edit': True, 'no_create': True}"
+                                           readonly="1"
+                                           force_save="1"/>
+
+                                    <field name="lpo_qty" force_save="1" readonly="1" column_invisible="1"/>
+                                    <field name="pi_qty" force_save="1" readonly="1" column_invisible="1"/>
+                                    <field name="open_packaging_qty" force_save="1" column_invisible="1"/>
+                                    <field name="ci_qty" string="Total Qty"
+                                           readonly="state != 'draft'"/>
+                                    <field name="pkg_unit_price" column_invisible="1"/>
+                                    <field name="total_amount" column_invisible="1"/>
+                                    <field name="state" column_invisible="1"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <group string="Product Details">
+
+                                            <field name="purchase_ids"
+                                                   widget="many2many_tags"
+                                                   readonly="1"
+                                                   force_save="1"/>
+                                            <field name="purchase_line_ids"
+                                                   readonly="1"
+                                                   force_save="1"
+                                                   widget="many2many_tags" />
+                                            <field name="product_id"
+                                                   readonly="1" force_save="1"
+                                                   options="{'no_edit': True, 'no_create': True}"/>
+                                            <field name="product_packaging_id"
+                                                   options="{'no_edit': True, 'no_create': True}"
+                                                   readonly="1" force_save="1"/>
+                                        </group>
+                                        <group>
+
+                                        </group>
+                                        <group>
+                                            <field name="currency_id" invisible="1"/>
+                                            <field name="lpo_qty" force_save="1" readonly="1" invisible="1"/>
+                                            <field name="pi_qty" invisible="1" force_save="1" readonly="1"/>
+                                            <field name="open_packaging_qty" force_save="1" invisible="1"/>
+                                            <field name="ci_qty" force_save="1" readonly="1" string="Total Qty"/>
+
+                                            <field name="bl_line"/>
+
+                                        </group>
+                                        <group>
+                                            <field name="lpo_price" force_save="1" readonly="1" invisible="1"/>
+                                            <field name="fixed_discount_amount" readonly="1" invisible="1"/>
+                                            <field name="price_after_fixed_discount" readonly="1" invisible="1"/>
+                                            <field name="additional_discount" readonly="1" force_save="1" invisible="1"/>
+                                            <field name="pkg_unit_price" string="CI Price" required="1" force_save="1" invisible="1"/>
+                                            <field name="total_amount" readonly="1" invisible="1"/>
+                                            <field name="state" invisible="1"/>
+                                        </group>
+                                    </group>
+                                    <notebook>
+                                        <page string="CI Quantity and Expiry" name="products">
+                                            <field name="shipment_line_details" readonly="1" force_save="1">
+                                                <tree string="Details" editable="bottom">
+                                                    <field name="product_id" column_invisible="1"/>
+                                                    <field name="expiry_date"/>
+                                                    <field name="production_date"/>
+                                                    <field name="lot_name" column_invisible="1" readonly="1" force_save="1"/>
+                                                    <field name="lpo_qty" string="BL Qty" readonly="1" force_save="1"/>
+                                                    <field name="foc_qty" readonly="1" force_save="1"/>
+                                                    <field name="qty_done" string="Total Qty" readonly="1" force_save="1"/>
+                                                </tree>
+                                            </field>
+                                        </page>
+                                    </notebook>
+                                </form>
+                            </field>
+                        </page>
+
+
+                        <page string="LPO Wise Allocation" name="LpoWiseShipmentAllocation" invisible="0">
+                            <field name="lpo_wise_allocation">
+                                <tree string="LPO Wise Allocation">
+                                    <field name="shipment_advice_id"/>
+                                    <field name="shipment_advice_line"/>
+                                    <field name="shipment_advice_line_details"/>
+                                    <field name="shipment_advice_summary"/>
+                                    <field name="shipment_advice_summary_line"/>
+                                    <field name="purchase_id"/>
+                                    <field name="purchase_line_id"/>
+                                    <field name="shipment_advice_line_qty"/>
+                                    <field name="shipment_advice_summary_line_qty"/>
+                                </tree>
+                            </field>
+                        </page>
+
+                        <page string="Documents" name="attachments">
+                            <field name="attachment_ids" nolabel="1">
+                                <tree editable="bottom" delete="false">
+                                    <field name="document_name" string="Document Name" required="1"/>
+                                    <field name="doc_attachment_partner" widget="many2many_binary"
+                                           string="Attachments"/>
+                                    <field name="expiry" required="0"/>
+                                    <field name="override_doc" widget="boolean_toggle"/>
+                                </tree>
+                            </field>
+                        </page>
+
+
+                        <page string="Landed Cost">
+                            <button name="generate_landed_cost_from_bl" type="object" string="Gen Landed Cost" />
+                            <field name="landed_cost_to_apply" context="{'default_purchase_order_ids' : purchase_ids}">
+                                <tree>
+                                    <field name="partner_id"/>
+
+                                    <field name="date_added"/>
+                                    <field name="inv_no"/>
+                                    <field name="move_id"/>
+                                    <field name="total_amount"/>
+                                    <field name="state"/>
+                                    <button name="submit_landed_cost" type="object"
+                                            class="btn-primary"
+                                            invisible="state != 'new'"
+                                            string="Submit to Finance"/>
+                                </tree>
+                                <form>
+                                    <sheet>
+                                    <header>
+
+                                        <button name="apply_landed_cost" type="object"
+                                                class="btn-primary"
+                                                invisible="state != 'submitted'"
+                                                groups="kg_sarya_inventory.can_apply_landed_cost"
+                                                string="Apply Landed Cost"/>
+                                        <field name="state" widget="statusbar"
+                                               statusbar_visible="new,submitted,applied" readonly="1"/>
+                                    </header>
+                                         <group>
+                                             <group>
+                                                <field name="partner_id" readonly="state != 'new'"
+                                                       domain="[('supplier_rank', '>=' , 1 )]"/>
+                                                <field name="date_added"
+                                                       readonly="state != 'new'"/>
+                                                <field name="show_customs_cost" invisible="1"/>
+                                             </group>
+                                             <group>
+                                                <field name="document_file_name" invisible="1"/>
+                                                <field name="document_file" filename="document_file_name"/>
+                                                <field name="move_id" readonly="1"/>
+                                                <field name="purchase_order_ids" invisible="1"/>
+                                             </group>
+                                        </group>
+
+                                        <field name="customs_cost_lines"
+                                               readonly="state != 'new'"
+                                               nolabel="1"
+                                               invisible="not show_customs_cost">
+                                            <tree editable="bottom">
+
+                                                <field name="container_id"
+                                                    options="{'no_edit': True, 'no_create': True}"
+                                                   domain="[('bl_entry_id', '=' , parent.id)]"
+                                                   required="1"/>
+                                                <field name="product_id"
+                                                       options="{'no_edit': True, 'no_create': True}"
+                                                        context="{'filter_custom_duty_of_product' : container_id}"/>
+                                                <field name="account_id" required="1"/>
+                                                <field name="assess_amount"/>
+                                                <field name="bcd_percent"/>
+                                                <field name="bcd_amount" readonly="1" force_save="1" sum="bcd_amount"/>
+                                                <field name="sws_percent"/>
+                                                <field name="sws_amount" readonly="1" force_save="1" sum="sws_amount"/>
+                                                <field name="tax_ids"/>
+                                                 <field name="vat_amount" readonly="1" force_save="1" sum="vat_amount"/>
+                                                <field name="total_amount_landed_cost" readonly="1"
+                                                       force_save="1" sum="total_amount_landed_cost"/>
+
+                                            </tree>
+                                        </field>
+
+
+                                        <field name="landed_cost_lines"
+                                               readonly="state != 'new'"
+                                               nolabel="1"
+                                               invisible="show_customs_cost">
+                                            <tree editable="bottom">
+
+                                                <field name="product_id"
+                                                       context="{'filter_incoterm_landed_cost_purchase' : parent.purchase_order_ids}"
+                                                       domain="[('landed_cost_ok', '=', True)]"/>
+                                                <field name="split_method"/>
+                                                <field name="account_id" readonly="1" force_save="1"/>
+                                                <field name="description" invisible="1"/>
+                                                <field name="amount"
+                                                       sum="Amount"/>
+                                                <field name="tax_ids"
+                                                       domain="[('type_tax_use', '=', 'purchase')]"/>
+                                                <field name="total_amount"
+                                                       readonly="1"
+                                                       force_save="1"
+                                                       sum="Total Amount"/>
+                                            </tree>
+                                        </field>
+
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+
+                        <page string="Configurations">
+                            <group>
+                                <field name="notes" placeholder="Additional notes ..." nolabel="1"/>
+                                <field name="is_inspected" invisible="1"/>
+                                <field name="is_scrapping_completed" invisible="1"/>
+                            </group>
+                            <group string="Stock Locations">
+
+                                <field name="inspection_location"/>
+                                <field name="scrap_location"/>
+                            </group>
+                            <group string="Additional Discount">
+                                <field name="journal_additional_disc"/>
+                                <field name="debit_acc_additional_disc"/>
+                                <field name="credit_acc_additional_disc"/>
+                            </group>
+                        </page>
+
+                        <page string="GRN Documents">
+                            <field name="grn_documents" widget="many2many_binary"/>
+                        </page>
+
+
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_shipment_advice_filter" model="ir.ui.view">
+        <field name="name">shipment.advice.select</field>
+        <field name="model">shipment.advice</field>
+        <field name="arch" type="xml">
+            <search string="Search Shipment Advice">
+                <field name="name" string="Shipment Advice"
+                       filter_domain="['|', '|', ('name', 'ilike', self), ('shipment_no', 'ilike', self), ('bill_no', 'ilike', self)]"/>
+                <field name="user_id"/>
+                <filter name="my_shipment_advices" string="My Shipments" domain="[('user_id', '=', uid)]"/>
+                <separator/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Open" name="open" domain="[('state', '=', 'open')]"/>
+                <filter string="Closed" name="done" domain="[('state', '=', 'done')]"/>
+                <filter string="Cancelled" name="cancel" domain="[('state', '=', 'cancel')]"/>
+                <separator/>
+                <filter name="departure_date" string="Departure Date" date="departure_date"/>
+                <filter name="arrival_date" string="Arrival Date" date="arrival_date"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="user" domain="[]" context="{'group_by': 'state'}"/>
+                    <filter string="Responsible User" name="user" domain="[]" context="{'group_by': 'user_id'}"/>
+                    <filter string="Company" name="company_wise" domain="[]" context="{'group_by': 'user_id'}"
+                            groups="base.group_multi_company"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="shipment_advice_tree" model="ir.ui.view">
+        <field name="name">shipment.advice.tree</field>
+        <field name="model">shipment.advice</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <tree string="Shipment Advice" decoration-success="state=='done' or (state=='item_received' and is_invoiced=='invoiced')" decoration-muted="state=='cancel'"
+                  default_order="id desc">
+                <field name="name" string="Reference" readonly="1"/>
+                <field name="departure_date"/>
+                <field name="arrival_date"/>
+                <field name="company_id" readonly="1" options="{'no_create': True}"
+                       groups="base.group_multi_company" optional="show"/>
+                <field name="user_id" optional="show"/>
+                <field name="shipment_no" optional="show"/>
+                <field name="container_no" optional="show"/>
+                <field name="bill_no" optional="show"/>
+
+                <field name="bl_entry_id"/>
+                <field name="bl_entry_container_id"/>
+
+                <field name="state"/>
+                <field name="is_invoiced"/>
+                <field name="is_inspection_override_visible" string="Pending items in Inspection"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="shipment_advice_action" model="ir.actions.act_window">
+        <field name="name">Shipment Advice</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">shipment.advice</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="shipment_advice_tree"/>
+        <field name="domain">[]</field>
+        <field name="search_view_id" ref="view_shipment_advice_filter"/>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                There is no shipment advice to show. Let's create one!
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="shipment_advice_root_menu" name="WMS" sequence="20"
+              web_icon="kg_sarya_inventory,static/description/icon.png"
+              groups="kg_sarya_inventory.sarya_have_access_to_wms"/>
+
+    <menuitem id="shipment_advice_menu" name="Shipment Advice" sequence="20"
+              parent="kg_sarya_inventory.shipment_advice_root_menu"
+              action="shipment_advice_action" groups="stock.group_stock_manager,stock.group_stock_user"/>
+
+
+    <record id="view_purchase_stock_form_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='origin']" position='after'>
+                <field name="shipment_id"
+                       invisible="picking_type_code == 'outgoing'"
+                       string="Shipment Advise"/>
+            </xpath>
+
+             <xpath expr="//button[@name='button_validate'][1]" position='replace'>
+
+                 <field name="is_stock_confirmed" invisible="1"/>
+
+                 <button name="button_validate"
+                        invisible="state in ('draft', 'confirmed', 'done', 'cancel')"
+                        string="Validate" type="object" class="oe_highlight" groups="kg_sarya_inventory.can_view_validate_picking" data-hotkey="v"/>
+
+                 <button name="confirm_stock_entry"
+                        string="Confirm Stock"
+                        invisible="state in ('draft', 'confirmed', 'done', 'cancel') or is_stock_confirmed == True"
+                        type="object" />
+
+            </xpath>
+
+            <xpath expr="//button[@name='button_validate'][2]" position='replace'>
+
+                <button name="button_validate"
+                        invisible="state in ('waiting', 'assigned', 'done', 'cancel')"
+                        string="Validate" type="object"
+                        groups="kg_sarya_inventory.can_view_validate_picking" class="o_btn_validate" data-hotkey="v"/>
+            </xpath>
+
+            <xpath expr="//field[@name='description_picking']" position="after">
+                <field name="primary_packaging_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_stock_move_line_detailed_operation_tree_kg_sarya" model="ir.ui.view">
+        <field name="name">stock.move.line.operations.tree.kg.sarya</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_stock_move_line_detailed_operation_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_id']" position="after">
+                <field name="primary_packaging_id"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="action_invoice_create" model="ir.actions.server">
+        <field name="name">Create Invoice</field>
+        <field name="model_id" ref="model_shipment_advice"/>
+        <field name="binding_model_id" ref="kg_sarya_inventory.model_shipment_advice"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+            action = records.bill_create_invoice()
+        </field>
+    </record>
+
+
+</odoo>

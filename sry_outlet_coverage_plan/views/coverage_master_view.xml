@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--    Coverage Master List-->
+        <record id="sry_coverage_master_view_list" model="ir.ui.view">
+            <field name="name">sry.coverage.master.view.list</field>
+            <field name="model">sry.coverage.master</field>
+            <field name="arch" type="xml">
+                <tree default_order="id desc">
+                    <field name="name"/>
+                    <field name="from_date"/>
+                    <field name="to_date"/>
+                    <field name="plan_of"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Coverage Master Approval form view-->
+        <record id="sry_coverage_master_view_form" model="ir.ui.view">
+            <field name="name">sry.coverage.master.view.form</field>
+            <field name="model">sry.coverage.master</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="button_load_customers" string="Load Customers" class="oe_highlight"
+                                type="object"/>
+                        <button name="button_apply"
+                                confirm="If you want to change plans of a few outlets, please use menu Coverage Line."
+                                string="Apply"
+                                class="oe_highlight" type="object"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="from_date"/>
+                                <field name="to_date"/>
+                            </group>
+                            <group>
+                                <field name="plan_of"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Master">
+                                <field name="coverage_line" nolabel="1" widget="section_and_note_one2many" mode="tree">
+                                    <tree editable="bottom">
+                                        <field name="coverage_id" invisible="1"/>
+                                        <field name="outlet_id"/>
+
+                                        <field name="mon_visit_plan"/>
+                                        <field name="tue_visit_plan"/>
+                                        <field name="wed_visit_plan"/>
+                                        <field name="thu_visit_plan"/>
+                                        <field name="fri_visit_plan"/>
+                                        <field name="sat_visit_plan"/>
+                                        <field name="sun_visit_plan"/>
+
+                                        <field name="mon_plan"/>
+                                        <field name="tue_plan"/>
+                                        <field name="wed_plan"/>
+                                        <field name="thu_plan"/>
+                                        <field name="fri_plan"/>
+                                        <field name="sat_plan"/>
+                                        <field name="sun_plan"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Import">
+                                <field name="import_filename" invisible="1"/>
+                                <field name="import_file" filename="import_filename"/>
+
+                                <button name="import_data_from_csv"
+                                        type="object"
+                                        confirm="Are you sure you want to proceed ?"
+                                        string="Import Route from Attached File"/>
+                            </page>
+
+                            <page string="Import Message Log">
+                                <field name="import_msg_log" nolabel="1" readonly="1"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="sry_coverage_master_action" model="ir.actions.act_window">
+            <field name="name">Outlet Coverage Master</field>
+            <field name="res_model">sry.coverage.master</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_sales_plans"
+                  name="Plans"
+                  parent="sale.sale_menu_root"
+                  sequence="200"/>
+
+        <menuitem id="sry_coverage_master_menu"
+                  name="Coverage Master"
+                  parent="menu_sales_plans"
+                  action="sry_coverage_master_action"
+                  sequence="1"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,35 @@
+<odoo>
+  <data>
+
+    <!--        Forecast Analysis list view-->
+		<record model="ir.ui.view" id="view_sry_forecast_analysis_list_view">
+			<field name="name">sry.forecast.analysis.list.view</field>
+			<field name="model">sry.forecast.analysis</field>
+			<field name="arch" type="xml">
+        		<tree create="0" delete="0">
+					<field name="period"/>
+					<field name="product_id"/>
+					<field name="quantity"/>
+					<field name="ctn_uom"/>
+					<field name="ctn_qty"/>
+					<field name="trade_channel"/>
+					<field name="near_expiry"/>
+					<field name="regular_sales"/>
+					<field name="price_comp"/>
+					<field name="price_off"/>
+					<field name="budget"/>
+				</tree>
+			</field>
+		</record>
+
+    <record model="ir.actions.act_window" id="view_sry_forecast_analysis_action_window">
+      <field name="name">Forecast Analysis Data</field>
+      <field name="res_model">sry.forecast.analysis</field>
+      <field name="view_mode">tree,pivot</field>
+    </record>
+
+    <menuitem name="Forecast Analysis Data" id="menu_sry_forecast_analysis_data" sequence="152" parent="stock.menu_warehouse_report"
+			  action="view_sry_forecast_analysis_action_window" groups="base.group_no_one"/>
+
+  </data>
+</odoo>

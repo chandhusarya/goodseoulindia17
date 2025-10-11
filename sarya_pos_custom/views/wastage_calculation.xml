@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+    <record id="pos_wastage_tree" model="ir.ui.view">
+        <field name="name">pos.wastage.tree</field>
+        <field name="model">pos.wastage</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="date"/>
+                <field name="comment"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="pos_wastage_form" model="ir.ui.view">
+        <field name="name">pos.wastage.form</field>
+        <field name="model">pos.wastage</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_start" invisible="state != 'draft'" string="Start Entry" type="object"
+                            class="oe_highlight" groups="stock.group_stock_user"/>
+                    <button name="action_validate" invisible="state != 'progress'" string="Confirm Wastage" type="object"
+                            class="oe_highlight" groups="stock.group_stock_manager"/>
+
+                    <button name="action_reset_to_draft" invisible="state != 'cancel'"  string="Set to Draft" type="object"/>
+                    <button name="action_cancel" invisible="state not in ('draft', 'progress')" string="Cancel" type="object"/>
+                    <field name="state" clickable="1" widget="statusbar" statusbar_visible="draft,progress,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. POS Wastage for day" readonly="1" force_save="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="pos_config_id"
+                                   options="{'no_create_edit': True, 'no_create': True}"
+                                   required="1" domain="[('terminal_type', '=', 'primary')]"
+                                   readonly="state != 'draft'"/>
+                            <field name="location_id"
+                                   required="1"
+                                   domain="[('usage', '=', 'internal')]"
+                                   options="{'no_create_edit': True, 'no_create': True}"
+                                   readonly="state != 'draft'"/>
+                            <field name="filter" string="Inventory of" widget='radio'
+                                   readonly="state != 'draft'" invisible="1"/>
+                            <field name="order_type" string="Reason" widget='radio'
+                                   readonly="state != 'draft'"/>
+                            <field name="comment" required="1" readonly="state == 'done'"/>
+                        </group>
+                        <group>
+                            <field name="date" readonly="state != 'draft'"/>
+                            <field name="date_validated" readonly="1"/>
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                            <field name="category_id"
+                                   invisible="filter not in ('category')"
+                                   required="filter in ('category')"
+                                   readonly="state != 'draft'"
+                                   options="{'no_create': True}"/>
+                            <field name="exhausted" readonly="state != 'draft'" invisible="filter in ('owner', 'product_owner','lot','pack','partial', 'product')"/>
+                        </group>
+                    </group>
+                    <notebook invisible="state == 'draft'">
+                        <page string="Inventory Details">
+                            <field name="line_ids" readonly="state == 'done'" string="Inventory Details">
+                                <tree string="Inventory Details" editable="bottom">
+                                    <field name="product_id"
+                                           domain="[('type','=','product')]"
+                                           options="{'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
+
+                                    <field name="product_uom_id"
+                                           string="UoM"
+                                           readonly="parent.state == 'done'"
+                                           column_invisible="True"/>
+                                    <field name="packaging_id"
+                                           options="{'no_create_edit': True, 'no_create': True}"/>
+                                    <field name="current_stock" readonly="1" force_save="1"/>
+                                    <field name="adj_qty"/>
+<!--                                    <field name="location_id" column_invisible="True"/>-->
+<!--                                    <field name="quant_id" string="Expiry Date/Lot"-->
+<!--                                           domain="[('product_id', '=', product_id), ('location_id', 'child_of', parent.location_id)]"-->
+<!--                                           context="{'default_location_id': location_id,-->
+<!--                                                      'default_product_id': product_id,-->
+<!--                                                      'search_view_ref': 'stock.quant_search_view',-->
+<!--                                                      'tree_view_ref': 'stock.view_stock_quant_tree',-->
+<!--                                                      'form_view_ref': 'stock.view_stock_quant_form',-->
+<!--                                                      'readonly_form': True}"-->
+<!--                                           widget="pick_from"-->
+<!--                                           readonly="parent.state == 'done'"/>-->
+
+<!--                                    <field name="prod_lot_id" string="Lot"-->
+<!--                                           column_invisible="True"-->
+<!--                                           readonly="parent.state == 'done'"/>-->
+                                </tree>
+                            </field>
+                            <h3 class="oe_grey">Notes</h3>
+                            <ul class="oe_grey">
+                                <li>Choose reason "Wastage" for daily wastage update.</li>
+                                <li>If products used for Shoot or Marketing, choose "Sampling".</li>
+                                <li>For menu items, stock on hand might not be accurate since it is based on raw material available.
+                                </li>
+                            </ul>
+                        </page>
+                        <page string="Stock Moves" name="stock_move">
+                            <field name="stock_move_ids" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="pos_wastage_action" model="ir.actions.act_window">
+        <field name="name">Wastage Calculation</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">pos.wastage</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem action="pos_wastage_action" name="Wastage Calculation" id="menu_pos_wastage" parent="stock.menu_stock_warehouse_mgmt"
+              sequence="30"/>
+
+    </data>
+</odoo>

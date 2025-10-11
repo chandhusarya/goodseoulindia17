@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+ <record id="landed_cost_inherit_view" model="ir.ui.view">
+        <field name="name">stock.landed.cost.inherit</field>
+        <field name="model">stock.landed.cost</field>
+        <field name="inherit_id" ref="stock_landed_costs.view_stock_landed_cost_form"/>
+        <field name="arch" type="xml">
+             <xpath expr="//field[@name='picking_ids']" position='before'>
+                 <field name="shipment_ids" string="Shipment" widget="many2many_tags" create="False"/>
+                 <field name="is_customs_entry"/>
+             </xpath>
+
+             <xpath expr="//field[@name='cost_lines']/tree/field[@name='product_id']" position='before'>
+                <field name="bl_custom_id"/>
+            </xpath>
+
+        </field>
+</record>
+
+</odoo>

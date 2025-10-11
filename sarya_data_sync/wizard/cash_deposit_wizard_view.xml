@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="cash_deposit_wizard_form" model="ir.ui.view">
+        <field name="name">cash.deposit.wizard.form</field>
+        <field name="model">cash.deposit.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="alert alert-danger" role="alert" style="margin-bottom:0px;">
+                        Please Enter Deposit Amount between 1.00 - <field name="balance_cash_amount"/>.
+                    </div>
+                    <group>
+                        <group string="Manager Account Transfer Info" invisible="not is_manager_deposit">
+                            <field name="balance_cash_amount"/>
+                            <field name="manager_amount" string="Deposit Amount"/>
+                            <field name="manager_reason" string="Reason"/>
+                        </group>
+                        <group string="Petty Cash Account Transfer Info" invisible="not is_petty_cash_deposit">
+                            <field name="balance_cash_amount"/>
+                            <field name="petty_cash_amount" string="Deposit Amount"/>
+                            <field name="petty_cash_reason" string="Reason"/>
+                        </group>
+                        <field name="cash_statement_id" invisible="1"/>
+                        <field name="is_manager_deposit" invisible="1"/>
+                        <field name="is_petty_cash_deposit" invisible="1"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_deposit_to_manager_account" string="Deposit To Account"
+                            type="object"
+                            invisible="not is_manager_deposit"
+                            confirm="Are you sure for Deposit this record?"
+                            class="oe_highlight"/>
+                    <button name="action_deposit_to_petty_cash_account"
+                            string="Deposit To Petty Cash Account"
+                            type="object"
+                            confirm="Are you sure for Deposit this record?"
+                            invisible="not is_petty_cash_deposit"
+                            class="oe_highlight"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="cash_deposit_wizard_action" model="ir.actions.act_window">
+        <field name="name">Cash Deposit</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">cash.deposit.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="sarya_data_sync.cash_deposit_wizard_form"/>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

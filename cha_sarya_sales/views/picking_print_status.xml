@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="picking_printout_status_cha_sarya_sales" inherit_id="stock.report_delivery_document">
+            <xpath expr="//div[@name='div_sched_date']" position="replace">
+                <div t-if="o.state" class="col-auto" name="div_sched_date">
+                    <strong>Delivery Date:</strong>
+                    <t t-if="o.state == 'done'">
+                        <p t-field="o.date_done"/>
+                    </t>
+                    <t t-if="o.state != 'done'">
+                        <p t-esc="o.scheduled_date.strftime('%d-%m-%Y')" />
+                   </t>
+                </div>
+                <div t-if="o.state" class="col-auto" name="div_date_deadline">
+                    <strong>Deadline:</strong>
+                    <t t-if="o.date_deadline">
+                        <p t-esc="o.date_deadline.strftime('%d-%m-%Y')" />
+                    </t>
+                </div>
+            </xpath>
+        </template>
+    </data>
+</odoo>

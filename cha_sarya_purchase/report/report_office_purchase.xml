@@ -1,0 +1,92 @@
+<odoo>
+    <template id="sarya_office_purchase">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="page">
+                    <t t-call="web.external_layout">
+                        <div class="page" style="padding: 20px; font-family: Arial, sans-serif;">
+                            <br/>
+                            <table class="table table-sm" style="width: 100%; border-collapse: collapse;">
+                                <tr>
+                                    <td colspan="6" style="text-align: center; font-weight: bold; font-size: 24px; padding: 10px; border-bottom: 3px solid black;">
+                                        Office Purchase Order<t t-if="o.state == 'new'"> (Draft)</t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold; width: 20%;">Purchase Order No:</td>
+                                    <td style="width: 30%;"><span t-field="o.name"/></td>
+                                    <td style="font-weight: bold; width: 20%;">PO Date:</td>
+                                    <td style="width: 30%;"><span t-field="o.date"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold;">Vendor Name:</td>
+                                    <td><span t-field="o.vendor_id.name"/></td>
+<!--                                    <td style="font-weight: bold;">Deliver To:</td>-->
+<!--                                    <td><span t-field="o.pos_id.name"/></td>-->
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold;">Vendor Address:</td>
+                                    <td colspan="3"><span t-field="o.vendor_id.contact_address"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold;">Payment Terms:</td>
+                                    <td colspan="3"><span t-field="o.vendor_id.property_supplier_payment_term_id.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold;">Created By:</td>
+                                    <td colspan="3"><span t-field="o.user_id.name"/></td>
+                                </tr>
+                            </table>
+                            <br/>
+                            <table class="table table-sm" style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+                                <thead>
+                                    <tr style="background-color: #f2f2f2; text-align: center; font-weight: bold;">
+                                        <th style="border: 1px solid black; padding: 5px;">Description</th>
+<!--                                        <th style="border: 1px solid black; padding: 5px;">Packaging</th>-->
+                                        <th style="border: 1px solid black; padding: 5px; text-align: right;">Quantity</th>
+                                        <th style="border: 1px solid black; padding: 5px; text-align: right;">Unit Price</th>
+                                        <th style="border: 1px solid black; padding: 5px; text-align: right;">Tax</th>
+                                        <th style="border: 1px solid black; padding: 5px; text-align: right;">Applicable Tax</th>
+                                        <th style="border: 1px solid black; padding: 5px; text-align: right;">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="o.line_ids" t-as="line">
+                                        <tr>
+                                            <td style="border: 1px solid black; padding: 5px;"><span t-esc="line.name"/></td>
+<!--                                            <td style="border: 1px solid black; padding: 5px;"><span t-esc="line.packaging_id.name or ''"/></td>-->
+                                            <td style="border: 1px solid black; padding: 5px; text-align: right;"><span t-esc="round(line.qty,2) or ''"/></td>
+                                            <td style="border: 1px solid black; padding: 5px; text-align: right;"><span t-esc="round(line.unit_price,2) or ''"/></td>
+                                            <td style="border: 1px solid black; padding: 5px; text-align: right;"><span t-esc="round(line.tax_amount,2) or ''"/></td>
+                                            <td style="border: 1px solid black; padding: 5px; text-align: right;"><span t-esc="', '.join(line.tax_ids.mapped('name')) or 'N/A'"/></td>
+                                            <td style="border: 1px solid black; padding: 5px; text-align: right;"><span t-esc="round(line.total,2) or ''"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                                <tfoot>
+                                    <tr style="font-weight: bold;">
+                                        <td colspan="5" style="border: 1px solid black; text-align: right; padding: 5px;">Total</td>
+                                        <td style="border: 1px solid black; text-align: right; padding: 5px;"><span t-esc="round(o.total,2) or ''"/></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <br/>
+
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <record id="action_office_purchase_report" model="ir.actions.report">
+        <field name="name">Office Purchase</field>
+        <field name="model">office.purchase</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">cha_sarya_purchase.sarya_office_purchase</field>
+        <field name="report_file">cha_sarya_purchase.sarya_office_purchase</field>
+        <field name="binding_model_id" ref="model_office_purchase"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="base.paperformat_euro"></field>
+    </record>
+</odoo>

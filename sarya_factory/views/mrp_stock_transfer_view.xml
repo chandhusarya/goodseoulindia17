@@ -1,0 +1,115 @@
+<odoo>
+
+    <record id="view_mrp_stock_transfer_tree" model="ir.ui.view">
+        <field name="name">mrp.stock.transfer.tree</field>
+        <field name="model">mrp.stock.transfer</field>
+        <field name="arch" type="xml">
+            <tree string="Stock Transfer">
+                <field name="name"/>
+                <field name="requested_by"/>
+                <field name="date"/>
+                <field name="type"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="view_mrp_stock_transfer_form" model="ir.ui.view">
+        <field name="name">mrp.stock.transfer.form</field>
+        <field name="model">mrp.stock.transfer</field>
+        <field name="arch" type="xml">
+            <form string="Material Request">
+                <header>
+                    <button string="Load Items" type="object" name="load_items" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button string="Confirm" type="object"
+                            confirm="Are you sure you want to confirm this transfer?"
+                            name="action_confirm" class="oe_highlight" invisible="state != 'item_loaded'"/>
+                    <button string="Cancel" type="object" name="action_cancel" class="oe_highlight" invisible="state not in ('draft', 'item_loaded')"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <div class="alert alert-warning" role="alert" invisible="state != 'approved' or is_transfered == True">
+                   	Lot/Batch selected will not be reserved here
+                </div>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_pickings" type="object" class="oe_stat_button" icon="fa-truck">
+                            <field name="picking_count" widget="statinfo" string="Pickings"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="type" />
+
+                            <field name="from_location_id_grn" options='{"no_open":True}' invisible="type != 'grn'" readonly="1" force_save="1"/>
+                            <field name="to_location_id_grn" invisible="type != 'grn'"
+                                   options='{"no_open":True}'
+                                   domain="[('is_factory_storage_location','=',True), ('usage', '=', 'internal')]"
+                                   readonly="state == 'completed'"/>
+
+                            <field name="from_location_id_finished"
+                                   options='{"no_open":True}'
+                                   invisible="type != 'finished'" readonly="1" force_save="1"/>
+                            <field name="to_location_id_finished"
+                                   options='{"no_open":True}'
+                                   invisible="type != 'finished'"
+                                   domain="[('is_factory_storage_location','=',True)]"
+                                   readonly="state == 'completed'"/>
+
+                            <field name="from_location_id_scraping"
+                                   options='{"no_open":True}'
+                                   invisible="type != 'scraping'"
+                                   domain="[('is_factory','=',True), ('usage', '=', 'internal'), ('is_factory_scrap_location', '=', False)]"
+                                   readonly="state == 'completed'"/>
+                            <field name="to_location_id_scraping"
+                                   options='{"no_open":True}'
+                                   invisible="type != 'scraping'" readonly="1" force_save="1"/>
+
+                            <field name="is_transfered" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="requested_by" readonly="1"/>
+                            <field name="date" required="1"/>
+                            <field name="company_id" readonly="1"/>
+                            <field name="reason" readonly="state == 'completed'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Itmes">
+                            <field name="transfer_lines" readonly="state == 'completed'">
+                                <tree editable="bottom" create="0" delete="0">
+                                    <field name="product_id" readonly="1" force_save="1" options="{'no_create_edit': True, 'no_create': True}"/>
+                                    <field name="quant_id" readonly="1" force_save="1"/>
+                                    <field name="on_hand_stock" readonly="1" force_save="1"/>
+                                    <field name="available_stock" readonly="1" force_save="1"/>
+                                    <field name="quantity"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_mrp_stock_transfer" model="ir.actions.act_window">
+        <field name="name">Stock Transfer</field>
+        <field name="res_model">mrp.stock.transfer</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_mrp_stock_transfer" name="Stock Transfer" action="action_mrp_stock_transfer" parent="mrp.menu_mrp_manufacturing" sequence="11"/>
+
+
+</odoo>

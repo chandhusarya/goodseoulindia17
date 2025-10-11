@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="landed_cost_analysis_view" model="ir.ui.view">
+        <field name="name">landed.cost.analysis.wizard.view.form</field>
+        <field name="model">landed.cost.analysis</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="from_date"/>
+                        <field name="to_date"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Generate" name="gen_landed_cost" type="object" class="oe_highlight" data-hotkey="x"/>
+                    <button string="Cancel" special="cancel" data-hotkey="z"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="landed_cost_analysis_action" model="ir.actions.act_window">
+        <field name="name">Landed Cost Analysis</field>
+        <field name="res_model">landed.cost.analysis</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="landed_cost_analysis_view"/>
+        <field name="target">new</field>
+    </record>
+
+
+    <menuitem
+            id="landed_cost_analysis_menu"
+            name="Landed Cost Analysis"
+            action="landed_cost_analysis_action"
+            parent="stock.menu_warehouse_report"
+            sequence="160"/>
+</odoo>

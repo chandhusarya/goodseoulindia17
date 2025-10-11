@@ -1,0 +1,1 @@
+from . import shipment_advice_receive_qty_partial

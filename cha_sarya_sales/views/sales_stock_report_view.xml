@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="report_stock_report_for_sales_form" model="ir.ui.view">
+        <field name="name">stock.report.for.sales.form</field>
+        <field name="model">stock.report.for.sales</field>
+        <field name="arch" type="xml">
+            <form string="Stock Report For Sales">
+                <sheet>
+                    <group>
+                        <field name="to_email"/>
+                        <field name="employees" widget="many2many_tags"/>
+                        <field name="company_id"/>
+                    </group>
+                    <group>
+                        <field name="locations" widget="many2many_tags"/>
+                    </group>
+                    <button string="Download Stock Balance Report" name="button_generate_stock_report" type="object"/>
+                    <button string="Email Stock Balance Report" name="button_email_stock_report" type="object"/>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="stock_report_for_sales_tree" model="ir.ui.view">
+        <field name="name">stock.report.for.sales.tree</field>
+        <field name="model">stock.report.for.sales</field>
+        <field name="priority">500</field>
+        <field name="arch" type="xml">
+            <tree string="Stock Report For Sales" default_order="id desc">
+                <field name="company_id"/>
+                <field name="to_email"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_stock_report_for_sale" model="ir.actions.act_window">
+        <field name="name">Stock Report For Sales</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">stock.report.for.sales</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="stock_report_for_sales_tree"/>
+    </record>
+
+    <menuitem id="report_email_config_menu" name="Stock Report For Sales" sequence="52"
+              parent="stock.menu_warehouse_config"
+              action="action_stock_report_for_sale"/>
+
+</odoo>

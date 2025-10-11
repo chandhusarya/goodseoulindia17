@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="purchase_order_form_inherit_cha_sarya_purchase" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit.cha.sarya.purchase</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase_requisition.purchase_order_form_inherit"/>
+        <field name="arch" type="xml">
+            <field name="requisition_id" position="replace">
+                <field name="requisition_id"
+                       invisible="1"
+                       domain="[('state', 'in', ('in_progress', 'open', 'ongoing')),
+                       ('vendor_id', 'in', (partner_id, False)), ('company_id', '=', company_id)]"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_purchase_line_form_inherit_cha_sarya_purchase" model="ir.ui.view">
+        <field name="name">purchase.order.cha.sarya.purchase.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//notebook[last()]" position="inside">
+                <page string="Shipping Documents">
+
+                    <button name="update_shipping_document_list_from_vendor"
+                            type="object"
+                            string="ReLoad document list"
+                            confirm="All uploaded document will be cleared and new list will be added" />
+                    <field name="shipping_documents" nolabel="1">
+                        <tree editable="bottom" create="false" delete="false">
+                            <field name="document_name"
+                                   string="Document Name"
+                                   readonly="1"/>
+                            <field name="doc_attachment_partner"
+                                   widget="many2many_binary"
+                                   string="Attachments"/>
+                            <field name="expiry"
+                                   required="0"/>
+                            <field name="is_required"
+                                   widget="boolean_toggle"
+                                   readonly="1"/>
+                        </tree>
+                    </field>
+
+                </page>
+            </xpath>
+
+            <field name="currency_id" position="after">
+                <field name="manual_exchange_rate" digits="[12,12]" invisible="1"/>
+            </field>
+
+            <field name="partner_id" position="replace">
+                <field name="partner_id" widget="res_partner_many2one"
+                       context="{'res_partner_search_mode': 'supplier', 'show_vat': True}"
+                       placeholder="Name, TIN, Email, or Reference"
+                       options="{'no_create':1,'no_create_edit':1}"
+                       domain="[('supplier_rank', '>=' , 1 ),
+                                ('vendor_type', '=' , 'trade'),
+                                ('is_parent', '=' , True)]"/>
+                <field name="total_overdue_vendor"/>
+                <field name="mode_of_shipment" required="1"/>
+            </field>
+
+            <xpath expr="//label[@for='receipt_reminder_email']" position="replace">
+            </xpath>
+
+            <xpath expr="//label[@for='date_planned']" position="replace">
+            </xpath>
+
+            <xpath expr="//div[@name='date_planned_div']" position="replace">
+            </xpath>
+
+            <xpath expr="//div[@name='reminder']" position="replace">
+                <field name="incoterm_id"/>
+                <field name="delivery_lead_time" readonly="1" force_save="1"/>
+
+                <field name="estimated_departure_date"
+                       force_save="1"
+                       invisible="state != 'purchase'"/>
+
+                <field name="estimated_arrival_date"
+                       force_save="1"
+                       invisible="state != 'purchase'"/>
+
+                <field name="bl_number"
+                       invisible="state != 'purchase'"/>
+
+                <field name="is_document_request_sent_to_vendors" invisible="1"/>
+                <field name="is_shipping_documents_uploaded" invisible="1"/>
+                <field name="last_document_reminder_sent_to_vendor" invisible="1"/>
+
+                 <field name="freight_forwarder"
+                       options="{'no_create_edit': True, 'no_create': True}"
+                       domain="[('id', 'in', allowed_clearing_agents)]"/>
+                <field name="clearing_agent"
+                       options="{'no_create_edit': True, 'no_create': True}"
+                       domain="[('id', 'in', allowed_clearing_agents)]"/>
+
+                <field name="port_of_loading"
+                        options="{'no_create_edit': True, 'no_create': True}"
+                        context="{'clearing_agent': freight_forwarder,
+                                  'fright_forwarder': freight_forwarder,
+                                 'filter_port_of_loading': True}"/>
+
+                <field name="port_of_discharge"
+                       options="{'no_create_edit': True, 'no_create': True}"
+                       context="{'clearing_agent': freight_forwarder,
+                                 'fright_forwarder': freight_forwarder,
+                                 'port_of_loading': port_of_loading,
+                                 'filter_port_of_discharge': True}"/>
+
+                <field name="is_pi_qty_entered"
+                       readonly="1" invisible="1"/>
+                <field name="finance_waiting_approval"
+                       readonly="1" invisible="1"/>
+                <field name="purchase_invoice_filename" invisible="1"/>
+                <field name="purchase_invoice" string="Upload PI"
+                       invisible="state not in ['purchase', 'done']"
+                       filename="purchase_invoice_filename"/>
+
+                <field name="allowed_clearing_agents"
+                       invisible="1"/>
+
+            </xpath>
+
+
+            <xpath expr="//header" position='replace'>
+                <header>
+                    <field name="pi_entry_button_visibility" invisible="1"/>
+                    <field name="is_closed" invisible="1"/>
+                    <field name="is_finance_approval_required_for_rfq" invisible="1"/>
+                    <field name="is_po_send_to_vendor" invisible="1"/>
+
+                    <button name="button_mark_pi_entry_completed"
+                            type="object"
+                            invisible="not pi_entry_button_visibility"
+                            string="Mark PI entry completed"
+                            confirm="Are you verified FOC and PI Qty?"
+                            class="btn-primary"/>
+
+                    <button name="button_sent_finance_approval"
+                            type="object"
+                            invisible="state != 'draft' or not is_finance_approval_required_for_rfq"
+                            string="Submit to Finance Approval"
+                            class="btn-primary"/>
+
+                    <button name="button_confirm_rfq"
+                            type="object"
+                            invisible="state != 'draft' or is_finance_approval_required_for_rfq"
+                            string="Confirm"
+                            class="btn-primary"/>
+
+
+                    <button name="button_approve_purchase_order"
+                            type="object"
+                            invisible="state != 'to approve'"
+                            string="Approve"
+                            groups="cha_sarya_purchase.can_approve_purchase_order"
+                            class="btn-primary"/>
+
+                    <button name="button_approve_pi_change"
+                            type="object"
+                            invisible="finance_waiting_approval != 'pi_change'"
+                            string="Approve"
+                            groups="cha_sarya_purchase.can_approve_purchase_order"
+                            class="btn-primary"/>
+
+                    <button name="update_price_from_latest_contract"
+                            string="Update price from latest Contract"
+                            confirm="The price of the item you have already received does not change. It will only affect items that have not yet been received."
+                            type="object"/>
+
+                    <button name="action_close_po" string="Close" class="oe_highlight" type="object"
+                            invisible="state != 'purchase' or is_closed"/>
+
+                    <button name="button_cancel"
+                            invisible="state not in ['draft', 'to approve', 'sent', 'purchase']"
+                            string="Cancel"
+                            type="object"
+                            confirm="Do you want to cancel PO?"
+                            groups="cha_sarya_purchase.can_cancel_purchase_order"/>
+
+                    <button name="send_po_to_vendor"
+                            string="Send PO to Vendor"
+                            type="object"
+                            invisible="state != 'purchase' or is_po_send_to_vendor or not is_finance_approval_required_for_rfq"
+                    />
+
+
+                    <field name="state" widget="statusbar" statusbar_visible="draft,to approve,purchase" readonly="1"/>
+
+
+                </header>
+            </xpath>
+
+            <xpath expr="//div[@name='button_box']" position="after">
+                <widget name="web_ribbon" title="PI Received"
+                        invisible="not is_pi_qty_entered or finance_waiting_approval or is_closed"/>
+                <widget name="web_ribbon" bg_color="bg-danger"
+                        title="PI Qty Change"
+                        invisible="finance_waiting_approval != 'pi_change'"/>
+                <widget name="web_ribbon"
+                        title="Pending PI"
+                        bg_color="bg-danger"
+                        invisible="not pi_entry_button_visibility"/>
+                <widget name="web_ribbon" text="PO Closed" bg_color="bg-info"
+                        invisible="not is_closed"/>
+            </xpath>
+
+            <field name="currency_id" position="after">
+                <field name="finance_approval_date" invisible="0" />
+                <field name="po_type" required="1"
+                       readonly="state in ['purchase', 'to approve','done', 'cancel']"/>
+                <field name="stock_type" required="1"
+                       readonly="state in ['purchase', 'to approve','done', 'cancel']"/>
+                <field name="pi_updated_date" readonly="1" force_save="1"/>
+            </field>
+        </field>
+    </record>
+
+
+    <record id="purchase_order_view_tree_inherit_cha_sarya_purchase" model="ir.ui.view">
+        <field name="name">purchase.order.tree.inherit.cha_sarya_purchase</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="invoice_status" position="before">
+                <field name="due_date_based_on_bl" />
+            </field>
+        </field>
+    </record>
+
+     <record id="purchase_form_action_approved" model="ir.actions.act_window">
+            <field name="name">Approved Purchase Orders</field>
+            <field name="res_model">purchase.order</field>
+            <field name="view_mode">tree,kanban,form,pivot,graph,calendar,activity</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('purchase.purchase_order_view_tree')}),
+                (0, 0, {'view_mode': 'kanban', 'view_id': ref('purchase.purchase_order_view_kanban_without_dashboard')}),
+            ]"/>
+            <field name="domain">[('state','in',('purchase', 'done')), ('invoice_ids','=', False)]</field>
+            <field name="search_view_id" ref="purchase.purchase_order_view_search"/>
+            <field name="context">{}</field>
+     </record>
+
+     <menuitem action="purchase_form_action_approved" id="menu_purchase_form_action_approved" parent="account.menu_finance_payables" sequence="6"/>
+
+
+</odoo>

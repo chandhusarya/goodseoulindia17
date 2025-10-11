@@ -1,0 +1,33 @@
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.account</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+             <xpath expr="//app[@name='account']" position="inside">
+                <h2>Sales Return</h2>
+                <div class="row mt16 o_settings_container">
+                    <div class="col-12 col-lg-6 o_setting_box" title="These taxes are set in any new product created.">
+                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Sale Return Account</span>
+                            <span class="fa fa-lg fa-building-o" title="Values set here are company-specific."
+                                  aria-label="Values set here are company-specific."
+                                  role="img"/>
+                            <div class="text-muted">
+                                Add Your Sales Return Account
+                            </div>
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <label string="Sales Return" for="acc_sales_return_id"
+                                           class="col-lg-3 o_light_label"/>
+                                    <field name="acc_sales_return_id"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

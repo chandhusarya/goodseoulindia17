@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_data_sync_log,data.sync.log,model_data_sync_log,base.group_user,1,1,1,1
+access_till_assign_and_closure,till.assign.and.closure,model_till_assign_and_closure,base.group_user,1,1,1,1
+access_till_audit_and_closure,till.audit.and.closure,model_till_audit_and_closure,base.group_user,1,1,1,1
+access_till_audit_and_closure_line,till.audit.and.closure.line,model_till_audit_and_closure_line,base.group_user,1,1,1,1
+access_cash_statement,cash.statement,model_cash_statement,base.group_user,1,1,1,1
+access_bank_transfer,bank.transfer,model_bank_transfer,base.group_user,1,1,1,1
+access_bank_transfer_line,bank.transfer.line,model_bank_transfer_line,base.group_user,1,1,1,1
+access_cash_deposit_wizard,cash.deosit.wizard,model_cash_deposit_wizard,base.group_user,1,1,1,1
+access_pos_kitchen_screen_report,pos.kitchen.screen.report,model_pos_kitchen_screen_report,base.group_user,1,1,1,1
+access_pos_order_report,pos.order.report,model_pos_order_report,base.group_user,1,0,0,0

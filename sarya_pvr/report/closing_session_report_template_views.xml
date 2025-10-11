@@ -1,0 +1,68 @@
+<odoo>
+    <template id="report_pvr_closing_session_thermal">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <div class="thermal-receipt">
+                    <h3 style="text-align:center; margin: 0; font-size:14px;">
+                        Closing Session
+                    </h3>
+                    <p style="text-align:center; font-size:10px; margin:0;">
+                        Closing No: <t t-esc="doc.name"/>
+                    </p>
+                    <p style="text-align:center; font-size:10px; margin:0;">
+                        Date: <t t-esc="doc.closing_datetime.strftime('%d-%m-%Y %H:%M')"/>
+                    </p>
+                    <hr style="border-top:1px dashed #000; margin:4px 0;"/>
+
+                    <table style="width:100%; font-size:10px; border-collapse: collapse;">
+                        <thead>
+                            <tr>
+                                <th style="text-align:left;">Product</th>
+                                <th style="text-align:right;">Stock On Hand</th>
+                                <th style="text-align:right;">Closing Stock On Hand</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="doc.request_line_ids" t-as="line">
+                                <t t-if="line.returned_qty > 0.0">
+                                    <tr>
+                                        <td style="text-align:left;">
+                                            <t t-esc="line.product_id.display_name"/>
+                                        </td>
+                                        <td style="text-align:right;">
+                                            <t t-esc="line.qty_available_at_pvr"/>
+                                        </td>
+                                        <td style="text-align:right;">
+                                            <t t-esc="line.returned_qty"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <hr style="border-top:1px dashed #000; margin:4px 0;"/>
+
+                    <p style="text-align:center; font-size:10px; margin:0;">
+                        Closed By: <t t-esc="doc.create_uid.name"/>
+                    </p>
+                    <table style="width:100%; font-size:10px; margin-top:20px;">
+                        <tr>
+                            <td style="width:50%; text-align:left; vertical-align:bottom;">
+                                <p style="margin:0;">__________________</p>
+                                <p style="margin:0;">Management Signature</p>
+                            </td>
+                            <td style="width:50%; text-align:right; vertical-align:bottom;">
+                                <p style="margin:0;">__________________</p>
+                                <p style="margin:0;">Handler's Signature</p>
+                            </td>
+                        </tr>
+                    </table>
+                    <p style="text-align:center; font-size:10px; margin:0;">
+                        --- Thank You ---
+                    </p>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

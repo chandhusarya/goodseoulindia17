@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="product_category_form_view_inherit_view" model="ir.ui.view">
+        <field name="name">product.category.inherit</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='first']" string="Sequence" position='after'>
+                <group name="sequence" string="Sequence">
+                    <field name="prefix"/>
+                    <field name="next_no" string="Next Number"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_packaging_inherit_view_int_new" model="ir.ui.view">
+        <field name="name">product.packaging.inherit.new</field>
+        <field name="model">product.packaging</field>
+        <field name="inherit_id" ref="purchase.product_packaging_tree_view_purchase"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='purchase']" position='after'>
+                <field name="primary_unit"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_template_inherit_view_int" model="ir.ui.view">
+        <field name="name">product.template.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='uom_po_id']" position='after'>
+                <field invisible="1"
+                       name="primary_uom"
+                       options="{'no_create': True, 'no_create_edit':True}"
+                       string="Primary UOM"/>
+
+                <field name="shelf_life"
+                       required="detailed_type == 'product'"
+                       placeholder="Days"
+                       string="Shelf Life"/>
+            </xpath>
+
+            <xpath expr="//field[@name='default_code']" position='after'>
+                <field name="primary_uom_qty" invisible="1"/>
+                <field name="internal_ref" string="Product Reference"
+                       required="detailed_type == 'product'" invisible="1"/>
+                <field required="detailed_type == 'product'" name="product_reference"
+                       string="Product Reference"/>
+                <field name="product_reference_code" string="Product Reference Code"
+                       required="detailed_type == 'product'" readonly="0" force_save="1"/>
+                <field required="detailed_type == 'product'" name="section"
+                       options="{'no_create': True, 'no_create_edit':True}" string="Customer Section"
+                />
+                <field name="section_code" string="Section Code" required="detailed_type == 'product'"
+                       readonly="1" force_save="1"/>
+                <field required="detailed_type == 'product'" name="category_type"
+                       string="Food/Non Food" widget="radio"
+                       options="{'horizontal': true}"/>
+                <field required="detailed_type == 'product'" name="category_area"
+                       string="Local/Foreign" widget="radio"
+                       options="{'horizontal': true}"/>
+                <field name="best_before_sell" string="Best Before Sell Days" required="1"/>
+            </xpath>
+
+            <xpath expr="//label[@for='name']" position='attributes'>
+                <attribute name="string">Product Description</attribute>
+            </xpath>
+
+            <xpath expr="//div[@class='oe_title']" position='before'>
+                <label for="brand" string="Brand"/>
+                <field required="detailed_type == 'product'"
+                       name="brand"
+                       options="{'no_create': True, 'no_create_edit':True}" string="Brand" />
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="product_pakckage_inherit_view" model="ir.ui.view">
+        <field name="name">product.packaging.inherit</field>
+        <field name="model">product.packaging</field>
+        <field name="inherit_id" ref="product.product_packaging_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position='after'>
+                <field name="description" string="Description" optional="hide"/>
+            </xpath>
+            <xpath expr="//field[@name='barcode']" position='after'>
+                <field name="current_stock" optional="hide" readonly="1" force_save="1"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

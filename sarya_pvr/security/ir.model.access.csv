@@ -1,0 +1,63 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_pvr_stock_request_user,PVR Stock Request User,model_pvr_stock_request,base.group_user,1,1,1,1
+access_pvr_stock_request_manager,PVR Stock Request Manager,model_pvr_stock_request,base.group_system,1,1,1,1
+access_pvr_stock_request_line_user,PVR Stock Request Line User,model_pvr_stock_request_line,base.group_user,1,1,1,1
+access_pvr_stock_request_line_manager,PVR Stock Request Line Manager,model_pvr_stock_request_line,base.group_system,1,1,1,1
+access_pvr_stock_request_line_details_user,PVR Stock Request Line Details User,model_pvr_stock_request_line_details,base.group_user,1,1,1,1
+access_pvr_stock_request_line_details_manager,PVR Stock Request Line Details Manager,model_pvr_stock_request_line_details,base.group_system,1,1,1,1
+access_pvr_stock_request_portal,PVR Stock Request Portal,model_pvr_stock_request,base.group_portal,1,1,1,1
+access_pvr_stock_request_line_portal,PVR Stock Request Line Portal,model_pvr_stock_request_line,base.group_portal,1,1,1,1
+access_pvr_stock_request_line_details_portal,PVR Stock Request Line Details Portal,model_pvr_stock_request_line_details,base.group_portal,1,1,1,1
+access_pvr_stock_request_stock_quant_portal,PVR Stock Request Stock Quant Portal,model_stock_quant,base.group_portal,1,1,1,1
+access_pvr_stock_request_ir_sequence_portal,PVR Stock Request ir Sequence Portal,model_ir_sequence,base.group_portal,1,1,1,1
+access_pvr_location_master_user,PVR Location Master User,model_pvr_location_master,base.group_user,1,1,1,1
+access_pvr_location_master_manager,PVR Location Master Manager,model_pvr_location_master,base.group_system,1,1,1,1
+access_pvr_location_master_portal,PVR Location Master Portal,model_pvr_location_master,base.group_portal,1,1,1,1
+access_ir_module_module_portal,Ir Module Module Portal,model_ir_module_module,base.group_portal,1,1,1,1
+access_container_request,Container Request,model_container_request,,1,1,1,1
+access_container_request_line,Container Request Line,model_container_request_line,,1,1,1,1
+access_container_request_portal,Container Request Portal,model_container_request,base.group_portal,1,1,1,1
+access_container_request_line_portal,Container Request Portal Line,model_container_request_line,base.group_portal,1,1,1,1
+access_container_request_closing_session,Container Request Closing Session,model_closing_session,,1,1,1,1
+access_container_cosing_session_line,Container Closing Session Line,model_container_closing_session_line,,1,1,1,1
+access_container_request_closing_session_portal,Container Closing Session Portal,model_closing_session,base.group_portal,1,1,1,1
+access_container_closing_session_line_portal,Container Closing Session Portal Line,model_container_closing_session_line,base.group_portal,1,1,1,1
+access_container_transfer_pvr,Access Transfer PVR,model_container_transfer_pvr,,1,1,1,1
+access_container_transfer_line,Access Container Transfer Line,model_container_transfer_line,,1,1,1,1
+access_product_supplier_info_portal,Access Product Supplier Info Portal,model_product_supplierinfo,base.group_portal,1,1,1,1
+access_stock_picking_portal,Access Stock Picking Portal,model_stock_picking,base.group_portal,1,1,1,1
+access_mail_activity_portal,access_mail_activity_portal,mail.model_mail_activity,base.group_portal,1,0,0,0
+access_stock_picking_type_portal,access_picking_type_portal,stock.model_stock_picking_type,base.group_portal,1,1,1,1
+access_stock_move_portal,access_stock_move_portal,stock.model_stock_move,base.group_portal,1,1,1,1
+access_stock_package_level_portal,access_stock_package_level_portal,stock.model_stock_package_level,base.group_portal,1,1,1,1
+access_stock_move_line_portal,access_stock_move_line_portal,stock.model_stock_move_line,base.group_portal,1,1,1,1
+access_uom_uom_portal,access_uom_uom_portal,uom.model_uom_uom,base.group_portal,1,1,1,1
+access_stock_picking_batch_portal,access_stock_picking_batch_portal,stock_picking_batch.model_stock_picking_batch,base.group_portal,1,1,1,1
+access_quality_check_portal,access_quality_check_portal,quality.model_quality_check,base.group_portal,1,1,1,1
+access_mrp_bom_portal,access_mrp_bom_portal,mrp.model_mrp_bom,base.group_portal,1,1,1,1
+access_stock_warehouse_portal,access_stock_warehouse_portal,stock.model_stock_warehouse,base.group_portal,1,1,1,1
+access_stock_location_portal,access_stock_location_portal,stock.model_stock_location,base.group_portal,1,1,1,1
+access_local_purchase_line_portal,access_local_purchase_line_portal,cha_sarya_purchase.model_local_purchase_line,base.group_portal,1,1,1,1
+access_local_purchase_portal,access_local_purchase_portal,cha_sarya_purchase.model_local_purchase,base.group_portal,1,1,1,1
+access_stock_lot_portal,access_stock_lot_portal,stock.model_stock_lot,base.group_portal,1,1,1,1
+access_landed_cost_line_portal,access_landed_cost_line_portal,cha_sarya_purchase.model_landed_cost_line,base.group_portal,1,1,1,1
+access_res_partner_portal,access_res_partner_portal,base.model_res_partner,base.group_portal,1,1,1,1
+access_account_move_portal,access_account_move_portal,account.model_account_move,base.group_portal,1,1,1,1
+access_account_move_user_portal,access_account_move_user_portal,account.model_account_move,account.group_account_invoice,1,1,1,1
+access_account_account_portal,access_account_account_portal,account.model_account_account,base.group_portal,1,1,1,1
+access_account_journal_portal,access_account_journal_portal,account.model_account_journal,base.group_portal,1,1,1,1
+access_account_payment_term_portal,access_account_payment_term_portal,account.model_account_payment_term,base.group_portal,1,1,1,1
+access_account_payment_term_line_portal,access_account_payment_term_line_portal,account.model_account_payment_term_line,base.group_portal,1,1,1,1
+access_account_move_line_portal,access_account_move_line_portal,account.model_account_move_line,base.group_portal,1,1,1,1
+access_crm_team_portal,access_crm_team_portal,crm.model_crm_team,base.group_portal,1,1,1,1
+access_crm_team_member_portal,access_crm_team_member_portal,crm.model_crm_team_member,base.group_portal,1,1,1,1
+access_account_tax_portal,access_account_tax_portal,account.model_account_tax,base.group_portal,1,1,1,1
+access_account_tax_repartition_line_portal,access_account_tax_repartition_line_portal,account.model_account_tax_repartition_line,base.group_portal,1,1,1,1
+access_stock_route_portal,access_stock_route_portal,stock.model_stock_route,base.group_portal,1,1,1,1
+access_stock_rule_portal,access_stock_rule_portal,stock.model_stock_rule,base.group_portal,1,1,1,1
+access_stock_putaway_rule_portal,access_stock_putaway_rule_portal,stock.model_stock_putaway_rule,base.group_portal,1,1,1,1
+access_stock_warehouse_orderpoint_portal,access_stock_warehouse_orderpoint_portal,stock.model_stock_warehouse_orderpoint,base.group_portal,1,1,1,1
+access_product_category_portal,access_product_category_portal,product.model_product_category,base.group_portal,1,1,1,1
+access_wastage_entry_pvr,Access Wastage Entry PVR,model_pvr_wastage_entry,,1,1,1,1
+access_model_pvr_wastage_entry_line,Access Wastage Entry Line,model_pvr_wastage_entry_line,,1,1,1,1
+access_account_account_tag_portal,access_account_account_tag_portal,account.model_account_account_tag,base.group_portal,1,1,1,1

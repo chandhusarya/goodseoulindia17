@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-extend="OrderWidget" t-inherit="point_of_sale.OrderWidget" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('order-summary')]" position="attributes">
+            <attribute name="t-attf-class">{{ ((env.services.pos and env.services.pos.config and env.services.pos.config.sh_allow_order_line_discount) || (env.services.pos and env.services.pos.config and env.services.pos.config.sh_allow_global_discount))  ? 'sh_summary' : '' }}</attribute>
+        </xpath>
+    </t>
+
+</templates>

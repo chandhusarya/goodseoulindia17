@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="paperformat_a4_potrait" model="report.paperformat">
+            <field name="name">A4 Custom</field>
+            <field name="default" eval="True" />
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">23</field>
+            <field name="margin_bottom">20</field>
+            <field name="margin_left">7</field>
+            <field name="margin_right">7</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">23</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <record id="action_report_delivery_challan_internal_transfer" model="ir.actions.report">
+            <field name="name">Delivery Challan</field>
+            <field name="model">internal.stock.transfer</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">kg_sarya_inventory.report_delivery_challan_internal_transfer</field>
+            <field name="report_file">kg_sarya_inventory.report_delivery_challan_internal_transfer</field>
+            <field name="binding_model_id" ref="kg_sarya_inventory.model_internal_stock_transfer"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="paperformat_a4_potrait"/>
+        </record>
+
+    </data>
+</odoo>

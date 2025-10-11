@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="stock_check_plan_form_view" model="ir.ui.view">
+            <field name="name">stock.check.plan.form</field>
+            <field name="model">stock.check.plan</field>
+            <field name="arch" type="xml">
+                <form string="Stock Check Plan">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name" placeholder="Title"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="company_id"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="products_ids" widget="many2many_kanban "/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="stock_check_plan_tree_view" model="ir.ui.view">
+            <field name="name">stock.check.plan.tree</field>
+            <field name="model">stock.check.plan</field>
+            <field name="arch" type="xml">
+                <tree string="Stock Check Plan">
+                    <field name="name"/>
+                    <field name="products_ids" widget="many2many_tags"/>
+                    <field name="company_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="stock_check_plan_search_view" model="ir.ui.view">
+            <field name="name">stock.check.plan.search</field>
+            <field name="model">stock.check.plan</field>
+            <field name="arch" type="xml">
+                <search string="Stock Check Plan">
+                    <field name="name" string="Name"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Create Date" name="group_by_create_date" domain="[]"
+                                context="{'group_by':'create_date'}"/>
+                        <filter string="Company" name="group_by_company" domain="[]"
+                                context="{'group_by': 'company_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="stock_check_plan_pos_act_window" model="ir.actions.act_window">
+            <field name="name">Stock Check Plan</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.check.plan</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    There is no examples click here to add new Stock Check Plan.
+                </p>
+            </field>
+        </record>
+
+        <menuitem name="Stock Check Plan" id="stock_check_plan_menu" parent="sarya_pos_custom.menu_point_of_sale_operation" action="stock_check_plan_pos_act_window"/>
+
+    </data>
+</odoo>

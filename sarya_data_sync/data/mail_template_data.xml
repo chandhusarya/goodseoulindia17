@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="cloud_email_template_for_data_sync_error_sending" model="mail.template">
+            <field name="name">Data Sync -(Data Pull or Data Push) Errors Send Mail</field>
+            <field name="model_id" ref="sarya_data_sync.model_data_sync_log"/>
+            <field name="email_to">${(object.email_from)}</field>
+            <field name="body_html"></field>
+            <field name="subject">Vehicle expiring soon</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+    </data>
+</odoo>

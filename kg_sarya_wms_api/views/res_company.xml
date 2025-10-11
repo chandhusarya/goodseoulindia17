@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   <data>
+<!--        <record id="view_company_form_wms_inherit" model="ir.ui.view">-->
+<!--            <field name="model">res.company</field>-->
+<!--            <field name="inherit_id" ref="base.view_company_form"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <xpath expr="//notebook/page[@name='general_info']" position="after">-->
+<!--                    <page name="wms_details" string="WMS Configuration">-->
+<!--                        <group>-->
+<!--                        <group>-->
+<!--                            <field name="customer_id" string="Customer ID for WMS"/>-->
+<!--                            <field name="facility_id"/>-->
+<!--                            <field name="user_login_id"/>-->
+<!--                            <field name="tpl_key"/>-->
+<!--                        </group>-->
+<!--                        <group>-->
+<!--                            <field name="grant_type"/>-->
+<!--                            <field name="client_id"/>-->
+<!--                            <field name="client_secret"/>-->
+<!--                            <field name="wms_url"/>-->
+<!--                        </group>-->
+<!--                    </group>-->
+<!--                    </page>-->
+<!--                </xpath>-->
+<!--            </field>-->
+<!--        </record>-->
+    </data>
+</odoo>

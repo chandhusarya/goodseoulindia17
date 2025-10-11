@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="office_purchase_form_view" model="ir.ui.view">
+            <field name="name">office.purchase.form</field>
+            <field name="model">office.purchase</field>
+            <field name="arch" type="xml">
+                <form string="Office Purchase">
+                    <header>
+						<button name="action_request" type="object" string="Send for Approval" invisible="state != 'new'"/>
+                        <button name="action_finance_approve"
+                                groups="cha_sarya_purchase.can_approve_office_purchase_order"
+                                type="object" string="Approve"
+                                help="QSR Manager Approval" invisible="state != 'finance'"/>
+<!--						<button name="action_confirm"-->
+<!--                                type="object"-->
+<!--                                string="Confirm"-->
+<!--                                groups="cha_sarya_purchase.office_purchase_order_procurement_approval"-->
+<!--                                invisible="state != 'finance_approved'"/>-->
+
+                        <button name="create_bill" type="object" string="Create Bill" invisible="state != 'finance_approved' or move_id"/>
+						<button name="action_cancel" type="object" string="Cancel" invisible="state == 'cancel' or move_id"/>
+						<button name="reset_to_draft" type="object" string="Reset To Draft"
+                                invisible="state != 'cancel'"/>
+                        <field name="state" widget="statusbar" statusbar_visible="new,finance,finance_approved,done"/>
+                    </header>
+                    <sheet>
+
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name" placeholder="Title" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="vendor_id" readonly="state == 'done'" options="{'no_create_edit': True, 'no_create': True}"/>
+                                <field name="user_id" readonly="state == 'done'"/>
+                                <field name="company_id" readonly="1"/>
+                                <field name="move_id" invisible="state != 'done'"/>
+                            </group>
+                            <group>
+                                <field name="payment_journal_id"
+                                       invisible="1"/>
+                                <field name="date" readonly="state == 'done'"/>
+                                <field name="invoice_date" readonly="state == 'done'"/>
+                                <field name="ref"  readonly="state == 'done'"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="requested" invisible="1"/>
+                                <field name="picking_type_id"
+                                       options="{'no_create_edit': True, 'no_create': True}"
+                                       invisible="1"/>
+                                <field name="opo_attach_id" widget="many2many_binary" readonly="state == 'done'"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Products">
+                                <field name="line_ids" readonly="state not in ['new', 'finance_approved']">
+                                    <tree editable="bottom">
+                                        <field name="product_id"
+                                               domain="[('purchase_ok', '=', True),('type', '=', 'service')]"
+                                               options="{'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
+                                        <field name="name"/>
+                                        <field name="packaging_id"
+                                               required="1"
+                                               options="{'no_create_edit': True, 'no_create': True, 'no_open': True}"
+									           context="{'default_product_id': product_id, 'tree_view_ref':'product.product_packaging_tree_view', 'form_view_ref':'product.product_packaging_form_view'}"
+									           groups="product.group_stock_packaging" force_save="1" column_invisible="1"/>
+                                        <field name="qty"/>
+                                        <field name="qty_received"/>
+                                        <field name="billed_quantity"/>
+
+                                        <field name="unit_price"/>
+                                        <field name="tax_ids"
+                                               widget="many2many_tags"
+                                               domain="[('type_tax_use', '=', 'purchase'),
+                                               ('company_id', 'parent_of', parent.company_id), ]" context="{'active_test': True}" options="{'no_create': True}" optional="show"/>
+                                        <field name="total_untaxed"/>
+                                        <field name="tax_amount"/>
+                                        <field name="total" />
+
+                                    </tree>
+                                    <form>
+                                        <group>
+                                            <field name="product_id"/>
+                                            <field name="name"/>
+                                        </group>
+                                        <group>
+                                            <field name="qty"/>
+                                            <field name="unit_price"/>
+                                            <field name="total"/>
+                                        </group>
+                                    </form>
+                                </field>
+
+                                <group col="12" class="oe_invoice_lines_tab">
+                                    <group colspan="8">
+                                    </group>
+                                    <group colspan="4">
+                                        <group class="oe_subtotal_footer">
+                                            <field name="total_untaxed" colspan="2"/>
+                                            <field name="total_tax" colspan="2"/>
+                                            <field name="total" class="oe_subtotal_footer_separator"/>
+                                        </group>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers"/>
+						<field name="message_ids" widget="mail_thread"/>
+					</div>
+                </form>
+            </field>
+        </record>
+
+        <record id="office_purchase_tree_view" model="ir.ui.view">
+            <field name="name">office.purchase.tree</field>
+            <field name="model">office.purchase</field>
+            <field name="arch" type="xml">
+                <tree string="office Purchase">
+                    <field name="name"/>
+                    <field name="vendor_id"/>
+                    <field name="user_id"/>
+                    <field name="date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="office_purchase_search_view" model="ir.ui.view">
+            <field name="name">office.purchase.search</field>
+            <field name="model">office.purchase</field>
+            <field name="arch" type="xml">
+                <search string="office Purchase">
+                    <field name="name"/>
+                    <group expand="1" string="Group By">
+                        <filter string="User" name="user_id" domain="[]"
+                                context="{'group_by':'user_id'}"/>
+                        <filter string="Status" name="state" domain="[]"
+                                context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="office_purchase_act_window" model="ir.actions.act_window">
+            <field name="name">Office Purchase</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">office.purchase</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    There is no examples click here to add new Local Purchase.
+                </p>
+            </field>
+        </record>
+
+
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="office_purchase_act_window_menu" name="Office Purchase" parent="purchase.menu_procurement_management" action="office_purchase_act_window" sequence="20"/>
+
+
+    </data>
+</odoo>

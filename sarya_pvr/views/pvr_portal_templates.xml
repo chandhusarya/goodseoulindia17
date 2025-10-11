@@ -1,0 +1,134 @@
+<odoo>
+    <template id="portal_my_home_pvr" name="Portal PVR" inherit_id="portal.portal_my_home">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+            <t t-set="portal_client_category_enable" t-value="True"/>
+        </xpath>
+        <div id="portal_client_category" position="inside">
+            <t t-groups="sarya_pvr.group_pvr_operator">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/sarya_pvr/static/src/ready-stock.png'"/>
+                    <t t-set="title">Stock Request</t>
+                    <t t-set="url" t-value="'/my/stock/request'"/>
+                    <t t-set="text">Create Stock Request</t>
+                    <t t-set="config_card" t-value="True"/>
+                </t>
+            </t>
+        </div>
+        <div id="portal_client_category" position="inside">
+            <t t-groups="sarya_pvr.group_pvr_operator">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/sarya_pvr/static/src/in-stock.png'"/>
+                    <t t-set="title">Current Availability</t>
+                    <t t-set="url" t-value="'/my/stock/current_available'"/>
+                    <t t-set="text">See Current Stock Available</t>
+                    <t t-set="config_card" t-value="True"/>
+                </t>
+            </t>
+        </div>
+        <div id="portal_client_category" position="inside">
+            <t t-groups="sarya_pvr.group_pvr_operator">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/sarya_pvr/static/src/load.png'"/>
+                    <t t-set="title">GRN Pending</t>
+                    <t t-set="text">See Pending GRN</t>
+                    <t t-set="config_card" t-value="True"/>
+                    <t t-set="url" t-value="'/my/stock/grn_pending'"/>
+                    <t t-set="placeholder_count" t-value="'grn_pending_count'"/>
+                </t>
+            </t>
+        </div>
+        <div id="portal_client_category" position="inside">
+            <t t-groups="sarya_pvr.group_pvr_operator">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/sarya_pvr/static/src/packages.png'"/>
+                    <t t-set="title">Stock Request History</t>
+                    <t t-set="text">See stock request histories</t>
+                    <t t-set="config_card" t-value="True"/>
+                    <t t-set="url" t-value="'/my/stock_request_history'"/>
+                </t>
+            </t>
+        </div>
+        <div id="portal_client_category" position="inside">
+            <t t-groups="sarya_pvr.group_pvr_operator">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/sarya_pvr/static/src/food-container.png'"/>
+                    <t t-set="title">Daily Container Request</t>
+                    <t t-set="text">Create Container Requests</t>
+                    <t t-set="config_card" t-value="True"/>
+                    <t t-set="url" t-value="'/my/container/request'"/>
+                </t>
+            </t>
+        </div>
+        <div id="portal_client_category" position="inside">
+            <t t-groups="sarya_pvr.group_pvr_operator">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/sarya_pvr/static/src/food-container.png'"/>
+                    <t t-set="title">Container Request History</t>
+                    <t t-set="text">See container request histories</t>
+                    <t t-set="config_card" t-value="True"/>
+                    <t t-set="url" t-value="'/my/container_request_history'"/>
+                </t>
+            </t>
+        </div>
+        <div id="portal_client_category" position="inside">
+            <t t-groups="sarya_pvr.group_pvr_operator">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/sarya_pvr/static/src/session.png'"/>
+                    <t t-set="title">Closing Session</t>
+                    <t t-set="text">Closing Sessions</t>
+                    <t t-set="config_card" t-value="True"/>
+                    <t t-set="url" t-value="'/my/closing/sessions'"/>
+                </t>
+            </t>
+        </div>
+
+        <div id="portal_client_category" position="inside">
+            <t t-groups="sarya_pvr.group_pvr_operator">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/sarya_pvr/static/src/container.png'"/>
+                    <t t-set="title">Container GRN Pending</t>
+                    <t t-set="text">GRN Pending</t>
+                    <t t-set="config_card" t-value="True"/>
+                    <t t-set="url" t-value="'/my/container_grn_pending'"/>
+                </t>
+            </t>
+        </div>
+
+        <div id="portal_client_category" position="inside">
+            <t t-groups="sarya_pvr.group_pvr_operator">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/sarya_pvr/static/src/choices.png'"/>
+                    <t t-set="title">LPO GRN Pending</t>
+                    <t t-set="text">LPO GRN Pending</t>
+                    <t t-set="config_card" t-value="True"/>
+                    <t t-set="url" t-value="'/my/lpo_grn_pending'"/>
+                </t>
+            </t>
+        </div>
+
+        <div id="portal_client_category" position="inside">
+            <t t-groups="sarya_pvr.group_pvr_operator">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/sarya_pvr/static/src/bin.png'"/>
+                    <t t-set="title">Wastage Entry</t>
+                    <t t-set="text">Create Wastage Entry</t>
+                    <t t-set="config_card" t-value="True"/>
+                    <t t-set="url" t-value="'/my/wastage_entry'"/>
+                </t>
+            </t>
+        </div>
+
+        <div id="portal_client_category" position="inside">
+            <t t-groups="sarya_pvr.group_pvr_operator">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/sarya_pvr/static/src/container.png'"/>
+                    <t t-set="title">Container Transfer to PVR</t>
+                    <t t-set="text">Container Transfer to PVR</t>
+                    <t t-set="config_card" t-value="True"/>
+                    <t t-set="url" t-value="'/my/container/transfer_pvr'"/>
+                </t>
+            </t>
+        </div>
+    </template>
+
+</odoo>

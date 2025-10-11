@@ -1,0 +1,51 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<odoo>
+
+	<record id="login_history_tree" model="ir.ui.view">
+		<field name="name">user.login.history.tree</field>
+		<field name="model">user.login.history</field>
+		<field name="arch" type="xml">
+			<tree string="Login History" create="false" edit="false">
+				<field name="device_id" required="1"/>
+				<field name="user" required="1"/>
+				<field name="login_time" required="1"/>
+				<field name="logout_time" required="1"/>
+			</tree>
+		</field>
+	</record>
+
+	<record id="login_history_form" model="ir.ui.view">
+		<field name="name">user.login.history.form</field>
+		<field name="model">user.login.history</field>
+		<field name="arch" type="xml">
+			<form string="Driver Route" create="false" edit="false">
+				<sheet>
+					<group>
+						<group name="login_hsty_details" string="Credentials">
+							<field name="user" required="1"/>
+							<field name="token" required="1"/>
+							<field name="device_id" required="1"/>
+						</group>
+						<group name="login_details" string="Activity">
+							<field name="login_time" required="1"/>
+							<field name="logout_time" required="1"/>
+						</group>
+					</group>
+				</sheet>
+				<div class="oe_chatter">
+					<field name="message_follower_ids" groups="base.group_user"/>
+					<field name="message_ids"/>
+				</div>
+			</form>
+		</field>
+	</record>
+
+	<record id="login_history_menu_action" model="ir.actions.act_window">
+		<field name="name">Login History</field>
+		<field name="res_model">user.login.history</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+
+
+</odoo>
+

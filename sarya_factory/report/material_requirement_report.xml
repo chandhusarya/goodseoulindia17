@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!-- In your custom module/views/mrp_production_inherit_view.xml -->
+        <record id="action_print_material_requirement" model="ir.actions.report">
+            <field name="name">Material Requirement Report</field>
+            <field name="model">mrp.production</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">sarya_factory.material_requirement_report</field>
+            <field name="report_file">sarya_factory.material_requirement_report</field>
+            <field name="binding_model_id" ref="mrp.model_mrp_production"/>
+            <field name="binding_type">report</field>
+        </record>
+
+
+        <!-- In your custom module/report/material_requirement_report.xml -->
+      <template id="material_requirement_report">
+        <t t-call="web.html_container">
+        <t t-call="web.external_layout">
+
+            <div class="page">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-set="intermediate_products" t-value="doc.get_materials()['intermediate']"/>
+                    <t t-set="storable_products" t-value="doc.get_materials()['storable']"/>
+                    <t t-set="consumables" t-value="doc.get_materials()['consumable']"/>
+
+                    <h2>Intermediate Products</h2>
+                    <table class="table table-sm o_main_table">
+                        <thead>
+                            <tr>
+                                <th>MO Number</th>
+                                <th>Product</th>
+                                <th>Required Qty</th>
+                                <th>Available Qty</th>
+                                <th>Primary Packaging</th>
+<!--                                <th>UoM</th>-->
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="intermediate_products.values()" t-as="line">
+                                <tr>
+                                    <td><t t-esc="line['mo'].name"/></td>
+                                    <td><t t-esc="line['product'].display_name"/></td>
+                                    <td><t t-esc="line['qty']"/></td>
+                                    <td><t t-esc="line['available']"/></td>
+                                    <td>
+                                        <t t-if="line['packaging']">
+                                            <t t-esc="line['packaging'].name"/>
+                                        </t>
+                                    </td>
+<!--                                    <td><t t-esc="line['uom'].name"/></td>-->
+                                    <td><t t-esc="line['status']"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <h2>Storable Raw Materials</h2>
+                    <table class="table table-sm o_main_table">
+                        <thead>
+                            <tr>
+                                <th>MO Number</th>
+                                <th>Product</th>
+                                <th>Required Qty</th>
+                                <th>Available Qty</th>
+                                <th>Primary Packaging</th>
+<!--                                <th>UoM</th>-->
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="storable_products" t-as="line">
+                                <tr>
+                                    <td><t t-esc="line['mo'].name"/></td>
+                                    <td><t t-esc="line['product'].display_name"/></td>
+                                    <td><t t-esc="line['qty']"/></td>
+                                    <td><t t-esc="line['available']"/></td>
+                                    <td>
+                                        <t t-if="line['packaging']">
+                                            <t t-esc="line['packaging'].name"/>
+                                        </t>
+                                    </td>
+<!--                                    <td><t t-esc="line['uom'].name"/></td>-->
+                                    <td><t t-esc="line['status']"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <h2>Consumable Products</h2>
+                    <table class="table table-sm o_main_table">
+                        <thead>
+                            <tr>
+                                <th>MO Number</th>
+                                <th>Product</th>
+                                <th>Required Qty</th>
+                                <th>Available Qty</th>
+                                <th>Primary Packaging</th>
+<!--                                <th>UoM</th>-->
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="consumables" t-as="line">
+                                <tr>
+                                    <td><t t-esc="line['mo'].name"/></td>
+                                    <td><t t-esc="line['product'].display_name"/></td>
+                                    <td><t t-esc="line['qty']"/></td>
+                                    <td><t t-esc="line['available']"/></td>
+                                    <td>
+                                        <t t-if="line['packaging']">
+                                            <t t-esc="line['packaging'].name"/>
+                                        </t>
+                                    </td>
+<!--                                    <td><t t-esc="line['uom'].name"/></td>-->
+                                    <td><t t-esc="line['status']"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </t>
+            </div>
+        </t></t>
+      </template>
+
+
+
+    </data>
+</odoo>

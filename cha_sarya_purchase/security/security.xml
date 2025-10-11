@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="can_approve_purchase_order" model="res.groups">
+        <field name="name">Can Approve Purchase Orders (Finance)</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+    <record id="purchase_order_approval_notification" model="res.groups">
+        <field name="name">Purchase Order notification of approval</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+
+    <record id="notification_for_pending_po_approval" model="res.groups">
+        <field name="name">Notification for pending po approval</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+    <record id="notification_for_pending_pi_update" model="res.groups">
+        <field name="name">Notification for PI update</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+    <record id="notification_for_bl_not_entered_in_po" model="res.groups">
+        <field name="name">Notification for BL Not entered in PO</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+     <record id="include_in_cc_of_mail_to_vendor" model="res.groups">
+        <field name="name">Include in CC of mail send to vendor for document</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+    <record id="can_cancel_purchase_order" model="res.groups">
+        <field name="name">Can cancel Purchase Order</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+    <record id="can_approve_local_purchase_order" model="res.groups">
+        <field name="name">Can approve local Purchase Order</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+    <record id="local_purchase_order_finance_approval" model="res.groups">
+        <field name="name">Local Purchase Order : Finance Notification</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+    <record id="local_purchase_order_procurement_approval" model="res.groups">
+        <field name="name">Local Purchase Order : Procurement Approval</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+    <record id="can_approve_office_purchase_order" model="res.groups">
+        <field name="name">Can approve Office Purchase Order</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+    <record id="office_purchase_order_finance_approval" model="res.groups">
+        <field name="name">Office Purchase Order : Finance Notification</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+    <record id="office_purchase_order_procurement_approval" model="res.groups">
+        <field name="name">Office Purchase Order : Procurement Approval</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+
+    <record id="can_override_lpo_prices" model="res.groups">
+        <field name="name">Can override LPO prices</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+
+
+    <!--    Multi Company Rule-->
+    <record id="office_purchase_multi_company_rule" model="ir.rule">
+        <field name="name">Office Purchase Multi Company</field>
+        <field name="model_id" ref="model_office_purchase"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="domain_force">[
+            '|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="local_purchase_mrp_multi_company_rule" model="ir.rule">
+        <field name="name">Local Purchase Manufacturing Multi Company</field>
+        <field name="model_id" ref="model_local_purchase"/>
+        <field name="groups" eval="[(6,0, [ref('mrp.group_mrp_user')])]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="global" eval="False"/>
+        <field name="domain_force">[
+            '|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+    </record>
+
+  </odoo>

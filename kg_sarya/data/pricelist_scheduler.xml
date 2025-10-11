@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="ir_cron_pricelist" model="ir.cron">
+        <field name="name">Pricelist Archive</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="model_product_pricelist"/>
+        <field name="code">model.action_archive_pricelist()</field>
+        <field name="state">code</field>
+    </record>
+
+</odoo>

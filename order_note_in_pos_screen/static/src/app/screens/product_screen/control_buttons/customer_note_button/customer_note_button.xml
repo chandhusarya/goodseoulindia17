@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="order_note_in_pos_screen.OrderNoteButton">
+        <button class="control-button btn btn-light rounded-0 fw-bolder" t-on-click="() => this.onClick()">
+            <i class="fa fa-sticky-note me-1" />
+            <span> </span>
+            <span>Order Note</span>
+        </button>
+    </t>
+
+</templates>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Local  Purchase Request -->
+        <record id="mail_act_local_purchase_request" model="mail.activity.type">
+            <field name="name">Local Purchase Request</field>
+            <field name="icon">fa-sun-o</field>
+            <field name="res_model">local.purchase</field>
+        </record>
+
+    </data>
+</odoo>

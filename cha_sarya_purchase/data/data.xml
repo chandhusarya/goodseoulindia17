@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="seq_local_purchase_dist" model="ir.sequence">
+			<field name="name">Local Purchase</field>
+			<field name="code">local.purchase.dist</field>
+			<field name="prefix">LP/%(year)s/</field>
+			<field name="padding">5</field>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+		<record id="seq_local_purchase_retail" model="ir.sequence">
+			<field name="name">Local Purchase</field>
+			<field name="code">local.purchase.ret</field>
+			<field name="prefix">LP/%(year)s/</field>
+			<field name="padding">5</field>
+		</record>
+
+		<record id="seq_office_purchase_dist" model="ir.sequence">
+			<field name="name">Office Purchase</field>
+			<field name="code">office.purchase</field>
+			<field name="prefix">OP/%(year)s/</field>
+			<field name="padding">5</field>
+			<field name="company_id" ref="base.main_company"/>
+		</record>
+
+    </data>
+</odoo>

@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+pos_redelcom.access_payment_status_wizard,access_payment_status_wizard,pos_redelcom.model_payment_status_wizard,point_of_sale.group_pos_manager,1,1,1,1

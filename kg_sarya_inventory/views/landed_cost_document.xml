@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="shipment_advice_landed_cost_form" model="ir.ui.view">
+        <field name="name">shipment.advice.landed.cost.form</field>
+        <field name="model">shipment.advice.landed.cost</field>
+        <field name="arch" type="xml">
+            <form string="Shipment Advice" class="o_purchase_advice">
+
+                <header>
+                    <button name="submit_landed_cost"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'new'"
+                            string="Submit to Finance"/>
+                    <button name="apply_landed_cost" type="object"
+                            class="btn-primary"
+                            invisible="state != 'submitted'"
+                            groups="kg_sarya_inventory.can_apply_landed_cost"
+                            string="Apply Landed Cost"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="new,submitted,applied" readonly="1"/>
+                </header>
+                <sheet>
+                        <group>
+                            <group>
+                                <field name="partner_id"
+                                       readonly="state != 'new'"
+                                       domain="[('supplier_rank', '>=' , 1 )]"/>
+                                <field name="date_added"
+                                       readonly="state != 'new'"/>
+                                <field name="document_file_name" invisible="1"/>
+                                <field name="document_file" filename="document_file_name"/>
+                            </group>
+                            <group>
+                                <field name="move_id" readonly="1"/>
+                                <field name="bl_entry_id"/>
+                                <field name="bl_entry_container_id"/>
+                                <field name="inv_no"/>
+                                <field name="l10n_in_gst_treatment" readonly="state not in ['new', 'submitted']"/>
+                                <field name="show_customs_cost" invisible="1"/>
+                            </group>
+                        </group>
+
+                        <field name="customs_cost_lines"
+                               readonly="state != 'new'"
+                               nolabel="1"
+                               invisible="not show_customs_cost">
+                            <tree editable="bottom">
+
+                                <field name="container_id"/>
+                                <field name="product_id"/>
+                                <field name="account_id" required="1"/>
+                                <field name="assess_amount"/>
+                                <field name="bcd_percent"/>
+                                <field name="bcd_amount" readonly="1" force_save="1" sum="bcd_amount"/>
+                                <field name="sws_percent"/>
+                                <field name="sws_amount" readonly="1" force_save="1" sum="sws_amount"/>
+                                <field name="tax_ids"/>
+                                 <field name="vat_amount" readonly="1" force_save="1" sum="vat_amount"/>
+                                <field name="total_amount_landed_cost" readonly="1"
+                                       force_save="1" sum="total_amount_landed_cost"/>
+                            </tree>
+                        </field>
+
+                        <field name="landed_cost_lines"
+                               readonly="state != 'new'"
+                               nolabel="1"
+                               invisible="show_customs_cost">
+                            <tree editable="bottom">
+                                <field name="product_id"/>
+                                <field name="split_method"/>
+                                <field name="account_id" readonly="1" force_save="1"/>
+                                <field name="description" invisible="1"/>
+                                <field name="amount"
+                                       sum="Amount"/>
+                                <field name="tax_ids"
+                                       domain="[('type_tax_use', '=', 'purchase')]"/>
+                                <field name="total_amount"
+                                       readonly="1"
+                                       force_save="1"
+                                       sum="Total Amount"/>
+                            </tree>
+                        </field>
+
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="shipment_advice_landed_cost_tree" model="ir.ui.view">
+        <field name="name">shipment.advice.landed.cost.tree</field>
+        <field name="model">shipment.advice.landed.cost</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <tree string="Landed Cost to Apply" default_order="id desc">
+                <field name="date_added"/>
+                <field name="inv_no"/>
+                <field name="shipment_advice_id"/>
+                <field name="bl_entry_id"/>
+                <field name="bl_entry_container_id"/>
+                <field name="partner_id"/>
+                <field name="total_amount"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="shipment_advice_landed_cost_action" model="ir.actions.act_window">
+        <field name="name">Landed Cost to Apply</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">shipment.advice.landed.cost</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="shipment_advice_landed_cost_tree"/>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <menuitem id="shipment_advice_landed_cost_menu"
+              name="Landed Cost to Apply"
+              sequence="21"
+              parent="kg_sarya_inventory.shipment_advice_root_menu"
+              action="shipment_advice_landed_cost_action"
+              groups="kg_sarya_inventory.can_apply_landed_cost"/>
+
+</odoo>

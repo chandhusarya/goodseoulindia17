@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+     <record id="can_override_sales_discount" model="res.groups">
+        <field name="name">Can Override Sales Discount</field>
+         <field name="category_id" ref="kg_sarya.module_sarya_sales"/>
+    </record>
+
+    <record id="get_sales_order_confirmation_notification" model="res.groups">
+        <field name="name">Sales Order Confirmation Notification</field>
+         <field name="category_id" ref="kg_sarya.module_sarya_sales"/>
+    </record>
+
+    <record id="delivery_order_validation_notification_notification" model="res.groups">
+        <field name="name">Delivery Order validation notification</field>
+         <field name="category_id" ref="kg_sarya.module_sarya_sales"/>
+    </record>
+
+
+    <record id="can_see_ytd_report" model="res.groups">
+        <field name="name">Can See YTD Report</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_sales"/>
+    </record>
+
+  </odoo>

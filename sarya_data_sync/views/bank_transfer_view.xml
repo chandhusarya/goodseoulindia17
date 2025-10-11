@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--    Bank Transfer List view-->
+
+        <record id="bank_transfer_list_view" model="ir.ui.view">
+            <field name="name">bank.transfer.list.view</field>
+            <field name="model">bank.transfer</field>
+            <field name="arch" type="xml">
+                <tree string="Bank Transfer List" delete="True"
+                      decoration-danger="state == 'cancel'"
+                      decoration-success="state == 'done'">
+                    <field name="name"/>
+                    <field name="state" decoration-info="state == 'draft'" decoration-danger="state == 'cancel'"
+                           decoration-success="state == 'done'"
+                           widget="badge"/>
+                    <field name="currency_id" column_invisible="1"/>
+                    <field name="company_id" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--    Bank Transfer form view    -->
+
+        <record id="bank_transfer_form_view" model="ir.ui.view">
+            <field name="name">bank.transfer.form.view</field>
+            <field name="model">bank.transfer</field>
+            <field name="arch" type="xml">
+                <form string="Bank Transfer form">
+                    <header>
+                        <button name="action_compute_cash_statements_line"
+                                string="Compute Lines"
+                                type="object"
+                                class="oe_highlight"
+                                invisible="state != 'draft'"/>
+                        <button name="action_deposit_to_bank"
+                                string="Deposit To Bank"
+                                type="object"
+                                confirm="Are you sure for Deposit to Bank?"
+                                class="oe_highlight"
+                                invisible="state != 'lines_computed'"/>
+                        <button name="action_cancel"
+                                string="Cancel"
+                                type="object"
+                                confirm="Are you sure you want to cancel?"
+                                invisible="state in ('done', 'cancel')"/>
+                        <button name="action_reset"
+                                string="Reset"
+                                type="object"
+                                confirm="Are you sure you want to reset?"
+                                invisible="state not in ('cancel', 'lines_computed')"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,done" nolabel="1"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="date" readonly="state != 'draft'" required="1"/>
+                                <field name="pos_config_ids" readonly="state != 'draft'" widget="many2many_tags" required="1"/>
+                                <field name="total"/>
+                            </group>
+                            <group>
+                                <field name="company_id" readonly="1"/>
+                                <field name="currency_id" invisible="1" readonly="1"/>
+                                <field name="move_id" invisible="move_id == False" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Lines">
+                                <field name="bank_transfer_line_ids" readonly="state in ('done', 'cancel')">
+                                    <tree string="Bank Transfer Lines" delete="0" create="0" editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="pos_config_id" readonly="1"/>
+                                        <field name="pos_session_id" readonly="1"/>
+                                        <field name="amount" sum="total"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!--   Bank Transfer search view     -->
+
+        <record id="bank_transfer_search_view" model="ir.ui.view">
+            <field name="name">bank.transfer.search.view</field>
+            <field name="model">bank.transfer</field>
+            <field name="arch" type="xml">
+                <search string="Search Name">
+                    <field name="name" string="Name"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Status" name="group_by_state" domain="[]" context="{'group_by':'state'}"/>
+                        <filter string="Company" name="group_by_company" domain="[]"
+                                context="{'group_by': 'company_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!--    Bank Transfer action     -->
+
+        <record id="bank_transfer_action" model="ir.actions.act_window">
+            <field name="name">Bank Transfer</field>
+            <field name="res_model">bank.transfer</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context"/>
+            <field name="search_view_id" ref="bank_transfer_search_view"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create New Bank Transfer.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

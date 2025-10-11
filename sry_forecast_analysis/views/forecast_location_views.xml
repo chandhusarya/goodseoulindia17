@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_sry_forecast_location_tree" model="ir.ui.view">
+          <field name="name">sry.forecast.location.view.tree</field>
+          <field name="model">sry.forecast.location</field>
+          <field name="arch" type="xml">
+            <tree default_order="id desc" editable="top">
+              <field name="total" widget="boolean_toggle"/>
+              <field name="report"/>
+              <field name="name"/>
+              <field name="location_ids" widget="many2many_tags"/>
+              <field name="company_id"/>
+            </tree>
+          </field>
+        </record>
+
+        <record id="action_sry_forecast_location" model="ir.actions.act_window">
+            <field name="name">Report Locations</field>
+            <field name="res_model">sry.forecast.location</field>
+            <field name="view_id" ref="view_sry_forecast_location_tree"/>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <menuitem name="Report Location Configuration" id="menu_sry_forecast_location" sequence="51" parent="stock.menu_warehouse_config" action="action_sry_forecast_location"/>
+    </data>
+</odoo>
+

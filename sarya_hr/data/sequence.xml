@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="emp_doc_verify_sequence_ret" model="ir.sequence">
+            <field name="name">Employee Doc Verify</field>
+            <field name="code">emp.doc.verify.seq.ret</field>
+            <field name="prefix">EDOC/</field>
+            <field name="padding">7</field>
+        </record>
+
+        <record id="emp_doc_verify_sequence_dist" model="ir.sequence">
+            <field name="name">Employee Doc Verify</field>
+            <field name="code">emp.doc.verify.seq.dist</field>
+            <field name="prefix">EDOC/</field>
+            <field name="padding">7</field>
+        </record>
+
+        <record id="seq_asset_master" model="ir.sequence">
+            <field name="name">Asset Master</field>
+            <field name="code">asset.master</field>
+            <field name="prefix">SDI-A</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+
+
+
+    </data>
+</odoo>

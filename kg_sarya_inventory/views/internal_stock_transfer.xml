@@ -1,0 +1,175 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<odoo>
+
+    <record id="view_internal_stock_transfer_tree" model="ir.ui.view">
+        <field name="name">internal.stock.transfer.tree</field>
+        <field name="model">internal.stock.transfer</field>
+        <field name="arch" type="xml">
+            <tree string="Invoices" >
+                <field name="name"/>
+                <field name="company_id"/>
+                <field name="location_src_id"/>
+                <field name="location_dest_id"/>
+                <field name="picking_type_id"/>
+            </tree>
+        </field>
+    </record>
+
+
+
+    <record id="view_internal_stock_transfer_form" model="ir.ui.view">
+        <field name="name">internal.stock.transfer.form</field>
+        <field name="model">internal.stock.transfer</field>
+        <field name="arch" type="xml">
+            <form string="Internal Stock Transfer">
+                <header>
+                    <button name="select_products" type="object" string="Select Products Stock" invisible="state != 'draft'"/>
+                    <button name="action_request" type="object" string="Request Stock" invisible="state != 'product_selection'"/>
+                    <button name="process_stock_mismatch"
+                            type="object"
+                            string="Process Stock Mismatch"
+                            groups="kg_sarya_inventory.stock_internal_transfer_responsible"
+                            invisible="state != 'variation_on_receiving'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,waiting_from_wh_confirmation,in_transit,variation_on_receiving,done"/>
+                </header>
+                <sheet>
+
+                    <div class="oe_button_box" name="button_box" invisible="not id">
+                        <button class="oe_stat_button"
+                                type="object"
+                                string="View from WH Stock Transfer"
+                                name="view_from_wh_stock_transfer"
+                                icon="fa-truck"
+                                invisible="not from_location_transfer" />
+
+                        <button class="oe_stat_button"
+                                type="object"
+                                string="View To WH Stock Receiving"
+                                name="view_to_wh_stock_receiving"
+                                icon="fa-truck"
+                                invisible="not to_location_transfer" />
+                    </div>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Title" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="location_src_id" options="{'no_create_edit': True, 'no_create': True}"/>
+                            <field name="from_wh_responsible_employee" widget="many2many_tags" options="{'no_create': True}" required="1"/>
+                            <field name="company_id" readonly="1" force_save="1"/>
+                        </group>
+                        <group>
+                            <field name="location_dest_id" options="{'no_create_edit': True, 'no_create': True}"/>
+                             <field name="to_wh_responsible_employee" widget="many2many_tags" options="{'no_create': True}" required="1"/>
+                            <field name="picking_type_id" invisible="1"/>
+                            <field name="picking_type_code" invisible="1"/>
+                            <field name="stock_required_on" required="0"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Stock Loading" name="stock_loading" invisible="state == 'draft'">
+
+                           <field name="transfer_lines" nolabel="1" readonly="state not in ['draft', 'product_selection']">
+                                <tree editable="bottom">
+                                    <field name="product_id" options="{'no_create_edit': True, 'no_create': True}"/>
+                                    <field name="packaging_id"/>
+                                    <field name="packaging_qty"/>
+                                    <field name="product_uom_qty" readonly="1" force_save="1"/>
+                                    <field name="stock_transferred"/>
+                                    <field name="stock_received"/>
+                                    <field name="stock_missing"/>
+                                    <field name="balance_stock_expected" readonly="1" force_save="1"/>
+                                    <button name="action_view_details" type="object" string="Details"/>
+                                </tree>
+
+                            </field>
+                        </page>
+                        <page string="Additional Information" invisible="state == 'draft'">
+                            <group>
+                                <group string="Additional Locations">
+                                    <field name="transfer_location_id" options="{'no_create_edit': True, 'no_create': True}"/>
+                                    <field name="scrap_location_id" options="{'no_create_edit': True, 'no_create': True}"/>
+                                </group>
+                                <group string="Transfers">
+                                    <field name="from_location_transfer" options="{'no_create_edit': True, 'no_create': True}"/>
+                                    <field name="to_location_transfer" options="{'no_create_edit': True, 'no_create': True}"/>
+                                    <field name="scrap_transfer" options="{'no_create_edit': True, 'no_create': True}"/>
+                                    <field name="discrepancy_transfer_to_from_wh" options="{'no_create_edit': True, 'no_create': True}"/>
+                                    <field name="discrepancy_transfer_to_to_wh" options="{'no_create_edit': True, 'no_create': True}"/>
+                                </group>
+                            </group>
+                        </page>
+
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="internal_stock_transfer_act_window" model="ir.actions.act_window">
+        <field name="name">Internal Stock Transfer</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">internal.stock.transfer</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem id="internal_stock_transfer_menu"
+              name="Internal Stock Transfer"
+              parent="stock.menu_stock_warehouse_mgmt"
+              action="internal_stock_transfer_act_window"
+              sequence="10"/>
+
+
+
+    <record id="view_internal_stock_transfer_lines_form" model="ir.ui.view">
+        <field name="name">internal.stock.transfer.lines.form</field>
+        <field name="model">internal.stock.transfer.lines</field>
+        <field name="arch" type="xml">
+            <form string="Details">
+                <sheet>
+                    <group>
+                       <group>
+                            <field name="product_id" options="{'no_create_edit': True, 'no_create': True}" readonly="1"/>
+                            <field name="packaging_id" readonly="1"/>
+                            <field name="packaging_qty" readonly="1"/>
+                            <field name="product_uom_qty" readonly="1" force_save="1"/>
+                            <field name="can_edit_balance_stock_expected" invisible="1"/>
+                       </group>
+                       <group>
+                            <field name="stock_transferred"/>
+                            <field name="stock_received"/>
+                            <field name="stock_missing"/>
+                            <field name="balance_stock_expected" readonly="not can_edit_balance_stock_expected"/>
+                       </group>
+                   </group>
+                    <notebook>
+                        <page string="Transfer Details" name="transfer_details">
+                           <field name="line_detail" nolabel="1">
+                                <tree editable="bottom" create="false" delete="false">
+                                    <field name="lot_id" options="{'no_create_edit': True, 'no_create': True}"/>
+                                    <field name="expiration_date"  readonly="1" force_save="1"/>
+                                    <field name="stock_transferred"  readonly="1" force_save="1"/>
+                                    <field name="stock_received" readonly="1" force_save="1"/>
+                                    <field name="missing_stock"  readonly="1" force_save="1"/>
+                                    <field name="can_edit_resolution"  column_invisible="True"/>
+                                    <field name="resolution" readonly="not can_edit_resolution"/>
+                                </tree>
+                            </field>
+                         </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

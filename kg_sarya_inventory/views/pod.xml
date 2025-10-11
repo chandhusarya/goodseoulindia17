@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="view_stock_picking_pod_upload_form" model="ir.ui.view">
+        <field name="name">stock.picking.pod.upload.form</field>
+        <field name="model">stock.picking.pod.upload</field>
+        <field name="arch" type="xml">
+            <form string="Internal Stock Transfer">
+
+                <sheet>
+                    <div class="oe_title">
+                        <label for="picking_id"/>
+                        <h1>
+                            <field name="picking_id" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="pod_attach_ids" widget="many2many_binary"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="stock_picking_view_search_pod" model="ir.ui.view">
+        <field name="name">stock.picking.view.search.pod</field>
+        <field name="model">stock.picking</field>
+        <field name="arch" type="xml">
+            <search string="Search Delivery Orders">
+                <field name="sale_id" string="Sale Order"/>
+                <field name="name" string="Delivery Orders" filter_domain="[('name', 'ilike', self)]"/>
+                <separator/>
+                <filter name="pending" string="Pending" domain="['|',('delivery_status','!=','delivered'),('pod_status','!=','received')]"/>
+                <separator/>
+            </search>
+        </field>
+    </record>
+
+    <record id="stock_picking_view_form" model="ir.ui.view">
+        <field name="name">stock.picking.view.form.inherit.delivery.status</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+
+           <xpath expr="//field[@name='date_deadline']" position='after'>
+                <field name="delivery_status"/>
+                <field name="pod_status"/>
+                <field name="pod_attach_ids" widget="many2many_binary"/>
+                <field name="pod_attached_date" force_save="1" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="stock_picking_tree_pod" model="ir.ui.view">
+      <field name="name">stock.picking.view.tree.pod</field>
+      <field name="model">stock.picking</field>
+      <field name="arch" type="xml">
+        <tree create="0">
+            <field name="company_id" column_invisible="True"/>
+            <field name="name"/>
+            <field name="sale_id" readonly="1" optional="hide"/>
+            <field name="invoice_id" readonly="1" optional="hide"/>
+            <field name="scheduled_date" readonly="1" optional="hide"/>
+            <field name="date_deadline" readonly="1" optional="hide"/>
+            <field name="date_done"/>
+            <field name="partner_id" string="Customer"/>
+
+
+            <button name="button_del_dipatched" string="Dispatched"
+                    class="btn btn-link text-info" type="object"
+                    invisible="delivery_status not in ['ready_for_delivery']"/>
+
+            <button name="button_del_undelivered" string="Not delivered" class="btn btn-link text-info" type="object"
+                    invisible="delivery_status not in ['out_for_delivery']"/>
+
+            <button name="button_del_delivered" string="Delivered" class="btn btn-link text-info" type="object"
+                    invisible="delivery_status not in ['out_for_delivery']"/>
+
+            <button name="button_del_cancel" string="Cancelled" class="btn btn-link text-info" type="object"
+                    invisible="delivery_status in ['ready_for_delivery', 'out_for_delivery']"/>
+
+            <button name="button_del_reset" string="Reset" class="btn btn-link text-info" type="object"
+                    invisible="delivery_status in ['ready_for_delivery']"/>
+
+            <field name="delivery_status"
+                   decoration-warning="delivery_status == 'ready_for_delivery'"
+                   decoration-info="delivery_status == 'out_for_delivery'"
+                   decoration-primary="delivery_status == 'cancel'"
+                   decoration-success="delivery_status == 'delivered'"/>
+
+            <field name="pod_status"
+                    decoration-warning="pod_status == 'pending'"
+                    decoration-success="pod_status == 'received'"/>
+
+            <button name="upload_pod" type="object" string="Upload POD"/>
+
+        </tree>
+      </field>
+    </record>
+
+
+
+    <record id="stock_picking_action_pod" model="ir.actions.act_window">
+        <field name="name">Delivery and POD Status</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_id" ref="stock_picking_tree_pod"/>
+        <field name="domain">[('picking_type_code', '=', 'outgoing'),('state','=','done')]</field>
+        <field name="search_view_id" ref="kg_sarya_inventory.stock_picking_view_search_pod"/>
+        <field name="res_model">stock.picking</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem name="Delivery and POD Status"
+              id="menu_stock_picking_sarya"
+              parent="stock.menu_stock_warehouse_mgmt"
+              action="stock_picking_action_pod"
+              sequence="100"/>
+
+</odoo>

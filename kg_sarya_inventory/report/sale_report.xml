@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="sale_report_modification" inherit_id="sale.report_saleorder_document">
+            <xpath expr="//div[@id='informations']/div[5]" position="after">
+                <div t-if="doc.partner_id.trade_channel" class="col-auto col-3 mw-100 mb-2">
+                    <strong>Trade Channel:</strong>
+                    <p class="m-0" t-field="doc.partner_id.trade_channel"/>
+                </div>
+                <div t-if="doc.partner_id.customer_classification" class="col-auto col-3 mw-100 mb-2">
+                    <strong>Classification:</strong>
+                    <p class="m-0" t-field="doc.partner_id.customer_classification"/>
+                </div>
+                <div t-if="doc.partner_id.customer_sub_classification" class="col-auto col-3 mw-100 mb-2">
+                    <strong>Sub Classification:</strong>
+                    <p class="m-0" t-field="doc.partner_id.customer_sub_classification"/>
+                </div>
+
+                <!-- <div t-if="doc.commitment_date" class="col-auto col-3 mw-100 mb-2">
+                    <strong>Delivery Date:</strong>
+                    <p class="m-0" t-field="doc.commitment_date"/>
+                </div>
+                <div t-if="doc.commitment_date" class="col-auto col-3 mw-100 mb-2">
+                    <strong>Invoice Date:</strong>
+                    <p class="m-0" t-field="doc.commitment_date"/>
+                </div>  -->
+            </xpath>
+            <xpath expr="//th[@name='th_description']" position="after">
+                <th name="th_code" class="text-left"><span>Brand</span></th>
+                <th name="th_code" class="text-left"><span>Section</span></th>
+                <th name="th_code" class="text-left"><span>Packaging</span></th>
+                <th name="th_code" class="text-left"><span>Package Qty</span></th>
+                <!-- <th name="th_code" class="text-left"><span>Delivered Qty</span></th> -->
+                <th name="th_code" class="text-left"><span>Package Unit Price</span></th>
+            </xpath>
+
+            <xpath expr="//td[@name='td_name']" position="after">
+                 <td id="brand">
+                    <span t-field="line.product_id.brand"/>  
+                 </td>
+                 <td id="section">
+                    <span t-field="line.product_id.section"/>  
+                 </td>
+                 <td id="pk_id">
+                    <span t-field="line.product_packaging_id" />
+                 </td>
+                 <td id="pk_qty">
+                    <!-- <span t-esc="line.compute_pkg_details(2)" /> -->
+                    <span t-field="line.product_packaging_qty"/>  
+                    <!-- <span t-field="line.product_uom_id"/> -->
+                 </td>
+                 <!-- <td id="pk_qty_del"> -->
+                    <!-- <span t-esc="line.compute_pkg_details(3)" /> -->
+                    <!-- <span t-field="line.package_received"/>   -->
+                 <!-- </td> -->
+                <td id="pk_price">
+                    <span t-field="line.pkg_unit_price"/>  
+                 </td>
+            </xpath>
+            <xpath expr="//th[@name='th_quantity']" position='replace'>
+                <th></th>
+                <!-- <attribute name="invisible">1</attribute> -->
+            </xpath>
+            <xpath expr="//th[@name='th_priceunit']" position='replace'>
+                 <th></th>
+            </xpath>
+            <xpath expr="//td[@name='td_quantity']" position='replace'>
+                 <td></td>
+            </xpath>
+            <xpath expr="//td[@name='td_priceunit']" position='replace'>
+                 <td></td>
+            </xpath>
+
+<!-- <xpath expr="//div[@class='page']/div[@name='so_total_summary']" position="replace">
+                    <div class="clearfix" name="so_total_summary">
+                    <div id="total" class="row" name="total">
+                    <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
+                        <table class="table table-sm">
+                           
+                            <t t-set="tax_totals" t-value="json.loads(doc.tax_totals_json)"/> -->
+                            <!--<t t-call="account.document_tax_totals"/>-->
+<!--                             <t t-call="kg_sarya_proforma_invoice.document_tax_totals_custom"/>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            </xpath> -->
+
+            
+        </template>
+
+    </data>
+</odoo>

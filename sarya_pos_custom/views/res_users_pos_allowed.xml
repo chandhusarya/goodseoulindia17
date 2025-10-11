@@ -1,0 +1,46 @@
+<odoo>
+    <!-- Tree view -->
+    <record id="view_res_users_pos_allowed_tree" model="ir.ui.view">
+        <field name="name">res.users.pos.allowed.tree</field>
+        <field name="model">res.users.pos.allowed</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="user_ids" widget="many2many_tags"/>
+                <field name="company_id"/>
+                <field name="pos_config_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form view -->
+    <record id="view_res_users_pos_allowed_form" model="ir.ui.view">
+        <field name="name">res.users.pos.allowed.form</field>
+        <field name="model">res.users.pos.allowed</field>
+        <field name="arch" type="xml">
+            <form string="Allowed POS">
+                <sheet>
+                    <group>
+                        <field name="user_ids" widget="many2many_tags"/>
+                        <field name="company_id"/>
+                        <field name="pos_config_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action for list view -->
+    <record id="action_res_users_pos_allowed" model="ir.actions.act_window">
+        <field name="name">Allowed POS per Company</field>
+        <field name="res_model">res.users.pos.allowed</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help">Manage allowed POS configurations for users per company</field>
+    </record>
+
+    <!-- Menu item under Settings > Users & Companies -->
+    <menuitem id="menu_res_users_pos_allowed"
+              name="Allowed POS per Company"
+              parent="base.menu_users"
+              action="action_res_users_pos_allowed"
+              sequence="20"/>
+</odoo>

@@ -1,0 +1,96 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<odoo>
+
+    <!-- including field in partner -->
+    <record id="res_partner_view_user_inherit" model="ir.ui.view">
+        <field name="name">res.partner.form.user.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@name='sales_purchases']/group/group[1]/field[@name='user_id']"
+                   position='attributes'>
+                <attribute name="string">Administrator</attribute>
+            </xpath>
+            <xpath expr="//notebook/page[@name='sales_purchases']/group/group[1]/field[@name='user_id']"
+                   position='after'>
+                <field name="supplier_rank" invisible="1"/>
+                <field name="account_manager_id"/>
+                <field name="account_excutive_id"/>
+                <field name="marchandiser_id" string="Merchandiser - OLD"/>
+
+                <field name="merchandiser_id2"
+                        domain="[('share', 'in', (True, False))]"
+                        string="Merchandiser2"/>
+
+                <field name="merchandiser_supervisor_id"
+                        domain="[('share', 'in', (True, False))]"/>
+
+            </xpath>
+            <xpath expr="//span[@name='address_name']" position='before'>
+                <field name="cust_sequence" string="Customer Code" readonly="1" force_save="1"
+                       invisible="supplier_rank >= 1"/>
+            </xpath>
+
+        </field>
+    </record>
+
+
+    <!-- including filter in partner -->
+    <record id="res_partner_view_filter_inherit" model="ir.ui.view">
+        <field name="name">res.partner.form.filter.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <field name="parent_id" position="after">
+                <field name="cust_sequence" string="Customer Code"/>
+            </field>
+        </field>
+    </record>
+
+
+    <record id="res_partner_view_kanban_inherit" model="ir.ui.view">
+        <field name="name">res.partner.form.team.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.res_partner_kanban_view"/>
+        <field name="arch" type="xml">
+            <field name="country_id" position="after">
+                <field name="cust_sequence"/>
+            </field>
+            <xpath expr="//strong[@class='o_kanban_record_title oe_partner_heading']" position='after'>
+                <strong class="o_kanban_record_title oe_partner_heading">
+                    <field name="cust_sequence"/>
+                </strong>
+            </xpath>
+        </field>
+    </record>
+
+
+    <!-- including filter in sale order -->
+    <record id="sale_order_view_filter_inherit" model="ir.ui.view">
+        <field name="name">sale.order.filter.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="cust_sequence" string="Customer Code"/>
+            </field>
+
+        </field>
+    </record>
+
+
+    <record id="res_partner_tree_inherit" model="ir.ui.view">
+        <field name="name">res.partner.tree.team.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='display_name']" position='after'>
+                <field name="cust_sequence" string="Customer Code" optional="hide"/>
+                <field name="account_manager_id" string="Account Manager" optional="hide"/>
+                <field name="account_excutive_id" string="Account Excutive" optional="hide"/>
+                <field name="marchandiser_id" string="Marchandiser" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+

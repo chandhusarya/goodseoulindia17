@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="can_approve_blanket_order" model="res.groups">
+        <field name="name">Can approve Blanket Order</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+
+
+  </odoo>

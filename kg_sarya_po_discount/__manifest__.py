@@ -1,0 +1,20 @@
+{
+    "name": "Purchase Order Discount",
+    "version": "17.2.1",
+    "category": "API",
+    'license': 'AGPL-3',
+    "author": "Nafih",
+    "website": "www.klystronglobal.com",
+    "summary": "This Module is used for discount in purchase order",
+    "support": "",
+    "description": """This Module is used for discount in purchase order""",
+    "depends": ["base", 'stock', 'purchase', 'account', 'sale'],
+    "data": [
+        'views/res_conf_settings_view.xml',
+        'views/product_template.xml',
+        'views/account_move.xml',
+    ],
+    "license": "LGPL-3",
+    "installable": True,
+    "auto_install": False,
+}

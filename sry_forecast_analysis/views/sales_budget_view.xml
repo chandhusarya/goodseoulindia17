@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+<!--     Sales Budget view List-->
+    <record id="sry_sales_budget_view_list" model="ir.ui.view">
+      <field name="name">sry.sales.budget.view.list</field>
+      <field name="model">sry.sales.budget</field>
+      <field name="arch" type="xml">
+        <tree default_order="id desc">
+          <field name="month"/>
+          <field name="year"/>
+          <field name="create_uid"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- Sales Budget form view-->
+    <record id="sry_sales_budget_view_form" model="ir.ui.view">
+      <field name="name">sry.sales.budget.form</field>
+      <field name="model">sry.sales.budget</field>
+      <field name="arch" type="xml">
+        <form>
+            <header>
+                <button name="button_confirm" class="btn-primary" string="Confirm" type="object" states="draft"/>
+                <button name="button_cancel" class="btn-primary" string="Cancel" type="object" states="confirm"/>
+                <button name="create_import_template" string="Download Template" type="object" states="draft"/>
+                <field name="state" widget="statusbar" statusbar_visible="draft,confirm"/>
+            </header>
+            <sheet>
+              <group>
+                  <group>
+                    <field name="month"  required="1"/>
+                  </group>
+                  <group>
+                      <field name="year" required="1" />
+                  </group>
+              </group>
+              <notebook>
+                  <page string="Master">
+                    <group class="mt-2 mt-md-0">
+                        <field name="budget_line" nolabel="1"  attrs="{'readonly':[('state','!=','draft')]}" widget="section_and_note_one2many" mode="tree">
+                            <tree editable="bottom">
+                                <field name="budget_id" invisible="1"/>
+                                <field name="master_parent_id"/>
+                                <field name="product_id"/>
+                                <field name="quantity"/>
+                            </tree>
+                        </field>
+                    </group>
+                  </page>
+                  <page string="Import">
+                      <field name="import_filename" invisible="1"/>
+                      <field name="import_file" filename="import_filename"/>
+                      <button name="import_data_from_csv" type="object"  confirm="Are you sure you want to proceed ?" string="IMPORT"/>
+                  </page>
+              </notebook>
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                <field name="activity_ids" widget="mail_activity"/>
+                <field name="message_ids" widget="mail_thread"/>
+              </div>
+        </form>
+      </field>
+    </record>
+
+    <record id="sry_sales_budget_import_template" model="ir.actions.report">
+        <field name="name">Sales Budget Import Template</field>
+        <field name="model">sry.sales.budget</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">sry_forecast_analysis.budget_import_template</field>
+        <field name="report_file">sry_forecast_analysis.budget_import_template</field>
+        <field name="binding_model_id" ref="model_sry_sales_budget"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="sry_sales_budget_action" model="ir.actions.act_window">
+      <field name="name">Sales Budget</field>
+      <field name="res_model">sry.sales.budget</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="sry_sales_budget_menu"
+          name="Sales Budget"
+          action="sry_sales_budget_action"
+          parent="stock.menu_stock_inventory_control"
+          sequence="103"/>
+    </data>
+</odoo>
+

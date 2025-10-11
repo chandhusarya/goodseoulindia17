@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_stock_inventory,stock_inventory,model_stock_inventory,base.group_user,1,1,1,1
+access_stock_inventory_line,stock_inventory_line,model_stock_inventory_line,base.group_user,1,1,1,1
+access_pos_wastage,pos_wastage,model_pos_wastage,base.group_user,1,1,1,1
+access_pos_wastage_line,pos_wastage_line,model_pos_wastage_line,base.group_user,1,1,1,1
+access_outlet_transfer,outlet_transfer,model_outlet_transfer,base.group_user,1,1,1,1
+access_outlet_transfer_line,outlet_transfer_line,model_outlet_transfer_line,base.group_user,1,1,1,1
+access_res_users_pos_allowed,res.users.pos.allowed,model_res_users_pos_allowed,base.group_user,1,1,1,1

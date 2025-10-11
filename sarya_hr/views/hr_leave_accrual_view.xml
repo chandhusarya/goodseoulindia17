@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+        <record id="hr_accrual_plan_view_form_inherit" model="ir.ui.view">
+            <field name="name">hr.leave.accrual.plan.form</field>
+            <field name="model">hr.leave.accrual.plan</field>
+            <field name="inherit_id" ref="hr_holidays.hr_accrual_plan_view_form"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='yearly_day']" position="after">
+                    <field name="first_quarter_day"/>
+                    <field name="first_quarter_month"/>
+                    <field name="second_quarter_day"/>
+                    <field name="second_quarter_month"/>
+                    <field name="third_quarter_day"/>
+                    <field name="third_quarter_month"/>
+                    <field name="fourth_quarter_day"/>
+                    <field name="fourth_quarter_month"/>
+                </xpath>
+                <xpath expr="//field[@name='frequency'][last()]" position="after">
+                    <t t-elif="record.frequency.raw_value === 'quarterly'">
+                        on the <field name="first_quarter_day"/> <field name="first_quarter_month"/> and on the <field name="second_quarter_day"/> <field name="second_quarter_month"/> and on the <field name="third_quarter_day"/> <field name="third_quarter_month"/> and on the <field name="fourth_quarter_day"/> <field name="fourth_quarter_month"/>
+                    </t>
+                </xpath>
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="time_off_type_id" groups="base.group_multi_company"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="hr_accrual_level_view_form_inherit" model="ir.ui.view">
+            <field name="name">hr.leave.accrual.level.form</field>
+            <field name="model">hr.leave.accrual.level</field>
+            <field name="inherit_id" ref="hr_holidays.hr_accrual_level_view_form"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='biyearly']" position="after">
+                    <div name="quarterly" invisible="frequency != 'quarterly'">
+                        <field name="frequency" style="width: 4.5rem"/>
+                        <label for="first_quarter_day_display" string="on the" class="me-1"/>
+                        <field name="first_quarter_day_display" required="1" style="width: 4.1rem"/>of <field name="first_quarter_month" required="1" style="width: 4.55rem"/>
+                        <label for="second_quarter_day_display" string="and" class="me-1"/>
+                        <field name="second_quarter_day_display" required="1" style="width: 4.1rem"/>of <field name="second_quarter_month" required="1" style="width: 5.4rem"/>
+                        <label for="third_quarter_day_display" string="and" class="me-1"/>
+                        <field name="third_quarter_day_display" required="1" style="width: 4.1rem"/>of <field name="third_quarter_month" required="1" style="width: 5.4rem"/>
+                        <label for="fourth_quarter_day_display" string="and" class="me-1"/>
+                        <field name="fourth_quarter_day_display" required="1" style="width: 4.1rem"/>of <field name="fourth_quarter_month" required="1" style="width: 5.4rem"/>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

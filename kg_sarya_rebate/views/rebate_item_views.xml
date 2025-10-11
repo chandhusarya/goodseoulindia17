@@ -1,0 +1,209 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<odoo>
+
+	<record id="rebate_item_tree_view" model="ir.ui.view">
+		<field name="name">rebate.item.tree</field>
+		<field name="model">rebate.item</field>
+		<field name="arch" type="xml">
+			<tree string="Rebate Items" create="0" decoration-warning="item_type == 'reservation'">
+				<field name="name" optional="show" string="Item Ref."/>
+				<field name="invoice_date"/>
+				<field name="invoice_line_id" string="Product Description" optional="hide"/>
+				<field name="invoice_id" string="Invoice" optional="hide"/>
+				<field name="partner_id"/>
+				<field name="brand_id" optional="hide" string="Product Brand"/>
+				<field name="section_id" optional="hide" string="Product Section"/>
+				<field name="user_id" optional="hide" string="Salesman"/>
+				<field name="item_type" optional="hide"/>
+				<field name="invoice_move_type" optional="hide"/>
+				<field name="fixed_rebate_percentage" optional="show"/>
+				<field name="fixed_rebate_amount" sum="Total Fixed Rebate Amount"/>
+				<field name="progressive_rebate_id"/>
+				<field name="progressive_rebate_percentage" optional="show"/>
+				<field name="progressive_rebate_amount" sum="Total Progressive Rebate Amount"/>
+				<field name="total_rebate_amount" sum="Total Rebate Amount" optional="hide"/>
+				<field name="invoice_line_amount" optional="hide"/>
+				<field name="amount" sum="Total invoice untaxed amount in company currency"/>
+				<field name="currency_id" column_invisible="True"/>
+				<field name="company_currency_id" column_invisible="True"/>
+				<field name="fixed_rebate_lines" column_invisible="True"/>
+				<button name="action_show_fixed_rebates" type="object" class="btn text-warning"
+				        title="View fixed rebates breakdown" icon="fa-info"
+						invisible="fixed_rebate_lines == []"/>
+			</tree>
+		</field>
+	</record>
+
+	<record id="rebate_item_pivot_view" model="ir.ui.view">
+		<field name="name">rebate.item.pivot</field>
+		<field name="model">rebate.item</field>
+		<field name="priority">60</field>
+		<field name="arch" type="xml">
+			<pivot string="Rebate Items">
+				<field name="date" interval="month" type="col"/>
+				<field name="partner_id" type="row"/>
+				<field name="product_id" type="row"/>
+				<field name="product_packaging_id" type="row"/>
+				<field name="fixed_rebate_amount" type="measure"/>
+				<field name="progressive_rebate_amount" type="measure"/>
+				<field name="total_rebate_amount" type="measure"/>
+				<field name="product_packaging_qty" type="measure"/>
+			</pivot>
+		</field>
+	</record>
+
+
+	<record id="rebate_item_form_view" model="ir.ui.view">
+		<field name="name">rebate.item.form</field>
+		<field name="model">rebate.item</field>
+		<field name="arch" type="xml">
+			<form string="Rebate" create="0">
+				<sheet>
+					<div class="oe_title">
+						<label for="name" string="Reference"/>
+						<h1><field name="name" placeholder="Reference"/></h1>
+					</div>
+					<group>
+						<group>
+							<field name="partner_id"/>
+							<field name="active" widget="boolean_toggle" column_invisible="True"/>
+						</group>
+						<group>
+							<field name="sale_line_id" column_invisible="True"/>
+							<field name="date"/>
+						</group>
+					</group>
+					<notebook>
+						<page name="rebate" string="Rebate Information">
+							<group>
+								<group>
+									<field name="rebate_id"/>
+									<field name="progressive_rebate_id"/>
+								</group>
+								<group>
+									<field name="fixed_rebate_amount"/>
+									<field name="progressive_rebate_amount"/>
+								</group>
+							</group>
+						</page>
+						<page name="order" string="Sales Order Details">
+							<group>
+								<group>
+									<field name="product_id"/>
+									<field name="invoice_line_amount"/>
+								</group>
+								<group>
+									<field name="product_packaging_id"/>
+									<field name="product_packaging_qty"/>
+								</group>
+							</group>
+						</page>
+						<page name="others" string="Other Information">
+							<group>
+								<group>
+									<field name="company_id"/>
+								</group>
+								<group>
+									<field name="currency_id"/>
+								</group>
+							</group>
+						</page>
+					</notebook>
+				</sheet>
+				<div class="oe_chatter">
+					<field name="message_follower_ids"/>
+					<field name="activity_ids"/>
+					<field name="message_ids"/>
+				</div>
+			</form>
+		</field>
+	</record>
+
+	<record id="rebate_item_search" model="ir.ui.view">
+		<field name="name">rebate.item.search</field>
+		<field name="model">rebate.item</field>
+		<field name="arch" type="xml">
+			<search string="Rebate Item">
+				<field name="name" string="Rebate Item" filter_domain="[('name', 'ilike', self)]"/>
+				<field name="invoice_id" string="Invoice" filter_domain="[('invoice_id', 'ilike', self)]"/>
+				<field name="partner_id" string="Customer" filter_domain="[('partner_id', 'ilike', self)]"/>
+				<field name="rebate_id" string="Rebate" filter_domain="[('rebate_id', 'ilike', self)]"/>
+				<field name="product_id" string="Product/description"
+				       filter_domain="['|', '|', ('product_id', 'ilike', self), ('sale_line_id', 'ilike', self), ('invoice_line_id', 'ilike', self)]"/>
+				<separator/>
+				<filter string="Active" name="active" domain="[('active','=',True)]"/>
+				<filter string="Deactivate" name="archive" domain="[('active','=',False)]"/>
+				<filter string="Posted Only" name="posted"
+				        domain="[('active','=',True), ('invoice_state','=','posted')]"/>
+				<group expand="1" string="Group By">
+					<filter string="Invoice" name="groupby_invoice" context="{'group_by':'invoice_id'}"/>
+					<filter string="Status" name="groupby_state" context="{'group_by':'invoice_state'}"/>
+					<filter string="Product" name="groupby_product" context="{'group_by':'product_id'}"/>
+					<filter string="Customer" name="groupby_customer" context="{'group_by':'partner_id'}"/>
+					<filter string="Package" name="groupby_package" context="{'group_by':'product_packaging_id'}"/>
+					<filter string="Invoice Type" name="groupby_invoice_move_type"
+					        context="{'group_by':'invoice_move_type'}"/>
+					<filter string="Rebate Item Type" name="groupby_item_type" context="{'group_by':'item_type'}"/>
+				</group>
+			</search>
+		</field>
+	</record>
+
+	<!-- for view to show fixed rebate item breakdowns -->
+	<record id="fixed_items_form_view" model="ir.ui.view">
+		<field name="name">fixed.item.form.view</field>
+		<field name="model">rebate.item</field>
+		<field name="priority">1000</field>
+		<field name="arch" type="xml">
+			<form string="Fixed Rebate Breakdown">
+				<group>
+					<group>
+						<field name="rebate_id" readonly="1"/>
+					</group>
+					<group>
+						<field name="fixed_rebate_amount" readonly="1"/>
+						<field name="fixed_rebate_percentage" readonly="1"/>
+					</group>
+				</group>
+				<field name="fixed_rebate_lines" readonly="1">
+					<tree>
+						<field name="fixed_rebate_id"/>
+						<field name="rebate_fixed_amount"/>
+					</tree>
+				</field>
+				<footer>
+					<button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z"/>
+				</footer>
+			</form>
+		</field>
+	</record>
+
+	<record id="action_rebate_fixed_item" model="ir.actions.act_window">
+		<field name="name">Fixed Rebate Breakdown</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">rebate.item</field>
+		<field name="view_id" ref="fixed_items_form_view"/>
+		<field name="target">new</field>
+	</record>
+
+	<record id="action_rebate_item" model="ir.actions.act_window">
+		<field name="name">Rebate Items</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">rebate.item</field>
+		<field name="view_mode">tree,pivot,graph</field>
+		<field name="search_view_id" ref="rebate_item_search"/>
+		<field name="domain">[('invoice_state', '=', 'posted')]</field>
+		<field name="context">{'search_default_groupby_customer': 1}</field>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">
+				There are no rebate items to show
+			</p>
+		</field>
+	</record>
+
+
+	<menuitem name="Rebate Items" id="rebate_item_menu" action="action_rebate_item"
+	          sequence="5" parent="kg_sarya_rebate.rebate_entry_menu_main"/>
+
+</odoo>
+

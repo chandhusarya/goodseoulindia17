@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="portal_calender_merchandiser_schedule" name="Merchandiser Delivery">
+        <t t-call="portal.portal_layout">
+            <div class="container mb64 o_merchandiser_schedule">
+                <t t-call="sry_outlet_coverage_plan.merchandiser_schedule_calendar"/>
+            </div>
+        </t>
+    </template>
+
+    <template id="merchandiser_schedule_calendar" name="Merchandiser Schedule">
+        <div id="merchandiser_schedule_data">
+            <div class="d-none">
+                <input type="text"
+                       name="merch_or_saleperson"
+                       t-att-value="merch_or_saleperson"
+                       class="d-none"/>
+
+                <input type="text"
+                       name="current_display_type"
+                       t-att-value="display_type"
+                       class="d-none"/>
+
+            </div>
+            <div class="input-group mb-3">
+                <t>
+                    <div class="dropdown">
+                        <a role="button" class="btn btn-primary dropdown-toggle"
+                           data-toggle="dropdown" data-display="static" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                            <span t-esc="display_type_name"/>
+                        </a>
+                        <div class="dropdown-menu" role="menu">
+                            <a role="menuitem" class="dropdown-item js_merch_visit_only_filter">Visits Only</a>
+                            <a role="menuitem" class="dropdown-item js_merch_deliveries_only_filter">Deliveries Only</a>
+                            <a role="menuitem" class="dropdown-item js_merch_visit_deliveries_filter">Vist and Deliveries</a>
+                        </div>
+                    </div>
+                    <input type="text"
+                           class="form-control"
+                           name="outlet_name"
+                           t-att-value="outlet_name"
+                           placeholder="Outlet Name..."/>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary"
+
+                                t-attf-class="btn btn-primary o_js_find_outlet"
+                                id="find_outlet"
+                                type="button">Find Outlet
+                        </button>
+                    </div>
+                </t>
+            </div>
+
+            <div class="input-group mb-3">
+
+                <t t-if="can_view_my_visit">
+
+                    <div class="dropdown">
+                        <a role="button" class="btn btn-primary dropdown-toggle"
+                           data-toggle="dropdown" data-display="static" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                            <span t-esc="display_data_of"/>
+                        </a>
+                        <div class="dropdown-menu" role="menu">
+                            <a role="menuitem" class="dropdown-item o_js_merch_or_saleperson_merch">Merchandisers</a>
+                            <a role="menuitem" class="dropdown-item o_js_merch_or_saleperson_sale">My Visits</a>
+                        </div>
+                    </div>
+
+
+                </t>
+
+                <t t-if="is_key_account_manager">
+
+                    <div class="dropdown">
+                        <a role="button" class="btn btn-primary dropdown-toggle"
+                           data-toggle="dropdown" data-display="static" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                            <span t-esc="display_data_of"/>
+                        </a>
+                        <div class="dropdown-menu" role="menu">
+                            <a role="menuitem" class="dropdown-item o_js_merch_or_saleperson_merch">Merchandisers</a>
+                            <a role="menuitem" class="dropdown-item o_js_key_account_executive">Key Account Executives</a>
+                        </div>
+                    </div>
+
+
+                </t>
+
+                <t t-if="show_merch_search">
+                    <input type="text"
+                           class="form-control"
+                           name="merchandiser_name"
+                           t-att-value="merchandiser_name"
+                           placeholder="Merchandiser Name..."/>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary"
+                                t-attf-class="btn btn-primary o_js_find_merchandiser"
+                                id="find_merchandiser"
+                                type="button">Find Merchandiser
+                        </button>
+                    </div>
+                </t>
+
+
+                <t t-if="show_account_executive_search">
+                    <input type="text"
+                           class="form-control"
+                           name="key_account_executive_name"
+                           t-att-value="key_account_executive"
+                           placeholder="Key Account Executive Name..."/>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary"
+                                t-attf-class="btn btn-primary o_js_find_key_account_executive"
+                                id="find_merchandiser"
+                                type="button">Find Executive
+                        </button>
+                    </div>
+                </t>
+
+
+
+            </div>
+
+            <div id="calendar">
+                <div t-foreach="slots" t-as="month" t-attf-id="month-#{month['id']}"
+                     t-attf-class="o_delivery_plan_month px-1 px-md-3 #{'d-none' if month['id'] > 0 else ''}">
+                    <div id="calendarHeader" class="d-inline-flex align-items-baseline container-fluid">
+                        <button t-if="month['id'] > 0" type="button" id="prevCal"
+                                t-attf-class="btn btn-primary o_js_calendar_navigate">
+                            <i class="fa fa-arrow-left"/>
+                        </button>
+                        <div t-else="" class="btn disabled fa fa-arrow-left mr-1" style="color:rgb(236, 236, 236)"/>
+                        <h3 t-out="month['month']" class="col text-center"/>
+                        <button t-if="len(slots) > month['id'] + 1" type="button" id="nextCal"
+                                t-attf-class="btn btn-primary o_js_calendar_navigate ml-1">
+                            <i class="fa fa-arrow-right"/>
+                        </button>
+                        <div t-else="" class="btn disabled fa fa-arrow-right ml-1" style="color:rgb(236, 236, 236)"/>
+                    </div>
+                    <table class="table mt-1">
+                        <tr class="active">
+                            <t t-foreach="formated_days" t-as="day">
+                                <th class="text-center p-1 align-middle" t-out="day"/>
+                            </t>
+                        </tr>
+                        <tr t-foreach="month['weeks']" t-as="weeks" class="o_appointment_days">
+                            <t t-foreach="weeks" t-as="day">
+                                <td t-attf-class="align-middle text-center p-1 #{day['weekend_cls']} #{day['today_cls']}"
+                                    style="width: 14.28%;white-space:nowrap;vertical-align: top !important; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px;"
+                                    t-attf-title="#{day['today_cls'] and 'Today' or ''}">
+                                    <b>
+                                        <div style="background-color: #cbd6ebcc;">
+                                            <div t-out="day['day'].day" t-attf-class="mx-auto w-50 #{day['mute_cls']}"/>
+                                        </div>
+                                    </b>
+
+                                    <t t-if="day['is_manager']">
+
+                                        <table style="font-size: 10px; margin-top:20px;">
+                                            <t t-set="merch_count" t-value="1"/>
+                                            <tr t-foreach="day['outlets']" t-as="merchandiser">
+                                                <td style="text-wrap: wrap !important; border: none; white-space: normal; text-align: left; margin-top:0px; margin-bottom: 10px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 2px;">
+                                                    <b style="font-size: 12px;"><span t-esc="merch_count"/>.<span t-esc="merchandiser"/></b>
+                                                    <t t-set="merch_count" t-value="merch_count+1"/>
+
+                                                    <table style="font-size: 10px; margin-top:6px; margin-bottom:10px;">
+
+                                                        <t t-set="outlet_count" t-value="1"/>
+                                                        <tr t-foreach="day['outlets'][merchandiser]" t-as="type">
+
+                                                            <td style="text-wrap: wrap !important; border: none; white-space: normal; text-align: left; margin-top:0px; margin-bottom: 10px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 2px;">
+
+                                                                <t t-if="day['outlets'][merchandiser][type]">
+                                                                    <t t-if="type == 'Delivery'">
+                                                                        <b>
+                                                                            <span t-esc="type"/>
+                                                                        </b>
+                                                                        <table style="font-size: 10px; margin-top:6px; margin-bottom:6px;">
+                                                                            <tr t-foreach="day['outlets'][merchandiser][type]"
+                                                                                t-as="outlet">
+                                                                                <td style="text-wrap: wrap !important; border: none; white-space: normal; text-align: left; margin-top:0px; margin-bottom: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 2px;">
+                                                                                    <b><span t-esc="outlet_count"/>.
+                                                                                    </b>
+                                                                                    <span style="padding-left: 2px;"
+                                                                                          t-esc="outlet"/>
+                                                                                    <t t-set="outlet_count"
+                                                                                       t-value="outlet_count+1"/>
+                                                                                </td>
+
+                                                                            </tr>
+                                                                        </table>
+                                                                    </t>
+
+                                                                    <t t-if="type == 'Visit'">
+                                                                        <b>
+                                                                            <span t-esc="type" style="color: blue;"/>
+                                                                        </b>
+                                                                        <table style="font-size: 10px; margin-top:6px; margin-bottom:6px; color: blue;">
+                                                                            <tr t-foreach="day['outlets'][merchandiser][type]"
+                                                                                t-as="outlet">
+                                                                                <td style="text-wrap: wrap !important; border: none; white-space: normal; text-align: left; margin-top:0px; margin-bottom: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 2px;">
+                                                                                    <b><span t-esc="outlet_count"/>.
+                                                                                    </b>
+                                                                                    <span style="padding-left: 2px;"
+                                                                                          t-esc="outlet"/>
+                                                                                    <t t-set="outlet_count"
+                                                                                       t-value="outlet_count+1"/>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </t>
+                                                                </t>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </t>
+
+                                    <t t-if="not day['is_manager']">
+
+                                        <table style="font-size: 10px; margin-top:20px;">
+                                            <t t-set="i" t-value="1"/>
+                                            <tr t-foreach="day['outlets']" t-as="type">
+                                                <td style="text-wrap: wrap !important; border: none; white-space: normal; text-align: left; margin-top:0px; margin-bottom: 10px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 2px;">
+
+                                                    <t t-if="day['outlets'][type]">
+                                                        <t t-if="type == 'Delivery'">
+                                                            <b>
+                                                                <span t-esc="type"/>
+                                                            </b>
+                                                            <table style="font-size: 10px; margin-top:6px; margin-bottom:6px;">
+                                                                <tr t-foreach="day['outlets'][type]" t-as="outlet">
+                                                                    <td style="text-wrap: wrap !important; border: none; white-space: normal; text-align: left; margin-top:0px; margin-bottom: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 2px;">
+                                                                        <b><span t-esc="i"/>.
+                                                                        </b>
+                                                                        <span style="padding-left: 2px;"
+                                                                              t-esc="outlet"/>
+                                                                        <t t-set="i" t-value="i+1"/>
+                                                                    </td>
+
+                                                                </tr>
+                                                            </table>
+                                                        </t>
+
+                                                        <t t-if="type == 'Visit'">
+                                                            <b>
+                                                                <span t-esc="type" style="color: blue;"/>
+                                                            </b>
+                                                            <table style="font-size: 10px; margin-top:6px; margin-bottom:6px; color: blue;">
+                                                                <tr t-foreach="day['outlets'][type]" t-as="outlet">
+                                                                    <td style="text-wrap: wrap !important; border: none; white-space: normal; text-align: left; margin-top:0px; margin-bottom: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 2px;">
+                                                                        <b><span t-esc="i"/>.
+                                                                        </b>
+                                                                        <span style="padding-left: 2px;"
+                                                                              t-esc="outlet"/>
+                                                                        <t t-set="i" t-value="i+1"/>
+                                                                    </td>
+
+                                                                </tr>
+                                                            </table>
+                                                        </t>
+
+                                                    </t>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </t>
+                                </td>
+                            </t>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </template>
+
+</odoo>

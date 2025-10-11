@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="view_inventory_tree" model="ir.ui.view">
+        <field name="name">stock.inventory.tree</field>
+        <field name="model">stock.inventory</field>
+        <field name="arch" type="xml">
+            <tree decoration-muted="state == 'cancel'">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_inventory_form" model="ir.ui.view">
+        <field name="name">stock.inventory.form</field>
+        <field name="model">stock.inventory</field>
+        <field name="arch" type="xml">
+            <form string="Stock Count">
+                <header>
+                    <button name="action_start" invisible="state != 'draft'" string="Start Inventory" type="object"
+                            class="oe_highlight" groups="stock.group_stock_user"/>
+                    <button name="action_validate" invisible="state != 'progress'" string="Validate Inventory" type="object"
+                            class="oe_highlight" groups="stock.group_stock_manager"/>
+                    <button name="action_cancel_draft" invisible="state != 'cancel'"  string="Set to Draft" type="object"/>
+                    <button name="action_cancel_draft" invisible="state != 'progress'" string="Cancel Inventory" type="object"/>
+                    <field name="state" clickable="1" widget="statusbar" statusbar_visible="draft,progress,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+
+                    </div>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Annual inventory"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="pos_config_id"
+                                   options="{'no_create_edit': True, 'no_create': True}"
+                                   required="1" domain="[('terminal_type', '=', 'primary')]"
+                                   readonly="state != 'draft'"/>
+                            <field name="location_id" domain="[('usage', '=', 'internal')]" options="{'no_create': True}"
+                                   groups="stock.group_stock_multi_locations" readonly="state != 'draft'"/>
+                            <field name="filter" string="Inventory of" widget='radio'
+                                   readonly="state != 'draft'"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                            <!--                        domain="[('type','=','product')]"-->
+                            <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                            <field name="product_id" invisible="filter not in ('product', 'product_owner')" required="filter in ('product', 'product_owner')"
+                                   options="{'no_create': True}"/>
+                            <field name="category_id" invisible="filter not in ('category')" required="filter in ('category')" readonly="state != 'draft'"
+                                   options="{'no_create': True}"/>
+                            <field name="lot_id" invisible="filter != 'lot'" required="filter == 'lot'"
+                                   groups="stock.group_production_lot"/>
+                            <field name="partner_id" invisible="filter not in ('owner', 'product_owner')" required="filter in ('owner', 'product_owner')"
+                                   groups="stock.group_tracking_owner"/>
+                            <field name="package_id" invisible="filter != 'pack'" required="filter == 'pack'"
+                                   groups="stock.group_tracking_lot"/>
+                            <field name="exhausted" invisible="filter in ('owner', 'product_owner','lot','pack','partial', 'product')"/>
+                        </group>
+                    </group>
+                    <notebook invisible="state == 'draft'">
+                        <page string="Inventory Details">
+                            <button name="action_reset_product_qty" invisible="state != 'progress'" string="⇒ Set quantities to 0"
+                                    type="object" class="oe_link oe_right" groups="stock.group_stock_user"/>
+                            <field name="line_ids" string="Inventory Details" mode="tree,kanban">
+                                <tree string="Inventory Details" editable="bottom"
+                                      decoration-info="product_qty != theoretical_qty"
+                                      decoration-danger="theoretical_qty &lt; 0">
+                                    <field name="product_tracking" invisible="1"/>
+                                    <field name="product_id" domain="[('type','=','product')]"
+                                           readonly="parent.filter == 'product' or parent.state == 'done'" force_save="1"/>
+                                    <field name="product_uom_id" string="UoM" groups="uom.group_uom"
+                                            readonly="parent.state == 'done'" invisible="1"/>
+                                    <field name="product_uom_category_id" invisible="1"/>
+                                    <field name="primary_packaging_id"/>
+                                    <field name="location_id" groups="stock.group_stock_multi_locations"
+                                           domain="[('usage', '=', 'internal')]" required="1" readonly="parent.state == 'done'"/>
+                                    <field name="prod_lot_id" domain="[('product_id', '=', product_id)]"
+                                           readonly="product_tracking == 'none' or parent.state == 'done'"
+                                           context="{'default_product_id': product_id}"
+                                           groups="stock.group_production_lot"/>
+                                    <field name="package_id" domain="['|', ('location_id','=', False)]"
+                                           groups="stock.group_tracking_lot"/>
+                                    <field name="partner_id" groups="stock.group_tracking_owner"/>
+                                    <field name="theoretical_qty" readonly="1" force_save="1"/>
+                                    <field name="product_qty" string="Real Quantity" readonly="parent.state == 'done'"/>
+                                    <field name="inventory_diff_quantity"/>
+                                    <field name="price" string="Unit Price" readonly="1" force_save="1" invisible="1"/>
+                                    <field name="state" invisible="True"/>
+                                </tree>
+                                <kanban class="o_kanban_mobile">
+                                    <field name="product_tracking" invisible="1"/>
+                                    <field name="product_id" domain="[('type','=','product')]"/>
+                                    <field name="product_uom_id" groups="uom.group_uom" string="UoM"/>
+                                    <field name="location_id" domain="[('id', 'child_of', parent.location_id)]"
+                                           groups="stock.group_stock_multi_locations"/>
+                                    <field name="prod_lot_id" domain="[('product_id', '=', product_id)]"
+                                           readonly="product_tracking == 'none'"
+                                           context="{'default_product_id': product_id}"
+                                           groups="stock.group_production_lot"/>
+                                    <field name="package_id" domain="['|', ('location_id','=', False)]"/>
+                                    <field name="partner_id"/>
+                                    <field name="theoretical_qty" readonly="1"/>
+                                    <field name="product_qty" string="Real Quantity"/>
+                                    <field name="inventory_diff_quantity"/>
+                                    <field name="state" invisible="True"/>
+
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div t-attf-class="oe_kanban_global_click_edit
+                                                           #{record.product_qty.raw_value!=record.theoretical_qty.raw_value ? 'oe_kanban_color_6' : ''}
+                                                           #{record.theoretical_qty.raw_value&lt;0 ? 'oe_kanban_color_2' : ''}">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <strong>
+                                                            <field name='product_id'/>
+                                                        </strong>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+                                                        <span><t t-esc='record.location_id.string'/>:
+                                                            <t t-esc='record.location_id.value'/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+                                                        <span><t t-esc='record.theoretical_qty.string'/>:
+                                                            <t t-esc='record.theoretical_qty.value'/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12 text-muted">
+                                                        <span><t t-esc='record.product_qty.string'/>:
+                                                            <t t-esc='record.product_qty.value'/>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                            </field>
+                            <h3 class="oe_grey">Notes</h3>
+                            <ul class="oe_grey">
+                                <li>Inventory adjustments will be made by comparing the theoretical and the checked
+                                    quantities.
+                                </li>
+                                <li>You can delete lines to ignore some products.</li>
+                                <li>If a product is not at the right place, set the checked quantity to 0 and create a
+                                    new line with correct location.
+                                </li>
+                            </ul>
+                        </page>
+                        <page string="Stock Moves" name="stock_move">
+                            <field name="stock_move_ids" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="stock_inventory_action" model="ir.actions.act_window">
+        <field name="name">Stock Count</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">stock.inventory</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem action="stock_inventory_action" id="menu_stock_inventory" parent="stock.menu_stock_warehouse_mgmt"
+              sequence="30"/>
+
+
+    <record id="view_inventory_line_tree" model="ir.ui.view">
+        <field name="name">stock.inventory.line.tree</field>
+        <field name="model">stock.inventory.line</field>
+        <field name="arch" type="xml">
+            <tree editable="top">
+                <field name="inventory_id" readonly="1"/>
+                <field name="product_id" readonly="1"/>
+                <field name="prod_lot_id" readonly="1"/>
+                <field name="theoretical_qty"/>
+                <field name="product_qty" readonly="state == 'done'"/>
+                <field name="inventory_diff_quantity"/>
+                <field name="state" readonly="1"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="stock_inventory_line_action" model="ir.actions.act_window">
+        <field name="name">Stock Count Lines</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">stock.inventory.line</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+
+    <record model="ir.ui.view" id="view_stock_quant_pos_view">
+        <field name="name">stock.quant.pos.view</field>
+        <field name="model">stock.quant</field>
+        <field eval="1000" name="priority"/>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="create_date" column_invisible="True"/>
+                <field name="write_date" column_invisible="True"/>
+                <field name="id" column_invisible="True"/>
+                <field name="company_id" column_invisible="True"/>
+                <field name="location_id"
+                       column_invisible="context.get('hide_location', False)"
+                       readonly="id"
+                       options="{'no_create': True}"/>
+                <field name="storage_category_id" optional="hide"/>
+                <field name="product_id"
+                       readonly="context.get('single_product', False) or id" force_save="1"
+                       options="{'no_create': True}" widget="many2one"/>
+                <field name="product_categ_id" optional="hide"/>
+                <field name='company_id' groups="base.group_multi_company" optional="hidden"/>
+                <field name="package_id" groups="stock.group_tracking_lot"
+                       readonly="id"/>
+                <field name="lot_id" groups="stock.group_production_lot"
+                       column_invisible="context.get('hide_lot', False)"
+                       context="{'default_product_id': product_id, 'default_company_id': company_id}"/>
+                <field name="owner_id" groups="stock.group_tracking_owner"
+                       readonly="id"
+                       options="{'no_create': True}"/>
+                <field name="inventory_quantity_auto_apply" string="On Hand Quantity" readonly="0" sum="Total On Hand"/>
+                <field name="reserved_quantity" optional="show" sum="Total Reserved"/>
+                <field name="product_uom_id" string="Unit" groups="uom.group_uom"/>
+                <field name="lot_properties" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+     <record id="view_stock_quant_pos_action" model="ir.actions.act_window">
+        <field name="name">Current Stock</field>
+        <field name="type">ir.actions.act_window</field>
+         <field name="context">{'search_default_internal_loc': 1}</field>
+        <field name="res_model">stock.quant</field>
+        <field name="view_mode">tree</field><field name="view_id" ref="view_stock_quant_pos_view"/>
+    </record>
+
+
+    <menuitem action="view_stock_quant_pos_action" id="menu_stock_quant_pos" parent="point_of_sale.menu_point_of_sale"
+              sequence="30"/>
+
+
+</odoo>

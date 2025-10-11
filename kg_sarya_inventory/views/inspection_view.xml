@@ -1,0 +1,47 @@
+<odoo>
+  <data>
+
+    <record id="inspection_wizard_form" model="ir.ui.view">
+        <field name="name">shipment.inspection.form</field>
+        <field name="model">shipment.inspection</field>
+        <field name="arch" type="xml">
+            <form string="Inspection Form">
+                <header>
+					<button name="update_inspected_qty" class="oe_highlight" string="Update" type="object"/>
+				</header>
+                <sheet>
+                    <group>
+                        <field name="shipment_id"/>
+                    </group>
+                    <notebook>
+                    <page string="Products" name="products">
+							<field name="shipment_lines" readonly="0">
+								<tree string="Shipment products" editable="bottom" create="0">
+									<field name="product_id" options="{'no_edit': True, 'no_create': True}" readonly="1"/>
+									<field name="purchase_id" options="{'no_edit': True, 'no_create': True}" readonly="1"/>
+									<field name="purchase_line_id" options="{'no_edit': True, 'no_create': True}" readonly="1"/>
+									<field name="product_packaging_id" options="{'no_edit': True, 'no_create': True}" readonly="1"/>
+									<field name="open_packaging_qty" force_save="1" readonly="1"/>
+									<field name="shipped_packaging_qty" readonly="1"/>
+									<field name="received_packaging_qty" readonly="1"/>
+									<field name="inspected_packaging_qty"/>
+									<field name="is_inspected"/>
+									<field name="state" invisible="1"/>
+								</tree>
+							</field>
+						</page>
+                    </notebook>
+                </sheet>
+            </form>
+
+        </field>
+    </record>
+
+    <record id="inspection_wizard_action" model="ir.actions.act_window">
+        <field name="name">Inspection Form</field>
+        <field name="res_model">shipment.inspection</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+  </data>
+</odoo>

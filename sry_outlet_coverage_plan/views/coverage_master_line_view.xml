@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="sry_coverage_master_line_filter" model="ir.ui.view">
+            <field name="name">sry.coverage.master.line.filter</field>
+            <field name="model">sry.coverage.master.line</field>
+            <field name="arch" type="xml">
+                <search string="Search">
+                    <field name="outlet_id"/>
+                    <field name="coverage_id"/>
+                    <field name="merchandiser_id2"/>
+                    <field name="account_excutive_id"/>
+                    <field name="account_manager_id"/>
+                </search>
+            </field>
+        </record>
+
+        <!--    Coverage Master List-->
+        <record id="sry_coverage_master_line_view_list" model="ir.ui.view">
+            <field name="name">sry.coverage.master.line.view.list</field>
+            <field name="model">sry.coverage.master.line</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="merchandiser_id2" options="{'no_open': True, 'no_create': True}"/>
+                    <field name="coverage_id" optional="hide" readonly="1" options="{'no_open': True, 'no_create': True}"/>
+                    <field name="account_excutive_id" optional="hide" readonly="1" options="{'no_open': True, 'no_create': True}"/>
+                    <field name="outlet_id" readonly="1" options="{'no_open': True, 'no_create': True}"/>
+
+                    <field name="mon_visit_plan" optional="show"/>
+                    <field name="tue_visit_plan" optional="show"/>
+                    <field name="wed_visit_plan" optional="show"/>
+                    <field name="thu_visit_plan" optional="show"/>
+                    <field name="fri_visit_plan" optional="show"/>
+                    <field name="sat_visit_plan" optional="show"/>
+                    <field name="sun_visit_plan" optional="show"/>
+
+                    <field name="mon_plan" optional="show"/>
+                    <field name="tue_plan" optional="show"/>
+                    <field name="wed_plan" optional="show"/>
+                    <field name="thu_plan" optional="show"/>
+                    <field name="fri_plan" optional="show"/>
+                    <field name="sat_plan" optional="show"/>
+                    <field name="sun_plan" optional="show"/>
+
+                    <button string="Change Merch" name="change_merchandiser" type="object"/>
+                    <button string="Apply" name="recompute_line" type="object"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="sry_coverage_master_line_action" model="ir.actions.act_window">
+            <field name="name">Coverage Line</field>
+            <field name="res_model">sry.coverage.master.line</field>
+            <field name="view_mode">tree</field>
+             <field name="search_view_id" ref="sry_coverage_master_line_filter"/>
+        </record>
+
+        <menuitem id="sry_coverage_master_line_menu"
+                  name="Coverage Line"
+                  parent="menu_sales_plans"
+                  action="sry_coverage_master_line_action"
+                  sequence="1"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,92 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<odoo>
+
+	<record id="partner_customer_rebate_tree" model="ir.ui.view">
+		<field name="name">customer.rebate.tree</field>
+		<field name="model">customer.rebate</field>
+		<field name="arch" type="xml">
+			<tree>
+				<field name="rebate" required="1"/>
+				<field name="date_start" required="1" readonly="1"/>
+				<field name="date_end" required="1" readonly="1"/>
+			</tree>
+		</field>
+	</record>
+
+	<record id="partner_customer_rebate_form" model="ir.ui.view">
+		<field name="name">customer.rebate.form</field>
+		<field name="model">customer.rebate</field>
+		<field name="arch" type="xml">
+			<form string="Customer Rebate Form">
+				<sheet>
+					<div class="oe_button_box" name="button_box">
+						<button class="oe_stat_button" name="rebate_creditnote_view" type="object" icon="fa-list-ol">
+							<field string="Journal Entries" name="credit_count" widget="statinfo"/>
+						</button>
+					</div>
+					<group name="cust_rebate main">
+						<group name="cust_rebate_child">
+							<field name="rebate"
+								   readonly="rebate_status" required="1"/>
+							<field name="company_id" invisible="1"/>
+							<field name="rebate_status" invisible="1"/>
+						</group>
+						<group>
+							<field name="date_start" readonly="rebate_status" required="1"/>
+							<field name="date_end" readonly="rebate_status" required="1"/>
+							<field name="year" invisible="1"/>
+						</group>
+					</group>
+					<button style="margin-left:45%" name="load_customers" class="oe_highlight" type="object"
+					        string="Load Rebate" readonly="rebate_status"
+					        confirm="This will create draft journal entries.Do you want to proceed?"/>
+					<field name="customer_line">
+						<tree string="Customer List" readonly="1" force_save="1" delete="false">
+							<field name="customer_id" string="Customer"/>
+							<field name="state" invisible="1"/>
+							<field name="amount"/>
+							<field name="line_customer" invisible="1"/>
+						</tree>
+						<form>
+
+							<field name="rebate_line">
+								<tree delete="false">
+
+									<field name="product_id"/>
+									<field name="description"/>
+									<field name="prevous_amount" string="Previous Amount"/>
+									<field name="prevous_rebate" string="Previous Rebate"/>
+									<field name="current_amount"/>
+									<field name="current_rebate"/>
+									<field name="total_amount"/>
+									<field name="total_rebate"/>
+								</tree>
+							</field>
+							<footer></footer>
+						</form>
+					</field>
+				</sheet>
+
+				<div class="oe_chatter">
+					<field name="message_follower_ids" groups="base.group_user"/>
+					<field name="activity_ids"/>
+					<field name="message_ids"/>
+				</div>
+			</form>
+
+		</field>
+	</record>
+
+	<record id="customer_rebate_menu_action" model="ir.actions.act_window">
+		<field name="name">Customer Rebate Form</field>
+		<field name="res_model">customer.rebate</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+
+
+	<menuitem name="Rebate" id="rebate_menu_main" sequence="10" parent="sale.sale_menu_root" groups="kg_sarya_rebate.can_view_rebate_configuration"/>
+<!--	<menuitem name="Customer Rebate" id="partner_customer_rebate_menu" action="customer_rebate_menu_action"-->
+<!--	          sequence="1" parent="kg_sarya_rebate.rebate_menu_main"/>-->
+
+</odoo>
+

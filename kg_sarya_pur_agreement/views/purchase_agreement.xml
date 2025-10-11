@@ -1,0 +1,147 @@
+<odoo>
+    <data>
+        <record id="view_purchase_req_line_form_inherit" model="ir.ui.view">
+            <field name="name">purchase.requisition.inherit</field>
+            <field name="model">purchase.requisition</field>
+            <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='product_qty']" position='after'>
+                    <field name="company_id" />
+                    <field name="product_packaging_id" groups="product.group_stock_packaging" required="1"/>
+                    <field name="product_packaging_qty" groups="product.group_stock_packaging" required="1"/>
+                    <field name="pkg_unit_price" groups="product.group_stock_packaging" force_save="1" required="1"
+                           readonly="1"/>
+                    <field name="pkg_qty_ordered" string="PO Quantity" groups="product.group_stock_packaging"/>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='product_qty']" position='attributes'>
+                    <attribute name="column_invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='price_unit']" position='attributes'>
+                    <attribute name="column_invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='qty_ordered']" position='attributes'>
+                    <attribute name="column_invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='product_uom_id']" position='attributes'>
+                    <attribute name="column_invisible">1</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='state_blanket_order']" position='replace'>
+                    <field name="state_blanket_order" widget="statusbar"
+                           statusbar_visible="draft,toapprove,ongoing,done"
+                           invisible="1"/>
+                </xpath>
+
+                <xpath expr="//header" position='replace'>
+                    <header>
+                        <button name="send_finance_approval"
+                                invisible="state != 'draft'"
+                                string="Send for finance approval"
+                                type="object"
+                                class="btn-primary"/>
+
+                        <button name="approve_blanket_order"
+                                invisible="state != 'to_approve'"
+                                string="Approve"
+                                type="object"
+                                groups="kg_sarya_pur_agreement.can_approve_blanket_order"
+                                class="btn-primary"/>
+
+                        <button name="action_cancel"
+                                invisible="state not in ['draft', 'to_approve']"
+                                string="Cancel"
+                                type="object"/>
+
+                        <button name="action_done"
+                                invisible="state not in ['open', 'ongoing']"
+                                string="Close"
+                                type="object"
+                                class="btn-primary"/>
+
+                        <button name="%(purchase_requisition.action_purchase_requisition_to_so)d" type="action"
+                                string="New RFQ" class="btn-primary"
+                                invisible="state not in ['in_progress', 'ongoing']"/>
+
+                        <field name="state_blanket_order"
+                               widget="statusbar"
+                               statusbar_visible="draft, to_approve, ongoing, done" invisible="1"/>
+                        <field name="state"
+                               widget="statusbar"
+                               statusbar_visible="draft, to_approve, ongoing, done"/>
+                    </header>
+                </xpath>
+
+                <xpath expr="//field[@name='type_id']" position='replace'>
+                    <field name="type_id" readonly="1"/>
+                </xpath>
+
+                <xpath expr="//field[@name='user_id']" position='replace'>
+                    <field name="user_id" readonly="1"/>
+                </xpath>
+
+                <xpath expr="//field[@name='schedule_date']" position='replace'>
+                    <field name="schedule_date" invisible="1"/>
+                </xpath>
+
+                <xpath expr="//field[@name='ordering_date']" position='replace'>
+                </xpath>
+
+                <xpath expr="//field[@name='date_end']" position='replace'>
+                    <field name="ordering_date" string="Ordering Date" readonly="1"/>
+                    <field name="date_end" string="Deadline" readonly="1"/>
+                </xpath>
+
+                <xpath expr="//field[@name='origin']" position='replace'>
+                    <field name="origin" placeholder="e.g. PO0025" invisible="1"
+                           readonly="state != 'draft'"/>
+                    <field name="forcast_attachment_filename" invisible="1"/>
+                    <field name="forcast_attachment" string="Forecast Report"
+                           required="1"
+                           readonly="state != 'draft'"
+                           filename="forcast_attachment_filename"/>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']" position='attributes'>
+                    <attribute name="readonly">state != 'draft'</attribute>
+                </xpath>
+
+
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='product_id']" position='attributes'>
+                    <attribute name="options">{'no_create': True}</attribute>
+                    <attribute name="context">{'filter_products_from_vendor': True,
+                        'partner_id':parent.vendor_id,
+                        'company_id': parent.company_id}
+                    </attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='product_description_variants']"
+                       position='replace'>
+                    <field name="product_description_variants"
+                           invisible="product_description_variants == ''"
+                           readonly="parent.state != 'draft'"/>
+
+                </xpath>
+
+
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="purchase_requisition.action_purchase_requisition">
+            <field name="name">Blanket Order</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">purchase.requisition</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="context">{}</field>
+            <field name="search_view_id" ref="purchase_requisition.view_purchase_requisition_filter"/>
+        </record>
+
+
+
+
+    </data>
+</odoo>

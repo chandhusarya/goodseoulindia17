@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="view_route_planner_form" model="ir.ui.view">
+			<field name="name">route.planner.form</field>
+			<field name="model">route.planner</field>
+			<field name="arch" type="xml">
+				<form string="Route Planner">
+					<sheet>
+						<widget name="web_ribbon" title="Archived" bg_color="bg-danger"
+								invisible="active"/>
+						<field name="active" invisible="True"/>
+						<div class="oe_title">
+							<h1>
+								<field name="name" placeholder="Planner Name"/>
+							</h1>
+						</div>
+						<group>
+							<group>
+								<field name="company_id" options="{'no_create': True}"
+								       groups="base.group_multi_company"/>
+								<field name="user_id" required="1"/>
+								<field name="route_id" required="1"/>
+							</group>
+							<group>
+								<field name="date_from"/>
+								<field name="date_to"/>
+							</group>
+						</group>
+						<notebook>
+							<page name="routes" string="Routes">
+								<field name="child_ids">
+									<tree string="Routes">
+										<field name="route_id" column_invisible="True"/>
+										<field name="weekday"/>
+										<field name="route_date"/>
+										<field name="partner_ids" widget="many2many_tags"/>
+										<field name="user_ids" widget="many2many_tags"/>
+									</tree>
+								</field>
+							</page>
+							<page string="Notes">
+								<field name="note" nolabel="1"
+								       placeholder="Write here any other information related to this plan"/>
+							</page>
+							<page string="Import Route">
+
+								 <field name="import_filename" invisible="True"/>
+                            	 <field name="import_file" filename="import_filename"/>
+
+								<button name="import_route"
+										type="object"
+										confirm="Are you sure you want to proceed ?"
+										string="Import Route from Attached File"/>
+
+								<field name="import_remarks" readonly="1"/>
+
+
+							</page>
+						</notebook>
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" groups="base.group_user"/>
+						<field name="message_ids"/>
+					</div>
+				</form>
+			</field>
+		</record>
+
+		<record id="view_route_planner_tree" model="ir.ui.view">
+			<field name="name">route.planner.tree</field>
+			<field name="model">route.planner</field>
+			<field name="arch" type="xml">
+				<tree string="Route Planner" sample="1">
+					<field name="name"/>
+					<field name="company_id" groups="base.group_multi_company"/>
+					<field name="user_id"/>
+					<field name="date_from"/>
+					<field name="date_to"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="view_route_planner_filter" model="ir.ui.view">
+			<field name="name">route.planner.search</field>
+			<field name="model">route.planner</field>
+			<field name="arch" type="xml">
+				<search string="Route Planner">
+					<field name="name" string="Department"/>
+					<field name="user_id"/>
+					<separator/>
+					<filter string="Archived" name="inactive" domain="[('active','=',False)]"/>
+				</search>
+			</field>
+		</record>
+
+		<record id="route_planner_action" model="ir.actions.act_window">
+			<field name="name">Route Planner</field>
+			<field name="res_model">route.planner</field>
+			<field name="view_mode">tree,form</field>
+			<field name="search_view_id" ref="view_route_planner_filter"/>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create a new plan
+				</p>
+			</field>
+		</record>
+
+		<record id="view_route_planner_line_form" model="ir.ui.view">
+			<field name="name">route.planner.line.form</field>
+			<field name="model">route.planner.line</field>
+			<field name="arch" type="xml">
+				<form string="Routes">
+					<sheet>
+						<group>
+							<group>
+								<field name="route_id" invisible="True"/>
+								<field name="weekday"/>
+								<field name="route_date"/>
+							</group>
+						</group>
+						<notebook>
+							<page name="customers" string="Customers">
+								<group>
+									<field name="partner_ids" widget="many2many_tags" nolabel="1"/>
+								</group>
+							</page>
+							<page name="users" string="Sales Persons">
+								<group>
+									<field name="user_ids" widget="many2many_tags" nolabel="1"/>
+								</group>
+							</page>
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<menuitem id="route_planner_menu" name="" parent="user_route_main_menu" action="route_planner_action"
+		          sequence="4" groups="sales_team.group_sale_manager"/>
+	</data>
+</odoo>

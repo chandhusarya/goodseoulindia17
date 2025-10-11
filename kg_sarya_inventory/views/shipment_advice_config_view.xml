@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="shipment_advice_config_form" model="ir.ui.view">
+        <field name="name">shipment.advice.config.form</field>
+        <field name="model">shipment.advice.config</field>
+        <field name="priority">500</field>
+        <field name="arch" type="xml">
+            <form string="Shipment Advice Config">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="email_for_3pl"/>
+                            <field name="email_for_grn_verification"/>
+                        </group>
+                        <group>
+                            <field name="email_for_recheck_verification"/>
+                            <field name="email_for_grn_completed"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="shipment_advice_config_tree" model="ir.ui.view">
+        <field name="name">shipment.advice.config.tree</field>
+        <field name="model">shipment.advice.config</field>
+        <field name="priority">500</field>
+        <field name="arch" type="xml">
+            <tree string="Shipment Advice Config" default_order="id desc">
+                <field name="email_for_3pl"/>
+                <field name="email_for_grn_verification"/>
+                <field name="email_for_recheck_verification"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_shipment_advice_config" model="ir.actions.act_window">
+        <field name="name">Shipment Advice Config</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">shipment.advice.config</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="shipment_advice_config_tree"/>
+    </record>
+
+
+    <menuitem id="shipment_advice_config_menu" name="Shipment Advice Config" sequence="100"
+              parent="kg_sarya_inventory.shipment_advice_root_menu"
+              action="action_shipment_advice_config"/>
+
+</odoo>

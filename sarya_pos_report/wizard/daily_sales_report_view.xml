@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="daily_sales_report_form_view" model="ir.ui.view">
+            <field name="name">sarya_pos_report.pos.daily.sales.report.form</field>
+            <field name="model">pos.daily.sales.report</field>
+            <field name="arch" type="xml">
+                <form string="Daily Sale Report">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="from_date"/>
+                            </group>
+                            <group>
+                                <field name="to_date"/>
+                            </group>
+                        </group><hr/>
+                        <div>
+                            <h5><field name="outlet_ids" widget="many2many_tags" placeholder="Outlet" options="{'no_quick_create': True, 'no_create_edit':True, 'no_open': True, 'no_create': True}"/></h5>
+                        </div>
+                    </sheet>
+                    <footer>
+                        <button type="object" name="generate_report" string="Generate Report"/>
+                        <button special="cancel" data-hotkey="z" string="Close"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+
+        <record id="daily_sales_report_act_window" model="ir.actions.act_window">
+            <field name="name">Daily Sale Report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pos.daily.sales.report</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem name="Daily Sale Report" id="daily_sales_report_menu" parent="point_of_sale.menu_point_rep" action="daily_sales_report_act_window"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,147 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<odoo>
+
+
+        <record id="item_code_filter" model="ir.ui.view">
+            <field name="name">item.code.select</field>
+            <field name="model">item.code</field>
+            <field name="priority" eval="15"/>
+            <field name="arch" type="xml">
+                <search string="Search Item">
+                    <field name="product_name" string="Product Name"/>  
+                    <field name="description" string="Description"/>  
+                    <field name="catelog_number" string="Catelog Number"/>     
+                </search>
+            </field>
+    </record>
+
+    <record id="item_code_tree" model="ir.ui.view">
+        <field name="name">code.tree</field>
+        <field name="model">item.code</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="product_name" string="Product Name"/>
+                <field name="req_date" string="Requested Date"/>
+                <field name="req_user" string="Requested User"/>
+                <field name="aprv_user" string="Approved User" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="item_code_form" model="ir.ui.view">
+        <field name="name">item.code.form</field>
+        <field name="model">item.code</field>
+        <field name="arch" type="xml">
+            <form string="Item Code Request Form">
+                <header>
+                    <button name="confirm_item"
+                            string="Confirm"
+                            invisible="state == 'confirm'"
+                            class="btn-primary"
+                            type="object" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm"/>
+                </header>
+                <sheet>
+                    <group name="item_code main">
+                        <group name="item_code_child">
+                            <field name="product_name" string="Product Name" required="1"
+                                   readonly="state == 'confirm'"/>
+                            <field name="description" string="Description"  required="1"
+                                   readonly="state == 'confirm'"/>
+                            <field name="catelog_number" string="Catelog Number"
+                                   readonly="state == 'confirm'"/>
+                            <field name="search_text"   string="Search Text"
+                                   readonly="state == 'confirm'"/>
+                            <field name="stock_type"  required="1" string="Stocking Type"
+                                   widget="radio" options="{'horizontal': true}"
+                                   readonly="state == 'confirm'"/>
+                            <field name="shelf_life"  required="1" placeholder="Days"
+                                   string="Shelf Life"
+                                   readonly="state == 'confirm'"/>
+                            <field name="item_code" force_save="1" readonly="1"
+                                   string="Item Code"
+                                   invisible="state != 'confirm'"/>
+                            <field required="1" name="req_user" string="Requested User"
+                                   readonly="state == 'confirm'"/>
+                        </group>
+                        <group name="item.code_child1">
+                            <field  required="1" name="primary_uom"
+                                    options="{'no_create': True, 'no_create_edit':True}"
+                                    string="Primary UOM"
+                                    readonly="state == 'confirm'"/>
+
+                            <field  invisible="1" name="uom_category"
+                                    string="Primary UOM Category"
+                                    readonly="state == 'confirm'"/>
+
+                            <field  required="1" name="sale_uom"
+                                    options="{'no_create': True, 'no_create_edit':True}"
+                                    string="Pricing/Selling UOM"
+                                    domain="[('category_id', '=', uom_category)]"
+                                    readonly="state == 'confirm'"/>
+
+                            <field  required="1" name="purchase_uom"
+                                    options="{'no_create': True, 'no_create_edit':True}"
+                                    string="Purchasing UOM"
+                                    domain="[('category_id', '=', uom_category)]"
+                                    readonly="state == 'confirm'"/>
+
+                            <field  required="1" name="category"
+                                    options="{'no_create': True, 'no_create_edit':True}"
+                                    string="Category"
+                                    readonly="state == 'confirm'"/>
+
+                            <field  required="1" name="brand"
+                                    options="{'no_create': True, 'no_create_edit':True}"
+                                    string="Brand"
+                                    readonly="state == 'confirm'"/>
+
+                            <field  required="1" name="section"
+                                    options="{'no_create': True, 'no_create_edit':True}"
+                                    string="Section"
+                                    readonly="state == 'confirm'"/>
+
+                            <field  required="1" name="internal_reference"
+                                    string="Product Reference"
+                                    readonly="state == 'confirm'"/>
+
+                            <field  required="1" name="category_type"
+                                    string="Food/Non Food" widget="radio"
+                                    options="{'horizontal': true}"
+                                    readonly="state == 'confirm'"/>
+
+                            <field  required="1" name="category_area"
+                                    string="Local/Foreign" widget="radio"
+                                    options="{'horizontal': true}"
+                                    readonly="state == 'confirm'"/>
+
+                            <field  required="1" name="req_date"
+                                    string="Requested Date"
+                                    readonly="state == 'confirm'"/>
+
+                            <field  required="1" name="aprv_user"
+                                    string="Approved User"
+                                    readonly="state == 'confirm'"/>
+                        </group>
+                    </group>
+                </sheet>
+                        <div class="oe_chatter">
+                                <field name="message_follower_ids" groups="base.group_user"/>
+                                <field name="activity_ids"/>
+                                <field name="message_ids"/>
+                        </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="item_code_req_action" model="ir.actions.act_window">
+        <field name="name">Item Code Request</field>
+        <field name="res_model">item.code</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'from_item_code':True}</field>
+    </record>
+
+
+    <menuitem name="Item Code Request" id="item_code_requests_menu" action="item_code_req_action" sequence="5" parent="stock.menu_stock_inventory_control"/>
+</odoo>
+

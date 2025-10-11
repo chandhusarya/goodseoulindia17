@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_wms_stock_details" model="ir.ui.view">
+        <field name="name">Stock Details</field>
+        <field name="model">wms.stock.details</field>
+        <field name="arch" type="xml">
+            <form string="WMS Stock Details">
+                <group>
+                    <group>
+                        <field name="wms_product_id" string="WMS Product ID"/>
+                        <field name="allocated"/>
+                        <field name="available"/>
+                    </group>
+                    <group>
+                        <field name="total_received"/>
+                        <field name="on_hold"/>
+                        <field name="on_hand"/>
+                    </group>
+                </group>
+                <footer></footer>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="action_view_wms_stock_details" model="ir.actions.act_window">
+        <field name="name">WMS Stock Details</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">wms.stock.details</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+</odoo>

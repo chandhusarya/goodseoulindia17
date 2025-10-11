@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="shipment_advice_summery_form" model="ir.ui.view">
+		<field name="name">shipment.advice.summary.form</field>
+		<field name="model">shipment.advice.summary</field>
+		<field name="arch" type="xml">
+			<form string="Shipment Advice" class="o_purchase_advice">
+				<sheet>
+					<div class="oe_title">
+						<span class="o_form_label">Shipment Advice Summary</span>
+						<h1>
+							<field name="shipment_id" readonly="1"/>
+						</h1>
+					</div>
+					<group>
+						<group>
+							<field name="purchase_ids" widget="many2many_tags" />
+							<field name="purchase_line_ids" options="{'no_edit': True, 'no_create': True}"
+                                           widget="many2many_tags"/>
+
+							<field name="product_id"  readonly="1"/>
+							<field name="product_packaging_id"  readonly="1"/>
+							<field name="reason"/>
+						</group>
+						<group>
+							<field name="shipped_packaging_qty" readonly="1"/>
+							<field name="inspected_qty" string="Received Qty" force_save="1"/>
+							<field name="scrapped_package_qty"/>
+							<field name="inspection_status" column_invisible="True"/>
+							<field name="inspection_method" column_invisible="True"/>
+							<field name="balance_qty_in_inspection"
+								   invisible="inspection_method != 'inspection_at_warehouse'"/>
+						</group>
+					</group>
+					<notebook>
+						<page string="Lot and Expiry" name="products">
+							<field name="summary_lines" readonly="inspection_status == 'inspected'">
+								<tree string="Shipment products" editable="bottom">
+									<field name="product_id" column_invisible="True" force_save="1"/>
+									<field name="lot_id" column_invisible="True" force_save="1"/>
+									<field name="lot_name" column_invisible="True" force_save="1"/>
+									<field name="expiry_date" readonly="1" force_save="1"/>
+									<field name="production_date" readonly="1" force_save="1"/>
+
+									<field name="expiry_date_actual" required="1" force_save="1"/>
+									<field name="production_date_actual" required="1" force_save="1"/>
+									<field name="qty_done" string="Qty" readonly="1"/>
+									<field name="inspected_qty" string="Received Qty"/>
+
+									 <field name="received_qty_actual"
+                                            readonly="1" force_save="1"/>
+
+									<field name="qty_short" readonly="1" force_save="1"/>
+									<field name="qty_excess" readonly="1" force_save="1"/>
+
+
+
+									<field name="scrapped_qty"/>
+									<field name="municipality_inspection_qty"/>
+
+									<field name="type_of_variation_on_grn" readonly="1"/>
+
+									<field name="balance_qty_in_inspection"
+										   string="Balance Qty" />
+
+									<!-- <field name="balance_qty_in_inspection"
+										   string="Balance Qty"
+										   attrs="{'invisible': [('parent.inspection_method','!=', 'inspection_at_warehouse')]}"/> -->
+
+									<field name="image" widget="many2many_binary"/>
+								</tree>
+							</field>
+						</page>
+						<page string="Images">
+							<field name="image" widget="many2many_binary"/>
+						</page>
+					</notebook>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+
+
+	<record id="shipment_advice_form1" model="ir.ui.view">
+		<field name="name">shipment.advice.form</field>
+		<field name="model">shipment.advice</field>
+		<field name="arch" type="xml">
+			<form string="Shipment Advice" class="o_purchase_advice">
+				<header>
+					<button name="inspection_confirm" string="Confirm" class="oe_highlight" type="object"></button>
+				</header>
+				<sheet>
+
+					<div class="oe_title">
+						<span class="o_form_label">Shipment Advice</span>
+						<h1>
+							<field name="name" readonly="1"/>
+						</h1>
+					</div>
+					<notebook>
+						<page string="Shipment Summary" name="summary">
+							<field name="shipment_summary_lines" >
+								<tree string="Shipment Advice Summary">
+									<field name="product_id" readonly="1"/>
+									<field name="product_packaging_id" readonly="1"/>
+									<field name="shipped_packaging_qty" readonly="1" force_save="1"/>
+									<field name="scrapped_package_qty"/>
+									<field name="balance_qty_in_inspection" />
+									<field name="reason" />
+
+								</tree>
+							</field>
+							<field name="notes" class="oe_inline" placeholder="Additional notes ..."/>
+							<div class="oe_clear"/>
+						</page>
+					</notebook>
+				</sheet>
+
+			</form>
+		</field>
+	</record>
+
+
+	<record id="shipment_advice_summary_tree" model="ir.ui.view">
+		<field name="name">shipment.advice.tree</field>
+		<field name="model">shipment.advice.summary</field>
+		<field name="priority" eval="1"/>
+		<field name="arch" type="xml">
+			<tree string="Shipment Advice" default_order="id desc">
+				<field name="shipment_id" string="Reference" readonly="1"/>
+				<field name="product_id"/>
+				<field name="product_packaging_id"/>
+				<field name="shipped_packaging_qty"/>
+				<!--<field name="received_packaging_qty"/> -->
+				<field name="state"/>
+			</tree>
+		</field>
+	</record>
+
+	<record id="shipment_advs_summary_action" model="ir.actions.act_window">
+		<field name="name">Shipment Advice Summary</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">shipment.advice.summary</field>
+		<field name="view_mode">tree,form</field>
+		<field name="view_id" ref="shipment_advice_summary_tree"/>
+		<field name="domain">[]</field>
+		<field name="context">{}</field>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">
+				There is no shipment advice summary to show. Let's create one!
+			</p>
+		</field>
+	</record>
+
+
+	<menuitem id="shipment_advs_smry_menu" name="Shipment Advice Summary" sequence="21"
+	          parent="kg_sarya_inventory.shipment_advice_root_menu"
+	          action="shipment_advs_summary_action" groups="stock.group_stock_manager,stock.group_stock_user"/>
+
+</odoo>

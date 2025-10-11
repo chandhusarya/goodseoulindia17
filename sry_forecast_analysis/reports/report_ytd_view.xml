@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="sry_ytd_report_filter_form_wizard" model="ir.ui.view">
+            <field name="name">sry.ytd.report.filter.wizard.form.view</field>
+            <field name="model">sry.ytd.report.filter.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Route Plan Report Filter">
+                    <sheet>
+                        <group>
+                            <group string="Date Criteria">
+                                <field name="date_criteria" widget="radio"/>
+                                <field name="from_date" attrs="{'invisible':[('date_criteria','!=','range')]}"/>
+                                <field name="to_date" attrs="{'invisible':[('date_criteria','!=','range')]}"/>
+                            </group>
+                            <group string="Reports">
+                                <field name="trade_channel" widget="boolean_toggle"/>
+                                <field name="brand_trade_channel" widget="boolean_toggle"/>
+                                <field name="brand_customer_group" widget="boolean_toggle"/>
+                                <field name="brand_sku_wise" widget="boolean_toggle"/>
+                                <field name="daily_sales_value" widget="boolean_toggle"/>
+                                <field name="kam_brand_sku" widget="boolean_toggle"/>
+                                <field name="van_sm_bw_sales" widget="boolean_toggle"/>
+                                <field name="manager_wise" widget="boolean_toggle"/>
+                                <field name="raw_data" widget="boolean_toggle"/>
+                                <field name="prof_raw_data" widget="boolean_toggle"/>
+                            </group>
+                        </group>
+                        <footer>
+                            <button string='XLSX' name='button_generate_xlsx' type="object" class="oe_highlight"/>
+                            <button string="Cancel" class="oe_link" special="cancel"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="sry_ytd_filter_report_wizard_action" model="ir.actions.act_window">
+            <field name="name">YTD Report</field>
+            <field name="res_model">sry.ytd.report.filter.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="sry_ytd_report_filter_form_wizard"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem
+            id="sry_ytd_report_wizard_menu"
+            name="YTD Report"
+            action="sry_ytd_filter_report_wizard_action"
+            parent="stock.menu_warehouse_report"
+            sequence="153"/>
+</odoo>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="customer_section_form_inherit_sarya_outlet" model="ir.ui.view">
+        <field name="name">customer.section.inherit</field>
+        <field name="model">customer.section</field>
+        <field name="inherit_id" ref="kg_sarya_inventory.customer_section_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position='after'>
+                    <field name="allow_outlet_transfer"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

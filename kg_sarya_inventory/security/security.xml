@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="sarya_can_do_wh_grn" model="res.groups">
+        <field name="name">Can do WH GRN</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+    <record id="sarya_can_book_inspection" model="res.groups">
+        <field name="name">Can book Inspection</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+    <record id="sarya_have_access_to_wms" model="res.groups">
+        <field name="name">WMS access</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+    <record id="alert_commercial_invoice_price_change" model="res.groups">
+        <field name="name">Alert Commercial Invoice Price Change</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+    <record id="can_approve_commercial_invoice_wms" model="res.groups">
+        <field name="name">BL Fiance Approval</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+    <record id="can_apply_landed_cost" model="res.groups">
+        <field name="name">Can Apply Landed Cost from Shipment Advice</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+    <record id="can_change_vendor_price_list_master" model="res.groups">
+        <field name="name">Can Change Vendor Price List Master</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+    <record id="can_override_fifty_perc_lock" model="res.groups">
+        <field name="name">Can override the 50% Lock for inspection pending items</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+     <record id="can_see_price_after_discount" model="res.groups">
+        <field name="name">Can see price after discount</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+    <record id="do_bl_procurement_approval" model="res.groups">
+        <field name="name">BL Procurement Approval</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+    <record id="get_bl_approval_notification" model="res.groups">
+        <field name="name">BL Approval Notification</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+    <record id="get_bl_cost_estimation_notification" model="res.groups">
+        <field name="name">Get BL Cost Estimation Notification</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+    <record id="get_bl_cost_variation_approval" model="res.groups">
+        <field name="name">Get BL Cost Variations Approval</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+
+    <record id="bl_notification_after_approval" model="res.groups">
+        <field name="name">BL Notification after Approval </field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+    <record model="ir.module.category" id="module_sarya_inventory_view">
+        <field name="name">View Inventory</field>
+        <field name="sequence">100</field>
+        <field name="visible" eval="0"/>
+        <field name="parent_id" ref="base.module_category_inventory"/>
+    </record>
+
+    <record id="can_view_inventory_module" model="res.groups">
+        <field name="name">Can View Inventory Module</field>
+        <field name="category_id" ref="module_sarya_inventory_view"/>
+    </record>
+
+
+    <record id="can_view_validate_picking" model="res.groups">
+        <field name="name">Can validate Picking (Delivery Order and Internal Transfer)</field>
+        <field name="category_id" ref="module_sarya_inventory_view"/>
+    </record>
+
+
+    <record id="stock_internal_transfer_responsible" model="res.groups">
+        <field name="name">Stock Internal Transfer Responsible</field>
+        <field name="category_id" ref="module_sarya_inventory_view"/>
+    </record>
+
+    <record id="delivery_partner_finance_notify" model="res.groups">
+        <field name="name">Finance Notification (Delivery Partner Provision Entry)</field>
+        <field name="category_id" ref="module_sarya_inventory_view"/>
+    </record>
+
+    <record id="delivery_partner_finance_post" model="res.groups">
+        <field name="name">Can Post Entry (Delivery Partner Provision Entry)</field>
+        <field name="category_id" ref="module_sarya_inventory_view"/>
+    </record>
+
+    <record id="stock.menu_stock_root" model="ir.ui.menu">
+        <field name="groups_id" eval="[(6, 0, [ref('kg_sarya_inventory.can_view_inventory_module')])]"/>
+    </record>
+
+  </odoo>

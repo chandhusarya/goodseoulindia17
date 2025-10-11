@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+         <menuitem id="menu_point_of_sale_operation"
+                name="Operation"
+                parent="point_of_sale.menu_point_root"
+                sequence="10"/>
+
+        <menuitem id="menu_point_of_sale_purchase"
+                name="Purchase"
+                parent="point_of_sale.menu_point_root"
+                sequence="11"/>
+
+
+        <menuitem action="pos_wastage_action"
+                   name="Wastage Entry"
+                   id="menu_pos_wastage"
+                   parent="menu_point_of_sale_operation"
+                   sequence="1"/>
+
+        <menuitem action="stock_inventory_action"
+                   id="menu_stock_inventory"
+                   parent="menu_point_of_sale_operation"
+                   sequence="30"/>
+
+        <menuitem action="stock_inventory_line_action"
+                   id="menu_stock_inventory_line"
+                   parent="menu_point_of_sale_operation"
+                   sequence="31"/>
+
+        <menuitem id="local_purchase_act_window_menu"
+                   name="Local Purchase"
+                   parent="menu_point_of_sale_purchase"
+                   action="cha_sarya_purchase.local_purchase_act_window"
+                   sequence="10"/>
+
+        <menuitem name="Daily Sale Report"
+                  id="menu_daily_sales_report_menu"
+                  parent="point_of_sale.menu_point_of_sale"
+                  action="sarya_pos_report.daily_sales_report_act_window"/>
+
+        <menuitem name="Daily Sales Import"
+                  id="daily_sales_import_menu"
+                  parent="point_of_sale.menu_point_of_sale"
+                  action="sarya_pos_order_import.daily_sales_import_act_window"/>
+
+<!--        session menu visibility adding for manager group also-->
+        <menuitem id="point_of_sale.menu_pos_session_all"
+                  parent="point_of_sale.menu_point_of_sale"
+                  action="point_of_sale.action_pos_session"
+                  sequence="2"
+                  groups="point_of_sale.group_pos_manager,sarya_pos_custom.pos_manager_group"/>
+
+
+    </data>
+</odoo>

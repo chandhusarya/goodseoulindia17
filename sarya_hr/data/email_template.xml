@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="employee_verify_mail_template" model="mail.template">
+            <field name="name">Sarya employee data verification email</field>
+            <field name="model_id" ref="sarya_hr.model_employee_doc_verify"/>
+            <field name="email_from">{{object.create_uid.email}}</field>
+            <field name="auto_delete" eval="False"/>
+            <field name="subject">Sarya - Employee data verification</field>
+            <field name="body_html" type="html">
+                <table style="padding-top:16px;background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"
+                       cellspacing="0" cellpadding="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td align="center">
+                                <table style="padding:24px;background-color: white; color: #454748; border-collapse:separate;"
+                                       width="590" cellspacing="0" cellpadding="0" border="0">
+                                    <tbody>
+                                        <tr>
+                                            <td style="min-width:590px;" align="center">
+                                                <table style="background-color:white;padding: 0; border-collapse:separate;"
+                                                       width="100%" cellspacing="0" cellpadding="0" border="0">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td valign="middle">
+                                                                <span style="font-size: 20px; font-weight: bold;">
+                                                                    <span>Employee Verification</span>
+                                                                    <br/>
+                                                                </span>
+                                                            </td>
+
+                                                            <td valign="middle" align="right">
+                                                                <img style="padding:0px;margin: 0px; height: 48px;"
+                                                                     t-attf-src="/logo.png?company={{object.company_id.id }}"
+                                                                     alt="Sarya"/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2" style="text-align:center;">
+                                                                <hr style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin:4px 0px 32px 0px;"
+                                                                    width="100%"/>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="min-width:590px;">
+
+                                                <div style="margin: 0px; padding: 0px;">
+                                                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                                                        Hello <span t-esc="object.employee_id.name"/>,
+                                                        <br/>
+                                                        <br/>
+                                                        Kindly review your document numbers in the below mentioned link and confirm.<br/>
+                                                        Request reference : <span t-esc="object.name"/>
+                                                        <br/><br/>
+                                                        <p style="margin: 16px 0px 16px 0px;">
+                                                            <a t-att-href="object.get_portal_url()"
+                                                               style="background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;">
+                                                                Verify Data
+                                                            </a>
+                                                        </p>
+                                                    </p>
+                                                </div>
+
+                                                <br/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="min-width:590px;padding: 0 8px 0 8px; font-size:11px;"
+                                                align="center">
+                                                <hr style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 4px 0px;"
+                                                    width="100%"/>
+                                                <b>
+                                                    <span t-out="object.env.user.company_id.name"/>
+                                                </b>
+                                                <br/>
+                                                <div style="color:#999999;">
+                                                    <span t-out="object.env.user.company_id.phone"/>
+                                                    |
+                                                    <a style="color:#999999;"
+                                                       t-attf-href="mailto:{{object.env.user.company_id.email}}">
+                                                        <span t-out="object.env.user.company_id.email"/>
+                                                    </a>
+
+                                                    |
+                                                    <a style="color:#999999;"
+                                                       t-att-href="object.env.user.company_id.website">
+                                                        <span t-out="object.env.user.company_id.website"/>
+                                                    </a>
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                        </tr>
+                    </tbody>
+                </table>
+            </field>
+        </record>
+
+    </data>
+</odoo>

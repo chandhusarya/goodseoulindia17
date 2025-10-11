@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_purchase_line_form_inherit_kg_sarya_inventory" model="ir.ui.view">
+        <field name="name">purchase.order.tree.kg.sarya.inventory</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_kpis_tree"/>
+        <field name="arch" type="xml">
+
+            <field name="date_order" position="replace">
+                <field name="date_order" invisible="not context.get('quotation_only', False)"/>
+            </field>
+
+            <field name="origin" position="replace">
+            </field>
+
+            <field name="user_id" position="replace">
+            </field>
+
+            <field name="state" position="replace">
+                <field name="state"/>
+                <field name="shipping_status"/>
+                <field name="receiving_status"/>
+            </field>
+
+        </field>
+    </record>
+
+
+
+
+    <record id="view_purchase_line_form_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='order_line']/tree/field[@name='qty_received']" position="replace">
+                <field name="qty_received"
+                       string="Received"
+                       column_invisible="parent.state not in ['purchase', 'done']"
+                       readonly="qty_received_method != 'manual'"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/tree/field[@name='qty_invoiced']" position="replace">
+                <field name="qty_invoiced"
+                       string="Billed"
+                       column_invisible="parent.state not in ['purchase', 'done']"/>
+
+            </xpath>
+
+             <field name="currency_id" position="after">
+                <field name="container_type"/>
+                <field name="container_volume"/>
+                <field name="is_pi_qty_entered" invisible="1" />
+            </field>
+
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_packaging_qty']" position='replace'>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position='attributes'>
+                <attribute name="options">{'no_create': True}</attribute>
+                <attribute name="context">{'filter_products_from_vendor': True,
+                                           'partner_id':parent.partner_id,
+                                           'quantity':product_qty,
+                                           'uom':product_uom,
+                                           'company_id': parent.company_id}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_packaging_id']" position='attributes'>
+                <attribute name="required">1</attribute>
+                <attribute name="readonly">parent.state in ['purchase', 'done']</attribute>
+                <attribute name="options">{'no_create': True}</attribute>
+            </xpath>
+             <xpath expr="//field[@name='order_line']/tree/field[@name='name']" position='attributes'>
+                <attribute name="readonly">parent.state in ['purchase', 'done']</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_packaging_id']" position='after'>
+                <field name="approved_po_qty"
+                       readonly="1"
+                       string="Qty"
+                       column_invisible="parent.state not in ['purchase', 'done']"/>
+                <field name="product_packaging_qty"
+                       string="Qty"
+                       column_invisible="parent.state not in ['draft', 'to approve']"
+                       required="1"/>
+
+                <field name="foc_qty"
+                       string="FOC"
+                       sum="sum_foc_qty"
+                       optional="show"
+                       attrs="{'readonly': [('parent.state', 'not in', ('draft', 'to approve'))]}"/>
+
+                <field name="pi_qty"
+                       sum="sum_pi_qty"
+                       string="PI Qty"
+                       attrs="{'column_invisible': [('parent.state', 'not in', ('purchase', 'done'))],
+                               'readonly' : [('parent.is_pi_qty_entered', '=', True)]}"/>
+
+                <field name="pi_foc_qty" string="PI FOC" sum="sum_pi_foc_qty" optional="show"
+                        attrs="{'column_invisible': [('parent.state', 'not in', ('purchase', 'done'))],
+                               'readonly' : [('parent.is_pi_qty_entered', '=', True)]}"/>
+
+                <field name="pkg_unit_price"
+                       string="Price"
+                       groups="product.group_stock_packaging"
+                       readonly="1"
+                       force_save="1"
+                       required="1"/>
+
+                <field name="line_pkg_status" column_invisible="True"/>
+                <field name="package_received"
+                       column_invisible="parent.state not in ['purchase', 'done']"/>
+                <field name="package_billed" column_invisible="True"/>
+                <field name="shipment_adv_qty"
+                       column_invisible="True"
+                       string="Shipment advise Qty"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/tree/field[@name='price_subtotal']" position='before'>
+                <field name="discount_one" groups="cha_sarya_purchase.can_approve_purchase_order"/>
+                <field name="discount_two" groups="cha_sarya_purchase.can_approve_purchase_order"/>
+                <field name="total_discount" groups="cha_sarya_purchase.can_approve_purchase_order"/>
+            </xpath>
+
+             <xpath expr="//field[@name='order_line']/tree/field[@name='price_subtotal']" position='after'>
+                <field name="amount_after_discount" groups="cha_sarya_purchase.can_approve_purchase_order"/>
+            </xpath>
+
+             <xpath expr="//page[@name='products']//field[@name='tax_totals']" position='after'>
+                    <field name="amount_after_discount"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position='replace'>
+                <field name="price_unit" optional="hide" force_save="1"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_qty']" position='attributes'>
+                 <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom']" position='attributes'>
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+
+            <field name="effective_date" position="after">
+                <field name="receiving_status"
+                       readonly="1"
+                       invisible="state != 'purchase'"/>
+                <field name="shipping_status"
+                       readonly="1"
+                       invisible="state != 'purchase'"/>
+                <field name="is_closed" invisible="1"/>
+            </field>
+
+            <xpath expr="//button[@name='button_confirm']" position='after'>
+                <button name="action_close_po" string="Close" class="oe_highlight" type="object"
+                        invisible="state != 'purchase' or is_closed"/>
+
+            </xpath>
+            <xpath expr="//div[hasclass('oe_button_box')]" position="after">
+                <widget name="web_ribbon" text="Purchase Order" bg_color="bg-info"
+                        invisible="not is_closed"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--<record id="view_picking_form_kg" model="ir.ui.view">
+        <field name="name">stock.picking.inherit.kg</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <field name="quantity_done" position="attributes">
+                <attribute name="force_save">1</attribute>
+            </field>
+            <xpath expr="//field[@name='product_uom_qty']" position='after'>
+                <field name="pkg_demand"/>
+            </xpath>
+            <xpath expr="//field[@name='quantity_done']" position='after'>
+                <field name="pkg_done" string="Confirmed Quantity"/>
+            </xpath>
+        </field>
+    </record> -->
+
+    <record id="action_close_po" model="ir.actions.server">
+        <field name="name">Close PO</field>
+        <field name="model_id" ref="model_purchase_order"/>
+        <field name="binding_model_id" ref="kg_sarya_inventory.model_purchase_order"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">
+            action = records.action_close_po()
+        </field>
+    </record>
+
+</odoo>

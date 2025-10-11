@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="pos_kitchen_screen_pos_order_inherit" model="ir.ui.view">
+        <field name="name">kitchen.screen.pos.order.form</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='lines']//tree//field[@name='qty']" position="after">
+                <field name="is_hold_preparation_product" readonly="1"/>
+                <field name="recall_done_time" readonly="1" optional="hide"/>
+                <field name="onhold_release_time" readonly="1" optional="hide"/>
+            </xpath>
+
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button name="action_view_kitchen_order_report" class="oe_stat_button" icon="fa-cutlery" type="object" string="Kitchen Screen Report"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

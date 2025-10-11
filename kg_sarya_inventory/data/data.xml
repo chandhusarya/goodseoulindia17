@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Sequences for shipment advice -->
+        <record id="seq_shipment_advice" model="ir.sequence">
+            <field name="name">Shipment Advice</field>
+            <field name="code">shipment.advice</field>
+            <field name="prefix">SA</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_promotion_entry" model="ir.sequence">
+            <field name="name">Promotion Entry</field>
+            <field name="code">promotion.entry</field>
+            <field name="prefix">PE</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_auto_lot_number" model="ir.sequence">
+            <field name="name">Auto Lot Number</field>
+            <field name="code">auto.lot.number</field>
+            <field name="prefix">LOT</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_internal_stock_transfer" model="ir.sequence">
+			<field name="name">Internal Stock Transfer</field>
+			<field name="code">internal.stock.transfer</field>
+			<field name="prefix">IST/</field>
+			<field name="padding">5</field>
+		</record>
+
+    </data>
+</odoo>

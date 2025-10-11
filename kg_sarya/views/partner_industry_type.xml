@@ -1,0 +1,45 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<odoo>
+
+    <record id="partner_industry_type_tree" model="ir.ui.view">
+        <field name="name">partner.industry.type.tree</field>
+        <field name="model">partner.industry.type</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" required="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="partner_industry_type_form" model="ir.ui.view">
+        <field name="name">partner.industry.type.form</field>
+        <field name="model">partner.industry.type</field>
+        <field name="arch" type="xml">
+            <form string="Partner Industry Type Form">
+                <sheet>
+                    <group name="partner_industry_type main">
+                        <group name="partner_details">
+                            <field name="name" required="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="partner_industry_type_menu_action" model="ir.actions.act_window">
+        <field name="name">Industry Type Form</field>
+        <field name="res_model">partner.industry.type</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem name="Industry Type" id="partner_industry_type_menu" action="partner_industry_type_menu_action" sequence="-1" parent="sale.menu_sale_config"/>
+
+</odoo>
+

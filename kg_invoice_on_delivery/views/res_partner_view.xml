@@ -1,0 +1,18 @@
+<odoo>
+  <data>
+
+      <record id="res_customer_form_inherit_kg_invoice_on_delivery" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.kg_invoice_on_delivery</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='category_id']" position='after'>
+                <field name="supplier_rank" invisible="1"/>
+                <field name="do_not_automate_invoice"
+                       invisible="supplier_rank >= 1"/>
+            </xpath>
+        </field>
+      </record>
+
+  </data>
+</odoo>

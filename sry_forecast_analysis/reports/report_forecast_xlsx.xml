@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--<record id="report_forecast" model="ir.actions.report">
+        <field name="name">Forecast Report</field>
+        <field name="model">sry.product.load.wizard</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">sry_forecast_analysis.forecast_analysis_report</field>
+        <field name="report_file">sry_forecast_analysis.forecast_analysis_report</field>
+        <field name="binding_model_id" ref="model_sry_product_load_wizard"/>
+        <field name="binding_type">report</field>
+    </record>-->
+
+    <record id="report_sohreport" model="ir.actions.report">
+        <field name="name">SOH Report</field>
+        <field name="model">sry.product.load.wizard</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">sry_forecast_analysis.stock_onhand_report</field>
+        <field name="report_file">sry_forecast_analysis.stock_onhand_report</field>
+        <field name="binding_model_id" ref="model_sry_product_load_wizard"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="ytd_report" model="ir.actions.report">
+        <field name="name">YTD Report</field>
+        <field name="model">sry.ytd.report.filter.wizard</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">sry_forecast_analysis.ytd_report</field>
+        <field name="report_file">sry_forecast_analysis.ytd_report</field>
+        <field name="binding_model_id" ref="model_sry_ytd_report_filter_wizard"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

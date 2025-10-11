@@ -1,0 +1,59 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<odoo>
+
+
+    <record id="manufacturer_tree" model="ir.ui.view">
+        <field name="name">product.manufacturer.tree</field>
+        <field name="model">product.manufacturer</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>  
+                <field name="code"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="manufacturer_form" model="ir.ui.view">
+        <field name="name">product.manufacturer.form</field>
+        <field name="model">product.manufacturer</field>
+        <field name="arch" type="xml">
+            <form string="Brand">
+                <sheet>
+                    <group name="manuf main">
+                        <group name="manuf_child">
+                            <field name="name"/>                          
+                        </group>
+                        <group name="manuf_child1">
+                            <field name="code"/>
+                            <field name="sequence_id" invisible="0"/>
+                        </group>
+                    </group>
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="view_manufacturer_filter" model="ir.ui.view">
+            <field name="name">product.manufacturer.select</field>
+            <field name="model">product.manufacturer</field>
+            <field name="priority" eval="15"/>
+            <field name="arch" type="xml">
+                <search string="Brand">
+                    <field name="name"/>  
+                    <field name="code"/>    
+                </search>
+            </field>
+    </record>
+
+    <record id="manufacturer_action" model="ir.actions.act_window">
+        <field name="name">Brand</field>
+        <field name="res_model">product.manufacturer</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+
+    <menuitem name="Brand" id="manufacturer_menu_item" action="manufacturer_action" sequence="5" parent="stock.menu_product_in_config_stock"/>
+</odoo>
+

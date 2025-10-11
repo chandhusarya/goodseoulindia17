@@ -1,0 +1,223 @@
+<odoo>
+    <template id="portal_sale_order_form" name="Portal Sale Order Form">
+        <t t-call="portal.portal_layout">
+            <div class="container o_portal_container mt-4">
+                <div class="text-center mb-4">
+                    <h3>Create Sales Order</h3>
+                </div>
+                <form action="/my/new_sale_order/submit" method="post" enctype="multipart/form-data" class="o_form_view">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                    <table class="table table-borderless" id="header">
+                        <tr>
+                            <td class="fw-bold"><h4>Total Due:</h4></td>
+                            <td>
+                                <h4><t t-esc="total_due"/>INR</h4>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">LPO Date:</td>
+                            <td>
+                                <input type="date" required="required" name="lpo_date" class="form-control"/>
+                            </td>
+                            <td class="fw-bold">Delivery Date:</td>
+                            <td>
+                                <input type="date" required="required" name="delivery_date" class="form-control"/>
+                            </td>
+                        </tr>
+                        <tr id="attachment_field">
+                            <td class="fw-bold">LPO Document:</td>
+                            <td>
+                                <input type="file" required="required" name="attachment" class="form-control"/>
+                            </td>
+                            <td class="fw-bold">LPO No.:</td>
+                            <td>
+                                <input type="text" required="required" name="lpo_no" class="form-control"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">Delivery Address:</td>
+                            <td>
+                                <select required="required" name="delivery_address_id" class="form-select">
+                                    <option value="">Select Delivery Address</option>
+                                    <t t-foreach="delivery_addresses" t-as="addr">
+                                        <option t-att-value="addr.id">
+                                            <t t-esc="addr.name"/>
+                                            <t t-if="addr.street"> - <t t-esc="addr.street"/></t>
+                                            <t t-if="addr.city">, <t t-esc="addr.city"/></t>
+                                        </option>
+                                    </t>
+                                </select>
+                            </td>
+                            <td class="fw-bold">Note:</td>
+                            <td>
+                                <input type="text" name="note" class="form-control"/>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <table class="table table-bordered mt-4" id="order-lines">
+                        <thead class="table-light">
+                            <tr>
+                                <th width="40%">Product</th>
+                                <th width="20%">Package</th>
+                                <th width="10%">MRP</th>
+                                <th width="10%">Price</th>
+                                <th width="10%">Quantity</th>
+                                <th width="10%">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="product_lines">
+                            <!-- Empty initially; rows are added dynamically -->
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4" class="text-end fw-bold">Total(Untaxed):</td>
+                                <td><span id="grand_total">0.00</span></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-info" id="add-product">Add Product</button>
+                        <button type="submit" class="btn btn-primary ms-2">Create Order</button>
+                    </div>
+                </form>
+            </div>
+
+            <script>
+                let lineIndex = 0;
+                let products = [
+                    <t t-foreach="products" t-as="product">
+                        { id: "<t t-esc='product.id'/>", name: "<t t-esc='product.name'/>", price: "<t t-esc='pricelist._get_product_price(product, 1, partner)'/>" },
+                    </t>
+                ];
+
+                document.getElementById("add-product").addEventListener("click", function () {
+                    let tableBody = document.querySelector("#order-lines tbody");
+                    let row = document.createElement("tr");
+                    row.setAttribute("id", "line_" + lineIndex);
+                    row.setAttribute("class", "product_line");
+
+                    row.innerHTML = `
+                        <td>
+                            <select name="product_${lineIndex}" required="required" class="form-control product-select" data-index="${lineIndex}">
+                                <option value="">Select Product</option>
+                                ${products.map(p => `<option value="${p.id}" data-price="${p.price}">${p.name}</option>`).join('')}
+                            </select>
+                        </td>
+                        <td>
+                            <select name="package_${lineIndex}" required="required" class="form-control package-select" data-index="${lineIndex}">
+                                <option value="" data-price="0">No Package</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" name="mrp_${lineIndex}" class="form-control mrp-input" readonly="1" />
+                        </td>
+                        <td>
+                            <input type="text" name="price_${lineIndex}" class="form-control price-input" readonly="1" />
+                        </td>
+                        <td>
+                            <input type="number" name="quantity_${lineIndex}" value="0" min="0" class="form-control quantity-input" />
+                        </td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-danger remove-line" data-index="${lineIndex}">X</button>
+                        </td>
+                    `;
+
+                    tableBody.appendChild(row);
+                    lineIndex++;
+                });
+
+                document.addEventListener("change", function (event) {
+                    if (event.target.classList.contains("package-select")) {
+                        let selectedOption = event.target.selectedOptions[0];
+                        let priceField = document.querySelector(`input[name='price_${event.target.dataset.index}']`);
+                        let mrpField = document.querySelector(`input[name='mrp_${event.target.dataset.index}']`);
+                        let packageId = selectedOption.value;
+                        let pricelistId = selectedOption.dataset.pricelist;
+                        if (packageId) {
+                            fetch("/my/new_sale_order/get_package_price", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ package_id: packageId, pricelist_id: pricelistId})
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                priceField.value = data.result.price;
+                                mrpField.value = data.result.mrp;
+                            });
+                        } else {
+                            priceField.value = 0;
+                            mrpField.value = 0;
+                        }
+                    }
+                    if (event.target.classList.contains("product-select")) {
+                        let selectedOption = event.target.selectedOptions[0];
+                        let priceField = document.querySelector(`input[name='price_${event.target.dataset.index}']`);
+                        let packageSelect = document.querySelector(`select[name='package_${event.target.dataset.index}']`);
+
+                        // Fetch Packages via AJAX
+                        let productId = selectedOption.value;
+                        if (productId) {
+                            fetch("/my/new_sale_order/get_packages", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ product_id: productId })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                packageSelect.innerHTML = `<option value="" data-price="0">No Package</option>`; // Reset package dropdown
+
+                                if (data.result.packages &amp;&amp; Array.isArray(data.result.packages)) {
+                                    data.result.packages.forEach(pkg => {
+                                        packageSelect.innerHTML += `<option value="${pkg.id}" data-pricelist="${pkg.pricelist}">${pkg.name}</option>`;
+                                    });
+                                } else {
+                                    console.error("No packages found or invalid response:", data);
+                                }
+                            });
+                        } else {
+                            packageSelect.innerHTML = `<option value="">No Package</option>`; // Reset if no product is selected
+                        }
+                    }
+                });
+
+                document.addEventListener("click", function (event) {
+                    if (event.target.classList.contains("remove-line")) {
+                        let index = event.target.dataset.index;
+                        document.getElementById("line_" + index).remove();
+                    }
+                });
+
+                document.addEventListener("DOMContentLoaded", function () {
+                    let productTable = document.getElementById("order-lines");
+
+                    function updateTotals() {
+                        let grandTotal = 0;
+
+                        document.querySelectorAll("#product_lines tr").forEach(function (row) {
+                            let quantity = parseFloat(row.querySelector(".quantity-input")?.value) || 0;
+                            let price = parseFloat(row.querySelector(".price-input")?.value) || 0;
+                            let lineTotal = quantity * price;
+                            grandTotal += lineTotal;
+                        });
+
+                        document.getElementById("grand_total").textContent = grandTotal.toFixed(2);
+                    }
+
+                    // Use event delegation for dynamically added elements
+                    productTable.addEventListener("input", function (event) {
+                        if (event.target.classList.contains("quantity-input")) {
+                            updateTotals();
+                        }
+                    });
+
+                    // Trigger an initial total calculation
+                    updateTotals();
+                });
+            </script>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_inventory_report_ctn" model="ir.ui.view">
+         <field name="name">inventory.report.ctn.pivot</field>
+         <field name="model">inventory.report.ctn</field>
+         <field name="arch" type="xml">
+             <pivot string="Inventory Report in Carton">
+                 <field name="product_id"/>
+                 <field name="location_id"/>
+                 <field name="lot_id"/>
+                 <field name="quantity"/>
+                 <field name="reserved_quantity"/>
+                 <field name="pcp"/>
+                 <field name="ctn_qty"/>
+                 <field name="ctn_reserved"/>
+             </pivot>
+         </field>
+    </record>
+
+    <record id="view_inventory_report_ctn_tree" model="ir.ui.view">
+         <field name="name">inventory.report.ctn.tree</field>
+         <field name="model">inventory.report.ctn</field>
+         <field name="arch" type="xml">
+             <tree string="Inventory Report in Carton">
+                 <field name="product_id"/>
+                 <field name="location_id"/>
+                 <field name="lot_id"/>
+                 <field name="quantity"/>
+                 <field name="reserved_quantity"/>
+                 <field name="pcp"/>
+                 <field name="ctn_qty"/>
+                 <field name="ctn_reserved"/>
+             </tree>
+         </field>
+    </record>
+
+    <record id="action_inventory_report_ctn" model="ir.actions.act_window">
+        <field name="name">Inventory Report in Carton</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">inventory.report.ctn</field>
+        <field name="view_mode">pivot,tree</field>
+        <field name="view_id" eval="False"/>
+    </record>
+
+    <menuitem name="Inventory Report in Carton"
+              id="inventory_report_ctn_menu"
+              action="action_inventory_report_ctn"
+              sequence="100"
+              parent="stock.menu_warehouse_report" />
+
+
+
+
+</odoo>

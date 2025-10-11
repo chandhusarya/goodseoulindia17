@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Action for Container Request -->
+    <record id="action_container_closing_request" model="ir.actions.act_window">
+        <field name="name">Closing Session</field>
+        <field name="res_model">closing.session</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Closing Session Request.
+            </p><p>
+            Manage Closing requests for your PVR locations here.
+        </p>
+        </field>
+    </record>
+
+    <record id="action_portal_home" model="ir.actions.act_url">
+        <field name="name">Portal Home</field>
+        <field name="type">ir.actions.act_url</field>
+        <field name="url">/my/home</field>
+        <field name="target">self</field>
+    </record>
+
+
+    <!-- Tree View for Container Request -->
+    <record id="view_closing_session_request_tree" model="ir.ui.view">
+        <field name="name">closing.session.tree</field>
+        <field name="model">closing.session</field>
+        <field name="arch" type="xml">
+            <tree string="Container Requests" decoration-bf="state == 'draft'" decoration-success="state == 'done'">
+                <field name="name"/>
+                <field name="pvr_location_id"/>
+                <field name="closing_datetime" string="Closing Time"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'" decoration-info="state == 'draft'" decoration-muted="state == 'cancel'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View for Container Request -->
+    <record id="view_closing_session_request_form" model="ir.ui.view">
+        <field name="name">closing.session.form</field>
+        <field name="model">closing.session</field>
+        <field name="arch" type="xml">
+            <form string="Closing Session">
+                <header>
+                    <button string="Confirm" type="object" name="action_done" class="oe_highlight" invisible="state == 'done'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="pvr_location_id" domain="[('usage', '=', 'internal')]" options="{'no_create': True, 'no_create_edit': True}" readonly="1"/>
+                            <field name="has_damaged_qty" invisible="1"/>
+                            <field name="is_scrapped" invisible="1"/>
+                            <field name="pvr_master" options="{'no_create': True, 'no_create_edit': True}" invisible="1"/>
+                            <field name="remarks"/>
+                        </group>
+                        <group>
+                            <field name="closing_datetime"/>
+                            <field name="company_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Container Details" name="container_details">
+                            <field name="request_line_ids" context="{'default_pvr_master': pvr_master}" mode="kanban" >
+                                <kanban create="False">
+                                    <field name="id"/>
+                                    <field name="product_id"/>
+                                    <field name="qty_available_at_pvr" force_save="1"/>
+                                    <field name="returned_qty"/>
+                                    <field name="damaged_qty"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <t t-set="color" t-value="kanban_color(record.id.raw_value)"/>
+                                            <div t-att-class="color + ' oe_kanban_global_click'">
+                                                <div class="oe_kanban_details">
+                                                    <strong><field name="product_id"/></strong>
+
+                                                    <!-- Available -->
+                                                    <div>
+                                                        <b>Stock Received: </b>
+                                                        <t t-esc="record.qty_available_at_pvr.value"/>
+                                                    </div>
+                                                    <!-- Damaged -->
+                                                    <div>
+                                                        <b>Damaged: </b>
+                                                        <t t-esc="record.damaged_qty.value"/>
+                                                    </div>
+
+                                                    <!-- Returned -->
+                                                    <div>
+                                                        <b>Closing Stock on Hand: </b>
+                                                        <t t-esc="record.returned_qty.value"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                                <form string="Closing Session Line">
+                                    <group>
+                                        <field name="request_id" invisible="1"/>
+
+                                        <group>
+                                            <field name="product_id" readonly="1" options="{'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
+                                            <field name="qty_available_at_pvr" force_save="1" readonly="1"/>
+                                            <field name="damaged_qty"/>
+                                            <field name="returned_qty"/>
+                                            <field name="damage_reason" required="damaged_qty"/>
+
+                                        </group>
+                                        <group>
+
+
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="view_closing_session_request_form_portal" model="ir.ui.view">
+        <field name="name">closing.session.form</field>
+        <field name="model">closing.session</field>
+        <field name="arch" type="xml">
+            <form string="Closing Session">
+                <header>
+                    <a href="/my/home" class="btn btn-secondary">
+                        <span class="fa fa-home"/> Home
+                    </a>
+                    <button string="Confirm" type="object" name="action_done" class="oe_highlight" invisible="state == 'done'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="pvr_location_id" domain="[('usage', '=', 'internal')]" options="{'no_create': True, 'no_create_edit': True}" readonly="1"/>
+                            <field name="pvr_master" options="{'no_create': True, 'no_create_edit': True}" invisible="1"/>
+                            <field name="remarks"/>
+                        </group>
+                        <group>
+                            <field name="closing_datetime" />
+                            <field name="company_id" readonly="1"/>
+                            <field name="has_damaged_qty" invisible="1"/>
+                            <field name="is_scrapped" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Closing Details" name="container_details">
+                            <field name="request_line_ids" context="{'default_pvr_master': pvr_master}" mode="kanban" >
+                                <kanban create="False">
+                                    <field name="id"/>
+                                    <field name="product_id"/>
+                                    <field name="qty_available_at_pvr"/>
+                                    <field name="returned_qty"/>
+                                    <field name="damaged_qty"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <t t-set="color" t-value="kanban_color(record.id.raw_value)"/>
+                                            <div t-att-class="color + ' oe_kanban_global_click'">
+                                                <div class="oe_kanban_details">
+                                                    <!-- Product -->
+                                                    <strong><field name="product_id"/></strong>
+
+                                                    <!-- Available -->
+                                                    <div>
+                                                        <b>Stock Received: </b>
+                                                        <t t-esc="record.qty_available_at_pvr.value"/>
+                                                    </div>
+
+                                                    <!-- Damaged -->
+                                                    <div>
+                                                        <b>Damaged: </b>
+                                                        <t t-esc="record.damaged_qty.value"/>
+                                                    </div>
+
+                                                    <!-- Returned -->
+                                                    <div>
+                                                        <b>Closing Stock On Hand: </b>
+                                                        <t t-esc="record.returned_qty.value"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                                <form string="Closing Session Line">
+                                    <group>
+                                        <field name="request_id" invisible="1"/>
+
+                                        <group>
+                                            <field name="product_id" readonly="1" options="{'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
+                                            <field name="qty_available_at_pvr" force_save="1" readonly="1"/>
+                                            <field name="damaged_qty"/>
+                                            <field name="returned_qty"/>
+                                            <field name="damage_reason" required="damaged_qty"/>
+
+                                        </group>
+                                        <group>
+
+
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <menuitem id="menu_closing_session"
+              name="Closing Session"
+              parent="sarya_pvr.menu_pvr_root"
+              action="action_container_closing_request"
+              sequence="20"/>
+
+
+</odoo>

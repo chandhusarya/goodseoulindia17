@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="promotion_entry_form_view" model="ir.ui.view">
+        <field name="name">promotion.entry.form</field>
+        <field name="model">promotion.entry</field>
+        <field name="arch" type="xml">
+            <form string="Shipment Advice" class="o_purchase_advice">
+                <header>
+                    <button name="action_confirm" class="oe_highlight"
+                            invisible="state != 'draft'" string="Confirm" type="object"/>
+                    <button name="action_cancel" invisible="state not in ['draft', 'open', 'done']" string="Cancel" type="object"/>
+                    <button name="action_reset" invisible="state != 'cancel'" string="Reset to Draft" type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,open,done" readonly="1"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <span class="o_form_label">Reference</span>
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id"
+                                   required="1"
+                                   domain="[('is_parent','=',True)]"
+                                   readonly="state != 'draft'"/>
+                            <field name="apply_to_all"
+                                   readonly="state != 'draft'"/>
+                            <field name="leaflet_fee" widget="monetary"
+                                   invisible="not apply_to_all"
+                                   readonly="state != 'draft'"/>
+                            <field name="rental" widget="monetary"
+                                   invisible="not apply_to_all"
+                                   readonly="state != 'draft'"/>
+                            <field name="move_id" string="Journal Entry" force_save="1"
+                                   invisible="not apply_to_all or state == 'draft'"
+                                   readonly="state != 'draft'"/>
+                        </group>
+                        <group>
+                            <field name="event_name" readonly="state != 'draft'"/>
+                            <field name="start_date" readonly="state != 'draft'"/>
+                            <field name="end_date" readonly="state != 'draft'"/>
+                            <field name="event_type" readonly="state != 'draft'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Partners" name="products"
+                              invisible="not apply_to_all">
+                            <field name="line_ids" readonly="state != 'draft'">
+                                <tree string="Promotion Entry Lines" editable="bottom">
+                                    <field name="partner_id" domain="[('parent_customer_id', '=', parent.partner_id)]" required="1"/>
+                                    <field name="leaflet_fee" widget="monetary"/>
+                                    <field name="rental" widget="monetary"/>
+                                    <field name="move_id" string="Journal Entry"
+                                           readonly="1" force_save="1"
+                                           column_invisible="parent.state == 'draft'"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Products">
+                            <field name="product_ids" readonly="state != 'draft'">
+                                <tree string="Promotion products" editable="bottom">
+                                    <field name="product_id" required="1"/>
+                                    <field name="product_pr_id" invisible="1"/>
+                                    <field name="product_package_id"
+                                           domain="[('product_id','=',product_pr_id),('sales','=',True)]"
+                                           options="{'no_create':1}"/>
+                                    <field name="price" widget="monetary"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_promotion_entry_filter" model="ir.ui.view">
+        <field name="name">promotion.entry.select</field>
+        <field name="model">promotion.entry</field>
+        <field name="arch" type="xml">
+            <search string="Search Promomotion Entry">
+                <field name="name" string=""
+                       filter_domain="['|', '|', ('name', 'ilike', self), ('event_name', 'ilike', self)]"/>
+                <field name="event_name"/>
+                <separator/>
+                <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Open" name="open" domain="[('state', '=', 'open')]"/>
+                <filter string="Closed" name="done" domain="[('state', '=', 'done')]"/>
+                <filter string="Cancelled" name="cancel" domain="[('state', '=', 'cancel')]"/>
+                <separator/>
+            </search>
+        </field>
+    </record>
+
+    <record id="promotion_entry_tree_view" model="ir.ui.view">
+        <field name="name">promotion.entry.tree</field>
+        <field name="model">promotion.entry</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <tree string="Shipment Advice" decoration-success="state=='done'" decoration-muted="state=='cancel'">
+                <field name="name" string="Reference" readonly="1"/>
+                <field name="event_name"/>
+                <field name="event_type"/>
+                <field name="company_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_promotion_entry" model="ir.actions.act_window">
+        <field name="name">Promotion</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">promotion.entry</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="promotion_entry_tree_view"/>
+        <field name="domain">[]</field>
+        <field name="search_view_id" ref="view_promotion_entry_filter"/>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                There is no promotion entry to show. Let's create one!
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_promotion_entry" name="Promotion" sequence="20"
+              parent="sale.product_menu_catalog"
+              action="action_promotion_entry"/>
+
+</odoo>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="mrp_bom_form_view_inherit" model="ir.ui.view">
+            <field name="name">mrp.bom.form</field>
+            <field name="model">mrp.bom</field>
+            <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='code']" position="after">
+                    <field name="bom_item_id"/>
+                    <field name="bom_item_parent_id"/>
+                    <field name="extra_cost"/>
+                </xpath>
+
+                <xpath expr="//page[@name='by_products']" position="after">
+                    <page string="Production Cost" name="production_cost">
+                            <field name="cost_lines">
+                                <tree editable="top">
+                                    <field name="description"/>
+                                    <field name="account_id"/>
+                                    <field name="extra_cost"/>
+                                </tree>
+                           </field>
+                       </page>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

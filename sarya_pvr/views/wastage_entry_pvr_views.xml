@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Action for Container Request -->
+    <record id="action_wastage_entry_request" model="ir.actions.act_window">
+        <field name="name">Wastage Entry</field>
+        <field name="res_model">pvr.wastage.entry</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Wastage Entry.
+            </p><p>
+            Manage Wastage Entry for your PVR locations here.
+        </p>
+        </field>
+    </record>
+
+    <!-- Tree View for Container Request -->
+    <record id="view_wastage_entry_tree" model="ir.ui.view">
+        <field name="name">pvr.wastage.entry.tree</field>
+        <field name="model">pvr.wastage.entry</field>
+        <field name="arch" type="xml">
+            <tree string="Wastage Entries" decoration-bf="state == 'draft'" decoration-success="state == 'completed'">
+                <field name="name"/>
+                <field name="pvr_location_id"/>
+                <field name="date"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'" decoration-info="state == 'draft'" decoration-muted="state == 'cancel'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View for Container Request -->
+    <record id="view_wastage_entry_form" model="ir.ui.view">
+        <field name="name">pvr.wastage.entry.form</field>
+        <field name="model">pvr.wastage.entry</field>
+        <field name="arch" type="xml">
+            <form string="Wastage Entry">
+                <header>
+                    <button string="Approve" type="object" name="action_approve" class="oe_highlight" invisible="state != 'manager_approval'"/>
+                    <button string="Cancel" type="object" name="action_cancel" class="oe_highlight" invisible="state != 'manager_approval'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="pvr_location_id" domain="[('usage', '=', 'internal')]" options="{'no_create': True, 'no_create_edit': True}" readonly="1"/>
+                            <field name="pvr_master" options="{'no_create': True, 'no_create_edit': True}" invisible="1"/>
+                            <field name="remarks"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                            <field name="company_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Wastage Details" name="wastage_details">
+                            <field name="line_ids" mode="kanban" >
+                                <kanban create="False">
+                                    <field name="id"/>
+                                    <field name="product_id"/>
+                                    <field name="total_stock"/>
+                                    <field name="wastage_qty"/>
+                                    <field name="packaging_id"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <t t-set="color" t-value="kanban_color(record.id.raw_value)"/>
+                                            <div t-att-class="color + ' oe_kanban_global_click'">
+                                                <div class="oe_kanban_details">
+                                                    <!-- Product -->
+                                                    <strong><field name="product_id"/></strong>
+
+                                                    <!-- Available -->
+                                                    <div>
+                                                        <b>Total Stock: </b>
+                                                        <t t-esc="record.total_stock.value"/>
+                                                    </div>
+
+                                                    <!-- Requested -->
+                                                    <div>
+                                                        <b>Wastage Qty: </b>
+                                                        <t t-esc="record.wastage_qty.value"/>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                                <form string="Wastage Entry Line">
+                                    <group>
+                                        <field name="entry_id" invisible="1"/>
+
+                                        <group>
+                                            <field name="product_id" readonly="1" options="{'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
+                                            <field name="total_stock"/>
+                                            <field name="packaging_id" readonly="1" force_save="1" options="{'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
+                                            <field name="wastage_qty"/>
+                                        </group>
+                                        <group>
+
+
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="view_wastage_entry_form_portal" model="ir.ui.view">
+        <field name="name">pvr.wastage.entry.form</field>
+        <field name="model">pvr.wastage.entry</field>
+        <field name="arch" type="xml">
+            <form string="Wastage Entry">
+                <header>
+                    <a href="/my/home" class="btn btn-secondary">
+                        <span class="fa fa-home"/> Home
+                    </a>
+                    <button string="Send for Approval" type="object" name="action_send_for_approval" class="oe_highlight" invisible="state != 'draft'"/>
+                    <button string="Cancel" type="object" name="action_cancel" class="oe_highlight" invisible="state != 'manager_approval'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="pvr_location_id" domain="[('usage', '=', 'internal')]" options="{'no_create': True, 'no_create_edit': True}" readonly="1"/>
+                            <field name="pvr_master" options="{'no_create': True, 'no_create_edit': True}" invisible="1"/>
+                            <field name="remarks"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                            <field name="company_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Wastage Details" name="wastage_details">
+                            <field name="line_ids" mode="kanban" >
+                                <kanban create="False">
+                                    <field name="id"/>
+                                    <field name="product_id"/>
+                                    <field name="total_stock"/>
+                                    <field name="wastage_qty"/>
+                                    <field name="packaging_id"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <t t-set="color" t-value="kanban_color(record.id.raw_value)"/>
+                                            <div t-att-class="color + ' oe_kanban_global_click'">
+                                                <div class="oe_kanban_details">
+                                                    <!-- Product -->
+                                                    <strong><field name="product_id"/></strong>
+
+                                                    <!-- Available -->
+                                                    <div>
+                                                        <b>Total Stock: </b>
+                                                        <t t-esc="record.total_stock.value"/>
+                                                    </div>
+
+                                                    <!-- Requested -->
+                                                    <div>
+                                                        <b>Wastage Qty: </b>
+                                                        <t t-esc="record.wastage_qty.value"/>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                                <form string="Wastage Entry Line">
+                                    <group>
+                                        <field name="entry_id" invisible="1"/>
+                                        <group>
+                                            <field name="product_id" readonly="1" options="{'no_create_edit': True, 'no_create': True, 'no_open': True}"/>
+                                            <field name="total_stock"/>
+                                            <field name="packaging_id" readonly="1" force_save="1" options="{'no_create_edit': True, 'no_create': True}"/>
+                                            <field name="wastage_qty"/>
+                                        </group>
+                                        <group>
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <menuitem id="menu_wastage_entry"
+              name="Wastage Entry"
+              parent="sarya_pvr.menu_pvr_root"
+              action="action_wastage_entry_request"
+              sequence="17"/>
+
+
+</odoo>

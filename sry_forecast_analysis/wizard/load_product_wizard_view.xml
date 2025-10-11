@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sry_product_load_wizard_view" model="ir.ui.view">
+        <field name="name">sry.product.load.wizard.view.form</field>
+        <field name="model">sry.product.load.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="compare_range"/>
+                    </group><group>
+                    </group>
+                        <group>
+                            <field name="product_ids" widget="many2many" nolabel="1"/>
+                        </group>
+                </sheet>
+                <footer>
+<!--                    <button string="List View" name="button_list_view" type="object" class="oe_highlight" data-hotkey="l"/>-->
+                    <button string="Generate" name="button_generate_xlsx" type="object" class="oe_highlight" data-hotkey="x"/>
+                    <button string="Cancel" special="cancel" data-hotkey="z"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="sry_product_load_wizard_action" model="ir.actions.act_window">
+        <field name="name">Forecast Analysis Generation</field>
+        <field name="res_model">sry.product.load.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="sry_product_load_wizard_view"/>
+        <field name="target">new</field>
+    </record>
+
+
+    <menuitem
+            id="sry_product_load_wizard_menu"
+            name="Forecast Analysis Report"
+            action="sry_product_load_wizard_action"
+            parent="stock.menu_warehouse_report"
+            sequence="151"/>
+</odoo>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="sarya_reports.company_banner"  name="Company Banner" inherit_id="web.layout">
+        <xpath expr="//body" position="inside">
+            <div>
+                <span id="oe_neutralize_banner" t-attf-style="
+                        text-align: center;
+                        color: #FFFFFF;
+                        background-color: green;
+                        position: relative;
+                        display: block;
+                        font-size: 16px;
+                        {{ neutralize_banner_style or '' }}">
+                    <t t-esc="request.env.user.company_id.name or 'No active company'"/>
+                </span>
+            </div>
+        </xpath>
+    </template>
+</odoo>

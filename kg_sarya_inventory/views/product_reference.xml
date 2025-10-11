@@ -1,0 +1,58 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<odoo>
+
+
+    <record id="product_reference_tree" model="ir.ui.view">
+        <field name="name">product.reference.tree</field>
+        <field name="model">product.reference</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" string="Product Reference"/>  
+                <field name="code"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="product_reference_form" model="ir.ui.view">
+        <field name="name">product.reference.form</field>
+        <field name="model">product.reference</field>
+        <field name="arch" type="xml">
+            <form string="Product Reference">
+                <sheet>
+                    <group name="cust main">
+                        <group name="prd_child">
+                            <field name="name"/>                          
+                        </group>
+                        <group name="prd_child1">
+                            <field name="code"/>
+                        </group>
+                    </group>
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="view_product_reference_filter" model="ir.ui.view">
+            <field name="name">product.reference.select</field>
+            <field name="model">product.reference</field>
+            <field name="priority" eval="15"/>
+            <field name="arch" type="xml">
+                <search string="Search Product Reference">
+                    <field name="name"/>  
+                    <field name="code"/>    
+                </search>
+            </field>
+    </record>
+
+    <record id="prd_ref_action" model="ir.actions.act_window">
+        <field name="name">Product Reference</field>
+        <field name="res_model">product.reference</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+
+    <menuitem name="Product Reference" id="pdct_ref_menu_item" action="prd_ref_action" sequence="5" parent="stock.menu_product_in_config_stock"/>
+</odoo>
+

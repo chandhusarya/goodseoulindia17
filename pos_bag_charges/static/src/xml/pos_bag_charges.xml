@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="pos_bag_charges.PosBagButton">
+        <div class="control-button customer-button btn rounded-0 fw-bolder text-truncate" t-attf-class="{{this.partner ? 'btn-primary' : 'btn-light'}}"
+         t-on-click="() => this.onClick()">
+            <span class="control-button pos_bag odoo-theme-color">
+                <i class="fa fa-shopping-bag"></i>
+                <span>Bag</span>
+            </span>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	
+    <record id="view_sale_tree_inherit" model="ir.ui.view">
+        <field name="name">sale.order.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <field name="user_id" position="after">
+                <field name="trade_channel"/>
+            </field>
+        </field>
+    </record>
+
+	<record id="view_sale_form_inherit" model="ir.ui.view">
+        <field name="name">sale.order.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <field name="commitment_date" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+			<xpath expr="//field[@name='payment_term_id']" position='after'>
+
+                <field name="client_order_ref"/>
+                <field name="lpo_attach_id" string="LPO Attachment" widget="many2many_binary" required="1"/>
+                <field name="picking_type_id"
+                       domain="[('code','=','outgoing')]"
+                       required="1"
+                       readonly="state != 'draft'"/>
+            </xpath>
+            <xpath expr="//page[@name='other_information']/group[1]/group[1]" position='replace'>
+                <group name="sales_person" string="Sales">
+                    <field name="user_id" domain="[('share', '=', False)]" widget="many2one_avatar_user"/>
+                    <field name="team_id" kanban_view_ref="%(sales_team.crm_team_view_kanban)s" options="{'no_create': True}"/>
+                    <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                    <field name="require_signature"/>
+                    <field name="require_payment"/>
+                    <field name="reference" readonly="1"
+                           invisible="not reference"/>
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
+                </group>
+            </xpath>
+			<xpath expr="//field[@name='user_id']" position='attributes'>
+                <attribute name="string">Administrator</attribute>
+            </xpath>
+			<xpath expr="//field[@name='order_line']/tree/field[@name='product_uom_qty']" position='after'>
+                <field name="qty_status" column_invisible="True"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='price_subtotal']" position='after'>
+                <field name="actaul_price" string="Amount" optional="hide"/>
+                <field name="pricelist_item_id" string="Price list itenm" optional="hide"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/form/group/group/label[@for='product_uom_qty']" position='replace'>
+                <field name="product_packaging_qty"/>
+                <field name="pkg_unit_price" readonly="1" force_save="1"/>
+                <label for="product_uom_qty" column_invisible="True"/>
+            </xpath>
+
+
+            <xpath expr="//field[@name='order_line']/tree/field[@name='qty_delivered']" position='attributes'>
+                <attribute name="optional">hide</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='qty_invoiced']" position='attributes'>
+                <attribute name="optional">hide</attribute>
+            </xpath>
+            <!-- Decorator bases on quantity -->
+            <xpath expr="//field[@name='order_line']/tree" position='attributes'>
+                <attribute name="decoration-danger">qty_status == True</attribute>
+            </xpath>  
+           
+            <xpath expr="//group/group[@name='order_details']/div[@class='o_row']/field[@name='pricelist_id']" position='replace'>
+<!--                <field name="pricelist_id" domain="['|',('company_id','=',False),('company_id','=','company_id')]"/>-->
+                <field name="pricelist_id" domain="[('customer_ids', '=', partner_id)]"/>
+            </xpath>
+             <!--sales category-->
+            <xpath expr="//group/group[@name='partner_details']/field[@name='partner_shipping_id']" position='before'>
+                <field name="trade_channel" string="Trade Channel" options="{'no_create': True, 'no_open': True}"/>
+                <field name="journal_id" readonly="state != 'draft'" options="{'no_create': True, 'no_open': True}"/>
+            </xpath>
+            <field name="validity_date"  position='attributes'>
+                <attribute name="invisible">1</attribute>
+            </field>
+         </field>
+    </record>
+
+    <record id="kg_view_stock_quant_tree_inventory_editable_inherit" model="ir.ui.view">
+            <field name="name">stock.quant.inventory.tree.editable.kg</field>
+            <field name="model">stock.quant</field>
+            <field name="inherit_id" ref="stock.view_stock_quant_tree_inventory_editable"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='lot_id']" position="after">
+                    <field name="kg_lot_expiry_date" />
+                </xpath>
+                <xpath expr="//field[@name='quantity']" position="before">
+                    <field name="kg_cost_price" groups="kg_sarya.can_see_product_costing"/>
+                </xpath>
+            </field>
+        </record>
+
+
+
+    
+
+    <!-- sale order category master -->
+    <record id="sale_order_category_view_form" model="ir.ui.view">
+        <field name="name">sales.category.form</field>
+        <field name="model">sales.category</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Sale order Category">
+                <sheet>
+                	<group>
+                        <group>
+                            <field name="category" required="1"/>
+                        </group>
+                        <group>
+                            <field name="journal"  required="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+        <record id="sales_category_tree" model="ir.ui.view">
+            <field name="name">sales.category.tree</field>
+            <field name="model">sales.category</field>
+            <field name="priority">2</field>
+            <field name="arch" type="xml">
+                <tree string="Sales Category" >
+                    <field name="category" string="Category"/>
+                    <field name="journal" string="Journal"/>
+                </tree>
+            </field>
+        </record>
+
+
+
+    <record id="sale_order_category_action" model="ir.actions.act_window">
+        <field name="name">Sale Category</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sales.category</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your sale category here  
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="sale_order_category_menu" action="sale_order_category_action" parent="sale.menu_sales_config" sequence="3" name="Sales Category" />
+
+</odoo>

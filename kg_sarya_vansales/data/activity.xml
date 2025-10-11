@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <data noupdate="1">
+
+
+        <!--***************************************Driver Change activities*************************************** -->
+        <record id="mail_driver_change" model="mail.activity.type">
+            <field name="name">Route-Driver Changed</field>
+            <field name="icon">fa-line-chart</field>
+            <field name="res_model">res.partner</field>
+        </record>
+
+
+    </data>
+</odoo>

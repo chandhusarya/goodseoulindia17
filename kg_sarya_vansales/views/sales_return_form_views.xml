@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+	<record id="view_sales_return_form_tree" model="ir.ui.view">
+		<field name="name">sales.return.form.tree</field>
+		<field name="model">sales.return.form</field>
+		<field name="arch" type="xml">
+			<tree string="Sales Return Form" decoration-muted="state == 'cancel'">
+				<field name="name"/>
+				<field name="user_id"/>
+				<field name="date"/>
+				<field name="type"/>
+				<field name="state"/>
+			</tree>
+		</field>
+	</record>
+
+	<record model="ir.ui.view" id="sales_return_form_search">
+		<field name="name">sales.return.form.search</field>
+		<field name="model">sales.return.form</field>
+		<field name="arch" type="xml">
+			<search string="Sales Return Form Search">
+				<field name="name" string="Sales Return Form"/>
+				<field name="company_id" groups="base.group_multi_company"/>
+				<separator/>
+				<filter string="Not Approved" name="draft" domain="[('state', 'in', ('draft', 'request'))]"/>
+				<filter string="Transferred" name="done" domain="[('state','=','done')]"/>
+				<filter string="Cancelled" name="cancel" domain="[('state','=','cancel')]"/>
+				<group expand="0" string="Group By">
+					<filter name="user" string="Requested By" domain="[]" context="{'group_by':'user_id'}"/>
+					<filter name="approver" string="Approved By" domain="[]" context="{'group_by':'approve_user_id'}"/>
+					<filter name="status" string="Status" domain="[]" context="{'group_by':'state'}"/>
+				</group>
+			</search>
+		</field>
+	</record>
+
+	<record id="view_sales_return_form_form" model="ir.ui.view">
+		<field name="name">sales.return.form.form</field>
+		<field name="model">sales.return.form</field>
+		<field name="arch" type="xml">
+			<form string="Sales Return Form">
+				<header>
+					<button name="action_request" string="Request" class="oe_highlight" type="object"
+							invisible="state not in ['draft']"/>
+					<button name="action_approve" string="Approve" class="oe_highlight" type="object"
+					        groups="stock.group_stock_manager"
+							invisible="state not in ['request']"/>
+					<button name="action_reject" string="Reject" type="object"
+					        groups="stock.group_stock_manager"
+							invisible="state not in ['request']"/>
+					<button name="create_credit_note" string="Create Credit Note" type="object"
+					        groups="account.group_account_user"
+					        invisible="True"/>
+					<button name="create_picking" string="Create Return" type="object"
+					        groups="stock.group_stock_user"
+					        invisible="True"/>
+
+					<button name="action_draft" invisible="state not in ['cancel']" type="object" string="Set to Draft"/>
+					<button name="action_cancel"
+							invisible="state not in ['reject']"
+					        groups="stock.group_stock_user" type="object"
+					        string="Cancel"/>
+					<button name="action_cancel" invisible="state not in ['draft', 'request']" type="object"
+					        groups="stock.group_stock_manager" string="Cancel"/>
+					<field name="state" widget="statusbar" statusbar_visible="draft,request,approve"/>
+				</header>
+				<sheet>
+					<div name="button_box" class="oe_button_box">
+						<button name="action_view_invoices" class="oe_stat_button" icon="fa-money" type="object"
+								invisible="invoice_ids == []"
+						        string="Credit Notes">
+						</button>
+						<button name="action_view_pickings" class="oe_stat_button" icon="fa-truck" type="object"
+								invisible="picking_ids == []"
+						        string="Delivery Returns">
+						</button>
+						<button name="action_view_scraps" class="oe_stat_button" icon="fa-arrows-v" type="object"
+								invisible="scrap_ids == []"
+						        string="Scraps">
+						</button>
+
+					</div>
+					<div class="oe_title">
+						<label for="name" string="Reference #"/>
+						<h1>
+							<field name="name" readonly="1" force_save="1"/>
+						</h1>
+					</div>
+					<group>
+						<group>
+							<field name="type" readonly="state not in ['draft', 'request']"/>
+							<field name="reason_code_id" required="1" readonly="state not in ['draft', 'request']"/>
+							<field name="invoice_id" options="{'no_create': True, 'no_create_edit':True}"
+							       domain="[('move_type', '=', 'out_invoice'), ('state', '=', 'posted')]"
+
+								   readonly="state not in ['draft', 'request']"
+								   required="type == 'invoice'"
+								   invisible="type != 'invoice'"/>
+
+							<field name="partner_id"
+								   readonly="state not in ['draft', 'request']"/>
+							<field name="delivery_address_id"
+								   readonly="state not in ['draft', 'request'] or type != 'normal'"/>
+							<field name="invoice_address_id"
+								   readonly="state not in ['draft', 'request'] or type != 'normal'"/>
+							<field name="company_id"
+							       readonly="state not in ['draft', 'request']"
+							       options="{'no_create': True, 'no_create_edit':True}"/>
+						</group>
+						<group>
+							<field name="invoice_ids" invisible="True"/>
+							<field name="picking_ids" invisible="True"/>
+							<field name="scrap_ids" invisible="True"/>
+							<field name="currency_id" invisible="True"/>
+							<field name="date"
+								   readonly="state not in ['draft', 'request']"/>
+							<field name="credit_note_date"
+								   readonly="state not in ['draft', 'request']"/>
+							<field name="refund_date" invisible="True"/>
+							<field name="sale_id" readonly="True"
+								   invisible="not sale_id or type != 'invoice'"
+							       force_save="1"/>
+							<field name="picking_id" readonly="1"
+								   invisible="not picking_id or type != 'invoice'"
+							       force_save="1"/>
+							<field name="receipt_no"
+								   required="type == 'normal'"
+								   readonly="state not in ['draft', 'request']"/>
+							<field name="sr_attach_id" widget="many2many_binary"/>
+						</group>
+					</group>
+					<notebook>
+						<page string="Products">
+							<field  name="line_ids"
+									widget="section_and_note_one2many"
+									mode="tree,kanban"
+									readonly="state not in ['draft', 'request']">
+								<tree string="Product Lines" editable="bottom">
+									<field name="sequence" widget="handle"/>
+									<!-- We do not display the type because we don't want the user to be bothered with that information if he has no section or note. -->
+									<field name="product_uom_category_id" column_invisible="1"/>
+									<field name="invoice_line_id" options="{'no_create': True, 'no_create_edit':True}"
+										   column_invisible="parent.type != 'invoice'"/>
+									<field name="product_id" required="1"
+											force_save="1"
+											context="{
+                                            'partner_id': parent.partner_id,
+                                            'quantity': product_uom_qty,
+                                            'default_lst_price': price_unit,
+                                            'default_description_sale': name}"
+											domain="[('sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]"
+											widget="product_configurator"
+										    readonly="type != 'normal'"/>
+									<field name="product_template_id"
+									       string="Product"
+									       column_invisible="1" required="1"
+									       context="{
+                                          'partner_id': parent.partner_id,
+                                          'quantity': product_uom_qty,
+                                          'default_list_price': price_unit,
+                                          'default_description_sale': name
+                                      }"
+									       domain="[('sale_ok', '=', True), '|', ('company_id', '=', False), ('company_id', '=', parent.company_id)]"
+									       widget="product_configurator"/>
+									<field name="name" column_invisible = "parent.type != 'normal'"/>
+									<field name="product_uom_qty"
+											context="{
+                                            'partner_id': parent.partner_id,
+                                            'quantity': product_uom_qty,
+                                            'uom': product_uom}"
+											column_invisible="1" />
+
+									<field name="product_uom"
+										force_save="1"
+										string="UoM"
+										required="1"
+										context="{'company_id': parent.company_id}"
+										options='{"no_open": True}'
+										column_invisible="1" />
+
+									<field name="dest_location_id"/>
+									<field name="invoice_packaging_id" column_invisible="1"/>
+									<field name="invoice_packaging_qty" column_invisible="1"/>
+									<field name="currency_id" column_invisible="1"/>
+									<field name="reason_code_id" required="1"/>
+									<field name="product_packaging_id"
+									       context="{'default_product_id': product_id, 'tree_view_ref':'product.product_packaging_tree_view', 'form_view_ref':'product.product_packaging_form_view'}"
+									       groups="product.group_stock_packaging" force_save="1"/>
+									<field name="product_packaging_qty"
+									       groups="product.group_stock_packaging" force_save="1"/>
+									<field name="price_unit" column_invisible="1" />
+									<field name="pkg_unit_price" />
+									<field name="tax_id"
+											widget="many2many_tags"
+											options="{'no_create': True}"
+											domain="[('type_tax_use','=','sale'),('company_id','=', company_id)]"
+											optional="show"
+											force_save="1"
+											readonly="type != 'normal'" />
+									<field name="stock_type" required="1"/>
+									<field name="discount" string="Disc.%" groups="product.group_discount_per_so_line"
+									       optional="show" widget="product_discount"/>
+									<field name="lot_id"
+										   readonly="has_tracking not in ['serial', 'lot']"
+									       context="{'default_product_id': product_id, 'default_company_id': company_id}" optional="hide"
+										   domain="[('product_id', '=', product_id), '|', ('active', '=', False), ('active', '=', True)]"/>
+									<field name="name" optional="hide" />
+									<field name="product_uom_qty"  optional="hide" />
+									<field name="expiration_date" optional="hide" column_invisible="1"/>
+									<field name="price_subtotal" widget="monetary"
+									       groups="account.group_show_line_subtotals_tax_excluded"/>
+									<field name="price_total" widget="monetary"/>
+									<field name="currency_id" column_invisible="1"/>
+									<field name="price_tax" column_invisible="1"/>
+									<field name="company_id" column_invisible="1"/>
+									<field name="invoice_id" column_invisible="1"/>
+									<field name="has_tracking" column_invisible="1"/>
+									<field name="type" column_invisible="1"/>
+								</tree>
+							</field>
+							<group class="oe_subtotal_footer oe_right">
+								<field name="amount_tax" widget="monetary"/>
+								<field name="amount_untaxed" widget="monetary"/>
+								<field name="amount_total" widget="monetary"/>
+							</group>
+						</page>
+						<page string="Configurations">
+							<group>
+								<group>
+									<field name="journal_id" options="{'no_create': True, 'no_create_edit':True}"/>
+								</group>
+								<group>
+									<field name="picking_type_id" options="{'no_create': True, 'no_create_edit':True}"/>
+								</group>
+							</group>
+						</page>
+						<page string="Others">
+							<group>
+								<group>
+									<field name="approve_user_id" readonly="1" force_save="1"
+										   invisible="not approve_user_id"/>
+									<field name="stock_user_id"
+										   readonly="state not in ['draft', 'request']"/>
+								</group>
+							</group>
+							<group>
+								<field name="notes" nolabel="1" placeholder="Additional notes..."/>
+							</group>
+							<group>
+								<field name="reason" nolabel="1" placeholder="Reason for return..."/>
+							</group>
+						</page>
+					</notebook>
+				</sheet>
+				<div class="oe_chatter">
+					<field name="message_follower_ids"/>
+					<field name="activity_ids"/>
+					<field name="message_ids"/>
+				</div>
+			</form>
+		</field>
+	</record>
+
+	<record id="action_sales_return_form" model="ir.actions.act_window">
+		<field name="name">Sales Return Form</field>
+		<field name="res_model">sales.return.form</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="view_mode">tree,form,pivot</field>
+		<field name="context">{
+			'pivot_column_groupby': ['location_id'],
+			'search_default_draft': 1,
+			}
+		</field>
+		<field name="view_id" ref="view_sales_return_form_tree"/>
+		<field name="search_view_id" ref="sales_return_form_search"/>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">
+				There is nothing to show.
+			</p>
+		</field>
+	</record>
+
+	<!--	<menuitem name="Sales Return" id="menu_sales_return_form_main" action="action_sales_return_form" sequence="5"-->
+	<!--	          parent="van_sale_menu_root" groups="stock.group_stock_user"/>-->
+	<menuitem id="menu_sales_return_form" parent="stock.menu_stock_warehouse_mgmt" name="Sales Return Form"
+	          sequence="25" action="action_sales_return_form"/>
+
+</odoo>

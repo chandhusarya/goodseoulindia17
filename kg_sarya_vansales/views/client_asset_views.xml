@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<record id="client_asset_move_action" model="ir.actions.act_window">
+			<field name="name">Client Asset Moves</field>
+			<field name="res_model">client.asset.move</field>
+			<field name="view_mode">tree</field>
+			<field name="domain">tree</field>
+			<field name="context">{'default_client_asset_id': active_id}</field>
+			<field name="domain">[('client_asset_id', '=', active_id)]</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					There is no moves to show.
+				</p>
+			</field>
+		</record>
+
+
+		<record id="view_client_asset_form" model="ir.ui.view">
+			<field name="name">client.asset.form</field>
+			<field name="model">client.asset</field>
+			<field name="arch" type="xml">
+				<form string="Client Asset">
+					<sheet>
+						<div class="oe_button_box" name="button_box">
+							<button string="Asset Moves"
+							        name="%(kg_sarya_vansales.client_asset_move_action)d"
+							        type="action"
+							        class="oe_stat_button"
+							        icon="fa-exchange"/>
+						</div>
+						<widget name="web_ribbon" title="Archived" bg_color="bg-danger"
+								invisible="active"/>
+						<field name="active" invisible="True"/>
+						<div class="oe_title">
+							<h1>
+								<field name="name" placeholder="Asset Name"/>
+							</h1>
+						</div>
+						<group>
+							<group>
+								<field name="purchase_date"/>
+								<field name="lifetime_date" required="1"/>
+							</group>
+							<group>
+								<field name="manufacturer"/>
+								<field name="brand"/>
+								<field name="vendor"/>
+							</group>
+							<group>
+								<field name="asset_id"/>
+								<field name="ref_no"/>
+								<field name="current_partner_id" readonly="1"/>
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="view_client_asset_tree" model="ir.ui.view">
+			<field name="name">client.asset.tree</field>
+			<field name="model">client.asset</field>
+			<field name="arch" type="xml">
+				<tree string="Client Asset" sample="1">
+					<field name="name"/>
+					<field name="purchase_date"/>
+					<field name="lifetime_date"/>
+					<field name="brand"/>
+					<field name="manufacturer"/>
+					<field name="vendor"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="view_client_asset_filter" model="ir.ui.view">
+			<field name="name">client.asset.search</field>
+			<field name="model">client.asset</field>
+			<field name="arch" type="xml">
+				<search string="Client Asset">
+					<field name="name" string="Asset"/>
+					<field name="vendor"/>
+					<separator/>
+					<filter string="Archived" name="inactive" domain="[('active','=',False)]"/>
+				</search>
+			</field>
+		</record>
+
+		<record id="view_client_asset_move_tree" model="ir.ui.view">
+			<field name="name">client.asset.move.tree</field>
+			<field name="model">client.asset.move</field>
+			<field name="arch" type="xml">
+				<tree string="Client Asset Moves" editable="bottom">
+					<field name="partner_id"/>
+					<field name="move_date"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="client_asset_action" model="ir.actions.act_window">
+			<field name="name">Client Asset</field>
+			<field name="res_model">client.asset</field>
+			<field name="view_mode">tree,form</field>
+			<field name="search_view_id" ref="view_client_asset_filter"/>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_smiling_face">
+					Create a new client asset
+				</p>
+			</field>
+		</record>
+
+		<menuitem id="client_asset_menu" name="Client Asset" parent="kg_sarya_vansales.van_sale_conf_menu"
+		          action="client_asset_action"
+		          sequence="8"/>
+	</data>
+</odoo>

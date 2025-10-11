@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="invoice_report_modification" inherit_id="account.report_invoice_document">
+
+            <xpath expr="//div[@id='informations']/div[5]" position="after">
+                <div t-if="o.partner_id.trade_channel" class="col-auto col-3 mw-100 mb-2">
+                    <strong>Trade Channel:</strong>
+                    <p class="m-0" t-field="o.partner_id.trade_channel"/>
+                </div>
+                <div t-if="o.partner_id.customer_classification" class="col-auto col-3 mw-100 mb-2">
+                    <strong>Classification:</strong>
+                    <p class="m-0" t-field="o.partner_id.customer_classification"/>
+                </div>
+                <div t-if="o.partner_id.customer_sub_classification" class="col-auto col-3 mw-100 mb-2">
+                    <strong>Sub Classification:</strong>
+                    <p class="m-0" t-field="o.partner_id.customer_sub_classification"/>
+                </div>
+            </xpath>
+
+            <xpath expr="//th[@name='th_description']" position="after">
+                <th name="th_code" class="text-left"><span>Brand</span></th>
+                <th name="th_code" class="text-left"><span>Section</span></th>
+                <th name="th_code" class="text-left"><span>Packaging</span></th>
+                <th name="th_code" class="text-left"><span>Package Qty</span></th>
+                <th name="th_code" class="text-left"><span>Package Unit Price</span></th>
+            </xpath>
+                <xpath expr="//td[@name='account_invoice_line_name']" position="after">
+                 <td id="brand">
+                    <span t-field="line.product_id.brand"/>  
+                 </td>
+                 <td id="section">
+                    <span t-field="line.product_id.section"/>  
+                 </td>
+                 <td id="pk_id">
+                    <span t-field="line.package_id"/>  
+                 </td>
+                 <td id="pk_qty">
+                    <span t-field="line.product_packaging_qty"/>  
+                    <span t-field="line.product_uom_id"/>
+                 </td>
+                <td id="pk_price">
+                    <span t-field="line.pkg_unit_price"/>  
+                 </td>
+            </xpath>
+            <xpath expr="//th[@name='th_quantity']" position='replace'>
+                <th></th>
+                <!-- <attribute name="invisible">1</attribute> -->
+            </xpath>
+            <xpath expr="//th[@name='th_priceunit']" position='replace'>
+                 <th></th>
+            </xpath>
+            <xpath expr="//table/tbody[@class='invoice_tbody']/t/tr/t/td[7]" position='replace'>
+                 <td></td>
+            </xpath>
+            <xpath expr="//table/tbody[@class='invoice_tbody']/t/tr/t/td[8]" position='replace'>
+                 <td></td>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>

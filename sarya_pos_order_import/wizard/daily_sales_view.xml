@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="daily_sales_import_form_view" model="ir.ui.view">
+            <field name="name">daily_sales_import.form</field>
+            <field name="model">daily.sales.import</field>
+            <field name="arch" type="xml">
+                <form string="Daily Sales Import">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="customer_id"/>
+                                <field name="new_field" height="64" filename="file_name"/>
+                            </group>
+                            <group>
+                                <field name="date"/>
+                                <field name="file_name" invisible="1"/>
+                                <field name="is_import_file" invisible="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="import_orders" string="Import" class="oe_highlight" type="object"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="daily_sales_import_act_window" model="ir.actions.act_window">
+            <field name="name">Daily Sales Import</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">daily.sales.import</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem name="Daily Sales Import" id="daily_sales_import_menu" parent="sale.sale_order_menu" action="daily_sales_import_act_window"/>
+
+    </data>
+</odoo>

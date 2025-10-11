@@ -1,0 +1,11 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_sarya_reconcile,sarya_reconcile,model_sarya_reconcile,base.group_user,1,1,1,1
+access_sarya_reconcile_summary,sarya_reconcile_summary,model_sarya_reconcile_summary,base.group_user,1,1,1,1
+access_sarya_reconcile_partial,sarya_reconcile_partial,model_sarya_reconcile_partial,base.group_user,1,1,1,1
+access_sarya_reconcile_partial_line,sarya_reconcile_partial_line,model_sarya_reconcile_partial_line,base.group_user,1,1,1,1
+access_sarya_aging_receivable,sarya_aging_receivable,model_sarya_aging_receivable,base.group_user,1,1,1,1
+access_sarya_reconcile_load_rebate,sarya_reconcile_load_rebate,model_sarya_reconcile_load_rebate,base.group_user,1,1,1,1
+
+
+
+

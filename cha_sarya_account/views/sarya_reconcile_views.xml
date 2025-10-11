@@ -1,0 +1,196 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<odoo>
+
+    <record id="sarya_reconcile_tree" model="ir.ui.view">
+        <field name="name">sarya.reconcile.tree</field>
+        <field name="model">sarya.reconcile</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                 <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="sarya_reconcile_form" model="ir.ui.view">
+        <field name="name">sarya.reconcile.form</field>
+        <field name="model">sarya.reconcile</field>
+        <field name="arch" type="xml">
+            <form string="Journal item to reconcile">
+                <header>
+                    <button name="close_reconcilation"
+                            string="Close"
+                            type="object"
+                            groups="account.group_account_invoice"
+                            class="oe_highlight"
+                            invisible="state == 'closed'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="partner_id"
+                               widget = "many2many_tags"
+                               readonly="state == 'closed'"/>
+                        <field name = "master_parent_id"
+                               string = "Master Parent"
+                               readonly="state == 'closed'"/>
+                        <field name="verified_for_reconcile"
+                               readonly="state == 'closed'"/>
+                        <field name="verified_by"
+                               readonly="state == 'closed'"
+                               invisible="verified_for_reconcile == False"/>
+                    </group>
+                    <group>
+                        <button name="load_entries"
+                            string="Load Entries"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state == 'closed'"/>
+                        <button name="load_rebates_only"
+                            string="Load Rebates Only"
+                            type="object"
+                            invisible="state == 'closed'"/>
+                    </group>
+                    <group string="Invoices/Bills">
+                        <field name="journal_items_invoices" nolabel="1"
+                               domain="[('amount_residual','!=', 0),
+                               ('account_id.account_type', 'in', ('asset_receivable', 'liability_payable'))]"
+                               readonly="state == 'closed'" colspan="2">
+                            <tree string="Journal Items" create="false" edit="false" sample="1">
+                                <field name="date"/>
+                                <field name="company_id" groups="base.group_multi_company" optional="show"/>
+                                <field name="journal_id" options='{"no_open":True}' optional="show"/>
+                                <field name="move_id"/>
+                                <field name="account_id" optional="show" groups="account.group_account_readonly"/>
+                                <field name="partner_id" optional="show"/>
+                                <field name="statement_id" column_invisible="True"/>
+                                <field name="ref" optional="show"/>
+                                <field name="name" optional="show"/>
+                                <field name="tax_ids" column_invisible="True" widget="many2many_tags" width="0.5" optional="show"/>
+                                <field name="amount_residual" sum="Due Amount" string="Due Amount"/>
+                                <field name="debit" sum="Total Debit"/>
+                                <field name="credit" sum="Total Credit"/>
+                                <field name="amount_currency" groups="base.group_multi_currency" optional="hide"/>
+                                <field name="currency_id" readonly="1" groups="base.group_multi_currency" optional="hide" string="Original Currency"/>
+                                <field name="tax_tag_ids" column_invisible="True" widget="many2many_tags" width="0.5" optional="hide"/>
+                                <field name="matching_number" column_invisible="True" optional="show"/>
+                                <field name="reconcile_model_id" column_invisible="True"/>
+                                <field name="reconciled" column_invisible="True"/>
+                                <field name="date_maturity" optional="hide"/>
+                                <field name="company_currency_id" column_invisible="True"/>
+                                <field name="parent_state" column_invisible="True"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group>
+                        <field name="rebate_previous_reconciliation" widget="many2many_tags"/>
+                    </group>
+                    <group>
+                        <button name="reload_rebates"
+                            string="Reload Rebates"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state == 'closed'"
+                            colspan="2"
+                            />
+                    </group>
+                    <group string="Rebates">
+                        <field name="journal_items_rebate_entries" nolabel="1"
+                               domain="[('amount_residual','!=', 0),
+                               ('account_id.account_type', 'in', ('asset_receivable', 'liability_payable'))]"
+                               readonly="state == 'closed'"
+                               colspan="2">
+                            <tree string="Journal Items" create="false" edit="false" sample="1">
+                                <field name="date"/>
+                                <field name="company_id" groups="base.group_multi_company" optional="show"/>
+                                <field name="journal_id" options='{"no_open":True}' optional="show"/>
+                                <field name="move_id"/>
+                                <field name="account_id" optional="show" groups="account.group_account_readonly"/>
+                                <field name="partner_id" optional="show"/>
+                                <field name="statement_id" column_invisible="True"/>
+                                <field name="ref" column_invisible="True"/>
+                                <field name="name" optional="show"/>
+                                <field name="tax_ids" column_invisible="1" widget="many2many_tags" width="0.5" optional="show"/>
+                                <field name="amount_residual" sum="Due Amount" string="Due Amount"/>
+                                <field name="debit" sum="Total Debit"/>
+                                <field name="credit" sum="Total Credit"/>
+                                <field name="amount_currency" groups="base.group_multi_currency" optional="hide"/>
+                                <field name="currency_id" readonly="1" groups="base.group_multi_currency" optional="hide" string="Original Currency"/>
+                                <field name="tax_tag_ids" column_invisible="1" widget="many2many_tags" width="0.5" optional="hide"/>
+                                <field name="matching_number" column_invisible="1" optional="show"/>
+                                <field name="reconcile_model_id" column_invisible="1"/>
+                                <field name="reconciled" column_invisible="1"/>
+                                <field name="date_maturity" optional="hide"/>
+                                <field name="company_currency_id" column_invisible="1"/>
+                                <field name="parent_state" column_invisible="1"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <group>
+                        <button name="update_summary"
+                            string="Update Summary"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state == 'closed'"/>
+                    </group>
+                    <group string="Summary">
+                        <field name="summary_line_ids" nolabel="1" readonly="1" colspan="2">
+                            <tree string="Summary Line" create="false" edit="false" decoration-danger="is_total == True">
+                                <field name="partner_id"/>
+                                <field name="description"/>
+                                <field name="amount"/>
+                                <field name="is_total"/>
+                                <field name="payment_id"/>
+                                <button name="reconcile_invoice_grv_rebates"
+                                        string="Recon Inv with Rebates"
+                                        type="object"
+                                        class="btn-primary"
+                                        invisible="is_total == False"/>
+                                <button name="reconcile_invoice_credit_notes"
+                                        string="Recon Inv with Crd Notes"
+                                        type="object"
+                                        class="btn-primary"
+                                        invisible="is_total == False"/>
+                                <button name="create_payment"
+                                        string="Create Payment"
+                                        type="object"
+                                        class="btn-primary"
+                                        invisible="is_total == False or payment_id != False"/>
+                                <!--button name="reconcile"
+                                        string="Reconcile with Payment"
+                                        type="object"
+                                        class="btn-primary"
+                                        invisible="is_total == False"/> -->
+                                <button name="partial_reconcile_window"
+                                        string="Partial Reconcile"
+                                        type="object"
+                                        class="btn-primary"
+                                        invisible="is_total == False"/>
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+
+        </field>
+    </record>
+
+    <record id="sarya_reconcile_action" model="ir.actions.act_window">
+        <field name="name">Sarya Reconcile Custom</field>
+        <field name="res_model">sarya.reconcile</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem name="Sarya Reconcile Custom"
+              id="sarya_reconcile_menu"
+              action="sarya_reconcile_action"
+              sequence="10"
+              parent="account.menu_finance_entries_accounting_miscellaneous"/>
+
+</odoo>

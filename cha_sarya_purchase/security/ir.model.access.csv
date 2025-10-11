@@ -1,0 +1,15 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_local_purchase,local_purchase,model_local_purchase,base.group_user,1,1,1,0
+access_local_purchase_line,local_purchase_line,model_local_purchase_line,base.group_user,1,1,1,1
+access_office_purchase,office_purchase,model_office_purchase,base.group_user,1,1,1,1
+access_office_purchase_line,office_purchase_line,model_office_purchase_line,base.group_user,1,1,1,1
+access_landed_cost_line,landed_cost_line,model_landed_cost_line,base.group_user,1,1,1,1
+
+
+
+
+
+
+
+
+

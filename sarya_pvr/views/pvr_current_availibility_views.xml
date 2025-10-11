@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <!-- Search View for Stock Quants (Filtered for PVR) -->
+    <record id="view_pvr_stock_quant_search" model="ir.ui.view">
+        <field name="name">stock.quant.pvr.search</field>
+        <field name="model">stock.quant</field>
+        <field name="inherit_id" ref="stock.quant_search_view"/> <!-- Inherit standard search view -->
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <!-- Filter for PVR Locations -->
+                <filter string="PVR Locations" name="pvr_location" domain="[('location_id.usage', '=', 'internal')]"/>
+                <!-- Group by PVR Location -->
+                <group expand="0" string="Group By">
+                    <filter string="PVR Location" name="group_by_pvr_location" context="{'group_by': 'location_id'}"/>
+                    <filter string="Product" name="group_by_product" context="{'group_by': 'product_id'}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+        <!-- Tree View for Stock Quants (Filtered for PVR) -->
+    <record id="view_pvr_stock_quant_tree" model="ir.ui.view">
+        <field name="name">stock.quant.pvr.tree</field>
+        <field name="model">stock.quant</field>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="product_id" column_invisible="context.get('single_product', False)"/>
+                <field name="location_id" column_invisible="1"/>
+                <field name="lot_id" groups="stock.group_production_lot"
+                       column_invisible="context.get('hide_lot', False)"/>
+                <field name="package_id" groups="stock.group_tracking_lot"/>
+                <field name="owner_id" groups="stock.group_tracking_owner"/>
+                <field name="quantity" string="On Hand"/>
+                <field name='company_id' groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action for Current Availability -->
+    <record id="action_pvr_current_availability" model="ir.actions.act_window">
+        <field name="name">PVR Stock Availability</field>
+        <field name="res_model">stock.quant</field> <!-- We will filter this model -->
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="sarya_pvr.view_pvr_stock_quant_tree"/><!-- Tree for list, graph for visualization if needed -->
+        <field name="context">{'search_default_pvr_location': 1, 'search_default_group_by_product': 1, 'create': False}</field>
+        <field name="help" type="html">
+            <p>
+                View product quantities available at your PVR locations.
+            </p>
+        </field>
+    </record>
+
+</odoo>

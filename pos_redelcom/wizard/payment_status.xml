@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2023 Konos and MercadoPago S.A.
+     Licensed under the GPL-3.0 License or later. -->
+<odoo>
+    <record id="payment_status_wizard_form_view" model="ir.ui.view">
+        <field name="name">payment.status.wizard.form.view</field>
+        <field name="model">payment.status.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="payment_status" invisible="True"/>
+                <div class="alert alert-success text-center" role="status" invisible="payment_status != 'APROBADO'">
+                    <p>Payment status is: <b>Approved</b></p>
+                </div>
+                <div class="alert alert-danger text-center" role="status" invisible="payment_status != 'RECHAZADO'">
+                    <p>Payment status is: <b>Rejected</b></p>
+                </div>
+                <group>
+                    <group>
+                        <field name="payment_method_id"
+                            options="{'no_create' : True, 'no_open': True}"
+                            domain="[('use_payment_terminal', '=', 'redelcom')]"
+                            required="True"/>
+                    </group>
+                    <group>
+                        <field name="transaction_number" required="True"/>
+                    </group>
+                </group>
+                <footer>
+                    <button string="Check" name="get_payment_status" type="object" class="btn-primary" data-hotkey="q"
+                        confirm="Are you sure you want to check the payment status of this transaction?"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="redelcom_payment_status_action" model="ir.actions.act_window">
+        <field name="name">Payment Status</field>
+        <field name="res_model">payment.status.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_redelcom_root" name="Redelcom" sequence="999"
+        parent="point_of_sale.menu_point_of_sale"/>
+    <menuitem id="menu_redelcom_payment_status" name="Payment Status" sequence="1"
+        parent="pos_redelcom.menu_redelcom_root"
+        action="pos_redelcom.redelcom_payment_status_action"/>
+</odoo>

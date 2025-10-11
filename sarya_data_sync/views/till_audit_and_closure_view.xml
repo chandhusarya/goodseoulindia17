@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--    Till Audit & Closure List view-->
+
+        <record id="till_audit_and_closure_list_view" model="ir.ui.view">
+            <field name="name">till.audit.and.closure.list.view</field>
+            <field name="model">till.audit.and.closure</field>
+            <field name="arch" type="xml">
+                <tree string="Till Audit &amp; Closure List">
+                    <field name="till_assign_date"/>
+                    <field name="name"/>
+                    <field name="outlet_code"/>
+                    <field name="pos_config_id"/>
+                    <field name="outlet_terminal_code"/>
+                    <field name="pos_session_id"/>
+                    <field name="till_assign_and_closure_id"/>
+                    <field name="type"/>
+                    <field name="employee_name"/>
+                    <field name="manager_name"/>
+                    <field name="state" decoration-info="state == 'draft'" decoration-danger="state == 'difference'"
+                           decoration-success="state == 'done'"
+                           widget="badge"/>
+                    <field name="company_id" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--    Till Audit & Closure form view    -->
+
+        <record id="till_audit_and_closure_form_view" model="ir.ui.view">
+            <field name="name">till.audit.and.closure.form.view</field>
+            <field name="model">till.audit.and.closure</field>
+            <field name="arch" type="xml">
+                <form string="Till Audit &amp; Closure form">
+                    <header>
+                        <!--                        <button name="action_compute_lines"-->
+                        <!--                                string="Compute Lines"-->
+                        <!--                                type="object"-->
+                        <!--                                class="oe_highlight"-->
+                        <!--                                invisible="state != 'draft'"/>-->
+                        <!--                        <button name="action_confirm"-->
+                        <!--                                string="Confirm"-->
+                        <!--                                type="object"-->
+                        <!--                                class="oe_highlight"-->
+                        <!--                                invisible="state != 'lines_computed'"/>-->
+                        <!--                        <button name="action_previous_stage"-->
+                        <!--                                string="Re-Check"-->
+                        <!--                                type="object"-->
+                        <!--                                class="oe_highlight"-->
+                        <!--                                invisible="state != 'difference'"/>-->
+                        <!--                        <button name="action_done"-->
+                        <!--                                string="Done"-->
+                        <!--                                type="object"-->
+                        <!--                                class="oe_highlight"-->
+                        <!--                                invisible="state != 'confirm'"/>-->
+                        <field name="state" widget="statusbar" statusbar_visible="draft,done" nolabel="1"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" required="1" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="pos_config_id" readonly="1"/>
+                                <field name="pos_session_id" readonly="1"/>
+                                <field name="till_assign_and_closure_id" readonly="1"/>
+                                <field name="type" readonly="1"/>
+                                <field name="employee_name" readonly="1"/>
+                                <field name="manager_name" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="till_assign_date"/>
+                                <field name="till_audit_date" readonly="1" invisible="type == 'closure'"/>
+                                <field name="till_closure_date" readonly="1" invisible="type == 'audit'"/>
+                                <field name="company_id" readonly="1"/>
+                                <field name="currency_id" invisible="1" readonly="1"/>
+                                <field name="outlet_code" readonly="1"/>
+                                <field name="outlet_terminal_code" readonly="1"/>
+                                <field name="approved_by" invisible="not approved_by"/>
+                                <field name="approved_time" invisible="not approved_time"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Lines">
+                                <field name="till_audit_and_closure_line_ids"
+                                       readonly="state in ('confirm', 'difference', 'done')">
+                                    <tree string="Lines" editable="bottom" delete="0" create="0">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="pos_payment_method_id" readonly="1"/>
+                                        <field name="actual_amount" sum="Total"/>
+                                        <field name="system_amount" readonly="1" sum="Total"/>
+                                        <field name="diff_amount" readonly="1" sum="Total"/>
+                                        <field name="remarks"/>
+                                        <field name="till_audit_and_closure_id" column_invisible="1"/>
+                                    </tree>
+                                </field>
+                                <group string="Cash Count" invisible="state == 'draft'">
+                                    <field name="cash_amount_count_html" string="" readonly="state in ('confirm', 'sent_for_approval', 'done')"/>
+                                    <field name="total_cash_amount" readonly="state in ('confirm', 'sent_for_approval', 'done')"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!--   Till Audit & Closure search view     -->
+
+        <record id="till_audit_and_closure_search_view" model="ir.ui.view">
+            <field name="name">till.audit.and.clossure.search.view</field>
+            <field name="model">till.audit.and.closure</field>
+            <field name="arch" type="xml">
+                <search string="Search Name">
+                    <field name="name" string="Name"/>
+                    <separator/>
+                    <group expand="0" string="Group By">
+                        <filter string="Status" name="group_by_state" domain="[]" context="{'group_by':'state'}"/>
+                        <filter string="Company" name="group_by_company" domain="[]"
+                                context="{'group_by': 'company_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!--    Till Audit & Closure action     -->
+
+        <record id="till_audit_and_closure_action" model="ir.actions.act_window">
+            <field name="name">Till Audit &amp; Closure</field>
+            <field name="res_model">till.audit.and.closure</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="till_audit_and_closure_search_view"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create New Till Audit &amp; Closure Record.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

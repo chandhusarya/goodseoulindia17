@@ -1,0 +1,15 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<odoo>
+
+    <record id="view_account_payment_tree_cha_sarya_account" model="ir.ui.view">
+        <field name="name">account.payment.tree.cha.sarya.account</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_tree" />
+        <field name="arch" type="xml">
+             <field name="state" position="after">
+                <field name="payment_amount_residual"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

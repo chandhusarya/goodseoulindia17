@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+
+    <t t-name="OrderWidget" t-inherit="point_of_sale.OrderWidget" t-inherit-mode="extension" owl="1">
+	    <xpath expr="//div[hasclass('order-container')]" position="replace">
+             <div t-ref="scrollable" class="order-container bg-view overflow-y-auto flex-grow-1 d-flex flex-column text-start">
+                <t t-foreach="props.lines" t-as="line" t-key="line_index" >
+                    <t t-slot="default" line="line"/>
+                </t>
+                
+                    <t t-if="env.services.pos.config.show_product_cost">
+                        <t t-if="pos.mainScreen.component.name == 'ProductScreen'">
+                       
+                            <div style="color: black; background-color: bisque; padding: 12px; width: fit-content;
+                                        margin-left: 15px; margin-bottom: 5px; font-weight: 700; margin-top: 10px;">
+                                
+                                    Product Cost : <t t-esc="pos.get_order().selected_orderline.product.standard_price"/>
+                                    
+                            </div>
+                        </t>
+                        
+                    </t>
+                
+            
+            </div>
+           
+
+        </xpath>
+    </t>
+</odoo>

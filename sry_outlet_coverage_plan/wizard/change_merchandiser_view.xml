@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="change_merchandiser_wizard_view" model="ir.ui.view">
+        <field name="name">change.merchandiser.wizard.view.form</field>
+        <field name="model">change.merchandiser.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="partner_id" readonly="1"/>
+                        <field name="merchandiser_id2"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Change" name="change_merchandiser" type="object" class="oe_highlight"/>
+                    <button string="Cancel" special="cancel" data-hotkey="z"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="change_merchandiser_wizard_action" model="ir.actions.act_window">
+        <field name="name">Change Merchandiser</field>
+        <field name="res_model">change.merchandiser.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="change_merchandiser_wizard_view"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

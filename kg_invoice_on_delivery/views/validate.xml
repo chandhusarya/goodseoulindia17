@@ -1,0 +1,102 @@
+<odoo>
+  <data>
+    <!-- Include invoice creation button in delivery order -->
+
+      <record id="view_picking_form_inh" model="ir.ui.view">
+        <field name="name">stock.picking.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='button_validate']" position='after'>
+                <field name="invoice_status" invisible="1"/>
+                <field name="confirm_status" invisible="1"/>
+                <!-- <button name="button_confirm" class="oe_highlight" string="Confirm" type="object"
+                        invisible="invoice_status != 0 or sale_id == False"/> -->
+
+                <field name="sale_id" invisible="1"/>
+                <button name="action_create_invoice" string="Create Invoice"
+                        type="object"  data-hotkey="q"
+                        invisible="invoice_status == 0 or sale_id == False"/>
+            </xpath>
+            <xpath expr="//field[@name='date_deadline']" position='after'>
+                        <field name="payment_term_id"
+                               readonly="state in ('done','cancel')"/>
+                        <field name="invoice_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <field name="invoice_status" invisible="1"/>
+               <button name="view_invoice"
+                       invisible="invoice_status == 0 or state != 'done' or picking_type_code == 'incoming'"
+                       class="oe_stat_button" icon="fa-pencil-square-o" type="object" help="View invoice">
+                            <div class="o_form_field o_stat_info" >
+                                <span class="o_stat_text">Invoice</span>
+                            </div>
+                        </button>
+                </xpath>
+            
+        </field>
+    </record>
+
+
+    <record id="view_picking_search_inh" model="ir.ui.view">
+        <field name="name">stock.picking.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_id']" position='after'>
+                <field name="invoice_id" />
+            </xpath> 
+        </field>
+    </record>
+
+
+    <record id="view_tree_delivery_invoice_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/> 
+        <field name="arch" type="xml">
+            <field name="state" position="after">
+                <field name="invoice_id" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- replacing the default functoion of invoice creation wizard -->
+    <!-- <record id="view_sale_order_form_hide_inh" model="ir.ui.view">
+        <field name="name">sale.order.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position='replace'> 
+                 <header>
+                    <field name="authorized_transaction_ids" invisible="1"/>
+                    <button name="payment_action_capture" type="object"
+                            data-hotkey="shift+g" string="Capture Transaction" class="oe_highlight"
+                            invisible="authorized_transaction_ids == []"/>
+                    <button name="payment_action_void" type="object" string="Void Transaction" data-hotkey="shift+v" confirm="Are you sure you want to void the authorized transaction? This action can't be undone." attrs="{'invisible': [('authorized_transaction_ids', '=', [])]}"/>
+                    <button name="action_quotation_send" string="Send by Email" type="object" states="draft" class="btn-primary" data-hotkey="g"/>
+                    <button name="action_quotation_send" type="object"
+                            string="Send PRO-FORMA Invoice"
+                            groups="sale.group_proforma_sales" class="btn-primary"
+                            invisible="state != 'draft' or invoice_count >= 1"
+                            context="{'proforma': True}"/>
+                    <button name="action_confirm" id="action_confirm" data-hotkey="v"
+                            string="Confirm" class="btn-primary" type="object"
+                            invisible="state not in ['sent']"/>
+                    <button name="action_confirm" data-hotkey="v" string="Confirm" type="object"
+                            invisible="state not in ['draft']"/>
+                    <button name="action_quotation_send" type="object" string="Send PRO-FORMA Invoice" groups="sale.group_proforma_sales"
+                            invisible="state == 'draft' or invoice_count >= 1" context="{'proforma': True}"/>
+                    <button name="action_quotation_send" string="Send by Email" type="object" states="sent,sale" data-hotkey="g"/>
+                    <button name="action_cancel" type="object" string="Cancel"
+                            invisible="state not in ['draft', 'sent','sale'] or id == False" data-hotkey="z"/>
+                    <button name="action_draft" states="cancel" type="object" string="Set to Quotation" data-hotkey="w"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,sent,sale"/>
+                </header>
+            </xpath>
+        </field>
+    </record> -->
+
+
+  </data>
+</odoo>

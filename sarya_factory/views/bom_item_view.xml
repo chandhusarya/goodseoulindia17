@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="mrp_bom_item_form_view" model="ir.ui.view">
+            <field name="name">mrp.bom.item.form</field>
+            <field name="model">mrp.bom.item</field>
+            <field name="arch" type="xml">
+                <form string="BOM Item">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name" placeholder="Title"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="parent_id"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="mrp_bom_item_tree_view" model="ir.ui.view">
+            <field name="name">mrp.bom.item.tree</field>
+            <field name="model">mrp.bom.item</field>
+            <field name="arch" type="xml">
+                <tree string="BOM Item">
+                    <field name="name"/>
+                    <field name="parent_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="mrp_bom_item_search_view" model="ir.ui.view">
+            <field name="name">mrp.bom.item.search</field>
+            <field name="model">mrp.bom.item</field>
+            <field name="arch" type="xml">
+                <search string="BOM Item">
+                    <group expand="1" string="Group By">
+                        <filter string="Name" name="name" domain="[]"
+                                context="{'group_by':'name'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="mrp_bom_item_act_window" model="ir.actions.act_window">
+            <field name="name">BOM Item</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">mrp.bom.item</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    There is no examples click here to add new BOM Item.
+                </p>
+            </field>
+        </record>
+
+        <menuitem name="BOM Item" id="mrp_bom_item_menu" parent="mrp.menu_mrp_configuration" action="mrp_bom_item_act_window"/>
+
+    </data>
+</odoo>

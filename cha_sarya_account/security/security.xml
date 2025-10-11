@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="can_process_ewaybill" model="res.groups">
+        <field name="name">Can Process eWayBill</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_inventory"/>
+    </record>
+
+    <record id="can_view_finance_report" model="res.groups">
+        <field name="name">Can view finance report</field>
+    </record>
+
+  </odoo>

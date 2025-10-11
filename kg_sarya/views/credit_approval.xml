@@ -1,0 +1,81 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<odoo>
+
+    <record id="credit_approval_tree" model="ir.ui.view">
+        <field name="name">credit.approval.tree</field>
+        <field name="model">credit.approval</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" required="1" readonly="1"/>
+                <field name="partner_id"/>
+                <field name="date_approval"/>
+                <field name="credit_limit"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="credit_approval_form" model="ir.ui.view">
+        <field name="name">credit.approval.form</field>
+        <field name="model">credit.approval</field>
+        <field name="arch" type="xml">
+            <form string="Credit Approval Form">
+                <header>
+                    <button string="Confirm" name="action_approve" type="object" class="oe_highlight" states="draft"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,approve"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group name="credit_approval main">
+                        <group name="partner_details">
+                            <field name="partner_id"
+                                   required="1"
+                                   widget="res_partner_many2one"
+                                   domain="[('is_parent','=',False)]"/>
+                            <field name="date_approval"/>
+                            <field name="credit_limit"
+                                   required="1"/>
+                            <field name="user_id"
+                                   options="{'no_open':True,'no_create': True}"
+                                   readonly="1"/>
+                            <field name="company_id"
+                                   readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="credit_approval_menu_action" model="ir.actions.act_window">
+        <field name="name">Credit Approval Form</field>
+        <field name="res_model">credit.approval</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <record id="view_credit_approval_request_filter" model="ir.ui.view">
+        <field name="name">credit.approval.filter</field>
+        <field name="model">credit.approval</field>
+        <field name="arch" type="xml">
+            <search string="Credit Approval Form">
+                <field name="partner_id"/>
+             </search>
+         </field>
+    </record>
+
+
+
+    <menuitem name="Credit Approval" id="credit_approval_menu" action="credit_approval_menu_action" sequence="11" parent="sale.sale_order_menu"/>
+
+</odoo>
+

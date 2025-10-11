@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!--        Bank Transfer Sequence -->
+        <record id="sequence_bank_transfer" model="ir.sequence">
+            <field name="name">Bank Transfer Sequence</field>
+            <field name="code">bank.transfer.sequence</field>
+            <field name="prefix">BANK/%(year)s/%(month)s/</field>
+            <field name="active">TRUE</field>
+            <field name="number_increment">1</field>
+            <field name="number_next">1</field>
+            <field name="padding">5</field>
+            <field name="implementation">standard</field>
+        </record>
+
+    </data>
+</odoo>

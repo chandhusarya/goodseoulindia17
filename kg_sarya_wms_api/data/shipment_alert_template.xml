@@ -1,0 +1,10 @@
+<odoo>
+    <data>
+        <record id="shipment_notificn_mail_template" model="mail.template">
+			<field name="name">Shipment Advise</field>
+			<field name="subject">Shipment Advise</field>
+			<field name="model_id" ref="kg_sarya_inventory.model_shipment_advice"/>
+			<field name="auto_delete" eval="True"/>
+        </record>
+    </data>
+</odoo>

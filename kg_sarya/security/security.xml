@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record model="ir.module.category" id="module_product_creation">
+        <field name="name">Products</field>
+        <field name="sequence">100</field>
+        <field name="visible" eval="0"/>
+    </record>
+
+    <record model="ir.module.category" id="module_product_costing">
+        <field name="name">Product Cost</field>
+        <field name="sequence">100</field>
+        <field name="visible" eval="0"/>
+    </record>
+
+    <record model="ir.module.category" id="module_sarya_sales">
+        <field name="name">Sales</field>
+        <field name="sequence">100</field>
+        <field name="visible" eval="0"/>
+    </record>
+
+    <record model="ir.module.category" id="module_sarya_inventory">
+        <field name="name">Inventory</field>
+        <field name="sequence">100</field>
+        <field name="visible" eval="0"/>
+    </record>
+
+    <record model="ir.module.category" id="module_sarya_purchase">
+        <field name="name">Purchase</field>
+        <field name="sequence">100</field>
+        <field name="visible" eval="0"/>
+    </record>
+
+    <record model="ir.module.category" id="module_sarya_vansales">
+        <field name="name">VanSales</field>
+        <field name="sequence">100</field>
+        <field name="visible" eval="0"/>
+    </record>
+
+
+
+
+
+    <record id="group_can_view_sale_profit" model="res.groups">
+        <field name="name">Can View Sale Profit</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_sales"/>
+    </record>
+
+    <record id="group_can_confirm_sale_order" model="res.groups">
+        <field name="name">Can Confirm Sale Order</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_sales"/>
+    </record>
+
+    <record id="can_see_product_costing" model="res.groups">
+        <field name="name">Can See Product Cost</field>
+        <field name="category_id" ref="kg_sarya.module_product_costing"/>
+    </record>
+
+
+    <record id="can_create_product_without_product_specification" model="res.groups">
+        <field name="name">Can create Product without Product Specification</field>
+         <field name="category_id" ref="kg_sarya.module_product_creation"/>
+    </record>
+
+    <record id="ir_attachment_rule_user" model="ir.rule">
+        <field name="name">Attachment User Rule</field>
+        <field name="model_id" ref="base.model_ir_attachment"/>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+
+
+</odoo>

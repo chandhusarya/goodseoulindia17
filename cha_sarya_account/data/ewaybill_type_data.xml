@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Document Type -->
+    <record id="type_tax_invoice_sub_type_supply_delivery_challan" model="l10n.in.ewaybill.type">
+        <field name="name">Delivery Challan</field>
+        <field name="code">CHL</field>
+        <field name="sub_type">Supply</field>
+        <field name="sub_type_code">9</field>
+        <field name="allowed_supply_type">both</field>
+        <field name="active" eval="True"/>
+    </record>
+
+</odoo>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <data>
+
+
+
+        <record id="product_attachments_types_product_front" model="product.attachments.types">
+            <field name="document_name">product_image</field>
+            <field name="name">Front</field>
+        </record>
+
+        <record id="product_attachments_types_product_back" model="product.attachments.types">
+            <field name="document_name">product_image</field>
+            <field name="name">Back</field>
+        </record>
+
+        <record id="product_attachments_types_product_side1" model="product.attachments.types">
+            <field name="document_name">product_image</field>
+            <field name="name">Side1</field>
+        </record>
+
+        <record id="product_attachments_types_product_side2" model="product.attachments.types">
+            <field name="document_name">product_image</field>
+            <field name="name">Side2</field>
+        </record>
+
+        <record id="product_attachments_types_product_top" model="product.attachments.types">
+            <field name="document_name">product_image</field>
+            <field name="name">Top</field>
+        </record>
+
+        <record id="product_attachments_types_product_bottom" model="product.attachments.types">
+            <field name="document_name">product_image</field>
+            <field name="name">Bottom</field>
+        </record>
+
+        <record id="product_attachments_types_product_other" model="product.attachments.types">
+            <field name="document_name">product_image</field>
+            <field name="name">Other</field>
+        </record>
+
+        <record id="product_attachments_types_product_artwork_artwork1" model="product.attachments.types">
+            <field name="document_name">product_artwork</field>
+            <field name="name">Artwork1</field>
+        </record>
+
+        <record id="product_attachments_types_product_artwork_artwork2" model="product.attachments.types">
+            <field name="document_name">product_artwork</field>
+            <field name="name">Artwork2</field>
+        </record>
+
+        <record id="product_attachments_types_product_artwork_artwork3" model="product.attachments.types">
+            <field name="document_name">product_artwork</field>
+            <field name="name">Artwork3</field>
+        </record>
+
+        <record id="product_attachments_types_product_artwork_artwork4" model="product.attachments.types">
+            <field name="document_name">product_artwork</field>
+            <field name="name">Artwork4</field>
+        </record>
+
+        <record id="product_attachments_types_product_artwork_other" model="product.attachments.types">
+            <field name="document_name">product_artwork</field>
+            <field name="name">Other</field>
+        </record>
+
+        <record id="product_attachments_types_product_artwork_arabic_label" model="product.attachments.types">
+            <field name="document_name">product_artwork</field>
+            <field name="name">Arabic Label</field>
+        </record>
+
+    </data>
+</odoo>

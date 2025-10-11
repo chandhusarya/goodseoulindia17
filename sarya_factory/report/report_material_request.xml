@@ -1,0 +1,69 @@
+<odoo>
+    <template id="report_material_request_document">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <t t-foreach="docs" t-as="doc">
+                        <!-- Header Info -->
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <h3>Delievery Challan: <t t-esc="doc.name"/></h3>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <strong>Requested By:</strong>
+                                <span t-esc="doc.requested_by.name"/>
+                            </div>
+                            <div class="col-6 text-right">
+                                <strong>Date:</strong>
+                                <span t-esc="doc.date.strftime('%d-%m-%Y %H:%M')"/>
+                            </div>
+                        </div>
+
+
+                        <!-- Product Table -->
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>UoM</th>
+                                    <th>Quantity</th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="doc.request_lines" t-as="line">
+                                    <t t-if="line.transferred_qty > 0">
+                                        <td>
+                                            <span t-esc="line.product_id.display_name"/><br/>
+                                            LOT : <t t-foreach="line.detail_ids" t-as="detail" colspan="5">
+                                                <t  t-if="detail.quant_id and detail.quant_id.lot_id">
+                                                    <span t-esc="detail.quant_id.lot_id.name"/>-<span t-esc="detail.quant_id.lot_id.expiration_date"/>,
+                                                </t>
+                                            </t>
+                                        </td>
+                                        <td><span t-esc="line.packaging_id.name"/></td>
+                                        <td><span t-esc="line.transferred_pkg_qty"/></td>
+                                        <td><span t-esc="line.location_id.display_name"/></td>
+                                        <td><span t-esc="line.location_dest_id.display_name"/></td>
+                                    </t>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <!-- Report Action -->
+    <record id="action_report_material_request" model="ir.actions.report">
+        <field name="name">Material Request</field>
+        <field name="model">material.request</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">sarya_factory.report_material_request_document</field>
+        <field name="report_file">sarya_factory.report_material_request_document</field>
+    </record>
+</odoo>

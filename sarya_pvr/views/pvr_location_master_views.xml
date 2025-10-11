@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Action for PVR Location Master -->
+    <record id="action_pvr_location_master" model="ir.actions.act_window">
+        <field name="name">PVR</field>
+        <field name="res_model">pvr.location.master</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first PVR Location Master.
+            </p>
+        </field>
+    </record>
+
+    <!-- Tree View for PVR Location Master-->
+    <record id="view_pvr_location_master_tree" model="ir.ui.view">
+        <field name="name">pvr.location.master.tree</field>
+        <field name="model">pvr.location.master</field>
+        <field name="arch" type="xml">
+            <tree string="PVR">
+                <field name="name"/>
+                <field name="location_id"/>
+                <field name="allowed_user_ids" widget="many2many_tags"/>
+                <field name="allowed_product_ids" widget="many2many_tags"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View for PVR Location Master-->
+    <record id="view_pvr_location_master_form" model="ir.ui.view">
+        <field name="name">pvr.location.master.form</field>
+        <field name="model">pvr.location.master</field>
+        <field name="arch" type="xml">
+            <form string="PVR">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="location_id" domain="[('usage', '=', 'internal')]"/>
+                            <field name="source_location_id" domain="[('usage', '=', 'internal')]"/>
+                            <field name="temp_location_id" domain="[('usage', '=', 'internal')]"/>
+                            <field name="pvr_management_location" domain="[('usage', '=', 'internal')]"/>
+                            <field name="allowed_user_ids" widget="many2many_tags"/>
+                            <field name="allowed_product_ids" widget="many2many_tags"/>
+                            <field name="container_products" widget="many2many_tags"/>
+                            <field name="minimum_quantity_required"/>
+                        </group>
+                        <group>
+                            <group>
+                                <span class="o_form_label o_td_label" name="address_name">
+                                    <b>Address</b>
+                                </span>
+                                <div class="o_address_format">
+                                    <field name="street" placeholder="Street..." class="o_address_street"/>
+                                    <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                    <field name="city" placeholder="City" class="o_address_city" />
+                                    <field name="state_id" class="o_address_state" placeholder="State" options="{'no_open': True, 'no_quick_create': True}" context="{'country_id': country_id, 'default_country_id': country_id, 'zip': zip}"/>
+                                    <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                    <div name="partner_address_country" class="d-flex justify-content-between">
+                                        <field name="country_id" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}"/>
+                                    </div>
+                                </div>
+                                <field name="vat" placeholder="e.g. BE0477472701"/>
+                                <field name="pan" placeholder="e.g. BE0477472701"/>
+                                <field name="fssai_no"/>
+                            </group>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <menuitem id="menu_pvr_location_master"
+              name="PVR Configuration"
+              parent="sarya_pvr.menu_pvr_stock_request"
+              action="action_pvr_location_master"
+              sequence="20"/>
+
+</odoo>

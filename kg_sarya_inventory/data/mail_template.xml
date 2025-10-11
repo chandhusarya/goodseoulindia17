@@ -1,0 +1,388 @@
+<odoo>
+    <data>
+
+
+        <record id="user_mail_template" model="mail.template">
+            <field name="name">User Email Notification</field>
+            <field name="email_from">{{object.create_uid.email}}</field>
+            <field name="email_to">{{object.get_email_to()}}</field>
+            <field name="subject">Invoice Created For Bill No : {{object.shipment_bill_number}}</field>
+            <field name="model_id" ref="kg_sarya_inventory.model_account_move"/>
+            <field name="body_html" type="html">
+                <table style="padding-top:16px;background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"
+                       cellspacing="0" cellpadding="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td align="center">
+                                <table style="padding:24px;background-color: white; color: #454748; border-collapse:separate;"
+                                       width="590" cellspacing="0" cellpadding="0" border="0">
+                                    <tbody>
+                                        <tr>
+                                            <td valign="middle">
+                                                <span style="font-size: 20px; font-weight: bold;">
+                                                    <span>Bill Generated</span>
+                                                    <br/>
+                                                </span>
+                                            </td>
+
+                                            <td valign="middle" align="right">
+                                                <img style="padding:0px;margin: 0px; height: 48px;"
+                                                     t-attf-src="/logo.png?company={{object.company_id.id }}"
+                                                     alt="SARYA"/>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+
+                                            <td style="min-width:590px;" align="center">
+                                                <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color:
+                                white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                                    <tr>
+                                                        <td style="font-size: 13px;">
+                                                            <div>
+                                                                <p>Hi,
+                                                                    <br/>
+                                                                    &#160;An Invoice against bill no:
+                                                                    <t t-out="object.shipment_bill_number"/>
+                                                                    has been generated.
+                                                                    <br/>
+                                                                </p>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="min-width:590px;padding: 0 8px 0 8px; font-size:11px;"
+                                                align="center">
+                                                <hr style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 4px 0px;"
+                                                    width="100%"/>
+                                                <b>
+                                                    <span t-out="object.env.user.company_id.name"/>
+                                                </b>
+                                                <br/>
+                                                <div style="color:#999999;">
+                                                    <span t-out="object.env.user.company_id.phone"/>
+                                                    |
+                                                    <a style="color:#999999;"
+                                                       t-attf-href="mailto:{{object.env.user.company_id.email}}">
+                                                        <span t-out="object.env.user.company_id.email"/>
+                                                    </a>
+
+                                                    |
+                                                    <a style="color:#999999;"
+                                                       t-att-href="object.env.user.company_id.website">
+                                                        <span t-out="object.env.user.company_id.website"/>
+                                                    </a>
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                        </tr>
+                    </tbody>
+                </table>
+            </field>
+        </record>
+
+        <!-- mail template for lot expiring -->
+        <!-- <record id="id_lot_alert_email_template" model="mail.template">
+            <field name="name">Lot Expiring Alert</field>
+            <field name="model_id" ref="kg_sarya_inventory.model_stock_production_lot"/>
+            <field name="email_from">{{object.create_uid.email}}</field>
+            <field name="auto_delete" eval="True"/>
+            <field name="subject">Alert Product Lot Expiration</field>
+            <field name="body_html" type="html">
+                <table style="padding-top:16px;background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"
+                       cellspacing="0" cellpadding="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td align="center">
+                                <table style="padding:24px;background-color: white; color: #454748; border-collapse:separate;"
+                                       width="590" cellspacing="0" cellpadding="0" border="0">
+                                    <tbody>
+                                        <tr>
+                                            <td style="min-width:590px;" align="center">
+                                                <table style="background-color:white;padding: 0; border-collapse:separate;"
+                                                       width="100%" cellspacing="0" cellpadding="0" border="0">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td valign="middle">
+                                                                <span style="font-size: 20px; font-weight: bold;">
+                                                                    <span>Alert Product Lot Expiration</span>
+                                                                    <br/>
+                                                                </span>
+                                                            </td>
+
+                                                            <td valign="middle" align="right">
+                                                                <img style="padding:0px;margin: 0px; height: 48px;"
+                                                                     t-attf-src="/logo.png?company={{object.company_id.id }}"
+                                                                     alt="SARYA"/>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2" style="text-align:center;">
+                                                                <hr style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin:4px 0px 32px 0px;"
+                                                                    width="100%"/>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="min-width:590px;">
+
+                                                <div style="margin: 0px; padding: 0px;">
+                                                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                                                        Hello,
+                                                        <br/>
+                                                        <br/>
+                                                        Following are the lot expiring for products
+                                                        <br/>
+                                                        <br/>
+                                                    </p>
+                                                    <table style="border: 1px solid black;border-collapse: collapse;width:100%,padding:1%">
+                                                        <tr style="border: 1px solid black;border-collapse: collapse;">
+                                                            <th style="border: 1px solid black;border-collapse: collapse;">
+                                                                Product
+                                                            </th>
+                                                            <th style="border: 1px solid black;border-collapse: collapse;">
+                                                                Lot/Serial
+                                                            </th>
+                                                            <th style="border: 1px solid black;border-collapse: collapse;">
+                                                                Expiration Date
+                                                            </th>
+                                                        </tr>
+                                                        <t t-set="lines"
+                                                           t-value="ctx['lots']"/>
+                                                        <t t-foreach="lines" t-as="line">
+                                                            <tr style="border: 1px solid black;border-collapse: collapse;">
+                                                                <td style="border: 1px solid black;border-collapse: collapse;">
+                                                                    <span t-esc="line.product_id.display_name"/>
+                                                                </td>
+                                                                <td style="border: 1px solid black;border-collapse: collapse;">
+                                                                    <span t-esc="line.name"/>
+                                                                </td>
+                                                                <td style="border: 1px solid black;border-collapse: collapse;">
+                                                                    <span t-esc="line.expiration_date.date()"/>
+                                                                </td>
+                                                            </tr>
+                                                        </t>
+
+                                                    </table>
+                                                </div>
+
+                                                <br/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="min-width:590px;padding: 0 8px 0 8px; font-size:11px;"
+                                                align="center">
+                                                <hr style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 4px 0px;"
+                                                    width="100%"/>
+                                                <b>
+                                                    <span t-out="object.env.user.company_id.name"/>
+                                                </b>
+                                                <br/>
+                                                <div style="color:#999999;">
+                                                    <span t-out="object.env.user.company_id.phone"/>
+                                                    |
+                                                    <a style="color:#999999;"
+                                                       t-attf-href="mailto:{{object.env.user.company_id.email}}">
+                                                        <span t-out="object.env.user.company_id.email"/>
+                                                    </a>
+
+                                                    |
+                                                    <a style="color:#999999;"
+                                                       t-att-href="object.env.user.company_id.website">
+                                                        <span t-out="object.env.user.company_id.website"/>
+                                                    </a>
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </field>
+        </record>
+
+
+        <record id="email_template_send_documents_to_clearing_agent" model="mail.template">
+            <field name="name">Send Document to Clearing Agent</field>
+            <field name="model_id" ref="kg_sarya_inventory.model_shipment_advice"/>
+            <field name="subject">Shipment to receive, Ref : {{ object.name }},  BL No : {{ object.bill_no or 'n/a' }}</field>
+            <field name="partner_to">{{ object.clearing_agent.id }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear
+                        <t t-out="object.clearing_agent.name or ''"></t>,
+                        <br/>
+                        <br/>
+                             Please find the attached documents of the shipment
+                        <br/>
+                        <br/>
+                        <strong>Vendor : <t t-out="object.vendor_id.name or ''"></t> </strong>
+                        <br/>
+                        Departure Date : <t t-out="object.departure_date or ''"></t>
+                        <br/>
+                        Expected Date : <t t-out="object.expected_date or ''"></t>
+                        <br/>
+                        Shipment No : <t t-out="object.shipment_no or ''"></t>
+                        <br/>
+                        Container No : <t t-out="object.container_no or ''"></t>
+                        <br/>
+                        BOE No : <t t-out="object.boe_number or ''"></t>
+                        <br/>
+                        BL No : <t t-out="object.bill_no or ''"></t>
+                        <br/>
+                        <br/>
+                    </p>
+                </div>
+            </field>
+            <field name="lang">{{ object.vendor_id.lang }}</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+
+        <record id="email_template_send_documents_to_clearing_agent_bl" model="mail.template">
+            <field name="name">Send Document to Clearing Agent</field>
+            <field name="model_id" ref="kg_sarya_inventory.model_bl_entry"/>
+            <field name="subject">Shipment to receive, Supplier : {{ object.vendor_id.name }},  BL No : {{ object.name or 'n/a' }}</field>
+            <field name="partner_to">{{ object.clearing_agent.id }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear
+                        <t t-out="object.clearing_agent.name or ''"></t>,
+                        <br/>
+                        <br/>
+                             Please find the attached documents of the shipment
+                        <br/>
+                        <br/>
+                        <strong>Vendor : <t t-out="object.vendor_id.name or ''"></t> </strong>
+                        <br/>
+                        BL No : <t t-out="object.name or ''"></t>
+                        <br/>
+                        <br/>
+                    </p>
+                </div>
+            </field>
+            <field name="lang">{{ object.vendor_id.lang }}</field>
+            <field name="auto_delete" eval="True"/>
+        </record> -->
+
+        <record id="email_template_delivery_partner_document" model="mail.template">
+            <field name="name">Delivery Partner Document</field>
+            <field name="email_from">{{object.create_uid.email}}</field>
+            <field name="email_to">{{object.delivery_partner_id.email}}</field>
+            <field name="subject">Documents for Delivery - {{object.name}}</field>
+            <field name="model_id" ref="kg_sarya_inventory.model_stock_picking"/>
+            <field name="body_html" type="html">
+                <table style="padding-top:16px;background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"
+                       cellspacing="0" cellpadding="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td align="center">
+                                <table style="padding:24px;background-color: white; color: #454748; border-collapse:separate;"
+                                       width="590" cellspacing="0" cellpadding="0" border="0">
+                                    <tbody>
+                                        <tr>
+                                            <td valign="middle">
+                                                <span style="font-size: 20px; font-weight: bold;">
+                                                    <span>Delivery details</span>
+                                                    <br/>
+                                                </span>
+                                            </td>
+
+                                            <td valign="middle" align="right">
+                                                <img style="padding:0px;margin: 0px; height: 48px;"
+                                                     t-attf-src="/logo.png?company={{object.company_id.id }}"
+                                                     alt="SARYA"/>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+
+                                            <td style="min-width:590px;" align="center">
+                                                <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color:
+                                white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                                    <tr>
+                                                        <td style="font-size: 13px;">
+                                                            <div>
+                                                                <p>Hi,
+                                                                    <br/>
+                                                                    &#160;Please find attached the Proforma Invoice for the delivery with reference.<br/><br/>
+                                                                    <strong>Delivery Address:</strong><br/>
+                                                                    <t t-out="object.partner_id.name"/><br/>
+                                                                    <t t-out="object.partner_id.street"/><br/>
+                                                                    <t t-out="object.partner_id.street2"/><br/>
+                                                                    <t t-out="object.partner_id.city"/>,<t t-out="object.partner_id.state_id.name"/><br/>
+                                                                    <br/>
+                                                                </p>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="min-width:590px;padding: 0 8px 0 8px; font-size:11px;"
+                                                align="center">
+                                                <hr style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 4px 0px;"
+                                                    width="100%"/>
+                                                <b>
+                                                    <span t-out="object.env.user.company_id.name"/>
+                                                </b>
+                                                <br/>
+                                                <div style="color:#999999;">
+                                                    <span t-out="object.env.user.company_id.phone"/>
+                                                    |
+                                                    <a style="color:#999999;"
+                                                       t-attf-href="mailto:{{object.env.user.company_id.email}}">
+                                                        <span t-out="object.env.user.company_id.email"/>
+                                                    </a>
+
+                                                    |
+                                                    <a style="color:#999999;"
+                                                       t-att-href="object.env.user.company_id.website">
+                                                        <span t-out="object.env.user.company_id.website"/>
+                                                    </a>
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                        </tr>
+                    </tbody>
+                </table>
+            </field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+
+
+
+    </data>
+</odoo>

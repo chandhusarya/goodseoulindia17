@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_partner_view_team_inherit" model="ir.ui.view">
+        <field name="name">res.partner.form.team.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="sales_team.res_partner_view_team"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='team_id']" position='replace'>
+                <field name="team_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="res_partner_account_inherit" model="ir.ui.view">
+        <field name="name">res.partner.form.team.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="account.view_partner_property_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='accounting']/group/group[@name='accounting_entries']" position='after'>
+                <group string="Report Configuration">
+                    <field name="show_lot_exp" string="Dispaly lot in tax invoice"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="res_partner_form_inherit" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <field name="state_id" position="attributes">
+                <attribute name="required">1</attribute>
+            </field>
+            <xpath expr="//field[@name='phone']" position='replace'>
+                <field name="phone" widget="phone" required="1"/>
+            </xpath>
+            <xpath expr="//field[@name='parent_id']" position='after'>
+                Is Parent
+                <field name="is_parent" string="Is Parent"/>
+                <field name="parent_customer_id"
+                       invisible="is_parent"
+                       required="not is_parent"
+                       placeholder="Parent Customer"/>
+            </xpath>
+
+            <xpath expr="//field[@name='parent_id']" position='attributes'>
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='email']" position='replace'>
+                <field name="email" widget="email" required="1" context="{'gravatar_image': True}"/>
+            </xpath>
+            <xpath expr="//field[@name='vat']" position='attributes'>
+                <attribute name="string">GST No.</attribute>
+            </xpath>
+
+            <xpath expr="//notebook[1]" position='before'>
+                <group>
+                    <group>
+                        <field name="is_vendor" invisible="1"/>
+
+                        <field name="supplier_rank"/>
+                        <field name="customer_rank"/>
+
+                        <field name="vendor_type"
+                               string="Vendor Type"
+                               invisible="customer_rank >= 1"/>
+
+                        <field name="do_mandatory_procurement_approval_required"
+                               invisible="customer_rank >= 1"/>
+
+                        <field name="vendor_origin"
+                               invisible="vendor_type != 'trade'"
+                               required="vendor_type == 'trade'"/>
+
+                        <field name="port_of_loading"
+                               string="Port Of Loading"
+                               invisible="vendor_origin != 'import_vendor'"
+                               required="vendor_origin == 'import_vendor'"/>
+
+                        <field name="mode_of_shipment"
+                               invisible="vendor_origin != 'import_vendor'"
+                               required="vendor_origin == 'import_vendor'"/>
+
+                        <field name="container_type"
+                               invisible="vendor_origin != 'import_vendor'"
+                               required="vendor_origin == 'import_vendor'"/>
+
+                        <field name="container_volume"
+                               invisible="vendor_origin != 'import_vendor'"
+                               required="vendor_origin == 'import_vendor'"/>
+
+                        <field name="is_clearing_agent"
+                               string="Is Clearing Agent"
+                               invisible="vendor_type == 'trade'" />
+
+                        <field name="clearing_agents"
+                               string="Clearing Agents"
+                               widget="many2many_tags"
+                               domain="[('is_clearing_agent', '=', True)]"
+                               invisible="vendor_origin != 'import_vendor'"
+                               required="vendor_origin == 'import_vendor'"/>
+
+                        <field name="vendor_mail_template"
+                               invisible="vendor_origin != 'import_vendor'"
+                               required="vendor_origin == 'import_vendor'"
+                               options="{'no_create_edit': True, 'no_create': True}"
+                               domain="[('name', 'ilike', 'Vendor Document Request :')]"/>
+
+                        <field name="vendor_po_mail_template"
+                               invisible="vendor_origin != 'import_vendor'"
+                               required="vendor_origin == 'import_vendor'"
+                               options="{'no_create_edit': True, 'no_create': True}"
+                               domain="[('name', 'ilike', 'Sarya Purchase Order:')]"/>
+
+                        <field name="vendor_bo_mail_template"
+                               invisible="vendor_origin != 'import_vendor'"
+                               required="vendor_origin == 'import_vendor'"
+                               options="{'no_create_edit': True, 'no_create': True}"
+                               domain="[('name', 'ilike', 'Sarya BO:')]"/>
+
+                        <field name="is_control_list_mandatory"
+                               invisible="supplier_rank > 1"/>
+                        <field name="trade_license"
+                               invisible="supplier_rank > 1"/>
+                        <field name="trade_channel" string="Trade Channel"
+                               options="{'no_create': True, 'no_create_edit':True}"
+                               invisible="supplier_rank > 1"/>
+                        <field name="customer_classification" string="Classification"
+                               options="{'no_create': True, 'no_create_edit':True}"
+                               domain="[('trade_channel_id','=',trade_channel)]"
+                               invisible="supplier_rank > 1"/>
+                        <field name="customer_sub_classification" string="Sub Classification1"
+                               options="{'no_create': True, 'no_create_edit':True}"
+                               domain="[('classification_id','=',customer_classification),('trade_channel_id','=',trade_channel)]"
+                               invisible="supplier_rank > 1"/>
+                        <field name="customer_sub_classification2" string="Sub Classification2"
+                               options="{'no_create': True, 'no_create_edit':True}"
+                               domain="[('classification_id','=',customer_classification),('sub_classification_id','=',customer_sub_classification),('trade_channel_id','=',trade_channel)]"
+                               invisible="supplier_rank > 1"/>
+
+                        <field name="customer_sub_classification3" string="Sub Classification3"
+                               options="{'no_create': True, 'no_create_edit':True}"
+                               domain="[('classification_id','=',customer_classification),
+                                ('sub_classification_id','=',customer_sub_classification),
+                                ('trade_channel_id','=',trade_channel),
+                                ('sub_classification2_id','=',customer_sub_classification2),]"
+                               invisible="supplier_rank > 1"/>
+
+
+                        <field name="master_parent_id" string="Master Parent" options="{'no_create':1}"
+                               invisible="supplier_rank > 1"/>
+                        <field name="vendor_type" string="Vendor Type"
+                               invisible="supplier_rank > 1"/>
+                    </group>
+                </group>
+
+            </xpath>
+            <xpath expr="//field[@name='state_id']" position='replace'>
+                <field name="state_id" class="o_address_state" placeholder="State"
+                       options="{'no_open': True, 'no_quick_create': True}"
+                       context="{'country_id': country_id, 'default_country_id': country_id, 'zip': zip}"/>
+            </xpath>
+            <xpath expr="//field[@name='zip']" position='replace'>
+                <field name="zip" required="1" placeholder="ZIP" class="o_address_zip"/>
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position='after'>
+                <field name="user_id" required="1" domain="[('share', '=', False)]"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position='inside'>
+                <button name="action_get_child_customers" type="object" class="oe_stat_button" icon="fa-pencil-square-o"
+                        context="{'search_default_parent_customer_id': id}"
+                        invisible="child_customer_count == 0">
+                    <div class="o_stat_info">
+                        <field name="child_customer_count" class="o_stat_value"/>
+                        <span class="o_stat_text">Child Customers</span>
+                    </div>
+                </button>
+            </xpath>
+            <!-- <xpath expr="//field[@name='category_id']" position='after'>
+                <field name="is_parent" string="Is Parent" />
+            </xpath> -->
+            <!--             <xpath expr="//field[@name='is_parent']" position='after'>
+
+                        </xpath> -->
+            <xpath expr="//field[@name='category_id']" position='after'>
+                <field name="bill_type" string="Type of Payment"
+                       invisible="supplier_rank >= 1"/>
+                <field name="contracts" string="Contracts" invisible="is_vendor"/>
+                <field name="customer_category_id"
+                       invisible="supplier_rank >= 1"/>
+            </xpath>
+            <xpath expr="//notebook/page[@name='sales_purchases']/group[@name='container_row_2']/group[@name='misc']"
+                   position='after'>
+                <group name="salesman_history">
+                    <field name="salesman_history" string="Salesman History">
+                        <tree editable="bottom">
+                            <field name="salesman"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="partner_id" invisible="1"/>
+                        </tree>
+                    </field>
+                </group>
+
+
+                <group name="acc_mnger_history">
+                    <field name="acc_mnger_history" string="Ac Manager History">
+                        <tree editable="bottom">
+                            <field name="manager"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="partner_id" invisible="1"/>
+                        </tree>
+                    </field>
+                </group>
+
+                <group name="executive_history">
+                    <field name="executive_history" string="Executive History">
+                        <tree editable="bottom">
+                            <field name="exicutive"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="partner_id" invisible="1"/>
+                        </tree>
+                    </field>
+                </group>
+            </xpath>
+
+            <xpath expr="//notebook/page[@name='internal_notes']" position='after'>
+                <page string="Shipping Documents" invisible="vendor_origin != 'import_vendor'">
+                    <field name="shipping_documents">
+                        <tree editable="bottom">
+                            <field name="name"/>
+                            <field name="is_required" widget="boolean_toggle"/>
+                        </tree>
+                    </field>
+                </page>
+
+                <page name="attachment" string="Attachments">
+                    <group>
+                        <field name="attachment">
+                            <tree editable="bottom">
+                                <field name="document_name" string="Document Name" required="1"/>
+                                <field name="doc_attachment_partner" widget="many2many_binary" string="Attachments"/>
+                                <field name="expiry" required="0"/>
+                                <field name="override_doc" widget="boolean_toggle"/>
+                            </tree>
+                        </field>
+                    </group>
+                </page>
+            </xpath>
+
+
+        </field>
+    </record>
+
+    <record id="view_category_credit_form" model="ir.ui.view">
+        <field name="name">partner.over.credit.limit.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="account.view_partner_property_form"/>
+        <field name="arch" type="xml">
+            <field name="property_account_position_id" position="after">
+                <field name="credit_limit" invisible="not is_parent"/>
+                <field name="child_credit_limit" invisible="is_parent" readonly="1"
+                       force_save="1"/>
+                <field name="child_credit_total" invisible="not is_parent" readonly="1"
+                       force_save="1"/>
+            </field>
+        </field>
+    </record>
+
+
+    <!-- is parent filter -->
+    <record id="view_partner_filter_parent" model="ir.ui.view">
+        <field name="name">res.partner.select.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position='before'>
+                <field name="is_parent" string="Is Parent"/>
+                <filter string="Exclude Contact" name="ex_contact"
+                        domain="['|',('is_parent', '=', True),('parent_customer_id', '!=', False)]"/>
+                <filter string="Parent Contact" name="ex_contact" domain="[('is_parent', '=', True)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_partner_base_vat_form_inherit" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base_vat.view_partner_base_vat_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='vat']" position='attributes'>
+                <attribute name="string">GST No.</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- <record id="account.res_partner_action_supplier" model="res_partner">
+        <field name="context">{'search_default_supplier': 1,'res_partner_search_mode': 'supplier', 'default_is_company': True, 'default_supplier_rank': 1,'default_is_vendor':True}</field>
+    </record> -->
+
+    <record id="account.res_partner_action_supplier" model="ir.actions.act_window">
+        <field name="name">Vendors</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="context">{'search_default_supplier': 1, 'res_partner_search_mode': 'supplier',
+            'default_is_company': True, 'default_supplier_rank': 1, 'search_default_ex_contact': 1,
+            'default_is_vendor': True}
+        </field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new supplier in your address book
+            </p>
+            <p>
+                Odoo helps you easily track all activities related to a supplier.
+            </p>
+        </field>
+    </record>
+
+
+    <record id="account.res_partner_action_customer" model="ir.actions.act_window">
+        <field name="name">Customers</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="context">{'search_default_customer': 1, 'res_partner_search_mode': 'customer',
+            'default_is_company': True, 'default_customer_rank': 1,
+            'search_default_ex_contact': 1}
+        </field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new customer in your address book
+            </p>
+            <p>
+                Odoo helps you easily track all activities related to a customer.
+            </p>
+        </field>
+    </record>
+
+    <record id="res_partner_tree_main_inherit" model="ir.ui.view">
+        <field name="name">res.partner.tree.team.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='email']" position='after'>
+
+                <field name="parent_customer_id" string="Parent Customer" optional="hide"/>
+                <field name="is_parent" string="Is Parent" optional="hide"/>
+                <field name="street" string="Address" optional="hide"/>
+                <field name="trade_license" string="Trade License" optional="hide"/>
+                <field name="trade_channel" string="Trade Channel" optional="hide"/>
+                <field name="customer_classification" string="Classification" optional="hide"/>
+                <field name="customer_sub_classification" string="Sub Classification" optional="hide"/>
+                <field name="mobile" string="Mobile" optional="hide"/>
+                <field name="website" string="Website" optional="hide"/>
+                <field name="category_id" string="Tags" optional="hide"/>
+                <field name="bill_type" string="Type of Payment" optional="hide"/>
+                <field name="property_payment_term_id" string="Payment Term"/>
+                <field name="property_product_pricelist" string="Pricelist"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

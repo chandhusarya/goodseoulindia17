@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- including field in partner -->
+        <record id="res_partner_view_team_inherit" model="ir.ui.view">
+            <field name="name">res.partner.form.user.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="sales_team.res_partner_view_team"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='team_id']" position="after">
+                    <field name="journal_id"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

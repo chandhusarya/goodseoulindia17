@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="outlet_transfer_tree" model="ir.ui.view">
+            <field name="name">outlet.transfer.tree</field>
+            <field name="model">outlet.transfer</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="comment"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="outlet_transfer_form" model="ir.ui.view">
+            <field name="name">outlet.transfer.form</field>
+            <field name="model">outlet.transfer</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="send_for_approval" invisible="state != 'draft'" string="Send for Approval" type="object"
+                                class="oe_highlight" groups="stock.group_stock_user"/>
+                        <button name="action_validate" invisible="state in ['draft', 'done'] or not is_approve_user" string="Approve &amp; Validate" type="object"
+                                class="oe_highlight" groups="stock.group_stock_manager"/>
+                        <field name="state" clickable="1" widget="statusbar" statusbar_visible="draft,sent_for_approval,done"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button type="object"
+                                    name="get_action_view_picking"
+                                    class="oe_stat_button"
+                                    icon="fa-truck"
+                                    string="Transfer"
+                                    invisible="not picking_ids" groups="stock.group_stock_user">
+                            </button>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="e.g. Outlet Transfer" readonly="1" force_save="1" invisible="name == '/'"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="from_outlet"
+                                       required="1"
+                                       domain="[('company_id', '=', company_id), ('terminal_type', '=', 'primary')]"
+                                       options="{'no_create_edit': True, 'no_create': True}"
+                                       readonly="state != 'draft'"/>
+                                <field name="comment" readonly="state != 'draft'" required="1"/>
+                            </group>
+                            <group>
+                                <field name="to_outlet"
+                                       required="1"
+                                       domain="[('company_id', '=', company_id), ('terminal_type', '=', 'primary')]"
+                                       options="{'no_create_edit': True, 'no_create': True}"
+                                       readonly="state != 'draft'"/>
+                                <field name="date" readonly="state != 'draft'" required="1"/>
+                                <field name="company_id" options="{'no_create': True}" readonly="state != 'draft'" required="1"/>
+                                <field name="picking_ids" invisible="1"/>
+                                <field name="is_approve_user" invisible="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Inventory Details">
+                                <field name="outlet_transfer_lines" readonly="state == 'done'" string="Inventory Details">
+                                    <tree string="Inventory Details" editable="bottom">
+                                        <field name="product_id"
+                                               domain="[('section.allow_outlet_transfer','=', True)]"/>
+                                        <field name="outlet_transfer_id" column_invisible="1"/>
+                                        <field name="packaging" required="True" domain="[('product_id', '=', product_id)]"/>
+                                        <field name="lot_id" domain="[('id', 'in', available_lot_ids)]"
+                                               required="1"/>
+                                        <field name="available_lot_ids" widget="many2many_tags" column_invisible="1"/>
+                                        <field name="available_quantity"/>
+                                        <field name="quantity" required="True"/>
+                                        <field name="primary_quantity" force_save="1" readonly="1"/>
+                                        <field name="primary_unit"
+                                               options="{'no_create_edit': True, 'no_create': True}"/>
+                                        <field name="product_uom" force_save="1" column_invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="outlet_transfer_action" model="ir.actions.act_window">
+            <field name="name">Outlet Transfer</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">outlet.transfer</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <menuitem action="outlet_transfer_action" name="Outlet Transfer" id="menu_outlet_transfer" parent="sarya_pos_custom.menu_point_of_sale_operation"
+                  sequence="50"/>
+
+    </data>
+</odoo>

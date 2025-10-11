@@ -1,0 +1,83 @@
+<odoo>
+	<template id="rebate_pdf_report_detailed_document">
+		<t t-call="web.html_container">
+			<t t-call="web.external_layout">
+				<t t-set="data" t-value="docs._prepare_detailed_rebate_report()"/>
+				<t t-set="currency" t-value="data['company_currency_id']"/>
+				<div class="page">
+					<div class="oe_structure"/>
+					<h2 class="text-center font-weight-bold text" style="color: #017e84 !important;">
+						REBATE REPORT(DETAILED)
+					</h2>
+					<hr/>
+					<div id="information" class="row mt32 mb32" style="margin: 15px 0px;">
+						<div class="col-auto col-3 mw-100 mb-2">
+							<strong>Customer:</strong>
+							<p class="m-0" t-field="docs.partner_id.name"/>
+						</div>
+						<div class="col-auto col-3 mw-100 mb-2" t-if="docs.date_end">
+							<strong>Date To:</strong>
+							<p class="m-0" t-field="docs.date_end"/>
+						</div>
+						<div class="col-auto col-3 mw-100 mb-2">
+							<strong>Generated On:</strong>
+							<p class="m-0" t-esc="data['report_date']" t-options='{"widget": "date"}'/>
+						</div>
+					</div>
+					<div class="row mt-5">
+						<div class="col-12 text-center">
+							<table class="table table-sm m-0 table-bordered">
+								<thead>
+									<tr style="background-color: #017e84 !important; color: #fff;">
+										<th>Invoice #</th>
+										<th>Total Invoiced</th>
+										<th>Prog. Slab</th>
+										<th>Prog. %</th>
+										<th>Prog. Amount</th>
+										<th>Fixed %</th>
+										<th>Fixed Amount</th>
+									</tr>
+								</thead>
+								<tbody>
+									<t t-foreach="data['rebate_ids']" t-as="rebate_id">
+										<tr style="text-align: left; font-weight: bold; background: #eee;">
+											<td colspan="8">
+												<t t-esc="docs.env['rebate.master'].browse(rebate_id).name"/>
+											</td>
+										</tr>
+										<tr t-foreach="data['rebate_vals'][rebate_id]" t-as="rebate" t-att-class="'text-secondary' if rebate['item_type'] == 'reservation' else ''">
+											<td>
+												<t t-esc="rebate['invoice']"/>
+											</td>
+											<td>
+												<t t-esc="rebate['total_invoice']"
+												   t-options='{"widget": "monetary", "display_currency": currency}'/>
+											</td>
+											<td>
+												<t t-esc="rebate['progressive_rebate']"/>
+											</td>
+											<td>
+												<t t-esc="rebate['progressive_rebate_percentage']"/>
+											</td>
+											<td>
+												<t t-esc="rebate['progressive_rebate_amount']"
+												   t-options='{"widget": "monetary", "display_currency": currency}'/>
+											</td>
+											<td>
+												<t t-esc="rebate['fixed_rebate_percentage']"/>
+											</td>
+											<td>
+												<t t-esc="rebate['fixed_rebate_amount']"
+												   t-options='{"widget": "monetary", "display_currency": currency}'/>
+											</td>
+										</tr>
+									</t>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</t>
+		</t>
+	</template>
+</odoo>

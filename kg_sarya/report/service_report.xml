@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="action_report_serviceorder" model="ir.actions.report">
+            <field name="name">Service Order</field>
+            <field name="model">service.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">kg_sarya.report_serviceorder</field>
+            <field name="report_file">kg_sarya.report_serviceorder</field>
+            <field name="print_report_name">('Service Order - %s' % (object.name))</field>
+            <field name="binding_model_id" ref="model_service_order"/>
+            <field name="binding_type">report</field>
+        </record>
+
+    </data>
+</odoo>

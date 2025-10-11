@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_inventory_value_history_search" model="ir.ui.view">
+        <field name="name">inventory.value.history.search</field>
+        <field name="model">inventory.value.history</field>
+        <field name="arch" type="xml">
+            <search string="Inventory Value Analysis">
+                <field string="Date" name="as_of_date"/>
+                <separator/>
+                <filter string="Product" name="product_id"/>
+                <filter string="Lot" name="lot_id"/>
+                <separator/>
+                <filter string="Location" name="location_id"/>
+                <filter string="Brand" name="brand"/>
+                <separator/>
+                <filter string="Category" name="categ_id"/>
+                <filter string="Section" name="section"/>
+                <group expand="1" string="Group By">
+                    <filter string="Product" name="product_id" context="{'group_by':'product_id'}"/>
+                    <filter string="Lot" name="lot_id" context="{'group_by':'lot_id'}"/>
+                    <filter string="Location" name="location_id" context="{'group_by':'location_id'}"/>
+                    <filter string="Brand" name="brand" context="{'group_by':'brand'}" />
+                    <separator orientation="vertical" />
+                    <filter string="Category" name="categ_id" context="{'group_by':'categ_id'}"/>
+                    <filter string="Section" name="section" context="{'group_by':'section'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_inventory_value_history_tree">
+        <field name="name">inventory.value.history.tree</field>
+        <field name="model">inventory.value.history</field>
+        <field eval="10" name="priority"/>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0" >
+                <field name="as_of_date"/>
+                <field name="product_id"/>
+                <field name="quantity"/>
+                <field name="ctn_quantity"/>
+                <field name="lot_id"/>
+
+                <field name="location_id"/>
+                <field name="brand"/>
+                <field name="categ_id"/>
+                <field name="section"/>
+                <field name="value"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_inventory_value_analysis" model="ir.actions.act_window">
+        <field name="name">Inventory Value Analysis</field>
+        <field name="res_model">inventory.value.history</field>
+        <field name="view_mode">graph,pivot,tree</field>
+        <field name="search_view_id" ref="view_inventory_value_history_search"/>
+    </record>
+
+    <menuitem id="menu_inventory_value_analysis" name="Inventory Value Analysis"
+              parent="stock.menu_warehouse_report" sequence="100"
+              action="action_inventory_value_analysis"/>
+
+</odoo>

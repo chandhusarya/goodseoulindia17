@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_incoterms_tree_kg_sarya_inventory" model="ir.ui.view">
+        <field name="name">account.incoterms.tree.kg</field>
+        <field name="model">account.incoterms</field>
+        <field name="inherit_id" ref="account.view_incoterms_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position='after'>
+                <field name="allowed_landed_costs" widget="many2many_tags"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

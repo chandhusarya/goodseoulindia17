@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Sequences for payment.voucher -->
+        <record id="seq_journal_item_reconcile" model="ir.sequence">
+            <field name="name">Journal Item Reconcile</field>
+            <field name="code">journal.item.reconcile</field>
+            <field name="prefix">REC</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

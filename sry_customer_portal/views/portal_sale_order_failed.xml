@@ -1,0 +1,14 @@
+<odoo>
+    <template id="portal_sale_order_failed" name="Sale Order Submission Failed">
+        <t t-call="portal.portal_layout">
+            <t t-set="title">Submission Failed</t>
+            <div class="container mt-4">
+                <div class="alert alert-danger">
+                    <strong>Error:</strong>
+                    <t t-esc="error_message" />
+                </div>
+                <a href="/my/sale_order" class="btn btn-primary">Try Again</a>
+            </div>
+        </t>
+    </template>
+</odoo>

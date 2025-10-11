@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!-- POS Manager Group -->
+    <record id="pos_manager_group" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base.module_category_sales_point_of_sale"/>
+        <field name="implied_ids" eval="[(4, ref('point_of_sale.group_pos_user'))]"/>
+    </record>
+
+        <!-- POS Manager add to implied_ids -->
+    <record id="point_of_sale.group_pos_manager" model="res.groups">
+        <field name="name">Administrator</field>
+        <field name="category_id" ref="base.module_category_sales_point_of_sale"/>
+        <field name="implied_ids"
+               eval="[(4, ref('point_of_sale.group_pos_user')), (4, ref('sarya_pos_custom.pos_manager_group')), (4, ref('stock.group_stock_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+    </record>
+
+    <record id="stock_inventory_multi_company_rule" model="ir.rule">
+        <field name="name">Stock Inventory Multi Company</field>
+        <field name="model_id" ref="model_stock_inventory"/>
+        <field name="groups" eval="[(6,0, [ref('point_of_sale.group_pos_manager')])]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record id="stock_inventory_multi_company_rule_own_outlet" model="ir.rule">
+        <field name="name">Stock Inventory Multi Company</field>
+        <field name="model_id" ref="model_stock_inventory"/>
+        <field name="groups" eval="[(6,0, [ref('point_of_sale.group_pos_user')])]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="domain_force">['&amp;',
+            ('pos_config_id', 'in', user.get_allowed_pos_for_current_company().ids),
+            '|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+    </record>
+
+
+    <record id="pos_wastage_multi_company_rule" model="ir.rule">
+        <field name="name">Stock Inventory Multi Company</field>
+        <field name="model_id" ref="model_pos_wastage"/>
+        <field name="groups" eval="[(6,0, [ref('point_of_sale.group_pos_manager')])]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="domain_force">[
+            ('pos_config_id', 'in', user.get_allowed_pos_for_current_company().ids),
+            '|',
+                ('company_id', '=', False),
+                ('company_id', 'in', company_ids)
+        ]</field>
+    </record>
+
+    <record id="pos_wastage_multi_company_rule_own_outlet" model="ir.rule">
+        <field name="name">Stock Inventory Multi Company</field>
+        <field name="model_id" ref="model_pos_wastage"/>
+        <field name="groups" eval="[(6,0, [ref('point_of_sale.group_pos_user')])]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+        <field name="domain_force">['&amp;',
+            ('pos_config_id', 'in', user.get_allowed_pos_for_current_company().ids),
+            '|',
+                ('company_id', '=', False),
+                ('company_id', 'in', company_ids)
+        ]</field>
+    </record>
+
+        <record id="outlet_transfer_multi_company_rule" model="ir.rule">
+            <field name="name">Outlet Transfer Multi Company</field>
+            <field name="model_id" ref="model_outlet_transfer"/>
+            <field name="groups" eval="[(6,0, [ref('point_of_sale.group_pos_manager')])]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="domain_force">[
+                ('from_outlet', 'in', user.get_allowed_pos_for_current_company().ids),
+                '|',
+                ('company_id', '=', False),
+                ('company_id', 'in', company_ids)
+                ]</field>
+        </record>
+
+        <record id="local_purchase_multi_company_rule" model="ir.rule">
+            <field name="name">Local Purchase User</field>
+            <field name="model_id" ref="cha_sarya_purchase.model_local_purchase"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="global" eval="False"/>
+            <field name="domain_force">[('pos_id', 'in', user.get_allowed_pos_for_current_company().ids)]</field>
+            <field name="groups"
+                   eval="[(4,ref('point_of_sale.group_pos_user')), (4,ref('sarya_pos_custom.pos_manager_group'))]"/>
+        </record>
+
+        <record id="local_purchase_manager_rule" model="ir.rule">
+            <field name="name">Local Purchase Manager</field>
+            <field name="model_id" ref="cha_sarya_purchase.model_local_purchase"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+            <field name="global" eval="False"/>
+            <field name="domain_force">[
+                '|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+            <field name="groups"
+                   eval="[(4,ref('point_of_sale.group_pos_manager'))]"/>
+        </record>
+
+
+
+
+            <!--    Set up the pos configuration    -->
+        <!--        pos config user, manager rule-->
+        <record id="restrict_user" model="ir.rule">
+            <field name="name">Config User</field>
+            <field name="model_id" ref="point_of_sale.model_pos_config"/>
+            <field name="domain_force">[('id', 'in', user.get_allowed_pos_for_current_company().ids)]</field>
+            <field name="groups"
+                   eval="[(4,ref('point_of_sale.group_pos_user')), (4,ref('sarya_pos_custom.pos_manager_group'))]"/>
+        </record>
+        <!--        <field name="domain_force">['|',('id','in',user.allowed_pos.ids),('company_id', 'in', company_ids)]</field>-->
+
+        <!--        pos config admin rule-->
+        <record id="restrict_manager" model="ir.rule">
+            <field name="name">Config Manager</field>
+            <field name="model_id" ref="point_of_sale.model_pos_config"/>
+            <field name="domain_force">[]</field>
+            <field name="groups"
+                   eval="[(4,ref('point_of_sale.group_pos_manager'))]"/>
+        </record>
+
+        <!--        pos orders user, manager rule-->
+        <record id="order_user" model="ir.rule">
+            <field name="name">Orders User</field>
+            <field name="model_id" ref="point_of_sale.model_pos_order"/>
+            <field name="domain_force">[('config_id','in',user.get_allowed_pos_for_current_company().ids)]
+            </field>
+            <field name="groups"
+                   eval="[(4,ref('point_of_sale.group_pos_user')), (4,ref('sarya_pos_custom.pos_manager_group'))]"/>
+        </record>
+
+        <!--        pos orders admin rule-->
+        <record id="order_manager" model="ir.rule">
+            <field name="name">Orders Manager</field>
+            <field name="model_id" ref="point_of_sale.model_pos_order"/>
+            <field name="domain_force">[]</field>
+            <field name="groups"
+                   eval="[(4,ref('point_of_sale.group_pos_manager'))]"/>
+        </record>
+
+        <!--        pos session user, manager rule-->
+        <record id="session_user" model="ir.rule">
+            <field name="name">Sessions User</field>
+            <field name="model_id" ref="point_of_sale.model_pos_session"/>
+            <field name="domain_force">[('config_id','in',user.get_allowed_pos_for_current_company().ids)]
+            </field>
+            <field name="groups"
+                   eval="[(4,ref('point_of_sale.group_pos_user')), (4,ref('sarya_pos_custom.pos_manager_group'))]"/>
+        </record>
+
+        <!--        pos session admin rule-->
+        <record id="session_manager" model="ir.rule">
+            <field name="name">Sessions Manager</field>
+            <field name="model_id" ref="point_of_sale.model_pos_session"/>
+            <field name="domain_force">[]</field>
+            <field name="groups"
+                   eval="[(4,ref('point_of_sale.group_pos_manager'))]"/>
+        </record>
+
+        <!--        pos payment user, manager rule-->
+        <record id="payment_user" model="ir.rule">
+            <field name="name">Payments User</field>
+            <field name="model_id" ref="point_of_sale.model_pos_payment"/>
+            <field name="domain_force">[('session_id.config_id','in',user.get_allowed_pos_for_current_company().ids)]
+            </field>
+            <field name="groups"
+                   eval="[(4,ref('point_of_sale.group_pos_user')), (4,ref('sarya_pos_custom.pos_manager_group'))]"/>
+        </record>
+
+        <!--        pos payment admin rule-->
+        <record id="payments_manager" model="ir.rule">
+            <field name="name">Payments Manager</field>
+            <field name="model_id" ref="point_of_sale.model_pos_payment"/>
+            <field name="domain_force">[]</field>
+            <field name="groups"
+                   eval="[(4,ref('point_of_sale.group_pos_manager'))]"/>
+        </record>
+
+        <!--        till assign and closure user, manager rule-->
+        <record id="till_assign_and_closure_user" model="ir.rule">
+            <field name="name">Till Assign and Closure User</field>
+            <field name="model_id" ref="sarya_data_sync.model_till_assign_and_closure"/>
+            <field name="domain_force">[('pos_config_id','in',user.get_allowed_pos_for_current_company().ids)]
+            </field>
+            <field name="groups"
+                   eval="[(4,ref('point_of_sale.group_pos_user')), (4,ref('sarya_pos_custom.pos_manager_group'))]"/>
+        </record>
+
+        <!--        till assign and closure admin rule-->
+        <record id="till_assign_and_closure_manager" model="ir.rule">
+            <field name="name">Till Assign and Closure Manager</field>
+            <field name="model_id" ref="sarya_data_sync.model_till_assign_and_closure"/>
+            <field name="domain_force">[]</field>
+            <field name="groups"
+                   eval="[(4,ref('point_of_sale.group_pos_manager'))]"/>
+        </record>
+
+        <!--        till audit and closure user, manager rule-->
+        <record id="till_audit_and_closure_user" model="ir.rule">
+            <field name="name">Till Audit and Closure User</field>
+            <field name="model_id" ref="sarya_data_sync.model_till_audit_and_closure"/>
+            <field name="domain_force">[('pos_config_id','in',user.get_allowed_pos_for_current_company().ids)]
+            </field>
+            <field name="groups"
+                   eval="[(4,ref('point_of_sale.group_pos_user')), (4,ref('sarya_pos_custom.pos_manager_group'))]"/>
+        </record>
+
+        <!--        till audit and closure admin rule-->
+        <record id="till_audit_and_closure_manager" model="ir.rule">
+            <field name="name">Till Audit and Closure Manager</field>
+            <field name="model_id" ref="sarya_data_sync.model_till_audit_and_closure"/>
+            <field name="domain_force">[]</field>
+            <field name="groups"
+                   eval="[(4,ref('point_of_sale.group_pos_manager'))]"/>
+        </record>
+
+        <!--        cash statement user, manager rule-->
+        <record id="cash_statement_user" model="ir.rule">
+            <field name="name">Cash Statements User</field>
+            <field name="model_id" ref="sarya_data_sync.model_cash_statement"/>
+            <field name="domain_force">[('pos_config_id','in',user.get_allowed_pos_for_current_company().ids)]
+            </field>
+            <field name="groups"
+                   eval="[(4,ref('point_of_sale.group_pos_user')), (4,ref('sarya_pos_custom.pos_manager_group'))]"/>
+        </record>
+
+        <!--        cash statement admin rule-->
+        <record id="cash_statement_manager" model="ir.rule">
+            <field name="name">Cash Statements Manager</field>
+            <field name="model_id" ref="sarya_data_sync.model_cash_statement"/>
+            <field name="domain_force">[]</field>
+            <field name="groups"
+                   eval="[(4,ref('point_of_sale.group_pos_manager'))]"/>
+        </record>
+
+    </data>
+</odoo>

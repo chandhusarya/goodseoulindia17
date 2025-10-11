@@ -1,0 +1,44 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<odoo>
+
+    <!-- <record id="view_bank_statement_form_cha_sarya_account" model="ir.ui.view">
+        <field name="name">account.bank.statement.form.cha.sarya.account</field>
+        <field name="model">account.bank.statement</field>
+        <field name="inherit_id" ref="account.view_bank_statement_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='line_ids']" position='before'>
+                <button string="Auto Match Entries" class="oe_highlight"
+                        name="action_auto_match_entries" type="object"
+                        invisible="all_lines_reconciled == True or line_ids ==[] or state != 'posted'"/>
+                <button string="Reconcile All Matched Entries" class="oe_highlight"
+                        name="reconcile_matched_entries" type="object"
+                        invisible="all_lines_reconciled == True or line_ids == [] or state != 'posted'"/>
+            </xpath>
+
+            <xpath expr="//field[@name='currency_id']" position='after'>
+                <field name="incoming_receipt"/>
+                <field name="outgoing_payments"/>
+            </xpath>
+
+            <xpath expr="//field[@name='line_ids']/tree/button[@name='button_undo_reconciliation']" position='before'>
+                <field name="auto_matched_entry" column_invisible="True"/>
+                <field name="auto_matched_entry_move"/>
+
+                <button name="manual_bank_reconcile_bank_statements" type="object"
+                        column_invisible="is_reconciled != False or parent.state != 'posted'"
+                        string="Manual Recon"/>
+
+                <button name="reconcile_matched_entries" type="object"
+                        invisible="auto_matched_entry == False or is_reconciled != False"
+                        string="Recon With Auto"/>
+
+            </xpath>
+
+
+
+
+        </field>
+    </record> -->
+
+</odoo>

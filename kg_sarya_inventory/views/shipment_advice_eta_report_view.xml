@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+     <record id="view_shipment_advice_eta_report_filter" model="ir.ui.view">
+        <field name="name">shipment.advice.eta.report.filter</field>
+        <field name="model">shipment.advice.eta.report</field>
+        <field name="arch" type="xml">
+            <search string="Product ETA">
+                <filter name="expected_date" date="expected_date" default_period="this_month" string="ETA"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_shipment_advice_eta_report_pivot" model="ir.ui.view">
+         <field name="name">shipment.advice.eta.report.pivot</field>
+         <field name="model">shipment.advice.eta.report</field>
+         <field name="arch" type="xml">
+             <pivot string="Product ETA">
+                 <field name="departure_date"/>
+                 <field name="expected_date"/>
+                 <field name="product_id"/>
+                 <field name="product_packaging_id"/>
+                 <field name="expiry_date"/>
+                 <field name="qty_to_receive"/>
+                 <field name="bl_entry_id"/>
+                 <field name="state"/>
+             </pivot>
+         </field>
+    </record>
+
+    <record id="view_shipment_advice_eta_report_tree" model="ir.ui.view">
+         <field name="name">shipment.advice.eta.report.tree</field>
+         <field name="model">shipment.advice.eta.report</field>
+         <field name="arch" type="xml">
+             <tree string="Product ETA">
+                 <field name="departure_date"/>
+                 <field name="expected_date"/>
+                 <field name="product_id"/>
+                 <field name="product_packaging_id"/>
+                 <field name="expiry_date"/>
+                 <field name="qty_to_receive"/>
+                 <field name="bl_entry_id"/>
+                 <field name="state"/>
+             </tree>
+         </field>
+    </record>
+
+    <record id="action_shipment_advice_eta_report" model="ir.actions.act_window">
+        <field name="name">Product ETA</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">shipment.advice.eta.report</field>
+        <field name="view_mode">pivot,tree</field>
+        <field name="view_id" eval="False"/>
+    </record>
+
+    <menuitem name="Product ETA"
+              id="menu_shipment_advice_eta_report"
+              action="action_shipment_advice_eta_report"
+              sequence="100"
+              parent="sale.sale_order_menu" />
+
+
+</odoo>

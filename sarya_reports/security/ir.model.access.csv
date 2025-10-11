@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_inventory_report_ctn,sarya_reports.inventory_report_ctn,model_inventory_report_ctn,base.group_user,1,1,1,1

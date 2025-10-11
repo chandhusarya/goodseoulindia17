@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_price_list_advance_inherit" model="ir.ui.view">
+        <field name="name">product.pricelist.inherit</field>
+        <field name="model">product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position='replace'>
+                <form string="Products Price List">
+                    <sheet>
+                        <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                        <div class="oe_title">
+                            <h1><field name="name" placeholder="e.g. USD Retailers"/></h1>
+                        </div>
+                        <group>
+                            <group name="pricelist_settings">
+                                <field name="currency_id"/>
+                                <field name="active" invisible="1"/>
+                                <field name="company_id" options="{'no_create': True}"/>
+                                <field name="customer_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                                <field name="special"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="pricelist_rules" string="Price Rules">
+                                <field name="item_ids" nolabel="1">
+                                    <tree string="Pricelist Rules" editable="bottom">
+                                        <field name="product_tmpl_id" string="Products" required="1"
+                                               domain="[('sale_ok','=',True)]" options="{'no_create':1}"/>
+                                        <field name="product_id" string="Variants"
+                                        domain="[('product_tmpl_id', '=', product_tmpl_id)]"
+                                        options="{'no_create':1}"/>
+
+                                        <field name="packging_id"
+                                           domain="[('product_id','=', product_id),('sales','=',True)]"
+                                           readonly="0" force_save="1" string="Packaging"/>
+
+                                        <field name="fixed_price" string="Price"/>
+                                        <field name="final_price" readonly="1" force_save="1"/>
+                                        <field name="currency_id" column_invisible="True"/>
+                                        <field name="pricelist_id" column_invisible="True"/>
+
+                                        <field name="date_start"/>
+                                        <field name="date_end"/>
+                                        <field name="base" column_invisible="True"/>
+                                        <field name="applied_on" column_invisible="True"/>
+                                        <field name="company_id" column_invisible="True"/>
+                                    </tree>
+
+                                </field>
+                            </page>
+                            <page name="pricelist_config" string="Configuration">
+                                <group>
+                                    <group name="pricelist_availability" string="Availability">
+                                        <field name="country_group_ids" widget="many2many_tags"/>
+                                    </group>
+                                    <group name="pricelist_discounts" string="Discounts">
+                                        <field name="discount_policy" widget="radio"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="activity_ids"/>
+                        <field name="message_follower_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+
+
+
+
+            </xpath>
+        </field>
+    </record>
+
+
+
+
+
+
+
+	<!-- including product price and final price in product list line of advanced option-->
+    <!-- <record id="view_price_list_advance_inherit" model="ir.ui.view">
+        <field name="name">product.pricelist.inherit</field>
+        <field name="model">product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='item_ids']/tree/field[@name='price']" position='before'>
+                <field name="product_price" readonly="1" force_save="1"/>
+            </xpath>
+            <xpath expr="//field[@name='item_ids']/tree/field[@name='price']" position='after'>
+                <field name="final_price"
+                       readonly="1"
+                       force_save="1"/>
+                <field name="promo"/>
+            </xpath>
+            <xpath expr="//field[@name='company_id']" position='after'>
+                <field name="customer_ids" widget="many2many_tags"/>
+            </xpath>
+            <xpath expr="//group[@name='pricelist_settings']" position='after'>
+                <group>
+                    <field name="start_date" />
+                    <field name="end_date" />
+                </group>
+            </xpath>
+            <xpath expr="//field[@name='item_ids']/tree/field[@name='price']" position='after'>
+                <field name="customer_item_code"/>
+                 <field name="fixed_price"/>
+            </xpath>
+
+             <xpath expr="//field[@name='item_ids']/tree" position='attributes'>
+                <attribute name="editable">bottom</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='item_ids']/tree/field[@name='final_price']" position='after'>
+                <button name="action_archive" type="object" string="Archive" class="oe_highlight"/>
+            </xpath>
+
+            <xpath expr="//field[@name='item_ids']/tree/field[@name='price']" position='after'>
+                <field name="company_id" invisible="1"/>
+                <field name="product_tmpl_id" readonly="0" force_save="1" string="Product" optional="hide"/>
+                <field name="product_id" readonly="0" force_save="1" domain="[('product_tmpl_id', '=', product_tmpl_id)]"/>
+                <field name="packging_id"
+                       domain="[('product_id','=',product_id),('sales','=',True)]"
+                       readonly="0" force_save="1" string="Packaging"/>
+            </xpath>
+
+            <xpath expr="//field[@name='item_ids']/tree/field[@name='name']" position='attributes'>
+                <attribute name="column_invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='item_ids']/tree/field[@name='min_quantity']" position='attributes'>
+                <attribute name="column_invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='item_ids']/tree/field[@name='product_price']" position='attributes'>
+                <attribute name="column_invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='item_ids']/tree/field[@name='price']" position='attributes'>
+                <attribute name="column_invisible">True</attribute>
+            </xpath>
+
+         </field>
+    </record> -->
+
+    <!--<record id="archived_price_rule_tree" model="ir.ui.view">
+        <field name="name">product.pricelist.item.tree</field>
+        <field name="model">product.pricelist.item</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="pricelist_id" string="Price List"/>
+                <field name="packging_id" readonly="1" force_save="1" string="Packaging"/>
+                <field name="final_price" string="Final Price"/>
+                <button name="action_unarchive" type="object" string="Unarchive" class="oe_highlight"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_price_list_item_inherit" model="ir.ui.view">
+        <field name="name">product.pricelist.item.inherit</field>
+        <field name="model">product.pricelist.item</field>
+        <field name="inherit_id" ref="product.product_pricelist_item_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[3]/group[@name='pricelist_rule_related']" position='after'>
+                <group name="price_details">
+                    <field name="product_price" readonly="1" force_save="1"/>
+                    <field name="final_price" readonly="1" force_save="1"/>
+
+                </group>
+            </xpath>
+             <xpath expr="//group[@name='pricelist_rule_target']/field[@name='product_tmpl_id']" position='after'>
+                    <field name="customer_item_code"/>
+             </xpath>
+
+         </field>
+    </record> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- including fields for cbm calaculation and product Packing selection -->
+    <record id="view_price_list_item_inherit" model="ir.ui.view">
+        <field name="name">product.template.cbm</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="stock.view_template_property_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='inventory']/group" position='inside'>
+                <group name="cbm calaculation" string="CBM Calaculation">
+                    <field name="width" />
+                    <field name="height" />
+                    <field name="lenght" string="Length"/>
+                    <field name="cbm" string="CBM" />
+                </group>
+            </xpath>
+            
+         </field>
+    </record>
+
+
+    <!-- field for gross weight -->
+    <record id="view_gross_weight_inherit" model="ir.ui.view">
+        <field name="name">product.template.gross_weight</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@name='inventory']/group/group[@name='group_lots_and_weight']" position='replace'>
+
+                <group name="group_lots_and_weight" string="Logistics">
+                    <label for="weight"/>
+                    <div class="o_row" name="weight">
+                        <field name="weight"/>
+                        <span><field name="weight_uom_name"/></span>
+                    </div>
+                    <label for="gross_weight"/>
+                    <div class="o_row" name="gross_weight">
+                        <field name="gross_weight"/>
+                        <span><field name="weight_uom_name"/></span>
+                    </div>
+                    <!-- <field name="gross_weight" string="Gross weight" placeholder="Kg"/> -->
+                    <label for="volume"/>
+                    <div class="o_row" name="volume">
+                        <field name="volume" string="Volume"/>
+                        <span><field name="volume_uom_name"/></span>
+                    </div>
+                </group>
+                    
+            </xpath>
+            
+         </field>
+    </record>
+
+    <!-- product packing type-->
+<!--     <record id="product_packing_type_action" model="ir.actions.act_window">
+        <field name="name">Product Packing</field>
+        <field name="res_model">product.packing</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem name="Product Packing Type" id="product_packing_type_menu" action="product_packing_type_action" sequence="5" parent="stock.menu_product_in_config_stock"/>
+ -->
+</odoo>

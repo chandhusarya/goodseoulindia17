@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_expense_advance_request_tree" model="ir.ui.view">
+    <field name="name">expense.advance.request.tree</field>
+    <field name="model">expense.advance.request</field>
+    <field name="arch" type="xml">
+        <tree string="Expense Advance Requests">
+            <field name="employee_id"/>
+            <field name="exp_type"/>
+            <field name="name"/>
+            <field name="manager_id"/>
+            <field name="pending_to_pay_advance"/>
+            <field name="pending_to_pay_advance_settlement"/>
+            <field name="pending_to_pay_direct"/>
+
+
+            <field name="state"/>
+
+            <field name="total_requested"/>
+            <field name="total_actual"/>
+            <field name="difference"/>
+        </tree>
+    </field>
+    </record>
+
+
+    <record id="view_expense_advance_form" model="ir.ui.view">
+        <field name="name">expense.advance.request.form</field>
+        <field name="model">expense.advance.request</field>
+        <field name="arch" type="xml">
+            <form string="Advance Request">
+
+                <header>
+                    <field name="can_do_manager_approval" invisible="1"/>
+                    <field name="can_do_hr_approval" invisible="1"/>
+
+                    <button string="Submit" type="object" name="submit_expense" invisible="state != 'draft'"/>
+
+                    <button string="Manager Approve" type="object" name="action_manager_approve" invisible="can_do_manager_approval == False"/>
+                    <button string="HR Approve" type="object" name="action_hr_approve" invisible="can_do_hr_approval == False"/>
+
+                    <button string="Finance Approve Advance"
+                            type="object"
+                            name="finance_approve_advance"
+                            groups="sarya_hr_expense.can_do_expense_finance_approval"
+                            invisible="state != 'hr_approved' or exp_type != 'advance'"/>
+
+                    <button string="Finance Approve Direct"
+                            type="object"
+                            groups="sarya_hr_expense.can_do_expense_finance_approval"
+                            name="finance_approve_direct"
+                            invisible="state != 'hr_approved' or exp_type != 'direct'"/>
+
+                    <button string="Register advance payment to employee"
+                            type="object"
+                            groups="sarya_hr_expense.can_do_expense_finance_approval"
+                            name="register_advance_payment"
+                            invisible="pending_to_pay_advance == False"/>
+
+
+
+                    <button string="Ask to Submit Actual Expense"
+                            type="object"
+                            groups="sarya_hr_expense.can_do_expense_finance_approval"
+                            name="ask_to_submit_actual"
+                            invisible="state != 'advance_finance_approved' or exp_type != 'advance'"/>
+
+                    <button string="Submit Actual Expense"
+                            type="object"
+                            name="submit_actual_expense"
+                            invisible="state != 'advance_waiting_for_actual' or exp_type != 'advance'"/>
+
+
+                    <button string="Post Actual Expense"
+                            type="object"
+                            groups="sarya_hr_expense.can_do_expense_finance_approval"
+                            name="post_actual_against_advance"
+                            invisible="state != 'advance_actual_expense_submitted' or exp_type != 'advance'"/>
+
+
+                    <button string="Register payment for Direct Expense"
+                            type="object"
+                            groups="sarya_hr_expense.can_do_expense_finance_approval"
+                            name="register_direct_payment"
+                            invisible="pending_to_pay_direct == False"/>
+
+
+                    <button string="Register payment for advance settlement"
+                            type="object"
+                            groups="sarya_hr_expense.can_do_expense_finance_approval"
+                            name="register_advance_settlement_payment"
+                            invisible="pending_to_pay_advance_settlement == False"/>
+
+                    <field name="state" widget="statusbar" statusbar_visible="draft,manager_approved,hr_approved,completed"/>
+
+                </header>
+
+                <sheet>
+
+                    <div style="background-color: #FFFAE6; padding: 15px; border: 2px solid #FFD700; border-radius: 8px; margin-bottom: 20px;">
+                        <h2 style="color: #C68900;">Balance advance amount with employee:
+                            <field name="advance_amount" readonly="1" widget="monetary" currency_field="company_id.currency_id" class="oe_inline"/>
+                        </h2>
+                    </div>
+
+
+                     <widget name="web_ribbon"
+                            title="Advance Not Paid"
+                            bg_color="bg-danger"
+                            invisible="not pending_to_pay_advance"/>
+
+                     <widget name="web_ribbon"
+                            title="Advance Settlement Not Paid"
+                            bg_color="bg-danger"
+                            invisible="not pending_to_pay_advance_settlement"/>
+
+                     <widget name="web_ribbon"
+                            title="Expense not paid"
+                            bg_color="bg-danger"
+                            invisible="not pending_to_pay_direct"/>
+
+                    <group>
+                        <field name="name"
+                               required="1"
+                               placeholder="Description for the expense" readonly="state != 'draft'"/>
+                    </group>
+
+                    <group>
+                        <group>
+                             <field name="employee_id" readonly="state != 'draft'"/>
+                             <field name="manager_id" readonly="1"/>
+                        </group>
+                        <group>
+                             <field name="exp_type" widget='radio' readonly="state != 'draft'"/>
+                             <field name="company_id" readonly="1"/>
+
+                             <field name="pending_to_pay_advance" invisible="1"/>
+                             <field name="pending_to_pay_advance_settlement" invisible="1"/>
+                             <field name="pending_to_pay_direct" invisible="1"/>
+                        </group>
+                    </group>
+                     <notebook>
+                         <page name="Expenses" string="Expenses">
+                            <field name="line_ids"
+                                context="{'default_exp_type': exp_type}">
+                                <tree editable="bottom">
+                                    <field name="request_id" column_invisible="1" force_save="1" />
+                                    <field name="exp_type" column_invisible="1" force_save="1" />
+                                    <field name="company_id"
+                                           readonly="1"
+                                           force_save="1"
+                                           column_invisible="1"/>
+                                    <field name="product_id" required="1" readonly="state != 'draft'" context="{'default_detailed_type': 'service', 'default_can_be_expensed': 1}"/>
+                                    <field name="description" readonly="state != 'draft'"/>
+                                    <field name="advance_amount" readonly="can_input_advance_amount == False"/>
+                                    <field name="actual_amount" readonly="can_input_actual_amount == False"/>
+                                    <field name="tax_ids" readonly="can_input_actual_amount == False" widget="many2many_tags"
+                                           context="{'default_company_id': company_id}"/>
+                                    <field name="tax_amount" readonly="1" force_save="1"/>
+                                    <field name="untaxed_amount" readonly="1" force_save="1"/>
+                                    <field name="account_id" required="1" readonly="state not in ['draft', 'hr_approved']"/>/>
+
+                                    <field name="can_input_advance_amount" column_invisible="1"/>
+                                    <field name="can_input_actual_amount" column_invisible="1"/>
+
+                                    <field name="state" column_invisible="1"/>
+
+                                     <button name="action_get_attachment_view" type="object" icon="fa-paperclip"
+                                            aria-label="View Attachments" title="View Attachments" class="float-end pe-0"
+                                            readonly="True"/>
+
+                                     <field name="analytic_distribution" widget="analytic_distribution"
+                                           groups="analytic.group_analytic_accounting"
+                                           optional="show"
+                                           options="{'product_field': 'product_id', 'account_field': 'account_id', 'business_domain': 'expense'}"/>
+
+                                </tree>
+                            </field>
+                         </page>
+                         <page name="Others" string="Other Details">
+
+                             <group>
+                                 <group>
+                                    <field name="advance_account"/>
+                                    <field name="employee_payable" readonly="1" force_save="1"/>
+                                    <field name="employee_journal_id"/>
+                                    <field name="payment_journal_id"/>
+                                    <field name="deposit_journal_id"/>
+                                 </group>
+                                 <group>
+                                    <field name="advance_entry_posted"/>
+                                    <field name="advance_settlement"/>
+                                    <field name="direct_entry_posted"/>
+                                    <field name="advance_payment_issued"/>
+                                    <field name="advance_payment_settlement"/>
+                                    <field name="direct_payment_issued"/>
+                                 </group>
+                             </group>
+                             <group string="Activity Time">
+                                 <group>
+                                    <field name="submitted_date"/>
+                                    <field name="manager_approved_date" readonly="1"/>
+                                    <field name="completed_date"/>
+                                    <field name="advance_payment_issued_date"/>
+                                     <field name="advance_payment_settled_date"/>
+                                 </group>
+                                 <group>
+                                    <field name="hr_approved_date"/>
+                                    <field name="finance_posted_date"/>
+                                    <field name="asked_for_actual_date"/>
+                                    <field name="actual_submitted_date"/>
+                                 </group>
+                             </group>
+
+                         </page>
+                     </notebook>
+                    <group>
+                        <field name="total_requested" readonly="1"/>
+                        <field name="untaxed_amount" readonly="1"/>
+                        <field name="tax_amount" readonly="1"/>
+                        <field name="total_actual" readonly="1"/>
+                        <field name="difference" readonly="1"/>
+                    </group>
+
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_expense_advance" model="ir.actions.act_window">
+        <field name="name">Expense Requests</field>
+        <field name="res_model">expense.advance.request</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_expense_advance" name="Expense Requests" parent="menu_expense_root" action="action_expense_advance" sequence="1"/>
+</odoo>

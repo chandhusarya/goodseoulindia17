@@ -1,0 +1,886 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="portal_employee_verify_template">
+            <t t-call="portal.portal_layout">
+                <div id="wrap" class="oe_structure oe_empty">
+                    <section class="s_title parallax s_parallax_is_fixed bg-black-50 pt24 pb24" data-vcss="001" data-snippet="s_title" data-scroll-background-ratio="1">
+                        <span class="s_parallax_bg oe_img_bg" style="background-image: url('/web/image/website.s_parallax_default_image'); background-position: 50% 0;"/>
+                        <div class="o_we_bg_filter bg-black-50"/>
+                        <div class="container" style="padding: 10px;">
+                            <h1>Employee Verification</h1>
+                        </div>
+                    </section>
+                    <section class="s_text_block pt40 pb40 o_colored_level " data-snippet="s_text_block">
+                        <div class="container s_allow_columns">
+                            <div class="row">
+                                <div class="col-lg-8 mt-4 mt-lg-0">
+                                    <h4>
+                                        Update the form below as per your official document.<br/>
+                                    </h4>
+                                    <section class="s_website_form" data-vcss="001" data-snippet="s_website_form">
+                                        <div class="container o_employee_verification_form" >
+                                            <t t-if="not employee_name">
+                                                <h4 style="color:red;"><b>Invalid Request!<br/>
+                                                    There is no requests found.</b></h4>
+                                            </t>
+                                            <form action="/employee/verify/submit" method="post" enctype="multipart/form-data">
+                                                <h4 style="border-bottom: 2px solid #ccc; padding-bottom: 4px; margin-top: 20px;">Personal Details</h4>
+                                                <div class="s_website_form_rows row s_col_no_bgcolor">
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">Employee Name</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <t t-esc="employee_name"/>
+                                                                <!--                                                                <input id="l10n_in_uan" pattern=".{12,12}" title="12 digit Universal Account Number" type="text" t-att-value="l10n_in_uan" class="form-control s_website_form_input" name="l10n_in_uan" required=""/>-->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">Name (As on Aadhaar)</span>
+                                                                <span class="s_website_form_mark"> *</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input id="name_on_aadhaar" pattern=".{4,40}" title="Minimum 4 character and maximum 40 character." type="text" class="form-control s_website_form_input" t-att-value="name_on_aadhaar" name="name_on_aadhaar" required=""/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required"
+                                                         id="date_birth_div">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">Date of Birth</span>
+                                                                <span class="s_website_form_mark"> *</span>
+                                                            </label>
+                                                            <div class="col-sm" >
+                                                                <input type="date" name="date_of_birth" id="date_of_birth"
+                                                                       class="form-control s_website_form_input" required="" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">PAN</span>
+                                                                <span class="s_website_form_mark"> *</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input id="l10n_in_pan" pattern=".{10,10}" title="Enter 10 digit Permanent Account Number" type="text" t-att-value="l10n_in_pan" class="form-control s_website_form_input" name="l10n_in_pan" required=""/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">Aadhaar Number</span>
+                                                                <span class="s_website_form_mark"> *</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input id="aadhaar_number" pattern=".{12,12}" title="Enter 12 digit aadhar number." type="text" class="form-control s_website_form_input" t-att-value="aadhaar_number" name="aadhaar_number" required=""/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required"
+                                                         id="date_birth_div">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">Gender</span>
+                                                            </label>
+                                                            <div class="col-sm" >
+                                                                <select name="gender" id="gender" class="form-control">
+                                                                    <option value=""></option>
+                                                                    <option value="male">Male</option>
+                                                                    <option value="female">Female</option>
+                                                                    <option value="other">Other</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required"
+                                                         id="date_birth_div">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">Marital Status</span>
+                                                            </label>
+                                                            <div class="col-sm" >
+                                                                <select name="marital_status" id="marital_status" class="form-control">
+                                                                    <option value=""></option>
+                                                                    <option value="single">Single</option>
+                                                                    <option value="married">Married</option>
+                                                                    <option value="cohabitant">Legal Cohabitant</option>
+                                                                    <option value="widower">Widower</option>
+                                                                    <option value="divorced">Divorced</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">Father's name</span>
+                                                                <!--                                                                <span class="s_website_form_mark"> *</span>-->
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input id="father_name" pattern=".{4,40}" title="Minimum 4 character and maximum 40 character." type="text" class="form-control s_website_form_input" t-att-value="father_name" name="father_name"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">Husband's name</span>
+                                                                <!--                                                                <span class="s_website_form_mark"> *</span>-->
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input id="husband_name" pattern=".{4,40}" title="Minimum 4 character and maximum 40 character." type="text" class="form-control s_website_form_input" t-att-value="husband_name" name="husband_name"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">Mother's name</span>
+                                                                <!--                                                                <span class="s_website_form_mark"> *</span>-->
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input id="mother_name" pattern=".{4,40}" title="Minimum 4 character and maximum 40 character." type="text" class="form-control s_website_form_input" t-att-value="mother_name" name="mother_name"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">Contact Number</span>
+                                                                <!--                                                                <span class="s_website_form_mark"> *</span>-->
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input id="contact_number" pattern="[0-9]{10}" title="Enter the 10 digit Number."
+                                                                       type="tel" class="form-control s_website_form_input" t-att-value="contact_number" name="contact_number" required=""/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">Emergency Contact Number</span>
+                                                                <!--                                                                <span class="s_website_form_mark"> *</span>-->
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input id="emergency_number" pattern="[0-9]{10}" title="Enter the 10 digit Number."
+                                                                       type="tel" class="form-control s_website_form_input" t-att-value="emergency_number" name="emergency_number"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+<!--                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">-->
+<!--                                                        <div class="row s_col_no_resize s_col_no_bgcolor">-->
+<!--                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">-->
+<!--                                                                <span class="s_website_form_label_content">Emergency Number</span>-->
+<!--                                                                &lt;!&ndash;                                                                <span class="s_website_form_mark"> *</span>&ndash;&gt;-->
+<!--                                                            </label>-->
+<!--                                                            <div class="col-sm">-->
+<!--                                                                <input id="emergency_number" pattern=".{4,40}" title="Minimum 4 character and maximum 40 character."-->
+<!--                                                                       type="text" class="form-control s_website_form_input" t-att-value="emergency_number" name="emergency_number"/>-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">Personal email ID</span>
+                                                                <!--                                                                <span class="s_website_form_mark"> *</span>-->
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input id="email_id"
+                                                                       type="email" class="form-control s_website_form_input" t-att-value="email_id" name="email_id"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <h4 style="border-bottom: 2px solid #ccc; padding-bottom: 4px; margin-top: 20px;">Address Details</h4>
+                                                    <h5 style="color: grey; border-bottom: 1px solid lightgrey; padding-bottom: 4px; margin-top: 20px;">Current Address</h5>
+
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 100px" for="contact1">
+                                                                <span class="s_website_form_label_content">Street</span>
+                                                                <!--                                                                <span class="s_website_form_mark"> *</span>-->
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input id="current_street"
+                                                                       type="text" class="form-control s_website_form_input" t-att-value="current_street" name="current_street" required=""/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mb-0 py-2 col-12 row">
+                                                        <div class="mb-0 py-2 col-6 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                            <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                                <label class="col-form-label col-sm-auto s_website_form_label" style="width: 100px" for="contact1">
+                                                                    <span class="s_website_form_label_content">City</span>
+                                                                    <!--                                                                <span class="s_website_form_mark"> *</span>-->
+                                                                </label>
+                                                                <div class="col-sm">
+                                                                    <input id="current_city"
+                                                                           type="text" class="form-control s_website_form_input" t-att-value="current_city" name="current_city" required=""/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="mb-0 py-2 col-6 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                            <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                                <label class="col-form-label col-sm-auto s_website_form_label" style="width: 100px" for="contact1">
+                                                                    <span class="s_website_form_label_content">State</span>
+                                                                    <!--                                                                <span class="s_website_form_mark"> *</span>-->
+                                                                </label>
+                                                                <div class="col-sm">
+                                                                    <select name="state_id" id="state_id" class="form-control" required="">
+                                                                        <option value=""></option>
+                                                                        <t t-foreach="states" t-as="state">
+                                                                            <option t-att-value="state.id">
+                                                                                <t t-esc="state.name"/>
+                                                                            </option>
+                                                                        </t>
+<!--                                                                        <option value="other" class="other_selected">Other</option>-->
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mb-0 py-2 col-12 row">
+                                                        <div class="mb-0 py-2 col-6 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                            <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                                <label class="col-form-label col-sm-auto s_website_form_label" style="width: 100px" for="contact1">
+                                                                    <span class="s_website_form_label_content">Zip Code</span>
+                                                                    <!--                                                                <span class="s_website_form_mark"> *</span>-->
+                                                                </label>
+                                                                <div class="col-sm">
+                                                                    <input id="current_zip"
+                                                                           type="text" class="form-control s_website_form_input" t-att-value="current_zip" name="current_zip" required=""/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="mb-0 py-2 col-6 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                            <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                                <label class="col-form-label col-sm-auto s_website_form_label" style="width: 100px" for="contact1">
+                                                                    <span class="s_website_form_label_content">Country</span>
+                                                                    <!--                                                                <span class="s_website_form_mark"> *</span>-->
+                                                                </label>
+                                                                <div class="col-sm">
+                                                                    <select name="country_id" id="country_id" class="form-control" required="">
+                                                                        <option value=""></option>
+                                                                        <t t-foreach="countries" t-as="country">
+                                                                            <option t-att-value="country.id">
+                                                                                <t t-esc="country.name"/>
+                                                                            </option>
+                                                                        </t>
+<!--                                                                        <option value="other" class="other_selected">Other</option>-->
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <h5 style="color: grey; border-bottom: 1px solid lightgrey; padding-bottom: 4px; margin-top: 20px;">Permanent Address</h5>
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">Permanent address same as current</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input id="same_as_current" type="checkbox" class="form-check-input SameAsCurrent" name="same_as_current"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 100px" for="contact1">
+                                                                <span class="s_website_form_label_content">Street</span>
+                                                                <!--                                                                <span class="s_website_form_mark"> *</span>-->
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input id="permanent_street"
+                                                                       type="text" class="form-control s_website_form_input" t-att-value="permanent_street" name="permanent_street" required=""/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mb-0 py-2 col-12 row">
+                                                        <div class="mb-0 py-2 col-6 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                            <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                                <label class="col-form-label col-sm-auto s_website_form_label" style="width: 100px" for="contact1">
+                                                                    <span class="s_website_form_label_content">City</span>
+                                                                    <!--                                                                <span class="s_website_form_mark"> *</span>-->
+                                                                </label>
+                                                                <div class="col-sm">
+                                                                    <input id="permanent_city"
+                                                                           type="text" class="form-control s_website_form_input" t-att-value="permanent_city" name="permanent_city" required=""/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="mb-0 py-2 col-6 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                            <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                                <label class="col-form-label col-sm-auto s_website_form_label" style="width: 100px" for="contact1">
+                                                                    <span class="s_website_form_label_content">State</span>
+                                                                    <!--                                                                <span class="s_website_form_mark"> *</span>-->
+                                                                </label>
+                                                                <div class="col-sm">
+                                                                    <select name="permanent_state" id="permanent_state" class="form-control" required="">
+                                                                        <option value=""></option>
+                                                                        <t t-foreach="states" t-as="state">
+                                                                            <option t-att-value="state.id">
+                                                                                <t t-esc="state.name"/>
+                                                                            </option>
+                                                                        </t>
+<!--                                                                        <option value="other" class="other_selected">Other</option>-->
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mb-0 py-2 col-12 row">
+                                                        <div class="mb-0 py-2 col-6 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                            <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                                <label class="col-form-label col-sm-auto s_website_form_label" style="width: 100px" for="contact1">
+                                                                    <span class="s_website_form_label_content">Zip Code</span>
+                                                                    <!--                                                                <span class="s_website_form_mark"> *</span>-->
+                                                                </label>
+                                                                <div class="col-sm">
+                                                                    <input id="permanent_zip"
+                                                                           type="text" class="form-control s_website_form_input" t-att-value="permanent_zip" name="permanent_zip" required=""/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="mb-0 py-2 col-6 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                            <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                                <label class="col-form-label col-sm-auto s_website_form_label" style="width: 100px" for="contact1">
+                                                                    <span class="s_website_form_label_content">Country</span>
+                                                                    <!--                                                                <span class="s_website_form_mark"> *</span>-->
+                                                                </label>
+                                                                <div class="col-sm">
+                                                                    <select name="permanent_country" id="permanent_country" class="form-control" required="">
+                                                                        <option value=""></option>
+                                                                        <t t-foreach="countries" t-as="country">
+                                                                            <option t-att-value="country.id">
+                                                                                <t t-esc="country.name"/>
+                                                                            </option>
+                                                                        </t>
+<!--                                                                        <option value="other" class="other_selected">Other</option>-->
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <h4 style="border-bottom: 2px solid #ccc; padding-bottom: 4px; margin-top: 20px;">Professional Details</h4>
+
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">Designation as per Offer Letter</span>
+                                                                <span class="s_website_form_mark"> *</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <select name="designation_id" id="designation_id" class="form-control">
+                                                                    <option value=""></option>
+                                                                    <t t-foreach="designations" t-as="desg">
+                                                                        <option t-att-value="desg.id">
+                                                                            <t t-esc="desg.name"/>
+                                                                        </option>
+                                                                    </t>
+                                                                    <option value="other" class="other_selected">Other</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field"
+                                                         id="other_designation_div" style="display:none;">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">Enter Designation Name</span>
+                                                                <span class="s_website_form_mark"> *</span>
+                                                            </label>
+                                                            <div class="col-sm" >
+                                                                <input type="text" name="other_designation" id="other_designation" pattern=".{4,40}" title="Minimum 4 character and maximum 40 character." class="form-control s_website_form_input"
+                                                                       t-att-value="other_designation"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">Department as per Offer Letter</span>
+                                                                <span class="s_website_form_mark"> *</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <select name="department_id" id="department_id" class="form-control">
+                                                                    <option value=""></option>
+                                                                    <t t-foreach="departments" t-as="dept">
+                                                                        <option t-att-value="dept.id">
+                                                                            <t t-esc="dept.name"/>
+                                                                        </option>
+                                                                    </t>
+                                                                    <option value="other" class="other_selected">Other</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field"
+                                                         id="other_department_div" style="display:none;">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">Enter Department Name</span>
+                                                                <span class="s_website_form_mark"> *</span>
+                                                            </label>
+                                                            <div class="col-sm" >
+                                                                <input type="text" name="other_department" id="other_department" pattern=".{4,40}" title="Minimum 4 character and maximum 40 character." class="form-control s_website_form_input"
+                                                                       t-att-value="other_department"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required"
+                                                         id="date_joining_div">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">Date of Joining</span>
+                                                                <span class="s_website_form_mark"> *</span>
+                                                            </label>
+                                                            <div class="col-sm" >
+                                                                <input type="date" name="date_of_joining" id="date_of_joining"
+                                                                       class="form-control s_website_form_input" required="" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">PF Eligible</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input id="is_pf_eligible" type="checkbox" class="form-check-input toggleRequired" name="is_pf_eligible" t-att-value="is_pf_eligible"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field" style="display:none;"
+                                                         id="on_pf_eligible">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">UAN</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input id="l10n_in_uan" pattern=".{12,12}" title="Enter 12 digit Universal Account Number" type="text" t-att-value="l10n_in_uan" class="form-control s_website_form_input" name="l10n_in_uan"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">Passport?</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input id="has_passport" type="checkbox" class="form-check-input" name="has_passport" t-att-value="has_passport"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <!--                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">-->
+                                                    <!--                                                        <div class="row s_col_no_resize s_col_no_bgcolor">-->
+                                                    <!--                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">-->
+                                                    <!--                                                                <span class="s_website_form_label_content">Is employee eligible for ESI?</span>-->
+                                                    <!--                                                            </label>-->
+                                                    <!--                                                            <div class="col-sm">-->
+                                                    <!--                                                                <input id="is_esic_applicable" type="checkbox" class="form-check-input" name="is_esic_applicable"/>-->
+                                                    <!--                                                            </div>-->
+                                                    <!--                                                        </div>-->
+                                                    <!--                                                    </div>-->
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">ESIC Number</span>
+                                                                <!--                                                                <span class="s_website_form_mark l10n_in_esic_number_mandatory"> *</span>-->
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input id="l10n_in_esic_number" pattern=".{17,17}" title="Enter 17 digit ESIC Number"  type="text" t-att-value="l10n_in_esic_number" class="form-control s_website_form_input" name="l10n_in_esic_number"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">Tax Regime</span>
+                                                                <span class="s_website_form_mark"> *</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <select id="tax_regime" name="tax_regime">
+                                                                    <option value="old">Old</option>
+                                                                    <option value="new">New</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">Willing to Relocate?</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input id="is_willing_to_relocate" type="checkbox" class="form-check-input" name="is_willing_to_relocate" t-att-value="is_willing_to_relocate"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">Any Disability?</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input id="is_any_disability" type="checkbox" class="form-check-input" name="is_any_disability" t-att-value="is_any_disability"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <!--                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">-->
+                                                    <!--                                                        <div class="row s_col_no_resize s_col_no_bgcolor">-->
+                                                    <!--                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">-->
+                                                    <!--                                                                <span class="s_website_form_label_content">PF Number</span>-->
+                                                    <!--                                                                &lt;!&ndash;                                                                <span class="s_website_form_mark pf_number_mandatory"> *</span>&ndash;&gt;-->
+                                                    <!--                                                            </label>-->
+                                                    <!--                                                            <div class="col-sm">-->
+                                                    <!--                                                                <input id="pf_number" type="text" pattern=".{22,22}" title="Enter 22 digit PF Number" t-att-value="pf_number" class="form-control s_website_form_input" name="pf_number"/>-->
+                                                    <!--                                                            </div>-->
+                                                    <!--                                                        </div>-->
+                                                    <!--                                                    </div>-->
+                                                    <!--                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">-->
+                                                    <!--                                                        <div class="row s_col_no_resize s_col_no_bgcolor">-->
+                                                    <!--                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">-->
+                                                    <!--                                                                <span class="s_website_form_label_content">Is employee eligible for excess EPF contribution?</span>-->
+                                                    <!--                                                            </label>-->
+                                                    <!--                                                            <div class="col-sm">-->
+                                                    <!--                                                                <input id="is_excess_epf" type="checkbox" class="form-check-input" name="is_excess_epf" t-att-value="is_excess_epf"/>-->
+                                                    <!--                                                            </div>-->
+                                                    <!--                                                        </div>-->
+                                                    <!--                                                    </div>-->
+                                                    <!--                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">-->
+                                                    <!--                                                        <div class="row s_col_no_resize s_col_no_bgcolor">-->
+                                                    <!--                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">-->
+                                                    <!--                                                                <span class="s_website_form_label_content">Is existing member of PF?</span>-->
+                                                    <!--                                                            </label>-->
+                                                    <!--                                                            <div class="col-sm">-->
+                                                    <!--                                                                <input id="is_existing_pf_member" type="checkbox" class="form-check-input" name="is_existing_pf_member" t-att-value="is_existing_pf_member"/>-->
+                                                    <!--                                                            </div>-->
+                                                    <!--                                                        </div>-->
+                                                    <!--                                                    </div>-->
+                                                    <!--                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">-->
+                                                    <!--                                                        <div class="row s_col_no_resize s_col_no_bgcolor">-->
+                                                    <!--                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">-->
+                                                    <!--                                                                <span class="s_website_form_label_content">Is employee covered under LWF?</span>-->
+                                                    <!--                                                            </label>-->
+                                                    <!--                                                            <div class="col-sm">-->
+                                                    <!--                                                                <input id="is_lwf_covered" type="checkbox" class="form-check-input" name="is_lwf_covered"/>-->
+                                                    <!--                                                            </div>-->
+                                                    <!--                                                        </div>-->
+                                                    <!--                                                    </div>-->
+                                                    <!--                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">-->
+                                                    <!--                                                        <div class="row s_col_no_resize s_col_no_bgcolor">-->
+                                                    <!--                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">-->
+                                                    <!--                                                                <span class="s_website_form_label_content">Name (As on Aadhaar)</span>-->
+                                                    <!--                                                                <span class="s_website_form_mark"> *</span>-->
+                                                    <!--                                                            </label>-->
+                                                    <!--                                                            <div class="col-sm">-->
+                                                    <!--                                                                <input id="name_on_aadhaar" pattern=".{4,40}" title="Minimum 4 character and maximum 40 character." type="text" class="form-control s_website_form_input" t-att-value="name_on_aadhaar" name="name_on_aadhaar" required=""/>-->
+                                                    <!--                                                            </div>-->
+                                                    <!--                                                        </div>-->
+                                                    <!--                                                    </div>-->
+                                                    <!--                                                    <h4>Bank Details</h4>-->
+                                                    <h4 style="border-bottom: 2px solid #ccc; padding-bottom: 4px; margin-top: 20px;">Bank Details</h4>
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">Bank Account Number</span>
+                                                                <span class="s_website_form_mark"> *</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input id="acc_number" type="text" class="form-control s_website_form_input" t-att-value="acc_number" name="acc_number" required=""/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">Bank Name</span>
+                                                                <span class="s_website_form_mark"> *</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input id="bank_name" type="text" class="form-control s_website_form_input" t-att-value="bank_name" name="bank_name" required=""/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">IFSC Code</span>
+                                                                <span class="s_website_form_mark"> *</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input id="ifsc_code" type="text" class="form-control s_website_form_input" t-att-value="ifsc_code" name="ifsc_code" required=""/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">Bank Branch</span>
+                                                                <span class="s_website_form_mark"> *</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input id="bank_branch" type="text" class="form-control s_website_form_input" t-att-value="bank_branch" name="bank_branch" required=""/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_custom s_website_form_required" data-type="char" data-name="Field">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="contact1">
+                                                                <span class="s_website_form_label_content">Bank Account Type</span>
+                                                                <span class="s_website_form_mark"> *</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <select id="account_type" name="account_type" class="o-input o-type-selector">
+                                                                    <option value="current">Current</option>
+                                                                    <option value="savings">Savings</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--                                                    <h4>Attachments</h4>-->
+                                                    <h4 style="border-bottom: 2px solid #ccc; padding-bottom: 4px; margin-top: 20px;">Attachments</h4>
+                                                    <!-- Aadhaar Upload -->
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_required">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px">
+                                                                <span class="s_website_form_label_content">Upload Aadhaar (Front + Back in one PDF):</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input type="file"  name="aadhaar_attachment" class="form-control s_website_form_input" accept="*/*" required=""/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- PAN Upload -->
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_required">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px">
+                                                                <span class="s_website_form_label_content">Upload PAN (Front + Back in one PDF):</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input type="file" name="pan_attachment" class="form-control s_website_form_input" accept="*/*" required=""/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Resume Upload -->
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_required">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px">
+                                                                <span class="s_website_form_label_content">Upload Resume:</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input type="file" name="resume_attachment" class="form-control s_website_form_input" accept="*/*" required=""/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Offer letter Previous Company Upload -->
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_required">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px">
+                                                                <span class="s_website_form_label_content">Upload Offer letters Previous Company:</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input type="file" name="previous_offer_letter_attachment_1" class="form-control s_website_form_input mb-2" accept="*/*" required=""/>
+                                                                <input type="file" name="previous_offer_letter_attachment_2" class="form-control s_website_form_input mb-2" accept="*/*" required=""/>
+                                                                <input type="file" name="previous_offer_letter_attachment_3" class="form-control s_website_form_input" accept="*/*" required=""/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- 3 Month Pay Slip-->
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_required">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px">
+                                                                <span class="s_website_form_label_content">Upload Last 3 Month Pay Slips:</span> <!-- Changed label to plural -->
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input type="file" name="pay_slip_1" class="form-control s_website_form_input mb-2" accept="*/*" required=""/>
+                                                                <input type="file" name="pay_slip_2" class="form-control s_website_form_input mb-2" accept="*/*" required=""/>
+                                                                <input type="file" name="pay_slip_3" class="form-control s_website_form_input" accept="*/*" required=""/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+<!--                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_required">-->
+<!--                                                        <div class="row s_col_no_resize s_col_no_bgcolor">-->
+<!--                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px">-->
+<!--                                                                <span class="s_website_form_label_content">Upload Last 3 Month Pay Slip:</span>-->
+<!--                                                            </label>-->
+<!--                                                            <div class="col-sm">-->
+<!--                                                                <input type="file" name="3_monthPay_slip" class="form-control s_website_form_input" accept="*/*" required=""/>-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+                                                    <!-- Cheque Book Upload -->
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_required">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px">
+                                                                <span class="s_website_form_label_content">Upload Cancelled Cheque</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input type="file" name="cheque_attachment" class="form-control s_website_form_input" accept=".jpg,.jpeg,.png,.pdf" required=""/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--Passport size photo-->
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_required">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px">
+                                                                <span class="s_website_form_label_content">Upload Passport size photo</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input type="file" name="passport_size_photo" class="form-control s_website_form_input" accept="*/*" required=""/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--Passport copy-->
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_required">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px">
+                                                                <span class="s_website_form_label_content">Upload Passport copy if yes</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input type="file" id="passport_copy" name="passport_copy" class="form-control s_website_form_input" accept="*/*" required=""/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                     <!--Graduation Certificate-->
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_required">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px">
+                                                                <span class="s_website_form_label_content">Upload Graduation Certificate:</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input type="file" name="graduation_certificate" class="form-control s_website_form_input" accept="*/*"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--Graduation Marksheet-->
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_required">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px">
+                                                                <span class="s_website_form_label_content">Upload Graduation Marksheet:</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input type="file" name="graduation_marksheet" class="form-control s_website_form_input" accept="*/*"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--HSC CERTIFICATE/12TH-->
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_required">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px">
+                                                                <span class="s_website_form_label_content">HSC Certificate/12TH</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input type="file" name="hsc_certificate" class="form-control s_website_form_input" accept="*/*" required=""/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--SSC CERTIFICATE/10th-->
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_required">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px">
+                                                                <span class="s_website_form_label_content">SSC Certificate/10TH</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input type="file" name="ssc_certificate" class="form-control s_website_form_input" accept="*/*" required=""/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--Post Graduation-->
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_required">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px">
+                                                                <span class="s_website_form_label_content">Post Graduation Certificate</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input type="file" name="post_graduation" class="form-control s_website_form_input" accept="*/*"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--Relieving Letter-->
+                                                    <div class="mb-0 py-2 col-12 s_website_form_field s_website_form_required">
+                                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px">
+                                                                <span class="s_website_form_label_content">Relieving Letter</span>
+                                                            </label>
+                                                            <div class="col-sm">
+                                                                <input type="file" name="relieving_letter" class="form-control s_website_form_input" accept="*/*"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <input id="employee_id" type="hidden" t-att-value="employee_id" name="employee_id" required=""/>
+                                                <div class="mb-0 py-2 col-12 s_website_form_submit" data-name="Submit Button">
+                                                    <div style="width: 200px;" class="s_website_form_label"/>
+                                                    <input class="btn btn-primary s_website_form_send o_submit_btn" type="submit" value="Submit"/>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </section>
+                                </div>
+                                <div class="col-lg-4 mt-4 mt-lg-0">
+                                    <ul class="list-unstyled mb-0 ps-2">
+                                        <li>Sarya</li>
+                                        <li><i class="fa fa-map-marker fa-fw me-2"/><span class="o_force_ltr">Mumbai, India</span></li>
+                                        <li><i class="fa fa-globe fa-fw me-2"/><span class="o_force_ltr">www.sarya.ae</span></li>
+                                        <li><i class="fa fa-1x fa-fw fa-envelope me-2"/><span>info@sarya.ae</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </t>
+        </template>
+
+
+        <template id="portal_employee_verify_success_template">
+            <t t-call="portal.portal_layout">
+                <div id="wrap" class="oe_structure oe_empty">
+                    <section class="s_title parallax s_parallax_is_fixed bg-black-50 pt24 pb24" data-vcss="001" data-snippet="s_title" data-scroll-background-ratio="1">
+                        <span class="s_parallax_bg oe_img_bg" style="background-image: url('/web/image/website.s_parallax_default_image'); background-position: 50% 0;"/>
+                        <div class="o_we_bg_filter" style="rgba(145, 126, 126, 0.5) !important;"/>
+                        <div class="container" style="padding: 10px;text-align: center;">
+                            <t t-if="type == 'success'">
+                                <h1><span style="color:#fff;" t-esc="message"/></h1>
+                            </t>
+                            <t t-if="type == 'failed'">
+                                <h1><span style="color:red;" t-esc="message"/></h1>
+                            </t>
+                        </div>
+                    </section>
+                </div>
+            </t>
+        </template>
+
+    </data>
+</odoo>

@@ -1,0 +1,35 @@
+<odoo>
+  <data>
+
+     <record id="product_shelf_item_form_view" model="ir.ui.view">
+        <field name="name">product.shelf.item.form</field>
+        <field name="model">product.shelf.item</field>
+        <field name="arch" type="xml">
+            <form string="Rebate Rule">
+                <sheet>
+                    <group string="Conditions">
+                        <group name="shelf_rule_target">
+                            <field name="applied_on" widget="radio"/>
+                            <field name="categ_id" options="{'no_create':1}"
+                                   invisible="applied_on != '2_product_category'"
+                                   required="applied_on == '2_product_category'"/>
+
+                            <field name="product_tmpl_id" options="{'no_create':1}"
+                                   invisible="applied_on != '1_product'"
+                                   required="applied_on == '1_product'"/>
+                        </group>
+                        <group name="pricelist_rule_related">
+                            <field name="amount" required="1"/>
+                            <field name="uom" required="1"/>
+                            <field name="shelf_id" column_invisible="True"/>
+                            <field name="currency_id" />
+                            <field name="company_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+     </record>
+
+  </data>
+</odoo>

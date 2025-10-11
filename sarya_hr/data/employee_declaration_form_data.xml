@@ -1,0 +1,299 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="employee_declaration_survey_form" model="survey.survey">
+        <field name="title">Employee Declaration Form</field>
+        <field name="access_token">b135640d-14d4-4748-9ef6-344ca256524e</field>
+        <field name="user_id" ref="base.user_admin"/>
+        <field name="access_mode">public</field>
+        <field name="users_can_go_back" eval="True" />
+        <field name="questions_layout">page_per_section</field>
+        <field name="description" type="html">
+            <p>This form allows you to fll the income Declaration form.
+                Filling it helps us improving your experience.</p></field>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p1_q1">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">1</field>
+        <field name="title">DEDUCTION U/S 10 - HOUSE RENT</field>
+        <field name="is_page" eval="True"/>
+<!--        <field name="question_placeholder">Brussels</field>-->
+<!--        <field name="constr_mandatory" eval="False"/>-->
+    </record>
+
+
+    <record model="survey.question" id="employee_declaration_survey_form_p2_q2">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">2</field>
+        <field name="title">I am staying in a rented house. The Rent Paid is  ( X 12   months) and the house is located in a METRO / NON METRO  (Tick whichever is applicable)</field>
+        <field name="question_type">simple_choice</field>
+<!--        <field name="question_placeholder">Brussels</field>-->
+<!--        <field name="constr_mandatory" eval="False"/>-->
+    </record>
+
+    <record model="survey.question.answer" id="survey_feedback_p2_q2_sug1">
+        <field name="question_id" ref="employee_declaration_survey_form_p2_q2"/>
+        <field name="sequence">1</field>
+        <field name="value">Metro</field>
+    </record>
+    <record model="survey.question.answer" id="survey_feedback_p2_q2_sug2">
+        <field name="question_id" ref="employee_declaration_survey_form_p2_q2"/>
+        <field name="sequence">2</field>
+        <field name="value">Non Metro</field>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p3_q3">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">3</field>
+        <field name="title">DEDUCTIONS UNDER</field>
+        <field name="is_page" eval="True"/>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p4_q4">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">4</field>
+        <field name="title">Sec 80D - Medical Insurance Premium Paid for Self, Spouse and Kids</field>
+        <field name="question_type">numerical_box</field>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p5_q5">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">5</field>
+        <field name="title">Sec 80D - Medical Insurance Premium Paid for Dependent Parents (If the policy covers a senior citizen then exemption is Rs.50,000/-)</field>
+        <field name="question_type">numerical_box</field>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p6_q6">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">6</field>
+        <field name="title">Sec 80DD - Handicapped Dependent</field>
+        <field name="question_type">numerical_box</field>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p7_q7">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">7</field>
+        <field name="title">Sec 80E - Repayment of Loan for higher education (only Interest)</field>
+        <field name="question_type">numerical_box</field>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p8_q8">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">8</field>
+        <field name="title">Sec 80G - Specified Donations</field>
+        <field name="question_type">numerical_box</field>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p9_q9">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">9</field>
+        <field name="title">Sec 80GG - Rent Paid (Where HRA is not Claimed)  Max Limit (60,000)</field>
+        <field name="question_type">numerical_box</field>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p10_q10">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">10</field>
+        <field name="title">Sec 80U - Handicapped</field>
+        <field name="question_type">numerical_box</field>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p11_q11">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">11</field>
+        <field name="title">Sec 80CCG - Rajeev Gandhi Equity Saving  Scheme (Investment max upto Rs.50,000, would get a deduction of 50% on the amount invested)  Max limit (25000)</field>
+        <field name="question_type">numerical_box</field>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p12_q12">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">12</field>
+        <field name="title">Sec 80TTA / 80TTB - Interest on saving a/c</field>
+        <field name="question_type">numerical_box</field>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p13_q13">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">13</field>
+        <field name="title">Any other Deduction (Please specify)</field>
+        <field name="question_type">numerical_box</field>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p14_q14">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">14</field>
+        <field name="title">DEDUCTION U/S 80C - Max Limit (150000)</field>
+        <field name="is_page" eval="True"/>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p15_q15">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">15</field>
+        <field name="title">Contribution to Pension Fund (Jeevan Suraksha)</field>
+        <field name="question_type">numerical_box</field>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p16_q16">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">16</field>
+        <field name="title">Life Insurance Premium on life of self/spouse/child only</field>
+        <field name="question_type">numerical_box</field>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p17_q17">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">17</field>
+        <field name="title">Deferred Annuity  Max Limit (150000)</field>
+        <field name="question_type">numerical_box</field>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p18_q18">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">18</field>
+        <field name="title">Public Provident Fund in own name/spouse/child only</field>
+        <field name="question_type">numerical_box</field>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p19_q19">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">19</field>
+        <field name="title">ULIP of UTI/LIC in own name or spouse and child only</field>
+        <field name="question_type">numerical_box</field>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p20_q20">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">20</field>
+        <field name="title">Repayment of Housing Loan (Only principal)</field>
+        <field name="question_type">numerical_box</field>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p21_q21">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">21</field>
+        <field name="title">Contribution to Pension Fund or UTI or Notified Mutual Fund</field>
+        <field name="question_type">numerical_box</field>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p22_q22">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">22</field>
+        <field name="title">Investment in ELSS made in units of Notified Mutual Fund</field>
+        <field name="question_type">numerical_box</field>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p23_q23">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">23</field>
+        <field name="title">Children Tuition Fee: Restricted to a max of 2 Children</field>
+        <field name="question_type">numerical_box</field>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p24_q24">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">24</field>
+        <field name="title">Deposit in home loan account scheme of NHB/HDFC</field>
+        <field name="question_type">numerical_box</field>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p25_q25">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">25</field>
+        <field name="title">5 yrs. Term deposit in a Sch. Bank</field>
+        <field name="question_type">numerical_box</field>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p26_q26">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">26</field>
+        <field name="title">Postal Savings</field>
+        <field name="question_type">numerical_box</field>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p27_q27">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">27</field>
+        <field name="title">Others (please specify)</field>
+        <field name="question_type">numerical_box</field>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p28_q28">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">28</field>
+        <field name="title">DEDUCTION U/S 80CCC - Max Limit (150000)</field>
+        <field name="is_page" eval="True"/>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p29_q29">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">29</field>
+        <field name="title">Annuity/Pension Plan</field>
+        <field name="question_type">numerical_box</field>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p30_q30">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">30</field>
+        <field name="title">DEDUCTION U/S 80CCD - Max Limit (50000)</field>
+        <field name="is_page" eval="True"/>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p31_q31">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">31</field>
+        <field name="title">Notified Pension Scheme</field>
+        <field name="question_type">numerical_box</field>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p32_q32">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">32</field>
+        <field name="title">DEDUCTION U/S 24</field>
+        <field name="is_page" eval="True"/>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p33_q33">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">33</field>
+        <field name="title">Interest on Housing Loan on fully constructed accomodation only  Max Limit (200000)</field>
+        <field name="question_type">numerical_box</field>
+    </record>
+
+    <record model="survey.question" id="employee_declaration_survey_form_p34_q34">
+        <field name="survey_id" ref="employee_declaration_survey_form" />
+        <field name="sequence">34</field>
+        <field name="title">Interest if the loan is taken before 01/04/99 on fully constructed accomodation only  Max Limit (30000)</field>
+        <field name="question_type">numerical_box</field>
+    </record>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</odoo>

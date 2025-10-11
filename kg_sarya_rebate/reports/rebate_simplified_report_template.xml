@@ -1,0 +1,107 @@
+<odoo>
+	<template id="rebate_pdf_report_simplified_document">
+		<t t-call="web.html_container">
+			<t t-call="web.external_layout">
+				<t t-set="data" t-value="docs._prepare_simple_rebate_report()"/>
+				<t t-set="currency" t-value="data['company_currency_id']"/>
+				<div class="page">
+					<div class="oe_structure"/>
+					<h2 class="text-center font-weight-bold text" style="color: #017e84 !important;">
+						REBATE REPORT(SIMPLIFIED)
+					</h2>
+					<hr/>
+					<div id="information" class="row mt32 mb32" style="margin: 15px 0px;">
+						<div class="col-auto col-3 mw-100 mb-2">
+							<strong>Customer:</strong>
+							<p class="m-0" t-field="docs.partner_id.name"/>
+						</div>
+						<div class="col-auto col-3 mw-100 mb-2" t-if="docs.date_end">
+							<strong>Date To:</strong>
+							<p class="m-0" t-field="docs.date_end"/>
+						</div>
+						<div class="col-auto col-3 mw-100 mb-2">
+							<strong>Generated On:</strong>
+							<p class="m-0" t-esc="data['report_date']" t-options='{"widget": "date"}'/>
+						</div>
+					</div>
+					<t t-foreach="data['rebates']" t-as="value">
+						<div class="row mt-5">
+							<div class="col-12 text-center">
+								<div class="card text-white bg-danger mb-3 w-100 ml64"
+								     style="background-color: #017e84 !important;">
+									<div class="card-header">
+										<span class="text-white text-uppercase">
+											Rebate: <strong t-esc="value.get('rebate')"/>
+										</span>
+									</div>
+									<div class="card-body bg-transparent text-center">
+										<div class="row">
+											<div class="col-3">
+												<strong style="color: #017e84 !important;">
+													Progressive Slab
+												</strong><br/>
+												<span><t t-esc="value.get('progressive_rebate')"/></span>
+											</div>
+											<div class="col-3">
+												<strong style="color: #017e84 !important;">Progressive
+													Amount</strong><br/>
+												<span><t t-esc="value.get('progressive_amount')"
+												         t-options='{"widget": "monetary", "display_currency": currency}'/></span>
+											</div>
+											<div class="col-3">
+												<strong style="color: #017e84 !important;">Total Fixed
+													Rebate</strong><br/>
+												<span><t t-esc="value.get('fixed_rebate_total')"
+												         t-options='{"widget": "monetary", "display_currency": currency}'/></span>
+											</div>
+											<div class="col-3">
+												<strong style="color: #017e84 !important;">Total Invoiced</strong><br/>
+												<span><t t-esc="value.get('invoiced_amount')"
+												         t-options='{"widget": "monetary", "display_currency": currency}'/></span>
+											</div>
+										</div>
+										<t t-set="fixed_rebates" t-value="value.get('fixed_rebates')"/>
+										<t t-if="fixed_rebates">
+											<hr/>
+											<div class="container">
+												<h6 class="font-weight-bold" style="color: #017e84 !important;">
+													FIXED REBATE BREAKDOWN
+												</h6>
+												<div class="row">
+													<div class="col-12">
+														<table class="table table-sm m-0 table-borderless">
+															<thead>
+																<tr>
+																	<th>Description</th>
+																	<th>Percentage</th>
+																	<th>Amount</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr t-foreach="fixed_rebates" t-as="fr">
+																	<td>
+																		<t t-esc="fr['fixed_rebate']"/>
+																	</td>
+																	<td>
+																		<t t-esc="fr['fixed_rebate_percentage']"/>
+																	</td>
+																	<td>
+																		<t t-esc="fr['amount']"/>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</t>
+									</div>
+								</div>
+							</div>
+						</div>
+					</t>
+				</div>
+			</t>
+		</t>
+	</template>
+</odoo>

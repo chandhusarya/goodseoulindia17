@@ -1,0 +1,14 @@
+<odoo>
+   <data>
+       <record id="purchase_order" model="ir.actions.report">
+            <field name="name">Purchase Order Report</field>
+            <field name="model">purchase.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">kg_sarya_purchase_order_report.purchase_order_template</field>
+            <field name="report_file">kg_sarya_purchase_order_report.purchase_order_report_template.xml</field>
+            <field name="paperformat_id" ref="kg_sarya_purchase_order_report.paperformat_euro_purchase"/>
+            <field name="binding_model_id" ref="purchase.model_purchase_order"/>
+            <field name="binding_type">report</field>
+        </record>
+   </data>
+</odoo>

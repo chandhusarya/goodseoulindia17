@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="report_email_config_form" model="ir.ui.view">
+        <field name="name">report.email.config.form</field>
+        <field name="model">report.email.config</field>
+        <field name="arch" type="xml">
+            <form string="Report Email Configuration">
+                <sheet>
+                    <group>
+                        <field name="soh_email"/>
+                        <field name="company_id"/>
+                    </group>
+                    <button string="SOH Report" name="button_generate_soh" type="object" data-hotkey="l"/>
+                    <button string="Send Email" name="send_email_with_excel_attach" type="object" data-hotkey="e"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="report_email_config_tree" model="ir.ui.view">
+        <field name="name">report.email.config.tree</field>
+        <field name="model">report.email.config</field>
+        <field name="priority">500</field>
+        <field name="arch" type="xml">
+            <tree string="Report Email Config" default_order="id desc">
+                <field name="soh_email"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_report_email_config" model="ir.actions.act_window">
+        <field name="name">Report Email Config</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">report.email.config</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="report_email_config_tree"/>
+    </record>
+
+
+    <menuitem id="report_email_config_menu" name="Report Email Config" sequence="52"
+              parent="stock.menu_warehouse_config"
+              action="action_report_email_config"/>
+</odoo>

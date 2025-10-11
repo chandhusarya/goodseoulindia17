@@ -1,0 +1,36 @@
+<odoo>
+    <template id="portal_my_home_sry_sale" name="Show Quotations / Sales Orders" customize_show="True" inherit_id="portal.portal_my_home" priority="21">
+
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+            <t t-set="portal_client_category_enable" t-value="True"/>
+        </xpath>
+        <div id="portal_client_category" position="inside">
+            <t t-if="user_type == 'employee'">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/sale/static/src/img/bag.svg'"/>
+                    <t t-set="title">Create Sale Order</t>
+                    <t t-set="url" t-value="'/my/new_sale_order'"/>
+                    <t t-set="text">Create new order request.</t>
+                    <t t-set="config_card" t-value="True"/>
+                </t>
+            </t>
+        </div>
+
+    </template>
+
+<!--    <template id="portal_my_home_sale_hide_for_distributors"-->
+<!--              inherit_id="sale.portal_my_home_sale"-->
+<!--              priority="30">-->
+
+<!--        &lt;!&ndash; Hide Quotations for distributors &ndash;&gt;-->
+<!--&lt;!&ndash;        <xpath expr="//div[@id='portal_alert_category']/t" position="attributes">&ndash;&gt;-->
+<!--&lt;!&ndash;            <attribute name="t-if">user_type == 'employee'</attribute>&ndash;&gt;-->
+<!--&lt;!&ndash;        </xpath>&ndash;&gt;-->
+
+<!--        &lt;!&ndash; Hide Sales Orders for distributors &ndash;&gt;-->
+<!--        <xpath expr="(//div[@id='portal_client_category'])" position="attributes">-->
+<!--            <attribute name="t-if">user_type != 'distributor'</attribute>-->
+<!--        </xpath>-->
+<!--    </template>-->
+
+</odoo>

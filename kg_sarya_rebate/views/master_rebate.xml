@@ -1,0 +1,267 @@
+<odoo>
+    <data>
+
+
+        <record id="rebate_master_tree" model="ir.ui.view">
+            <field name="name">rebate.master.tree</field>
+            <field name="model">rebate.master</field>
+            <field name="arch" type="xml">
+                <tree string="Rebate">
+                    <field name="name"/>
+                    <field name="code" string="Reference Code"/>
+                    <field name="brand_id" string="Brand"/>
+                    <!-- <field name="customer_section_id" string="Customer Section"/> -->
+                    <field name="contract_type" string="Contract Type"/>
+                    <field name="date_start" string="Start Date"/>
+                    <field name="date_end" string="End Date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="rebate_master_searach" model="ir.ui.view">
+            <field name="name">rebate.master.search</field>
+            <field name="model">rebate.master</field>
+            <field name="arch" type="xml">
+                <search string="Rebate">
+                    <field name="name"/>
+                    <field name="code" string="Reference Code"/>
+                    <field name="brand_id" string="Brand"/>
+                    <!-- <field name="customer_section_id" string="Customer Section"/> -->
+                    <field name="contract_type" string="Contract Type"/>
+                    <field name="date_start" string="Start Date"/>
+                    <field name="date_end" string="End Date"/>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="rebate_master_view" model="ir.ui.view">
+            <field name="name">rebate.master.form</field>
+            <field name="model">rebate.master</field>
+            <field name="arch" type="xml">
+                <form string="Rebate">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" name="rebate_journal_view" string="Journal Entries"
+                                    type="object"
+                                    icon="fa-list-ol"/>
+                        </div>
+                        <div class="oe_title">
+                            <field name="status" invisible="True"/>
+                            <h1>
+                                <field name="name" readonly="status" placeholder="Rebate Name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+
+                                <field name="product_type" readonly="status" required="1"
+                                       string="Product Type"/>
+                                <field name="customer_section_id" options="{'no_create': True, 'no_create_edit':True}"
+                                       string="Customer Section"
+                                       readonly="status"
+                                       invisible="product_type == 'all_product'"
+                                       required="product_type != 'all_product'"/>
+                                <field name="customer_section_ids" widget="many2many_tags" options="{'no_create': True, 'no_create_edit':True}"
+                                       string="Customer Section"
+                                       readonly="status"
+                                       invisible="product_type == 'all_product'"
+                                       required="product_type != 'all_product'"/>
+                                <field name="brand_id" options="{'no_create': True, 'no_create_edit':True}"
+                                       string="Brand" widget="many2many_tags"
+                                       readonly="status"
+                                       invisible="product_type == 'all_product'"
+                                       required="product_type != 'all_product'"/>
+                                <field name="date_start" required="1"
+                                       string="Start Date"/>
+                            </group>
+                            <group>
+                                <field name="code" string="Reference Code"
+                                       readonly="status"/>
+                                <field name="contract_type" readonly="status"
+                                       string="Contract Type"/>
+                                <field name="date_end" readonly="status"
+                                       string="End Date"/>
+                                <field name="is_rebate_computed_on_untaxed"/>
+                            </group>
+
+                        </group>
+                        <notebook>
+                            <page string="Fixed">
+                                <field name="fixed_ids" readonly="status">
+                                    <tree editable="bottom">
+                                        <field name="description" string="Description"/>
+                                        <field name="account_id" string="Account"
+                                               options="{'no_create': True, 'no_create_edit':True}"/>
+                                        <field name="percentage" string="Percentage"/>
+                                        <field name="rebate_active" string="Active" widget="boolean_toggle"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Progressive">
+                                <group>
+                                    <group>
+                                        <field name="prevous_amount" readonly="status"
+                                               string="Previous Sales Value"/>
+                                        <field name="rebate_customer_for_posting" />
+                                    </group>
+                                </group>
+                                <field name="progressive_ids" readonly="status">
+                                    <tree>
+                                        <field name="slab" string="Type"/>
+                                        <field name="account_id" string="Account" required="1"/>
+                                        <field name="percentage" string="Slab %"/>
+                                        <field name="slab_vale" string="Slab Value"/>
+                                        <field name="rebate_percentage" string="Rebate %"/>
+                                        <field name="target_val" optional="hide"/>
+                                        <field name="current_slab" optional="hide"/>
+                                        <field name="rebate_active" string="Active" widget="boolean_toggle"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Other Charges">
+                                <field name="other_ids" readonly="status">
+                                    <tree editable="bottom">
+                                        <field name="description" string="Description"/>
+                                        <field name="account_id" required="1"/>
+                                        <field name="percentage" string="Percentage"/>
+                                        <field name="partner_id" string="Customer" widget="many2many_tags"/>
+                                        <field name="rebate_active" string="Active" widget="boolean_toggle"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                        <group>
+                            <group></group>
+                            <group>
+                                <field name="total_without_progressive" string="Without Progressive %"
+                                       help="Total Without Progressive"/>
+                                <field name="total_with_progressive" string="With Progressive %"
+                                       help="Total With Progressive"/>
+                            </group>
+
+                        </group>
+
+                    </sheet>
+                        <div class="oe_chatter">
+                                <field name="message_follower_ids"/>
+                                <field name="activity_ids"/>
+                                <field name="message_ids"/>
+                        </div>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="customer_rebate_master_action" model="ir.actions.act_window">
+            <field name="name">Rebate</field>
+            <field name="res_model">rebate.master</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Rebate Configuration" id="customer_rebate_master_menu_main" sequence="1000"
+                  parent="kg_sarya_rebate.rebate_menu_main"/>
+
+        <menuitem name="Rebates" id="customer_rebate_master_menu"
+                  action="customer_rebate_master_action" sequence="1000"
+                  parent="kg_sarya_rebate.customer_rebate_master_menu_main"/>
+
+        <record id="product_rebate_progressive_item_form_view" model="ir.ui.view">
+            <field name="name">rebate.progressive.item.form</field>
+            <field name="model">rebate.progressive.item</field>
+            <field name="arch" type="xml">
+                <form string="Rebate">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="slab" placeholder="Slab Name" required="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="slab_type" string="Slab Type" widget="radio" options="{'horizontal': true}"
+                                       required="1"/>
+                                <field name="rebate_percentage" string="Rebate %" required="1"/>
+                                <field name="account_id" string="Account" required="1"/>
+                            </group>
+                            <group>
+                                <field name="percentage" string="Slab %"
+                                       invisible="slab_type == 'fixed'"/>
+                                <field name="slab_vale" string="Slab Value"
+                                       invisible="slab_type == 'percentage'"/>
+                                <field name="target_val" invisible="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+
+
+        <!-- <record id="archive_price_rule_action" model="ir.actions.act_window">
+            <field name="name">Archived</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.pricelist.item</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">[('active','=',False)]</field>
+            <field name="view_id" ref="kg_sarya_rebate.archived_price_rule_tree"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_archive_price_rule_tree">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="archived_price_rule_tree"/>
+            <field name="act_window_id" ref="archive_price_rule_action"/>
+        </record>
+
+
+        <menuitem name="Archived Price Rule"  id="archive_price_rule" action="archive_price_rule_action" parent="sale.product_menu_catalog"/>
+
+        -->
+
+        <record id="view_price_list_rebate_pck_form_inherit" model="ir.ui.view">
+            <field name="name">product.pricelist.inherit</field>
+            <field name="model">product.pricelist.item</field>
+            <field name="inherit_id" ref="product.product_pricelist_item_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='pricelist_rule_target']/field[@name='product_tmpl_id']" position='after'>
+                    <field name="product_pr_id" column_invisible="True"/>
+                    <field name="packging_id" domain="[('product_id','=',product_pr_id),('sales','=',True)]"
+                           options="{'no_create':1}"
+                           required="applied_on == '1_product'"/>
+                </xpath>
+                <xpath expr="//group[@name='pricelist_rule_computation']" position='attributes'>
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//group[@name='pricelist_rule_target']" position='attributes'>
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='min_quantity']" position='attributes'>
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='fixed_price']" position='before'>
+                    <field name="product_tmpl_id" options="{'no_create':1}"
+                                invisible="applied_on != '1_product'"
+                                required="applied_on != '1_product'"/>
+
+                         <field string="Packaging" name="packging_id"
+                                domain="[('product_id','=',product_pr_id),('sales','=',True)]"
+                                options="{'no_create':1}"
+                                invisible="applied_on != '1_product'"
+                                required="applied_on != '1_product'"/>
+                </xpath>
+                <xpath expr="//field[@name='currency_id']" position='before'>
+                    <field name="promo"
+                           invisible="not date_start or not date_end"/>
+                </xpath>
+                <xpath expr="//group[3]" position='attributes'>
+                    <attribute name="string"></attribute>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

@@ -1,0 +1,58 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<odoo>
+
+
+    <record id="customer_section_tree" model="ir.ui.view">
+        <field name="name">customer.section.tree</field>
+        <field name="model">customer.section</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>  
+                <field name="code"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="customer_section_form" model="ir.ui.view">
+        <field name="name">customer.section.form</field>
+        <field name="model">customer.section</field>
+        <field name="arch" type="xml">
+            <form string="Customer Section">
+                <sheet>
+                    <group name="cust main">
+                        <group name="cust_child">
+                            <field name="name"/>                          
+                        </group>
+                        <group name="cust_child1">
+                            <field name="code"/>
+                        </group>
+                    </group>
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="view_customer_section_filter" model="ir.ui.view">
+            <field name="name">customer.section.select</field>
+            <field name="model">customer.section</field>
+            <field name="priority" eval="15"/>
+            <field name="arch" type="xml">
+                <search string="Search Customer Section">
+                    <field name="name"/>  
+                    <field name="code"/>    
+                </search>
+            </field>
+    </record>
+
+    <record id="customer_sectn_action" model="ir.actions.act_window">
+        <field name="name">Customer Section</field>
+        <field name="res_model">customer.section</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+
+    <menuitem name="Customer Section" id="customer_sectn_menu_item" action="customer_sectn_action" sequence="5" parent="stock.menu_product_in_config_stock"/>
+</odoo>
+

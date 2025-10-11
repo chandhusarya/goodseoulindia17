@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="pos_config_view_form_inherit" model="ir.ui.view">
+        <field name="name">pos.config.form.view.inherit</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='title']" position="after">
+                <div class="oe_title">
+                    <label for="outlet_terminal_code"/>
+                    <h1>
+                        <field name="outlet_terminal_code" placeholder="Enter Outlet Terminal Code..." required="1"/>
+                    </h1>
+                </div>
+            </xpath>
+
+            <xpath expr="//div[@id='restaurant_on_create']" position="before">
+                <div id="manager_account_id" class="row mt16 o_settings_container">
+                    <setting>
+                           <field name="manager_account_id" options="{'no_create_edit': True, 'no_create': True}"/>
+                    </setting>
+                </div>
+                <div id="petty_cash_account_id" class="row mt16 o_settings_container">
+                    <setting>
+                           <field name="petty_cash_account_id" options="{'no_create_edit': True, 'no_create': True}"/>
+                    </setting>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

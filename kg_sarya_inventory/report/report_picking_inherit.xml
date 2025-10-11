@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="sar_report_picking_inherit" inherit_id="stock.report_picking">
+        <xpath expr="//td[@t-if='has_serial_number']" position="inside">
+            <small class="text-muted lh-sm"><span><t t-esc="ml.lot_id.expiration_date.strftime('%d/%m/%Y')"/></span></small>
+        </xpath>
+    </template>
+</odoo>

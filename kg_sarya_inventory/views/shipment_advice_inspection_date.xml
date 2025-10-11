@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- wizard view -->
+        <record id="shipment_advice_inspection_date_view" model="ir.ui.view">
+            <field name="name">Sarya Reconcile Load Rebate</field>
+            <field name="model">shipment.advice.inspection.date</field>
+            <field name="arch" type="xml">
+                <form name="Rebates">
+                    <group name="details">
+                        <field name="shipment_advice_id" invisible="1"/>
+                        <field name="inspection_date" string="Date"/>
+                    </group>
+                    <footer>
+                         <button name="update_inspection" string="Update"
+                                 type="object" default_focus="1" class="oe_highlight"/>
+                    </footer>
+
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

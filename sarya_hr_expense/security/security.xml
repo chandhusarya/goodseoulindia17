@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.module.category" id="module_sarya_employee_expense">
+            <field name="name">Employee Expense</field>
+            <field name="sequence">100</field>
+            <field name="visible" eval="0"/>
+        </record>
+
+        <record id="can_do_expense_hr_approval" model="res.groups">
+            <field name="name">Can Do Expense HR Approval</field>
+             <field name="category_id" ref="sarya_hr_expense.module_sarya_employee_expense"/>
+        </record>
+
+        <record id="can_do_expense_finance_approval" model="res.groups">
+            <field name="name">Can Do Expense Finance Approval</field>
+             <field name="category_id" ref="sarya_hr_expense.module_sarya_employee_expense"/>
+        </record>
+
+
+    </data>
+</odoo>

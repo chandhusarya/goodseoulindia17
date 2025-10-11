@@ -1,0 +1,45 @@
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<odoo>
+    <data>
+        <record id="id_master_parent_tree" model="ir.ui.view">
+            <field name="name">master.parent.tree</field>
+            <field name="model">master.parent</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" required="1"/>
+                    <field name="block_if_over_due"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="id_master_parent_form" model="ir.ui.view">
+            <field name="name">customer.master.parent.form</field>
+            <field name="model">master.parent</field>
+            <field name="arch" type="xml">
+                <form string="Master Parent Form">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name" required="1"/>
+                                <field name="block_if_over_due"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_master_parent" model="ir.actions.act_window">
+            <field name="name">Master Parent</field>
+            <field name="res_model">master.parent</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+
+
+        <menuitem name="Master Parent" id="id_menu_master_parent" action="action_master_parent" sequence="12"
+                  parent="sale.menu_sale_config"/>
+
+    </data>
+</odoo>

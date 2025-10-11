@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_expense_advance_request,sarya_hr_expense.expense_advance_request,model_expense_advance_request,base.group_user,1,1,1,1
+access_expense_advance_request_line,sarya_hr_expense.expense_advance_request_line,model_expense_advance_request_line,base.group_user,1,1,1,1

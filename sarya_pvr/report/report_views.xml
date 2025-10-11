@@ -1,0 +1,64 @@
+<odoo>
+    <record id="action_report_pvr_container_request_thermal" model="ir.actions.report">
+        <field name="name">Container Request</field>
+        <field name="model">container.request</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">sarya_pvr.report_pvr_container_request_thermal</field>
+        <field name="report_file">sarya_pvr.report_pvr_container_request_thermal</field>
+        <field name="print_report_name">('Container-Request - %s' % (object.name))</field>
+        <field name="binding_model_id" ref="model_container_request"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="sarya_pvr.paperformat_pvr_thermal"></field>
+    </record>
+
+    <record id="action_report_delivery_challan_pvr_stock_request" model="ir.actions.report">
+        <field name="name">Delivery Challan</field>
+        <field name="model">pvr.stock.request</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">sarya_pvr.report_delivery_challan_pvr_stock_request</field>
+        <field name="report_file">sarya_pvr.report_delivery_challan_pvr_stock_request</field>
+        <field name="binding_model_id" ref="sarya_pvr.model_pvr_stock_request"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="kg_sarya_inventory.paperformat_a4_potrait"/>
+    </record>
+
+    <record id="action_report_pvr_closing_session_thermal" model="ir.actions.report">
+        <field name="name">Closing Session</field>
+        <field name="model">closing.session</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">sarya_pvr.report_pvr_closing_session_thermal</field>
+        <field name="report_file">sarya_pvr.report_pvr_closing_session_thermal</field>
+        <field name="print_report_name">('closing Session - %s' % (object.name))</field>
+        <field name="binding_model_id" ref="model_closing_session"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="sarya_pvr.paperformat_pvr_thermal"></field>
+    </record>
+
+    <record id="action_report_pvr_damaged_report_thermal" model="ir.actions.report">
+        <field name="name">Damaged Report</field>
+        <field name="model">closing.session</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">sarya_pvr.report_pvr_damaged_report_thermal</field>
+        <field name="report_file">sarya_pvr.report_pvr_damaged_report_thermal</field>
+        <field name="print_report_name">('Damaged Report - %s' % (object.name))</field>
+        <field name="binding_model_id" ref="model_closing_session"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="sarya_pvr.paperformat_pvr_thermal"></field>
+    </record>
+
+    <record id="action_report_transfer_pvr_report_thermal" model="ir.actions.report">
+        <field name="name">Container Transfer Report</field>
+        <field name="model">container.transfer.pvr</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">sarya_pvr.report_transfer_pvr_report_thermal</field>
+        <field name="report_file">sarya_pvr.report_transfer_pvr_report_thermal</field>
+        <field name="print_report_name">('Container Transfer Report - %s' % (object.name))</field>
+        <field name="binding_model_id" ref="model_container_transfer_pvr"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="sarya_pvr.paperformat_pvr_thermal"></field>
+    </record>
+
+
+
+
+</odoo>

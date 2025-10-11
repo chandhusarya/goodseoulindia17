@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record id="mrp_production_form_view_inherit" model="ir.ui.view">
+            <field name="name">mrp.production.form</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <field name="product_id" position="attributes">
+                    <attribute name="domain">[('bom_ids', '!=', False)]</attribute>
+                </field>
+
+                <xpath expr="//button[@name='action_cancel']" position="after">
+                    <button name="correct_final_product_cost" groups="base.group_no_one" type="object" string="Correct Costing of this MO" />
+                    <button name="check_all_production_cost" groups="base.group_no_one" type="object" string="Correct Costing for All MO" />
+                </xpath>
+
+                <xpath expr="//page[@name='components']" position="after">
+                    <page name="related_mrp" string="Related Productions">
+                        <field name="related_production_ids" readonly="1">
+                            <tree editable="top">
+                                <field name="production_level"/>
+                                <field name="name"/>
+                                <field name="product_id"/>
+                                <field name="actual_qty"/>
+                                <field name="product_qty" string="Producing Qty"/>
+                                <field name="qty_producing" string="Actual Produced"/>
+                                <field name="state"/>
+                                <button name="open_related_production" type="object" string="Open">
+                                    <i class="fa fa-long-arrow-right mx-2 oe_edit_only" aria-label="Arrow icon" title="Open"/>
+                                </button>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+
+                 <xpath expr="//page[@name='miscellaneous']/group/group/field[@name='origin']" position="after">
+                     <field name="do_not_update_production_chain"/>
+                 </xpath>
+
+                 <field name="move_raw_ids" position="attributes">
+                    <attribute name="context">{'default_date': date_start, 'default_date_deadline': date_start, 'default_location_id': location_src_id, 'default_location_dest_id': production_location_id, 'default_warehouse_id': warehouse_id, 'default_state': 'draft', 'default_raw_material_production_id': id, 'default_picking_type_id': picking_type_id, 'default_company_id': company_id, 'form_view_ref': 'sarya_factory.view_stock_move_operations_sarya_factory_cust'}</attribute>
+                </field>
+
+                <field name="product_id" position="after">
+                    <field name="extra_cost"/>
+                </field>
+
+                <xpath expr="//field[@name='move_raw_ids']/tree/field[@name='should_consume_qty']" position="attributes">
+                    <attribute name="column_invisible">False</attribute>
+                </xpath>
+
+                <xpath expr="//field[@name='move_raw_ids']/tree/field[@name='product_uom_qty']" position="attributes">
+                    <attribute name="column_invisible">True</attribute>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="mrp_production_tree_view_inherit" model="ir.ui.view">
+            <field name="name">mrp.production.tree.sarya.factory</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_tree_view"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="after">
+                    <field name="starting_production_id"/>
+                    <field name="production_level"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_mrp_production_filter_inherit" model="ir.ui.view">
+            <field name="name">mrp.production.search.view.inherit.planning</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.view_mrp_production_filter"/>
+            <field name="arch" type="xml">
+                <filter name="filter_ready" position="after">
+                    <separator/>
+                    <filter name="is_parent_production" string="Parent Production"  domain="[('parent_production_id', '=', False)]"/>
+                </filter>
+                <filter name="status" position="after">
+                    <filter name="root_production_id" string="Root MO"  domain="[]" context="{'group_by': 'root_production_id'}"/>
+                </filter>
+            </field>
+        </record>
+
+</odoo>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_partner_form_inherit_kg_sarya_outlet_coverage_plan" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.outlet.coverage.plan</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//span[@name='address_name']" position='before'>
+                <field name="short_name_merchandiser" string="Short name for Merchandiser"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

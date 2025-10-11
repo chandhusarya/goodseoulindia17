@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+        <record id="stock_picking_view_delivery_partner_form_inherit" model="ir.ui.view">
+            <field name="name">stock.picking.view.form.inherit.delivery.status</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+
+               <xpath expr="//page[last()]" position='after'>
+                    <page string="Delivery Details" invisible="picking_type_code not in ('outgoing','internal')">
+                        <header>
+                            <button name="action_delivery_partner_send_doc" type="object" string="Send Documents" class="oe_highlight"
+                                    invisible="delivery_partner_status != 'pending'"/>
+                            <button name="action_delivery_partner_send_finance" type="object" string="Send to Finance" class="oe_highlight"
+                                    invisible="delivery_partner_status != 'email'"/>
+                            <button name="action_delivery_partner_post_provision" type="object" string="Post Provision Entry" class="oe_highlight"
+                                    invisible="delivery_partner_status != 'notify'" groups="kg_sarya_inventory.delivery_partner_finance_post"/>
+                            <field name="delivery_partner_status" widget="statusbar" options="{'clickable': False}"/>
+                        </header>
+                        <group string="Delivery Partner Details" class="oe_edit_only">
+                            <group>
+                                <field name="delivery_partner_id" readonly="delivery_partner_status != 'pending'" options="{'no_create_edit': True, 'no_create': True}"/>
+                                <field name="delivery_partner_region_id" readonly="delivery_partner_status != 'pending'" options="{'no_create_edit': True, 'no_create': True}"/>
+                                <field name="delivery_doc_number"/>
+                                <field name="delivery_estimate_amount" readonly="delivery_partner_status not in ('pending', 'email', 'notify')"/>
+                                <field name="delivery_actual_amount"/>
+                                <field name="delivery_variation_amount"/>
+                                <field name="delivery_partner_remark"/>
+                                <field name="delivery_partner_invoice"/>
+                                <field name="delivery_move_id" invisible="delivery_move_id == False" readonly="1"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+
+                <xpath expr="//header" position="after">
+                    <div class="alert alert-warning o_form_alert"
+                         invisible="picking_type_code not in ('outgoing','internal') or delivery_partner_status != 'pending'">
+                        <strong>⚠ Delivery Partner Status Pending:</strong>
+                        Details need to be shared.
+                    </div>
+                    <div class="alert alert-success o_form_alert"
+                         invisible="picking_type_code not in ('outgoing','internal') or delivery_partner_status != 'email'">
+                        <strong>⚠ Delivery Partner Status:</strong>
+                        Details sent by email.
+                    </div>
+                    <div class="alert alert-success o_form_alert"
+                         invisible="picking_type_code not in ('outgoing','internal') or delivery_partner_status != 'notify'">
+                        <strong>⚠ Delivery Partner Status:</strong>
+                        Requested to finance for provision.
+                    </div>
+                    <div class="alert alert-success o_form_alert"
+                         invisible="picking_type_code not in ('outgoing','internal') or delivery_partner_status != 'posted'">
+                        <strong>⚠ Delivery Partner Status:</strong>
+                        Provision booked by finance.
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

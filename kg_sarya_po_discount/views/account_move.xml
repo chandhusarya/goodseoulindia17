@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_invoice_line_inherit_disc" model="ir.ui.view">
+            <field name="name">account.move.inherit.disc</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_subtotal']" position='after'>
+                    <field name="move_type" invisible="1"/>
+                    <field name="discount_1" widget="percentage"
+                           invisible="move_type != 'in_refund'"/>
+                    <field name="discount_2" widget="percentage"
+                           invisible="move_type != 'in_refund'"/>
+                </xpath>
+                <!-- <xpath expr="//field[@name='line_ids']/tree/field[@name='quantity']" position='after'>
+                    <field name="move_type" invisible="1"/>
+                    <field name="discount_1" invisible="1"/>
+                    <field name="discount_2" invisible="1"/>
+                </xpath> -->
+                <field name="invoice_date" position="after">
+                    <field name="po_discount_entry_id" invisible="1"/>
+                </field>
+                <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                    <button class="oe_stat_button" name="action_view_purchase_discount" type="object"
+                            icon="fa-book"
+                            invisible="not po_discount_entry_id">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Discount Entry</span>
+                        </div>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

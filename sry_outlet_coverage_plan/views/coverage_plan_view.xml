@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+<!--    Coverage Master List-->
+    <!-- <record id="sry_coverage_plan_view_list" model="ir.ui.view">
+      <field name="name">sry.coverage.plan.view.list</field>
+      <field name="model">sry.coverage.plan</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="outlet_id"/>
+          <field name="date"/>
+          <field name="type"/>
+            <field name="plan_of"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="view_coverage_plan_calendar" model="ir.ui.view">
+       <field name="name">sry.coverage.plan.calendar</field>
+       <field name="model">sry.coverage.plan</field>
+       <field eval="2" name="priority"/>
+       <field name="arch" type="xml">
+           <calendar date_start="date" string="Plan" mode="month" hide_time="true" js_class="project_calendar" event_open_popup="true" quick_add="false"  delete="0" create="0">
+               <field name="outlet_id"/>
+           </calendar>
+       </field>
+    </record>
+
+    <record id="view_coverage_plan_gantt" model="ir.ui.view">
+        <field name="name">sry.coverage.plan.gantt</field>
+        <field name="model">sry.coverage.plan</field>
+        <field name="arch" type="xml">
+            <gantt date_start="date" date_stop="date"> </gantt>
+        </field>
+    </record>
+
+    <record id="sry_coverage_plan_action" model="ir.actions.act_window">
+      <field name="name">Outlet Coverage Plan</field>
+      <field name="res_model">sry.coverage.plan</field>
+      <field name="view_mode">tree,calendar,gantt</field>
+    </record>
+
+    <menuitem id="sry_coverage_plan_menu"
+          name="Coverage Plan"
+          parent="menu_sales_plans"
+          action="sry_coverage_plan_action"
+          sequence="2"/> -->
+
+    </data>
+</odoo>

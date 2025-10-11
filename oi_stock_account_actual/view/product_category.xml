@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="view_category_property_form" model="ir.ui.view">
+		<field name="name">product.category.stock.property.form.inherit</field>
+		<field name="model">product.category</field>
+		<field name="priority">100</field>
+		<field name="inherit_id" ref="stock.product_category_form_view_inherit" />
+		<field name="arch" type="xml">
+			<field name="property_cost_method" position="after">
+				<field name="property_cost_level"
+					   invisible="property_cost_method != 'fifo'"/>
+			</field>
+		</field>
+	</record>
+
+</odoo>

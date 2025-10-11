@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+      <record id="action_update_pricelist_promotion" model="ir.actions.server">
+          <field name="name">Pricelist: Update Promotion</field>
+          <field name="model_id" ref="product.model_product_pricelist"/>
+          <field name="binding_model_id" ref="product.model_product_pricelist"/>
+<!--          <field name="binding_view_types">list</field>-->
+          <field name="state">code</field>
+          <field name="code">model._update_pricelist_promotion()</field>
+      </record>
+    </data>
+</odoo>

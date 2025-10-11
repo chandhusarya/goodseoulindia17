@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="can_approve_mr" model="res.groups">
+        <field name="name">Can Approve Material Request (MRP Manager)</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+
+    <record id="can_approve_production_req" model="res.groups">
+        <field name="name">Can Approve Production Material Request</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+    <record id="can_transfer_production_req" model="res.groups">
+        <field name="name">Can Transfer Production Material Request</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+    <record id="can_do_mrp_stock_transfer" model="res.groups">
+        <field name="name">Can do MRP stock transfer</field>
+        <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
+    </record>
+
+
+</odoo>

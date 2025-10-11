@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+<!--		Employee Asset-->
+
+        <menuitem name="Vehicle/Asset" id="asset_parent" parent="hr.menu_hr_root" sequence="12" groups="hr.group_hr_manager"/>
+    	<menuitem name="Asset Category" id="asset_category_menu" parent="asset_parent" action="asset_category_action" sequence="1"/>
+        <menuitem name="Asset Master" id="asset_child" parent="asset_parent" action="asset_master_action" sequence="2"/>
+        <menuitem name="Asset Log" id="asset_history_menu" parent="asset_parent" action="asset_history_action" sequence="3"/>
+
+
+
+
+    </data>
+</odoo>

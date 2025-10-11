@@ -1,0 +1,18 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_material_request,Material Request,model_material_request,,1,1,1,1
+access_material_request_line,Material Request Line,model_material_request_line,,1,1,1,1
+access_material_request_line_details,Material Request Line Details,model_material_request_line_details,,1,1,1,1
+access_material_request_availability_wizard,Material Request Availability Wizard,model_material_request_availability_wizard,,1,1,1,0
+access_material_request_availability_wizard_line,Material Request Availability Wizard Line,model_material_request_availability_wizard_line,,1,1,1,0
+access_mrp_bom_item,MRP BOM Item,model_mrp_bom_item,,1,1,1,0
+access_mrp_bom_cost,mrp_bom_cost,model_mrp_bom_cost,,1,1,1,0
+
+
+
+access_production_request,Producation Request,model_production_request,mrp.group_mrp_user,1,1,1,1
+access_production_request_line,Producation Request Line,model_production_request_line,mrp.group_mrp_user,1,1,1,1
+access_production_request_line_details,Producation Request Line Details,model_production_request_line_details,mrp.group_mrp_user,1,1,1,1
+access_production_request_line_details_full_acess,Producation Request Line Details Full Acess,model_production_request_line_details,sarya_factory.can_approve_production_req,1,1,1,1
+
+access_mrp_stock_transfer,MRP Stock Transfer,model_mrp_stock_transfer,sarya_factory.can_do_mrp_stock_transfer,1,1,1,1
+access_mrp_stock_transfer_line,MRP Stock Transfer Line,model_mrp_stock_transfer_line,sarya_factory.can_do_mrp_stock_transfer,1,1,1,1
