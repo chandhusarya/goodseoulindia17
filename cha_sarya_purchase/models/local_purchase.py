@@ -48,7 +48,7 @@ class LocalPurchase(models.Model):
     total_tax = fields.Float(string='Total Tax', compute='_compute_total', tracking=True)
     total = fields.Float(string='Total', compute='_compute_total', tracking=True)
     company_id = fields.Many2one('res.company', default=lambda self: self.env.company)
-    grn_pending = fields.Boolean("GRN Pending",  compute='_find_grn_status')
+    grn_pending = fields.Boolean("GRN Pending",  compute='_find_grn_status', search="_search_grn_pending")
     ref = fields.Char(string='Bill Reference')
     purchase_type = fields.Selection(string='Purchase type',
         selection=[('normal', 'Normal'),
@@ -291,9 +291,29 @@ class LocalPurchase(models.Model):
     def _find_grn_status(self):
         for po in self:
             grn_pending = False
-            if po.picking_id and po.picking_id.state != 'done':
+            if po.picking_id and po.picking_id.state not in ('done', 'cancel'):
                 grn_pending = True
             po.grn_pending = grn_pending
+
+    def _search_grn_pending(self, operator, value):
+        """Allow searching and filtering on computed field grn_pending"""
+        if operator not in ('=', '!='):
+            # Only logical operators are supported here
+            return []
+
+        # If we want GRN pending = True
+        if (operator == '=' and value) or (operator == '!=' and not value):
+            # Pickings that are not done or cancelled
+            return [('picking_id.state', 'not in', ['done', 'cancel'])]
+
+        # If we want GRN pending = False
+        elif (operator == '=' and not value) or (operator == '!=' and value):
+            # Either no picking or picking done/cancelled
+            return ['|', ('picking_id', '=', False), ('picking_id.state', 'in', ['done', 'cancel'])]
+
+        return []
+
+
 
     @api.depends('line_ids.qty', 'line_ids.unit_price', 'line_ids.tax_ids')
     def _compute_total(self):
@@ -508,6 +528,8 @@ class LocalPurchase(models.Model):
 
         picking = self.env['stock.picking'].create(picking_vals)
         for line in self.line_ids:
+            if line.unit_price == 0:
+                raise UserError("Unit price cannot be zero \nKeep unit price .01 INR if item is FOC.")
             if line.qty > 0.001:
                 move_vals = line.prepare_picking_line_int_transfer(picking, picking_type_id,
                                                                    location_id, location_dest_id,

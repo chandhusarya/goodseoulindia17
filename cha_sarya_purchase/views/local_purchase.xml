@@ -168,11 +168,16 @@
             <field name="arch" type="xml">
                 <search string="Local Purchase">
                     <field name="name"/>
+                    <field name="vendor_id"/>
+                    <field name="grn_pending"/>
+                    <filter name="grn_pending_true" string="GRN Pending" domain="[('grn_pending', '=', True)]"/>
                     <group expand="1" string="Group By">
                         <filter string="User" name="user_id" domain="[]"
                                 context="{'group_by':'user_id'}"/>
                         <filter string="Status" name="state" domain="[]"
                                 context="{'group_by':'state'}"/>
+                        <filter string="Vendor" name="vendor_id" domain="[]"
+                                context="{'group_by':'vendor_id'}"/>
                     </group>
                 </search>
             </field>
