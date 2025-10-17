@@ -277,9 +277,14 @@ class LocalPurchase(models.Model):
     @api.onchange('pos_id')
     def _onchange_pos_id(self):
         picking_type_id = False
+        payment_journal_id = False
         if self.pos_id and self.pos_id.lpo_picking_type_id:
             picking_type_id = self.pos_id.lpo_picking_type_id.id
         self.picking_type_id = picking_type_id
+        # --- Journal domain logic (new) ---
+        if self.pos_id and self.pos_id.petty_cash_journal_id:
+            payment_journal_id = self.pos_id.petty_cash_journal_id.id
+        self.payment_journal_id = payment_journal_id
 
     @api.onchange('vendor_id', 'company_id')
     def onchange_vendor_id(self):

@@ -19,3 +19,8 @@ class PosConfig(models.Model):
         string='Petty Cash Account',
         copy=False
     )
+    petty_cash_journal_id = fields.Many2one(
+        comodel_name='account.journal',
+        string='Petty Cash Journal',
+        copy=False
+    )
