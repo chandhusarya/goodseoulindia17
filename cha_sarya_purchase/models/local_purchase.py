@@ -1,5 +1,6 @@
 from odoo import fields, models, api, _
 from odoo.exceptions import ValidationError, UserError
+from datetime import datetime, timedelta
 
 from twilio.rest import Client
 import json
@@ -60,6 +61,7 @@ class LocalPurchase(models.Model):
     landed_cost = fields.Many2one(comodel_name='stock.landed.cost',  string='Landed Costs', readonly=True, copy=False)
     fiscal_position_id = fields.Many2one('account.fiscal.position', string='Fiscal Position',
                                          domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+    confirm_date = fields.Datetime(string='Confirmation Date', readonly=True, copy=False)
 
 
 
@@ -414,24 +416,29 @@ class LocalPurchase(models.Model):
             self.action_confirm()
         else:
             self.state = 'manager_approved'
-            employee_ids = []
-            group = "cha_sarya_purchase.local_purchase_order_finance_approval"
-            users = self.env.ref(group).users
-            for user in users:
-                if self.company_id.id in user.company_ids.ids:
-                    employee = self.env['hr.employee'].search([('user_id', '=', user.id)], limit=1)
-                    if employee:
-                        employee_ids.append(employee.id)
-                    elif False:
-                        raise UserError(_("User %s does not have an employee record.") % user.name)
-            if employee_ids:
-                employees = self.env['hr.employee'].browse(employee_ids)
-                for employee in employees:
-                    subject = 'Local Purchase order %s Finance Approval Request' % self.name
-                    message = 'Hi %s, Purchase order %s waiting for finance approval.' % (employee.name, self.name)
-                    button_url = "#id=%s&cids=2&menu_id=697&action=876&model=local.purchase&view_type=form" % (
-                        str(self.id))
-                    self.send_notification(employees, message, subject, button_url)
+            self.action_confirm()
+            self.confirm_date = fields.Datetime.now()
+            '''
+            Finance approval is no more required for local purchase.
+            '''
+            # employee_ids = []
+            # group = "cha_sarya_purchase.local_purchase_order_finance_approval"
+            # users = self.env.ref(group).users
+            # for user in users:
+            #     if self.company_id.id in user.company_ids.ids:
+            #         employee = self.env['hr.employee'].search([('user_id', '=', user.id)], limit=1)
+            #         if employee:
+            #             employee_ids.append(employee.id)
+            #         elif False:
+            #             raise UserError(_("User %s does not have an employee record.") % user.name)
+            # if employee_ids:
+            #     employees = self.env['hr.employee'].browse(employee_ids)
+            #     for employee in employees:
+            #         subject = 'Local Purchase order %s Finance Approval Request' % self.name
+            #         message = 'Hi %s, Purchase order %s waiting for finance approval.' % (employee.name, self.name)
+            #         button_url = "#id=%s&cids=2&menu_id=697&action=876&model=local.purchase&view_type=form" % (
+            #             str(self.id))
+            #         self.send_notification(employees, message, subject, button_url)
 
 
     def action_cancel(self):
@@ -585,6 +592,31 @@ class LocalPurchase(models.Model):
             'default_amount': self.total,
         }
         return action
+
+    def cron_check_grn_pending(self):
+        """Send GRN pending notifications if confirm_date > 5 days"""
+        five_days_ago = fields.Datetime.now() - timedelta(days=5)
+        records = self.search([
+            ('grn_pending', '=', True),
+            ('confirm_date', '<=', five_days_ago),
+            ('pos_id', '!=', False)
+        ])
+        print("records", records, ">>>>>>>>>>>>>>>>>>>>>>")
+        for rec in records:
+            users = rec.pos_id.sudo().advanced_employee_ids
+            if not users:
+                continue
+
+            message = (
+                f"⚠️ GRN Pending Alert:\n\n"
+                f"Purchase `{rec.name}` is pending GRN for more than 5 days.\n"
+                f"Confirm Date: {rec.confirm_date.strftime('%Y-%m-%d %H:%M:%S')}"
+            )
+
+            # Create Email notifications
+            template = self.env.ref('cha_sarya_purchase.email_template_grn_pending', raise_if_not_found=False)
+            if template:
+                template.send_mail(rec.id, force_send=True)
 
 
 

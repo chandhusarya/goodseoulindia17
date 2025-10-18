@@ -119,6 +119,55 @@
 
 
 
+        <!-- GRN Pending Notification Email Template -->
+        <record id="email_template_grn_pending" model="mail.template">
+            <field name="name">GRN Pending Notification</field>
+            <field name="model_id" ref="cha_sarya_purchase.model_local_purchase"/>
+            <field name="email_from">{{ (user.email_formatted or object.company_id.email_formatted or 'noreply@yourdomain.com') }}</field>
+            <field name="email_to">
+                {{ ','.join([u.user_id.email for u in object.pos_id.sudo().advanced_employee_ids if u.user_id.email]) }}
+            </field>
+            <field name="subject">⚠️ GRN Pending Alert - {{ object.name or 'N/A' }}</field>
+            <field name="description">Notifies users if GRN is pending more than 5 days after confirmation.</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0; padding: 0; font-size: 14px; font-family: 'Segoe UI', Tahoma, sans-serif;">
+                    <p>
+                        Dear <t t-out="', '.join([u.name for u in object.pos_id.sudo().advanced_employee_ids])">User</t>,
+                    </p>
+
+                    <p>
+                        The following purchase record has been pending for GRN confirmation for more than
+                        <b>5 days</b>:
+                    </p>
+
+                    <ul style="line-height: 1.6;">
+                        <li><b>Purchase:</b> <t t-out="object.name or ''">PO001</t></li>
+                        <li><b>Confirm Date:</b> <t t-if="object.confirm_date" t-out="object.confirm_date.strftime('%Y-%m-%d %H:%M:%S')">2025-10-10</t></li>
+                        <li><b>POS:</b> <t t-out="object.pos_id.display_name or ''">Bandra QSR</t></li>
+                        <li><b>GRN Pending:</b> <t t-out="'Yes' if object.grn_pending else 'No'">Yes</t></li>
+                    </ul>
+
+                    <p>
+                        Please review and process the GRN at the earliest.
+                    </p>
+
+                    <br/>
+                    <p>
+                        Regards,<br/>
+                        <t t-out="object.company_id.name or 'Your Company'">YourCompany</t>
+                    </p>
+
+                    <hr style="border: 0; border-top: 1px solid #ccc; margin-top: 20px;"/>
+                    <p style="color: #888; font-size: 12px;">
+                        This is an automated message from the GRN Monitoring System. Please do not reply directly.
+                    </p>
+                </div>
+            </field>
+            <field name="lang">{{ user.lang }}</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+
 
 
     </data>

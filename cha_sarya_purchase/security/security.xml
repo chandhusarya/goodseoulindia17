@@ -48,7 +48,7 @@
     </record>
 
     <record id="local_purchase_order_procurement_approval" model="res.groups">
-        <field name="name">Local Purchase Order : Procurement Approval</field>
+        <field name="name">Local Purchase Order : Finance Approval</field>
         <field name="category_id" ref="kg_sarya.module_sarya_purchase"/>
     </record>
 

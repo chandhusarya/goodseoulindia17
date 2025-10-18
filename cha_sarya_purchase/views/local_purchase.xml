@@ -72,6 +72,7 @@
                                 <field name="move_id" invisible="state != 'confirm'"/>
                                 <field name="picking_id" invisible="state != 'confirm'"/>
                                 <field name="landed_cost" invisible="state != 'confirm'"/>
+                                <field name="confirm_date" invisible="confirm_date == False"/>
                             </group>
                         </group>
                         <notebook>
