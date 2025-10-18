@@ -142,7 +142,7 @@
 
                     <ul style="line-height: 1.6;">
                         <li><b>Purchase:</b> <t t-out="object.name or ''">PO001</t></li>
-                        <li><b>Confirm Date:</b> <t t-if="object.confirm_date" t-out="object.confirm_date.strftime('%Y-%m-%d %H:%M:%S')">2025-10-10</t></li>
+                        <li><b>Confirm Date:</b> <t t-if="object.confirm_date" t-out="object.confirm_date.strftime('%d %B %Y')">2025-10-10</t></li>
                         <li><b>POS:</b> <t t-out="object.pos_id.display_name or ''">Bandra QSR</t></li>
                         <li><b>GRN Pending:</b> <t t-out="'Yes' if object.grn_pending else 'No'">Yes</t></li>
                     </ul>
