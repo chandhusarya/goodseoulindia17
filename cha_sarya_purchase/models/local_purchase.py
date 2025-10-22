@@ -479,6 +479,11 @@ class LocalPurchase(models.Model):
             if not purchase.vendor_id.l10n_in_gst_treatment:
                 raise UserError("Please contact fiance to configure Gst treatment for the vendor!")
             for line in purchase.line_ids:
+                total_qty = line.qty_received * line.packaging_id.qty
+                if total_qty == 0:
+                    continue
+                # Recalculate unit price from total including GST
+                unit_price_for_bill = line.total / total_qty
                 invoice_lines.append((0, 0, {
                     'product_id': line.product_id and line.product_id.id or False,
                     'name': line.name,
@@ -486,9 +491,9 @@ class LocalPurchase(models.Model):
                     'package_id': line.packaging_id.id,
                     'analytic_distribution' : analytic_distribution,
                     'product_packaging_qty': line.qty_received,
-                    'price_unit': line.unit_price/line.packaging_id.qty,
-                    'pkg_unit_price': line.unit_price,
-                    'tax_ids': line.tax_ids.ids,
+                    'price_unit': unit_price_for_bill,#line.unit_price/line.packaging_id.qty,
+                    'pkg_unit_price': unit_price_for_bill * line.packaging_id.qty,#line.unit_price,
+                    'tax_ids': [],
                 }))
             if purchase.landed_cost_ids:
                 for landed_line in purchase.landed_cost_ids:
@@ -768,6 +773,10 @@ class LocalPurchaseLines(models.Model):
         product_uom_qty = self.qty * self.packaging_id.qty
         product_uom = self.product_id.uom_id
 
+        total_qty = self.qty * self.packaging_id.qty
+        # Recalculate unit price from total including GST
+        unit_price_per_qty = self.total / total_qty
+
         price_unit = self.unit_price/self.packaging_id.qty
 
         vals.append({
@@ -779,7 +788,7 @@ class LocalPurchaseLines(models.Model):
             'company_id': self.local_purchase_id.company_id.id,
             'origin': description,
             'name': self.product_id.name,
-            'price_unit': price_unit,
+            'price_unit': unit_price_per_qty,
             'quantity': product_uom_qty,
             'product_uom_qty': product_uom_qty,
             'product_uom': product_uom.id,
