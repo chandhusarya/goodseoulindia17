@@ -22,7 +22,7 @@
                                 <td style="font-weight: bold;">Vendor Name:</td>
                                 <td><span t-field="o.vendor_id.name"/></td>
                                 <td style="font-weight: bold;">Deliver To:</td>
-                                <td><span t-field="o.pos_id.name"/></td>
+                                <td><span t-field="o.pos_id.partner_id" t-options="{'widget': 'contact', 'fields': ['name', 'address']}" /></td>
                             </tr>
                             <tr>
                                 <td style="font-weight: bold;">Vendor Address:</td>

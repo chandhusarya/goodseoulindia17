@@ -54,6 +54,7 @@
                                 <field name="grn_pending" invisible="1"/>
                             </group>
                             <group>
+                                <field name="send_by_email" readonly="state == 'confirm'" widget="boolean_toggle"/>
                                 <field name="purchase_type" readonly="state == 'confirm'"/>
                                 <field name="payment_journal_id"
                                        invisible="purchase_type == 'normal'"

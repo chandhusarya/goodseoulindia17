@@ -62,6 +62,7 @@ class LocalPurchase(models.Model):
     fiscal_position_id = fields.Many2one('account.fiscal.position', string='Fiscal Position',
                                          domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     confirm_date = fields.Datetime(string='Confirmation Date', readonly=True, copy=False)
+    send_by_email = fields.Boolean(string='Send by Email', default=True)
 
 
 
@@ -418,6 +419,14 @@ class LocalPurchase(models.Model):
             self.state = 'manager_approved'
             self.action_confirm()
             self.confirm_date = fields.Datetime.now()
+            # Send email if flag is set
+            if self.send_by_email and self.vendor_id and self.vendor_id.email:
+                template = self.env.ref('cha_sarya_purchase.email_template_local_purchase', raise_if_not_found=False)
+                if template:
+                    # Send email with report attached
+                    template.send_mail(self.id, force_send=True)
+
+
             '''
             Finance approval is no more required for local purchase.
             '''
