@@ -588,7 +588,7 @@ class LocalPurchase(models.Model):
             message = 'Hi %s, Local Purchase order %s approval done.' % (employee.name, self.name)
             button_url = "#id=%s&cids=2&menu_id=697&action=876&model=local.purchase&view_type=form" % (
                 str(self.id))
-            # self.send_notification(employees, message, subject, button_url)
+            self.send_notification(employees, message, subject, button_url)
 
 
 
