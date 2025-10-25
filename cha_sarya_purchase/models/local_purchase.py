@@ -583,12 +583,12 @@ class LocalPurchase(models.Model):
                 raise UserError(_("User %s does not have an employee record.") % user.name)
         if employee_ids:
             employees = self.env['hr.employee'].browse(employee_ids)
-            for employee in employees:
-                subject = 'Local Purchase order %s Approval Done' % self.name
-                message = 'Hi %s, Local Purchase order %s approval done.' % (employee.name, self.name)
-                button_url = "#id=%s&cids=2&menu_id=697&action=876&model=local.purchase&view_type=form" % (
-                    str(self.id))
-                self.send_notification(employees, message, subject, button_url)
+            # for employee in employees:
+            subject = 'Local Purchase order %s Approval Done' % self.name
+            message = 'Hi %s, Local Purchase order %s approval done.' % (employee.name, self.name)
+            button_url = "#id=%s&cids=2&menu_id=697&action=876&model=local.purchase&view_type=form" % (
+                str(self.id))
+            self.send_notification(employees, message, subject, button_url)
 
 
 
