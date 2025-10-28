@@ -30,6 +30,7 @@
         'views/pos_kitchen_screen_report_view.xml',
         'views/pos_order_view.xml',
         'views/pos_order_report_view.xml',
+        'views/pos_order_type_view.xml',
         'wizard/cash_deposit_wizard_view.xml',
         'views/menu.xml',
     ],

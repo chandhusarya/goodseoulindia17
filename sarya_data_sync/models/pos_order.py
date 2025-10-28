@@ -14,6 +14,19 @@ class PosOrder(models.Model):
         string='Local Record Id',
         copy=False
     )
+    pos_order_type_id = fields.Many2one(
+        comodel_name='pos.order.type',
+        string='Order Type',
+        copy=False
+    )
+    is_delivery_order = fields.Boolean(
+        string='Delivery Order',
+        related='pos_order_type_id.is_home_delivery'
+    )
+    buzzer_number = fields.Char(
+        string='Token Number',
+        copy=False
+    )
 
     def action_view_kitchen_order_report(self):
         return {

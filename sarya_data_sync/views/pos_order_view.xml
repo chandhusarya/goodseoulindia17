@@ -13,9 +13,42 @@
             </xpath>
 
             <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
-                <button name="action_view_kitchen_order_report" class="oe_stat_button" icon="fa-cutlery" type="object" string="Kitchen Screen Report"/>
+                <button name="action_view_kitchen_order_report" class="oe_stat_button" icon="fa-cutlery" type="object"
+                        string="Kitchen Screen Report"/>
+            </xpath>
+
+            <xpath expr="//field[@name='session_id']" position='after'>
+                <field name="pos_order_type_id" readonly='1'/>
+                <field name="is_delivery_order" invisible="1"/>
+                <field name="buzzer_number" readonly='1' invisible="is_delivery_order"/>
             </xpath>
 
         </field>
     </record>
+
+    <record id="pos_order_list_view_inherit" model="ir.ui.view">
+        <field name="name">pos.order.list.inherit</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='config_id']" position='after'>
+                <field name="pos_order_type_id"/>
+                <field name="buzzer_number"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="pos_order_filter_view_inherit" model="ir.ui.view">
+        <field name="name">pos.order.search.filter.inherit</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_order_filter"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//filter[@name='order_month']" position='after'>
+                <filter string="Order Type" name="order_type" domain="[]" context="{'group_by': 'pos_order_type_id'}"/>
+            </xpath>
+
+        </field>
+    </record>
+
 </odoo>

@@ -17,3 +17,4 @@ from . import account_move_line
 from . import bank_transfer
 from . import bank_transfer_line
 from . import pos_kitchen_screen_report
+from . import pos_order_type

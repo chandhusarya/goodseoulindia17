@@ -9,3 +9,4 @@ access_bank_transfer_line,bank.transfer.line,model_bank_transfer_line,base.group
 access_cash_deposit_wizard,cash.deosit.wizard,model_cash_deposit_wizard,base.group_user,1,1,1,1
 access_pos_kitchen_screen_report,pos.kitchen.screen.report,model_pos_kitchen_screen_report,base.group_user,1,1,1,1
 access_pos_order_report,pos.order.report,model_pos_order_report,base.group_user,1,0,0,0
+access_pos_order_type,pos.order.type,model_pos_order_type,base.group_user,1,1,1,1

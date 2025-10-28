@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--    POS Order Type List view-->
+
+        <record id="pos_order_type_list_view" model="ir.ui.view">
+            <field name="name">pos.order.type.list.view</field>
+            <field name="model">pos.order.type</field>
+            <field name="arch" type="xml">
+                <tree string="POS Order Type List">
+                    <field name="name"/>
+                    <field name="is_dine_in"/>
+                    <field name="is_take_away"/>
+                    <field name="is_home_delivery"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--    POS Order Type form view    -->
+
+        <record id="pos_order_type_form_view" model="ir.ui.view">
+            <field name="name">pos.order.type.form.view</field>
+            <field name="model">pos.order.type</field>
+            <field name="arch" type="xml">
+                <form string="POS Order Type form">
+                    <sheet>
+                        <field name="img" widget="image" class="oe_avatar"/>
+                        <h1>
+                            <field name="name" placeholder="Name of Order Type" required="1"/>
+                        </h1>
+                        <group>
+                            <field name="is_home_delivery"/>
+                            <field name="is_dine_in"/>
+                            <field name="is_take_away"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--   POS Order Type search view     -->
+
+        <record id="pos_order_type_search_view" model="ir.ui.view">
+            <field name="name">pos.order.type.search.view</field>
+            <field name="model">pos.order.type</field>
+            <field name="arch" type="xml">
+                <search string="Search Name">
+                    <field name="name" string="Name"/>
+                    <separator/>
+                    <filter string="Home Delivery"
+                            name="home_delivery"
+                            domain="[('is_home_delivery', '=', True)]"/>
+                    <filter string="Dine In"
+                            name="dine_in"
+                            domain="[('is_dine_in', '=', True)]"/>
+                    <filter string="Take Away"
+                            name="take_away"
+                            domain="[('is_take_away', '=', True)]"/>
+                </search>
+            </field>
+        </record>
+
+        <!--    POS Order Type action     -->
+
+        <record id="pos_order_type_action" model="ir.actions.act_window">
+            <field name="name">Order Type</field>
+            <field name="res_model">pos.order.type</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="pos_order_type_search_view"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create New POS Order Type Record.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>
