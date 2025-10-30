@@ -1,0 +1,68 @@
+<odoo>
+    <!-- Menu -->
+    <menuitem id="menu_mrp_bom_component_root"
+              name="BOM Components"
+              parent="mrp.menu_mrp_bom"
+              sequence="20"/>
+
+    <!-- Tree View -->
+    <record id="view_mrp_bom_component_tree" model="ir.ui.view">
+        <field name="name">mrp.bom.component.line.tree</field>
+        <field name="model">mrp.bom.component.line</field>
+        <field name="arch" type="xml">
+            <tree string="BOM Components">
+                <field name="bom_id"/>
+                <field name="product_id"/>
+                <field name="quantity"/>
+                <field name="uom_id"/>
+                <field name="level"/>
+                <field name="bom_cost"/>
+                <field name="prod_cost"/>
+                <field name="route_type"/>
+                <field name="route_name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_mrp_bom_component_form" model="ir.ui.view">
+        <field name="name">mrp.bom.component.line.form</field>
+        <field name="model">mrp.bom.component.line</field>
+        <field name="arch" type="xml">
+            <form string="BOM Component">
+                <sheet>
+                    <group>
+                        <field name="bom_id"/>
+                        <field name="product_id"/>
+                        <field name="quantity"/>
+                        <field name="uom_id"/>
+                        <field name="parent_id"/>
+                        <field name="level"/>
+                        <field name="bom_cost"/>
+                        <field name="prod_cost"/>
+                        <field name="route_type"/>
+                        <field name="route_name"/>
+                        <field name="link_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_mrp_bom_component_line" model="ir.actions.act_window">
+        <field name="name">BOM Components</field>
+        <field name="res_model">mrp.bom.component.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_mrp_bom_component_tree"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create BOM components by populating from BOMs.</p>
+        </field>
+    </record>
+
+    <!-- Link Action to Menu -->
+    <menuitem id="menu_mrp_bom_component"
+              name="BOM Components"
+              parent="menu_mrp_bom_component_root"
+              action="action_mrp_bom_component_line"/>
+</odoo>

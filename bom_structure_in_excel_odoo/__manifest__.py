@@ -39,6 +39,8 @@
     'depends': ['stock', 'mrp'],
     'data': [
         'data/mrp_bom_data.xml',
+        'security/ir.model.access.csv',
+        'views/bom_component_line_view.xml',
     ],
     'assets': {
         'web.assets_backend': [

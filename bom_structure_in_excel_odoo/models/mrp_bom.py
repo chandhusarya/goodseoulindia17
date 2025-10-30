@@ -30,6 +30,156 @@ class AccountMove(models.Model):
     """Inherits the account move model"""
     _inherit = 'mrp.bom'
 
+    # def populate_flattened_components(self, pdf_lines=None, parent_line=None):
+    #     """
+    #     Recursively populate mrp.bom.component.line from _get_pdf_line data.
+    #     If pdf_lines is None, calls _get_pdf_line internally.
+    #     """
+    #     self.ensure_one()
+    #     print("SELLLLFFFFFFF", self)
+    #
+    #     if pdf_lines is None:
+    #         pdf_lines = self.env['report.mrp.report_bom_structure']._get_pdf_line(self.id)
+    #     print("pdf_lines", pdf_lines)
+    #     component_lines = []
+    #
+    #     def _recurse(lines, parent=None):
+    #         print("lines>>>>>>>>>>>>>>>>>", lines)
+    #         for line in lines:
+    #             if line.get('type') in ('component', 'bom'):
+    #                 record = self.env['mrp.bom.component.line'].create({
+    #                     'bom_id': self.id,
+    #                     'product_id': line.get('product_id'),
+    #                     'quantity': line.get('quantity'),
+    #                     # 'uom_id': line.get('uom').id if line.get('uom') else False,
+    #                     'parent_id': parent.id if parent else False,
+    #                     'level': line.get('level', 0),
+    #                     'bom_cost': line.get('bom_cost', 0.0),
+    #                     'prod_cost': line.get('prod_cost', 0.0),
+    #                     'route_type': line.get('route_type'),
+    #                     'route_name': line.get('route_name'),
+    #                     'link_id': line.get('link_id'),
+    #                 })
+    #                 component_lines.append(record)
+    #
+    #                 # Recurse into nested components
+    #                 nested_components = line.get('components', [])
+    #                 if nested_components:
+    #                     print("nested_components", nested_components)
+    #                     print("-")
+    #                     print("-")
+    #                     print("-")
+    #                     print("-")
+    #                     _recurse(nested_components, parent=record)
+    #
+    #     _recurse(pdf_lines.get('lines'), parent=parent_line)
+    #     return component_lines
+    def populate_flattened_components(self, pdf_lines=None):
+        """
+        Populate mrp.bom.component.line from _get_pdf_line data for this BOM.
+        This deletes existing component lines for this top-level BOM and recreates them.
+        Returns list of created records.
+        """
+        self.ensure_one()
+        ComponentModel = self.env['mrp.bom.component.line']
+
+        # 1) Remove old cached lines for this top-level BOM to keep it idempotent
+        old = ComponentModel.search([('bom_id', '=', self.id)])
+        if old:
+            old.unlink()
+
+        # 2) Get the pdf-like nested data (if not provided)
+        if pdf_lines is None:
+            # report.mrp.report_bom_structure._get_pdf_line expects either a BOM or list of BOMs
+            pdf_lines = self.env['report.mrp.report_bom_structure']._get_pdf_line(self.id)
+
+        created = []
+
+        def _safe_id(val):
+            """Return integer id if val is a record or an int-like, else False."""
+            if not val:
+                return False
+            # Odoo recordset
+            try:
+                # If val is a recordset with id attribute
+                return int(val.id)
+            except Exception:
+                # If val is integer already (or str int)
+                try:
+                    return int(val)
+                except Exception:
+                    return False
+
+        def _recurse(nodes, parent_component=None):
+            """
+            nodes: list or dict representing the pdf structure
+            parent_component: the created mrp.bom.component.line record (or None)
+            """
+            if not nodes:
+                return
+
+            # allow passing a single dict
+            seq = nodes if isinstance(nodes, list) else [nodes]
+
+            for node in seq:
+                # Only handle types we care about
+                if not isinstance(node, dict):
+                    continue
+
+                # skip anything that is not a 'component' or 'bom' (but you can change logic)
+                if node.get('type') not in ('component', 'bom'):
+                    # still recurse into components if present
+                    if node.get('components'):
+                        _recurse(node.get('components'), parent_component=parent_component)
+                    continue
+
+                # Extract safe scalar IDs from the node
+                product_id = node.get('product_id') or _safe_id(node.get('product'))
+                uom_id = _safe_id(node.get('uom'))
+                # We keep bom_id on the saved line as the TOP-LEVEL BOM (self.id)
+                top_bom_id = self.id
+                # optional: there may be a nested 'bom' record on the node
+                node_bom_id = node.get('bom_id') or _safe_id(node.get('bom'))
+
+                vals = {
+                    'bom_id': top_bom_id,
+                    'product_id': product_id or False,
+                    'quantity': node.get('quantity', 0.0) or 0.0,
+                    'uom_id': uom_id or False,
+                    'level': int(node.get('level', 0) or 0),
+                    'bom_cost': float(node.get('bom_cost', 0.0) or 0.0),
+                    'prod_cost': float(node.get('prod_cost', 0.0) or 0.0),
+                    'route_type': node.get('route_type') or False,
+                    'route_name': node.get('route_name') or False,
+                    'link_id': node.get('link_id') or False,
+                    # store the source BOM id of this node (if any) for reference
+                    # 'source_bom_id': node_bom_id or False,
+                }
+
+                # add parent relation if present
+                if parent_component:
+                    vals['parent_id'] = parent_component.id
+
+                # Create the component line
+                comp_rec = ComponentModel.create(vals)
+                created.append(comp_rec)
+
+                # Recurse into nested components
+                nested = node.get('components') or []
+                if nested:
+                    _recurse(nested, parent_component=comp_rec)
+
+        # start recursion at the root pdf_lines
+        _recurse(pdf_lines, parent_component=None)
+
+        return created
+
+    def load_flattened_components(self):
+        bom = self
+        print(bom, '==========================================================')
+        bom.populate_flattened_components()
+
+
     def action_print_bom_structure(self):
         """Generate and export the BOM Structure Report in Excel format."""
         bom = self.env['mrp.bom'].browse(self.id)
