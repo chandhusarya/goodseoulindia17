@@ -413,7 +413,7 @@ class InternalStockTransfer(models.Model):
             Move = self.env['stock.move']
 
             picking = Picking.create({
-                'picking_type_id': self.env.ref('stock.picking_type_internal').id,  # Internal Transfer Type
+                'picking_type_id': self.env['stock.picking.type'].search([('code', '=', 'internal')], limit=1).id,#.ref('stock.picking_type_internal').id,  # Internal Transfer Type
                 'location_id': self.location_src_id.id,
                 'location_dest_id': self.transfer_location_id.id,
                 'origin': self.name,

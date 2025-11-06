@@ -22,6 +22,26 @@
         </field>
     </record>
 
+
+    <record id="product_supplierinfo_form_view_inherit" model="ir.ui.view">
+        <field name="name">product.supplierinfo.form.view</field>
+        <field name="model">product.supplierinfo</field>
+        <field name="inherit_id" ref="product.product_supplierinfo_form_view"/>
+        <field name="arch" type="xml">
+            <field name="discount" position="before">
+                <label for="package_id"/>
+                <div class="o_row">
+                    <field name="package_id" domain="[('product_id.product_tmpl_id', '=', parent.id)]"/>
+                    <field name="package_price"/>
+                </div>
+            </field>
+
+
+        </field>
+    </record>
+
+
+
        <record id="product_template_form_view_kg_sarya_inventory" model="ir.ui.view">
             <field name="name">product.template.form.inherit.kg_.sarya.inventory</field>
             <field name="model">product.template</field>
