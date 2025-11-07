@@ -51,3 +51,9 @@ class HREmployee(models.Model):
                 for policy in old_policies:
                     policy.write({'employee_ids': [(3, employee.id)]})
         return result
+
+
+class HrEmployeePublic(models.Model):
+    _inherit = 'hr.employee.public'
+
+    fingerprint_no = fields.Char(string='Finger Print No', unique=True)
