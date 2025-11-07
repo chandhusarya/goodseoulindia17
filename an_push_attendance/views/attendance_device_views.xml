@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_attendance_device_form" model="ir.ui.view">
+        <field name="name">attendance.device.form</field>
+        <field name="model">attendance.device</field>
+        <field name="arch" type="xml">
+            <form string="Attendance Device">
+                <div class="alert alert-info" role="alert" invisible="device_state != 'draft'">
+                    <p><strong>New Device Detected!</strong> This device was automatically registered and configured when it connected to your Odoo server.</p>
+                    <p>All device information and user data were fetched immediately. Please review the information below and click "Activate" when ready to start using this device for attendance tracking.</p>
+                </div>
+                <header>
+                    <button name="action_set_to_draft" type="object" string="Set to Draft" 
+                            invisible="device_state == 'draft'" 
+                            class="oe_highlight" groups="an_push_attendance.group_attendance_devices_admin"/>
+                    <button name="action_activate" type="object" string="Activate" 
+                            invisible="device_state == 'active'" 
+                            class="oe_highlight" groups="an_push_attendance.group_attendance_devices_admin"/>
+                    <button name="action_deactivate" type="object" string="Deactivate" 
+                            invisible="device_state == 'inactive'" 
+                            groups="an_push_attendance.group_attendance_devices_admin"/>
+                    <field name="device_state" widget="statusbar" statusbar_visible="draft,active,inactive"/>
+                    <button name="action_fetch_device_info" type="object" string="Fetch Device Info" groups="an_push_attendance.group_attendance_devices_admin"/>
+                    <button name="action_reboot_device" type="object" string="Reboot Device" class="oe_highlight" groups="an_push_attendance.group_attendance_devices_admin"/>
+                    <button name="action_download_user_info" type="object" string="Download User Info" class="oe_highlight" groups="an_push_attendance.group_attendance_devices_admin"/>
+                    <button name="action_download_attendance" type="object" string="Download Attendance" class="oe_highlight"/>
+                    <button name="action_map_device_users" type="object" string="Map Device Users" class="oe_highlight" groups="an_push_attendance.group_attendance_devices_admin"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_device_users" type="object" class="oe_stat_button" icon="fa-users">
+                            <field name="user_count" widget="statinfo" string="Device Users"/>
+                        </button>
+                        <button name="action_view_fingerprint_templates" type="object" class="oe_stat_button" icon="fa-fingerprint">
+                            <field name="fingerprint_template_count" widget="statinfo" string="Fingerprint Templates"/>
+                        </button>
+                        <button name="action_view_device_commands" type="object" class="oe_stat_button" icon="fa-cogs">
+                            <field name="command_count" widget="statinfo" string="Device Commands"/>
+                        </button>
+                        <button name="action_view_attendance_records" type="object" class="oe_stat_button" icon="fa-calendar-check">
+                            <field name="attendance_count" widget="statinfo" string="Attendance Records"/>
+                        </button>
+                                          <button name="action_view_operation_logs" type="object"
+                            class="oe_stat_button" icon="fa-list">
+                        <field name="operation_log_count" widget="statinfo" string="Operation Logs"/>
+                    </button>
+                        <button name="action_view_face_templates"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-smile-o">
+                        <field name="face_template_count" widget="statinfo" string="Face Templates"/>
+                    </button>
+                        <button name="action_view_pictures"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-smile-o">
+                        <field name="picture_count" widget="statinfo" string="User PIC"/>
+                    </button>
+
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name" string="Device Name"/>
+                            <field name="serial_number" string="Serial Number"/>
+                            <field name="device_type" string="Device Type" readonly="1"/>
+                            <field name="location" string="Location" options="{'no_create': true}"/>
+                            <field name="last_handshake" string="Last Sync" readonly="True"/>
+                        </group>
+                        <group>
+                            <field name="device_name_info" string="Device Name Info" readonly="1"/>
+                            <field name="mac" string="MAC Address" readonly="1"/>
+                            <field name="platform" string="Platform" readonly="1"/>
+                            <field name="oem_vendor" string="OEM Vendor" readonly="1"/>
+                            <field name="fw_version" string="Firmware Version" readonly="1"/>
+                            <field name="max_face_count" string="Max Face Count" readonly="1"/>
+                            <field name="device_time_zone" string="Device Time Zone"/>
+                            <field name="is_auto_created" string="Auto Created" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Device Info">
+                            <group>
+                                <field name="device_name_info" string="Device Name Info" readonly="1"/>
+                                <field name="mac" string="MAC Address" readonly="1"/>
+                                <field name="transaction_count" string="Transaction Count" readonly="1"/>
+                                <field name="fp_count" string="Fingerprint Count" readonly="1"/>
+                                <field name="max_att_log_count" string="Max Attendance Log Count" readonly="1"/>
+                                <field name="user_count" string="User Count" readonly="1"/>
+                                <field name="max_user_count" string="Max User Count" readonly="1"/>
+                                <field name="max_user_photo_count" string="Max User Photo Count" readonly="1"/>
+                                <field name="max_face_count" string="Max Face Count" readonly="1"/>
+                                <field name="platform" string="Platform" readonly="1"/>
+                                <field name="oem_vendor" string="OEM Vendor" readonly="1"/>
+                                <field name="fw_version" string="Firmware Version" readonly="1"/>
+                                <field name="push_version" string="Push Version" readonly="1"/>
+                                <field name="zkfp_version" string="ZKFP Version" readonly="1"/>
+                                <field name="ip_address" string="IP Address" readonly="1"/>
+                            </group>
+                        </page>
+                        <page string="ESSL Settings">
+                            <group>
+                                <group>
+                                    <field name="photo_fun_on" string="Photo Function" readonly="1"/>
+                                    <field name="finger_fun_on" string="Fingerprint Function" readonly="1"/>
+                                    <field name="fp_version" string="Fingerprint Version" readonly="1"/>
+                                    <field name="max_finger_count" string="Max Fingerprint Count" readonly="1"/>
+                                    <field name="face_fun_on" string="Face Function" readonly="1"/>
+                                    <field name="face_version" string="Face Version" readonly="1"/>
+                                    <field name="face_count" string="Face Count" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="fv_fun_on" string="Face Verification Function" readonly="1"/>
+                                    <field name="fv_version" string="Face Verification Version" readonly="1"/>
+                                    <field name="max_fv_count" string="Max Face Verification Count" readonly="1"/>
+                                    <field name="fv_count" string="Face Verification Count" readonly="1"/>
+                                    <field name="pv_fun_on" string="Palm Verification Function" readonly="1"/>
+                                    <field name="pv_version" string="Palm Verification Version" readonly="1"/>
+                                    <field name="max_pv_count" string="Max Palm Verification Count" readonly="1"/>
+                                    <field name="pv_count" string="Palm Verification Count" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="multi_bio_data_support" string="Multi Biometric Data Support" readonly="1"/>
+                                    <field name="multi_bio_photo_support" string="Multi Biometric Photo Support" readonly="1"/>
+                                    <field name="visilight_fun" string="Visible Light Function" readonly="1"/>
+                                    <field name="ir_temp_detection_fun_on" string="IR Temperature Detection" readonly="1"/>
+                                    <field name="mask_detection_fun_on" string="Mask Detection" readonly="1"/>
+                                    <field name="user_pic_url_fun_on" string="User Picture URL Function" readonly="1"/>
+                                    <field name="visual_intercom_fun_on" string="Visual Intercom Function" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="video_tid" string="Video TID" readonly="1"/>
+                                    <field name="qr_code_decrypt_fun_list" string="QR Code Decrypt Function List" readonly="1"/>
+                                    <field name="video_protocol" string="Video Protocol" readonly="1"/>
+                                    <field name="is_support_qrcode" string="QR Code Support" readonly="1"/>
+                                    <field name="qr_code_enable" string="QR Code Enabled" readonly="1"/>
+                                    <field name="subcontracting_upgrade_fun_on" string="Subcontracting Upgrade Function" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="General Settings">
+                            <group>
+                                <group>
+                                    <field name="attlog_stamp" string="ATTLOG Stamp"/>
+                                    <field name="operlog_stamp" string="OPERLOG Stamp"/>
+                                    <field name="attphoto_stamp" string="ATTPHOTO Stamp"/>
+                                    <field name="error_delay" string="Error Delay"/>
+                                    <field name="delay" string="Delay"/>
+                                    <field name="trans_times" string="Trans Times"/>
+                                    <field name="trans_interval" string="Trans Interval"/>
+                                    <field name="time_zone" string="Time Zone"/>
+                                    <field name="encrypt" string="Encrypt"/>
+                                    <field name="server_ver" string="Server Version"/>
+                                    <field name="table_name_stamp" string="Table Name Stamp"/>
+                                </group>
+                                <group>
+                                    <field name="realtime" string="Realtime"/>
+                                    <field name="trans_flag_transdata" string="TransData"/>
+                                    <field name="trans_flag_attlog" string="AttLog"/>
+                                    <field name="trans_flag_oplog" string="OpLog"/>
+                                    <field name="trans_flag_attphoto" string="AttPhoto"/>
+                                    <field name="trans_flag_enrolluser" string="EnrollUser"/>
+                                    <field name="trans_flag_chguser" string="ChgUser"/>
+                                    <field name="trans_flag_enrollfp" string="EnrollFP"/>
+                                    <field name="trans_flag_chgfp" string="ChgFP"/>
+                                    <field name="trans_flag_userpic" string="UserPic"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Device Users">
+                            <field name="device_user_ids">
+                                <tree string="Device Users">
+                                    <field name="pin"/>
+                                    <field name="name"/>
+                                    <field name="employee_id"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Attendance Records">
+                            <field name="attendance_record_ids">
+                                <tree string="Attendance Records">
+                                    <field name="pin"/>
+                                    <field name="device_user_name"/>
+                                    <field name="mapped_employee_id"/>
+                                    <field name="timestamp"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_attendance_device_tree" model="ir.ui.view">
+        <field name="name">attendance.device.tree</field>
+        <field name="model">attendance.device</field>
+        <field name="arch" type="xml">
+            <tree string="Attendance Device"
+                  decoration-success="status == 'online'" 
+                  decoration-warning="status == 'warning'" 
+                  decoration-danger="status == 'offline'" 
+                  decoration-info="is_auto_created == True and device_state == 'draft'">
+                <field name="name" string="Device Name"/>
+                <field name="device_state" string="Device State"/>
+                <field name="status" string="Connection Status"/>
+                <field name="serial_number" string="Serial Number"/>
+                <field name="is_auto_created" string="Auto Created"/>
+                <field name="location" string="Location"/>
+                <field name="last_handshake" string="Last Sync"/>
+                <field name="mac" string="MAC Address"/>
+                <field name="transaction_count" string="Transaction Count"/>
+                <field name="fp_count" string="Fingerprint Count"/>
+                <field name="user_count" string="User Count"/>
+                <field name="platform" string="Platform"/>
+                <field name="fw_version" string="Firmware Version"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Attendance Device Search View -->
+<record id="view_attendance_device_search" model="ir.ui.view">
+    <field name="name">attendance.device.search</field>
+    <field name="model">attendance.device</field>
+    <field name="arch" type="xml">
+        <search>
+            <field name="name"/>
+            <field name="serial_number"/>
+            <field name="location"/>
+            <field name="ip_address"/>
+            <field name="platform"/>
+            <filter string="Online" name="online" domain="[('status', '=', 'online')]"/>
+            <filter string="Warning" name="warning" domain="[('status', '=', 'warning')]"/>
+            <filter string="Offline" name="offline" domain="[('status', '=', 'offline')]"/>
+            <separator/>
+            <filter string="Draft" name="device_state_draft" domain="[('device_state', '=', 'draft')]"/>
+            <filter string="Active" name="device_state_active" domain="[('device_state', '=', 'active')]"/>
+            <filter string="Inactive" name="device_state_inactive" domain="[('device_state', '=', 'inactive')]"/>
+            <separator/>
+            <filter string="Active Records" name="active" domain="[('active', '=', True)]"/>
+            <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+            <separator/>
+            <filter string="Auto-Created Devices" name="auto_created" domain="[('is_auto_created', '=', True)]"/>
+            <group expand="0" string="Group By">
+                <filter name="group_by_location" string="Location" context="{'group_by': 'location'}"/>
+                <filter name="group_by_status" string="Connection Status" context="{'group_by': 'status'}"/>
+                <filter name="group_by_device_state" string="Device State" context="{'group_by': 'device_state'}"/>
+                <filter name="group_by_platform" string="Platform" context="{'group_by': 'platform'}"/>
+            </group>
+        </search>
+    </field>
+</record>
+
+    <!-- Kanban View for Attendance Devices -->
+    <record id="view_attendance_device_kanban" model="ir.ui.view">
+        <field name="name">attendance.device.kanban</field>
+        <field name="model">attendance.device</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" sample="1" default_order="name" default_group_by="status">
+                <field name="name"/>
+                <field name="serial_number"/>
+                <field name="location"/>
+                <field name="last_handshake"/>
+                <field name="mac"/>
+                <field name="platform"/>
+                <field name="user_count"/>
+                <field name="attendance_count"/>
+                <field name="fw_version"/>
+                <field name="status"/>
+                <field name="device_state"/>
+                <field name="color"/>
+                <field name="is_auto_created"/>
+                <progressbar field="status" colors='{"online": "success", "warning": "warning", "offline": "danger"}'/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="oe_kanban_details w-100">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="name"/>
+                                            <span t-if="record.status.raw_value == 'online'" class="badge badge-success ml-1">
+                                                <i class="fa fa-circle" title="Online"/> Online
+                                            </span>
+                                            <span t-elif="record.status.raw_value == 'warning'" class="badge badge-warning ml-1">
+                                                <i class="fa fa-exclamation-triangle" title="Warning"/> Warning
+                                            </span>
+                                            <span t-else="" class="badge badge-danger ml-1">
+                                                <i class="fa fa-times-circle" title="Offline"/> Offline
+                                            </span>
+                                        </strong>
+                                        <small class="o_kanban_record_subtitle text-muted">
+                                            <field name="serial_number"/> - <field name="platform"/>
+                                        </small>
+                                        <div class="mt-1">
+                                            <span t-if="record.device_state.raw_value == 'draft'" class="badge badge-secondary">
+                                                Draft
+                                            </span>
+                                            <span t-elif="record.device_state.raw_value == 'active'" class="badge badge-primary">
+                                                Active
+                                            </span>
+                                            <span t-elif="record.device_state.raw_value == 'inactive'" class="badge badge-dark">
+                                                Inactive
+                                            </span>
+                                            <span t-if="record.is_auto_created.raw_value" class="badge badge-info ml-1">
+                                                Auto-Created
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="o_dropdown_kanban dropdown" groups="an_push_attendance.group_attendance_devices_admin">
+                                        <a class="dropdown-toggle o-no-caret btn" role="button" data-toggle="dropdown" data-display="static" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                            <span class="fa fa-ellipsis-v" title="Menu"/>
+                                        </a>
+                                        <div class="dropdown-menu" role="menu">
+                                            <a role="menuitem" type="object" name="action_fetch_device_info" class="dropdown-item">Fetch Device Info</a>
+                                            <a role="menuitem" type="object" name="action_reboot_device" class="dropdown-item">Reboot Device</a>
+                                            <a role="menuitem" type="object" name="action_download_user_info" class="dropdown-item">Download User Info</a>
+                                            <a role="menuitem" type="object" name="action_download_attendance" class="dropdown-item">Download Attendance</a>
+                                            <a role="menuitem" type="object" name="action_map_device_users" class="dropdown-item">Map Device Users</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_body">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <strong>Location:</strong> <field name="location"/>
+                                        </div>
+                                        <div class="col-6">
+                                            <strong>Last Sync:</strong><br/>
+                                            <span t-if="record.last_handshake.raw_value" class="text-muted">
+                                                <t t-esc="record.last_handshake.value"/>
+                                            </span>
+                                            <span t-if="!record.last_handshake.raw_value" class="text-danger">Never</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-6">
+                                            <strong>MAC:</strong> <field name="mac"/>
+                                        </div>
+                                        <div class="col-6">
+                                            <strong>Firmware:</strong> <field name="fw_version"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <span class="badge badge-info">
+                                            <i class="fa fa-users" title="Users"/> <field name="user_count"/> Users
+                                        </span>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <span class="badge badge-success">
+                                            <i class="fa fa-calendar-check-o" title="Attendance Records"/> <field name="attendance_count"/> Records
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="action_attendance_device" model="ir.actions.act_window">
+        <field name="name">Attendance Devices</field>
+        <field name="res_model">attendance.device</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_id" eval="False"/>
+    </record>
+
+    <!-- Server Action to Archive Device -->
+    <record id="action_archive_device" model="ir.actions.server">
+        <field name="name">Archive Device</field>
+        <field name="model_id" ref="model_attendance_device"/>
+        <field name="binding_model_id" ref="model_attendance_device"/>
+        <field name="binding_view_types">form,tree</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_archive_device()</field>
+        <field name="groups_id" eval="[(4, ref('an_push_attendance.group_attendance_devices_admin'))]"/>
+    </record>
+</odoo>

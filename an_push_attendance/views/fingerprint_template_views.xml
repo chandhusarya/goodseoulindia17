@@ -1,0 +1,61 @@
+<odoo>
+    <record id="view_fingerprint_template_tree" model="ir.ui.view">
+        <field name="name">fingerprint.template.tree</field>
+        <field name="model">fingerprint.template</field>
+        <field name="arch" type="xml">
+            <tree string="Fingerprint Template">
+                <field name="device_id"/>
+                <field name="user_id"/>
+                <field name="fid"/>
+                <field name="size"/>
+                <field name="valid"/>
+                <field name="template"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_fingerprint_template_form" model="ir.ui.view">
+        <field name="name">fingerprint.template.form</field>
+        <field name="model">fingerprint.template</field>
+        <field name="arch" type="xml">
+            <form string="Fingerprint Template">
+                <sheet>
+                    <group>
+                        <field name="device_id"/>
+                        <field name="user_id"/>
+                        <field name="fid"/>
+                        <field name="size"/>
+                        <field name="valid"/>
+                        <field name="template"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Fingerprint Template Search View -->
+<record id="view_fingerprint_template_search" model="ir.ui.view">
+    <field name="name">fingerprint.template.search</field>
+    <field name="model">fingerprint.template</field>
+    <field name="arch" type="xml">
+        <search>
+            <field name="device_id"/>
+            <field name="user_id"/>
+            <filter name="valid_templates" string="Valid" domain="[('valid', '=', True)]"/>
+            <filter name="invalid_templates" string="Invalid" domain="[('valid', '=', False)]"/>
+            <group expand="0" string="Group By">
+                <filter name="group_by_device" string="Device" context="{'group_by': 'device_id'}"/>
+                <filter name="group_by_user" string="User" context="{'group_by': 'user_id'}"/>
+            </group>
+        </search>
+    </field>
+</record>
+
+
+    <record id="action_fingerprint_template" model="ir.actions.act_window">
+        <field name="name">Fingerprint Templates</field>
+        <field name="res_model">fingerprint.template</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_fingerprint_template_tree"/>
+    </record>
+</odoo>

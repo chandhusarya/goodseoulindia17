@@ -1,0 +1,9 @@
+<odoo>
+    <record id="seq_device_command" model="ir.sequence">
+        <field name="name">Device Command</field>
+        <field name="code">device.command</field>
+        <field name="prefix"></field>
+        <field name="padding">4</field>
+        <field name="number_increment">1</field>
+    </record>
+</odoo>

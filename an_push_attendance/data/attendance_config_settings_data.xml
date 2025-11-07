@@ -1,0 +1,14 @@
+<odoo>
+    <record id="model_attendance_config_settings" model="ir.model">
+        <field name="name">attendance.config.settings</field>
+        <field name="model">attendance.config.settings</field>
+    </record>
+    
+    <!-- Default configuration settings -->
+    <record id="default_attendance_config_settings" model="attendance.config.settings">
+        <field name="employee_link_field">fingerprint_no</field>
+        <field name="default_grace_period">15.0</field>
+        <field name="default_day_start_time">21.0</field>
+        <field name="default_policy_type">device_status_code</field>
+    </record>
+</odoo>

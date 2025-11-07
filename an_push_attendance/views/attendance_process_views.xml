@@ -1,0 +1,60 @@
+<odoo>
+    <record id="view_attendance_process_tree" model="ir.ui.view">
+        <field name="name">attendance.process.tree</field>
+        <field name="model">attendance.process</field>
+        <field name="arch" type="xml">
+            <tree string="Attendance Process">
+                <field name="device_id"/>
+                <field name="employee_id"/>
+                <field name="shift_day_period"/>
+                <field name="check_in"/>
+                <field name="check_out"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_attendance_process_form" model="ir.ui.view">
+        <field name="name">attendance.process.form</field>
+        <field name="model">attendance.process</field>
+        <field name="arch" type="xml">
+            <form string="Attendance Process">
+                <sheet>
+                    <group>
+                        <field name="device_id"/>
+                        <field name="employee_id"/>
+                                    <field name="shift_day_period"/>
+                        <field name="check_in"/>
+                        <field name="check_out"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Attendance Process Search View -->
+<record id="view_attendance_process_search" model="ir.ui.view">
+    <field name="name">attendance.process.search</field>
+    <field name="model">attendance.process</field>
+    <field name="arch" type="xml">
+        <search>
+            <field name="employee_id"/>
+            <field name="device_id"/>
+            <filter name="today" string="Today" domain="[('date','=',context_today().strftime('%Y-%m-%d'))]"/>
+            <filter name="this_week" string="This Week" domain="[('date','>=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d'))]"/>
+            <group expand="0" string="Group By">
+                <filter name="group_by_employee" string="Employee" context="{'group_by': 'employee_id'}"/>
+                <filter name="group_by_device" string="Device" context="{'group_by': 'device_id'}"/>
+                <filter name="group_by_date" string="Date" context="{'group_by': 'date'}"/>
+            </group>
+        </search>
+    </field>
+</record>
+
+    <record id="action_attendance_process" model="ir.actions.act_window">
+        <field name="name">Attendance Process</field>
+        <field name="res_model">attendance.process</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_attendance_process_tree"/>
+    </record>
+
+</odoo>
