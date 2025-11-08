@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Cleanup operation logs -->
+        <!-- <record id="ir_cron_cleanup_operation_logs_v2" model="ir.cron">
+            <field name="name">Cleanup Old Operation Logs</field>
+            <field name="model_id" ref="model_operation_log"/>
+            <field name="state">code</field>
+            <field name="code">model.auto_cleanup_logs()</field>
+            <field name="interval_type">days</field>
+            <field name="interval_number">1</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_admin"/>
+        </record> -->
+
+        <!-- Process any pending operation logs -->
+        <!-- <record id="ir_cron_process_pending_operation_logs_v2" model="ir.cron">
+            <field name="name">Process Pending Operation Logs</field>
+            <field name="model_id" ref="model_operation_log"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_process_pending_logs()</field>
+            <field name="interval_type">hours</field>
+            <field name="interval_number">1</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_admin"/>
+        </record> -->
+
+        <!-- Cleanup duplicate operation logs -->
+        <!-- <record id="ir_cron_cleanup_duplicate_operation_logs_v2" model="ir.cron">
+            <field name="name">Cleanup Duplicate Operation Logs</field>
+            <field name="model_id" ref="model_operation_log"/>
+            <field name="state">code</field>
+            <field name="code">model.cleanup_duplicate_logs()</field>
+            <field name="interval_type">hours</field>
+            <field name="interval_number">3</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_admin"/>
+        </record> -->
+
+        <!-- Update device status -->
+        <record id="ir_cron_update_device_status" model="ir.cron">
+            <field name="name">Update Device Status</field>
+            <field name="model_id" ref="model_attendance_device"/>
+            <field name="state">code</field>
+            <field name="code">model._update_device_status()</field>
+            <field name="interval_type">minutes</field>
+            <field name="interval_number">5</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_admin"/>
+        </record>
+    </data>
+</odoo>

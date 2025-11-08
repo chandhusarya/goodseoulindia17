@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_biometric_data_tree" model="ir.ui.view">
+        <field name="name">biometric.data.tree</field>
+        <field name="model">biometric.data</field>
+        <field name="arch" type="xml">
+            <tree string="Biometric Data">
+                <field name="device_id"/>
+                <field name="user_id"/>
+                <field name="bio_type"/>
+                <field name="template_size"/>
+                <field name="valid"/>
+                <field name="create_date"/>
+                <field name="write_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_biometric_data_form" model="ir.ui.view">
+        <field name="name">biometric.data.form</field>
+        <field name="model">biometric.data</field>
+        <field name="arch" type="xml">
+            <form string="Biometric Data">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="device_id"/>
+                            <field name="user_id"/>
+                            <field name="bio_type"/>
+                            <field name="template_size"/>
+                            <field name="valid"/>
+                        </group>
+                        <group>
+                            <field name="create_date"/>
+                            <field name="write_date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Template" groups="base.group_system">
+                            <field name="template"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_biometric_data_search" model="ir.ui.view">
+        <field name="name">biometric.data.search</field>
+        <field name="model">biometric.data</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="device_id"/>
+                <field name="user_id"/>
+                <field name="bio_type"/>
+                <filter name="valid_templates" string="Valid" domain="[('valid', '=', True)]"/>
+                <filter name="invalid_templates" string="Invalid" domain="[('valid', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_by_device" string="Device" context="{'group_by': 'device_id'}"/>
+                    <filter name="group_by_user" string="User" context="{'group_by': 'user_id'}"/>
+                    <filter name="group_by_bio_type" string="Biometric Type" context="{'group_by': 'bio_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_biometric_data" model="ir.actions.act_window">
+        <field name="name">Biometric Data</field>
+        <field name="res_model">biometric.data</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_biometric_data_tree"/>
+    </record>
+
+</odoo>

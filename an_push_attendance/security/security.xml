@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Create a category for our groups -->
+    <record id="module_category_attendance_devices" model="ir.module.category">
+        <field name="name">Attendance Devices</field>
+        <field name="description">Manage attendance devices integration</field>
+        <field name="sequence">10</field>
+    </record>
+
+    <!-- User Group -->
+    <record id="group_attendance_devices_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id" ref="module_category_attendance_devices"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">View and use attendance devices, check attendances</field>
+    </record>
+
+    <!-- Admin Group -->
+    <record id="group_attendance_devices_admin" model="res.groups">
+        <field name="name">Administrator</field>
+        <field name="category_id" ref="module_category_attendance_devices"/>
+        <field name="implied_ids" eval="[(4, ref('group_attendance_devices_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+        <field name="comment">Full control over attendance devices and configuration</field>
+    </record>
+
+    <!-- Rules for attendance devices -->
+    <record id="rule_attendance_device_admin" model="ir.rule">
+        <field name="name">Attendance Device Administrators: Full Access</field>
+        <field name="model_id" ref="model_attendance_device"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_attendance_devices_admin'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+    
+    <record id="rule_attendance_device_user" model="ir.rule">
+        <field name="name">Attendance Device Users: Read-Only Access</field>
+        <field name="model_id" ref="model_attendance_device"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_attendance_devices_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    
+    <!-- Rules for device commands -->
+    <record id="rule_device_command_admin" model="ir.rule">
+        <field name="name">Device Commands Administrator: Full Access</field>
+        <field name="model_id" ref="model_device_command"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_attendance_devices_admin'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+    
+    <!-- Rules for config settings -->
+    <record id="rule_attendance_config_settings" model="ir.rule">
+        <field name="name">Attendance Config Settings: Admin Only</field>
+        <field name="model_id" ref="model_attendance_config_settings"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_attendance_devices_admin'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+    
+    <!-- Rules for FP status policies -->
+    <record id="rule_fp_status_policy" model="ir.rule">
+        <field name="name">Fingerprint Status Policies: Admin Only</field>
+        <field name="model_id" ref="model_fp_status_policy"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_attendance_devices_admin'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+</odoo>

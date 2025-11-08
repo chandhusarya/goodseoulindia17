@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>ZKTeco Push Attendance Integration</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #212529;
+            background-color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 1080px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        h1, h2, h3, h4 {
+            color: #875A7B;
+            font-weight: 600;
+        }
+        
+        h1 {
+            font-size: 32px;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        
+        h2 {
+            font-size: 24px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        h3 {
+            font-size: 18px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        h4 {
+            font-size: 16px;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            margin-top: 0;
+            margin-bottom: 12px;
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 3px;
+        }
+        
+        a {
+            color: #875A7B;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            color: #6d4763;
+            text-decoration: underline;
+        }
+        
+        ul {
+            margin-top: 0;
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+        
+        li {
+            margin-bottom: 6px;
+        }
+        
+        .header {
+            background-color: #875A7B;
+            color: #fff;
+            padding: 40px 0;
+            margin-bottom: 30px;
+        }
+        
+        .header h1, .header h3 {
+            color: #fff;
+        }
+        
+        .header h3 {
+            font-weight: 400;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        .price-tag {
+            display: inline-block;
+            background-color: #28a745;
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 22px;
+            font-weight: 600;
+        }
+        
+        .section {
+            background: #fff;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .section h2:first-child {
+            margin-top: 0;
+        }
+        
+        .compatibility {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .badge {
+            display: inline-block;
+            background-color: #28a745;
+            color: #fff;
+            padding: 5px 12px;
+            border-radius: 20px;
+            margin: 3px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .badge-odoo16 {
+            background-color: #714B67;
+        }
+        
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-right: -15px;
+            margin-left: -15px;
+        }
+        
+        .col {
+            flex-basis: 0;
+            flex-grow: 1;
+            max-width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+        
+        .col-4 {
+            flex: 0 0 33.333333%;
+            max-width: 33.333333%;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+        
+        .col-6 {
+            flex: 0 0 50%;
+            max-width: 50%;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+        
+        .feature-box {
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            height: 100%;
+            transition: all 0.2s ease;
+        }
+        
+        .feature-box:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 15px;
+            color: #875A7B;
+        }
+        
+        .screenshot {
+            margin-bottom: 25px;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .screenshot-img {
+            padding: 15px;
+            text-align: center;
+            background: #fff;
+        }
+        
+        .screenshot-img img {
+            max-height: 500px;
+            object-fit: contain;
+        }
+        
+        .screenshot-caption {
+            background: #f8f9fa;
+            color: #333;
+            padding: 12px 15px;
+            text-align: center;
+            font-weight: 500;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .steps-container {
+            margin: 20px 0;
+        }
+        
+        .step {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 15px;
+        }
+        
+        .step:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #875A7B;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .success {
+            color: #28a745;
+        }
+        
+        .danger {
+            color: #dc3545;
+        }
+        
+        .btn {
+            display: inline-block;
+            font-weight: 500;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            user-select: none;
+            border: 1px solid transparent;
+            padding: 8px 16px;
+            font-size: 14px;
+            line-height: 1.5;
+            border-radius: 4px;
+            transition: all 0.2s ease-in-out;
+            margin: 5px;
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            color: #fff;
+            background-color: #875A7B;
+            border-color: #875A7B;
+        }
+        
+        .btn-primary:hover {
+            background-color: #73496a;
+            border-color: #6d4463;
+            text-decoration: none;
+            color: #fff;
+        }
+        
+        .btn-outline {
+            color: #875A7B;
+            background-color: transparent;
+            border-color: #875A7B;
+        }
+        
+        .btn-outline:hover {
+            color: #fff;
+            background-color: #875A7B;
+            border-color: #875A7B;
+            text-decoration: none;
+        }
+        
+        .footer {
+            background-color: #f8f9fa;
+            padding: 25px 0;
+            text-align: center;
+            border-top: 1px solid #e9ecef;
+            margin-top: 40px;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+            width: 100%;
+            max-width: 100%;
+        }
+        
+        .feature-card {
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .feature-card h4 {
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .feature-card h4 span {
+            margin-left: 10px;
+        }
+        
+        .feature-card p {
+            margin-bottom: 0;
+            color: #666;
+        }
+        
+        .highlight-badge {
+            display: inline-block;
+            background-color: #ffc107;
+            color: #212529;
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 20px;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+        
+        .gif-container {
+            text-align: center;
+            margin: 30px auto;
+            max-width: 800px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        
+        .gif-container img {
+            width: 100%;
+            border-radius: 8px;
+        }
+        
+        .video-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin: 30px 0;
+        }
+        
+        .video-card {
+            flex: 0 0 calc(50% - 20px);
+            max-width: calc(50% - 20px);
+            text-align: center;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .video-thumbnail {
+            position: relative;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .video-thumbnail:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .video-thumbnail:before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        .video-thumbnail:after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 53%;
+            transform: translate(-50%, -50%);
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 12px 0 12px 20px;
+            border-color: transparent transparent transparent #875A7B;
+        }
+        
+        .video-thumbnail img {
+            width: 100%;
+            display: block;
+        }
+        
+        .device-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .device-category {
+            flex: 0 0 calc(50% - 15px);
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        
+        .device-category h4 {
+            margin-top: 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .device-category p {
+            color: #666;
+            margin-bottom: 0;
+        }
+        
+        /* Enhanced responsive styling for images and containers */
+        .gif-container {
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            height: auto;
+            background-color: #fff;
+            padding: 10px;
+            transition: transform 0.3s ease;
+        }
+        
+        .gif-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        .gif-container img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+        
+        .video-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        .video-thumbnail img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+        
+        /* Enhanced responsive breakpoints */
+        @media (max-width: 991px) {
+            .col-4 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+            
+            .feature-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .gif-container {
+                height: auto;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .col-4, .col-6 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+            
+            .header {
+                padding: 30px 0;
+            }
+            
+            h1 {
+                font-size: 28px;
+            }
+            
+            h2 {
+                font-size: 22px;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .video-card {
+                flex: 0 0 100%;
+                max-width: 100%;
+                margin-bottom: 20px;
+            }
+            
+            .device-category {
+                flex: 0 0 100%;
+            }
+            
+            .gif-container {
+                margin-bottom: 30px;
+            }
+            
+            /* Improved mobile experience for app icon */
+            .header img[src="icon.png"] {
+                width: 80px;
+                height: 80px;
+            }
+        }
+        
+        /* Small screen adjustments */
+        @media (max-width: 480px) {
+            .row {
+                flex-direction: column;
+            }
+            
+            .col-4, .col-6, .col {
+                flex: 0 0 100%;
+                max-width: 100%;
+                padding-right: 0;
+                padding-left: 0;
+            }
+            
+            .gif-container {
+                margin-bottom: 20px;
+            }
+            
+            .header img[src="icon.png"] {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .price-tag {
+                font-size: 18px;
+                padding: 6px 15px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            h2 {
+                font-size: 20px;
+            }
+            
+            h3 {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container text-center">
+            <!-- App icon and Banner image at the top -->
+            <div style="margin-bottom: 20px; position: relative;">
+                <img src="banner.png" alt="ZKTeco Push Attendance Banner" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+                <img src="icon.png" alt="App Icon" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 120px; height: 120px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+            </div>
+            <h1>ZKTeco, ESSL & ADMS Push Attendance Integration</h1>
+            <div style="font-size: 28px; font-weight: bold; color: #e74c3c; margin: 15px 0; text-transform: uppercase;">BioTime Replacement</div>
+            <h3>Real-time attendance tracking with ZKTeco, ESSL & any device supporting ADMS Push SDK - No IP/DNS Required!</h3>
+
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="compatibility" style="text-align: center;">
+            <h2>Compatible with:</h2>
+            
+            <div style="display: inline-block; text-align: center; margin: 20px 0;">
+                <div style="display: inline-block; text-align: center; margin: 0 15px;">
+                    <div style="font-size: 36px; margin-bottom: 5px;">🏢</div>
+                    <div style="font-weight: bold; font-size: 14px;">On-Premise</div>
+                    <div style="font-size: 12px; color: #666;">Fully Supported</div>
+                </div>
+                
+                <div style="display: inline-block; text-align: center; margin: 0 15px;">
+                    <div style="font-size: 36px; margin-bottom: 5px;">☁️</div>
+                    <div style="font-weight: bold; font-size: 14px;">Odoo SH</div>
+                    <div style="font-size: 12px; color: #666;">Fully Supported</div>
+                </div>
+                
+                <div style="display: inline-block; text-align: center; margin: 0 15px;">
+                    <div style="font-size: 36px; margin-bottom: 5px;">🌐</div>
+                    <div style="font-weight: bold; font-size: 14px;">Community</div>
+                    <div style="font-size: 12px; color: #666;">Fully Supported</div>
+                </div>
+                
+                <div style="display: inline-block; text-align: center; margin: 0 15px;">
+                    <div style="font-size: 36px; margin-bottom: 5px;">⭐</div>
+                    <div style="font-weight: bold; font-size: 14px;">Enterprise</div>
+                    <div style="font-size: 12px; color: #666;">Fully Supported</div>
+                </div>
+            </div>
+        </div>
+        </div>
+        
+        <div class="section">
+            <h2>Overview</h2>
+            <p>This module provides seamless integration between Odoo and ZKTeco biometric devices using the Push Protocol, eliminating the need for complex network configurations and allowing for real-time attendance tracking even when your Odoo server is behind a firewall or on localhost.</p>
+            
+            <!-- GIFs stacked vertically at the top -->
+            <div class="container" style="margin-bottom: 30px;">
+                <!-- First GIF - Real-time attendance tracking -->
+                <div class="row" style="margin-bottom: 30px;">
+                    <div class="col">
+                        <div class="gif-container" style="max-width: 800px; margin: 0 auto;">
+                            <img src="move.gif" alt="ZKTeco Push Protocol in Action" style="width: 100%; height: auto; object-fit: contain;">
+                            <p style="margin-top: 15px; text-align: center; font-weight: 600; font-size: 18px; color: #555;">Real-time attendance tracking</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Second GIF - Fingerprint management -->
+                <div class="row" style="margin-bottom: 30px;">
+                    <div class="col">
+                        <div class="gif-container" style="max-width: 800px; margin: 0 auto;">
+                            <img src="FP.gif" alt="Fingerprint Management in Action" style="width: 100%; height: auto; object-fit: contain;">
+                            <p style="margin-top: 15px; text-align: center; font-weight: 600; font-size: 18px; color: #555;">Fingerprint management</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Third GIF - Advanced fingerprint features -->
+                <div class="row">
+                    <div class="col">
+                        <div class="gif-container" style="max-width: 800px; margin: 0 auto;">
+                            <img src="FP2.gif" alt="Advanced Fingerprint Features" style="width: 100%; height: auto; object-fit: contain;">
+                            <p style="margin-top: 15px; text-align: center; font-weight: 600; font-size: 18px; color: #555;">Advanced fingerprint features</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <h3>Why Choose This Module?</h3>
+            <p>Unlike other ZKTeco integration modules for Odoo, this module uses the Push Protocol with several key advantages:</p>
+            
+            <div class="row">
+                <div class="col-6">
+                    <ul>
+                        <li><strong>No Public IP or DNS Required</strong> - Your Odoo server can be on localhost or behind a firewall.</li>
+                        <li><strong>Device-Initiated Connection</strong> - The ZKTeco device pushes data to your Odoo server.</li>
+                        <li><strong>Real-Time Updates</strong> - Attendance records appear instantly in your Odoo system.</li>
+                    </ul>
+                </div>
+                <div class="col-6">
+                    <ul>
+                        <li><strong>Lower Server Load</strong> - No constant polling or device status checks required.</li>
+                        <li><strong>Improved Security</strong> - No need to expose your Odoo server to the public internet.</li>
+                        <li><strong>Full Device Support</strong> - Works with all ZKTeco Push-compatible devices.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="alert alert-success" style="margin-top: 20px; text-align: center;">
+                <strong>✓ No IP/DNS Configuration Required</strong> | <strong>✓ Works Behind Firewalls</strong> | <strong>✓ Real-time Data Transfer</strong>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Interactive Dashboard</h2>
+            <p class="text-center" style="font-size: 16px; margin-bottom: 30px;">Monitor your entire attendance system from a comprehensive real-time dashboard with live device status, attendance statistics, and instant alerts.</p>
+            
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="gif-container" style="max-width: 1000px; margin: 0 auto;">
+                            <img src="dashboard.png" alt="Interactive Attendance Dashboard" style="width: 100%; height: auto; object-fit: contain;">
+                            <p style="margin-top: 15px; text-align: center; font-weight: 600; font-size: 18px; color: #555;">Real-time attendance dashboard with device monitoring and live statistics</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row" style="margin-top: 30px;">
+                <div class="col-4">
+                    <div style="background: #e8f5e8; border-radius: 8px; padding: 20px; text-align: center; border: 2px solid #28a745;">
+                        <div style="font-size: 32px; margin-bottom: 15px; color: #28a745;">📊</div>
+                        <h4 style="color: #28a745; margin-top: 0;">Live Statistics</h4>
+                        <p style="color: #1e7e34; margin-bottom: 0;">Real-time attendance counts, device status overview, and employee presence indicators updated instantly.</p>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div style="background: #fff3cd; border-radius: 8px; padding: 20px; text-align: center; border: 2px solid #ffc107;">
+                        <div style="font-size: 32px; margin-bottom: 15px; color: #ffc107;">📡</div>
+                        <h4 style="color: #856404; margin-top: 0;">Device Monitoring</h4>
+                        <p style="color: #856404; margin-bottom: 0;">Monitor all connected devices with online/offline status, last seen times, and connection health indicators.</p>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div style="background: #f8d7da; border-radius: 8px; padding: 20px; text-align: center; border: 2px solid #dc3545;">
+                        <div style="font-size: 32px; margin-bottom: 15px; color: #dc3545;">🔔</div>
+                        <h4 style="color: #721c24; margin-top: 0;">Alert System</h4>
+                        <p style="color: #721c24; margin-bottom: 0;">Instant notifications for device disconnections, attendance anomalies, and system issues requiring attention.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Key Features</h2>
+            
+            <div class="row">
+                <div class="col-4">
+                    <div class="feature-box">
+                        <div class="feature-icon">📱</div>
+                        <h3>Device Management</h3>
+                        <p>Manage multiple devices from a single Odoo instance with detailed device information tracking and synchronization.</p>
+                    </div>
+                </div>
+                
+                <div class="col-4">
+                    <div class="feature-box">
+                        <div class="feature-icon">👆</div>
+                        <h3>Biometric Templates</h3>
+                        <p>Complete management of fingerprint and face templates with automatic synchronization between devices.</p>
+                    </div>
+                </div>
+                
+                <div class="col-4">
+                    <div class="feature-box">
+                        <div class="feature-icon">📅</div>
+                        <h3>Attendance Processing</h3>
+                        <p>Smart attendance processing with automatic check-in/out detection based on employee schedules.</p>
+                    </div>
+                </div>
+                
+                <div class="col-4">
+                    <div class="feature-box">
+                        <div class="feature-icon">👥</div>
+                        <h3>User Management</h3>
+                        <p>Automatically map device users to Odoo employees with comprehensive privilege management.</p>
+                    </div>
+                </div>
+                
+                <div class="col-4">
+                    <div class="feature-box">
+                        <div class="feature-icon">🔒</div>
+                        <h3>Security Features</h3>
+                        <p>SSL encryption support, command validation, and comprehensive permission system for device management.</p>
+                    </div>
+                </div>
+                
+                <div class="col-4">
+                    <div class="feature-box">
+                        <div class="feature-icon">⚙️</div>
+                        <h3>Advanced Settings</h3>
+                        <p>Flexible configuration options for synchronization, processing, and integration with other Odoo modules.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section" style="width: 100%; max-width: 100%;">
+            <h2>Complete Feature List</h2>
+            
+            <div class="feature-grid" style="width: 100%; max-width: 100%;">
+                <!-- Core Functionality -->
+                <div class="feature-card">
+                    <h4>📡 Auto Device Detection <span class="highlight-badge">KEY</span></h4>
+                    <p>Devices are automatically detected and registered when they connect to your Odoo server.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>🔄 Real-time Synchronization</h4>
+                    <p>Attendance logs are transferred instantly to Odoo when employees scan their fingerprints.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>📊 Device Status Monitoring</h4>
+                    <p>Track device status (online/offline/warning) with color-coded visual indicators and automated alerts.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>🌐 No IP/DNS Required <span class="highlight-badge">KEY</span></h4>
+                    <p>Works even when Odoo is on localhost or behind a firewall - no network configuration needed.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>📱 Multi-device Support</h4>
+                    <p>Connect unlimited ZKTeco and ESSL devices to a single Odoo instance.</p>
+                </div>
+                
+                <!-- Biometric Features -->
+                <div class="feature-card">
+                    <h4>👆 Fingerprint Template Management <span class="highlight-badge">KEY</span></h4>
+                    <p>Store and manage employee fingerprint templates directly in Odoo with secure storage.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>👤 Face Recognition Templates</h4>
+                    <p>Full support for facial recognition templates with version tracking and synchronization.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>🗂️ User Picture Management</h4>
+                    <p>Store and manage employee photos synchronized from devices with automatic updates.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>🔐 Biometric Data Security</h4>
+                    <p>Secure storage and handling of sensitive biometric information with proper access controls.</p>
+                </div>
+                
+                <!-- Attendance Processing -->
+                <div class="feature-card">
+                    <h4>⏱️ Smart Check-in/out Detection <span class="highlight-badge">KEY</span></h4>
+                    <p>Intelligent algorithms to determine check-in vs check-out based on time or device status.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>👥 Auto Employee Synchronization</h4>
+                    <p>Automatically map device users to Odoo employees using barcodes, PINs, or custom fields.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>📚 Batch Attendance Processing</h4>
+                    <p>Efficient handling of large attendance record batches with optimized database operations.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>🔄 Check-in/Check-out Pairing</h4>
+                    <p>Intelligent pairing of check-in and check-out records for accurate attendance tracking.</p>
+                </div>
+                
+                <!-- Policy Options -->
+                <div class="feature-card">
+                    <h4>📋 First Check Policy <span class="highlight-badge">POLICY</span></h4>
+                    <p>Configure how the first check of the day is processed with flexible policy options.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>📝 Fingerprint Status Policy <span class="highlight-badge">POLICY</span></h4>
+                    <p>Define policies for handling fingerprint verification status codes from devices.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>⏰ Shift Period Detection <span class="highlight-badge">POLICY</span></h4>
+                    <p>Automatically detect morning/afternoon shifts based on configurable time thresholds.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>🛡️ Duplicate Protection Policy <span class="highlight-badge">POLICY</span></h4>
+                    <p>Smart detection and handling of duplicate attendance records with configurable grace periods.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>📅 Multi-Policy Support</h4>
+                    <p>Configure multiple attendance policies for different employee groups and locations.</p>
+                </div>
+                
+                <!-- Administration & Monitoring -->
+                <div class="feature-card">
+                    <h4>🔍 Operation Logging</h4>
+                    <p>Detailed logging of all device operations for audit and troubleshooting purposes.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>🖥️ Device Command Management</h4>
+                    <p>Send commands to devices remotely (reboot, info request, data download, etc.).</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>🔔 Admin Notifications</h4>
+                    <p>Automatic email notifications when new devices connect to your system or issues occur.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>🔒 Advanced Security Features</h4>
+                    <p>Role-based access control for device management and attendance data.</p>
+                </div>
+                
+                <!-- Technical Features -->
+                <div class="feature-card">
+                    <h4>⏱️ Timezone Management</h4>
+                    <p>Proper handling of different time zones between devices and server for accurate timestamps.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>🔄 Push Protocol Support</h4>
+                    <p>Implementation of ZKTeco and ESSL push protocols with full compatibility.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>⚙️ Automatic Configuration</h4>
+                    <p>Self-configuring devices with minimal manual setup required.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>🛠️ Error Handling</h4>
+                    <p>Robust error detection and recovery mechanisms for reliable operation.</p>
+                </div>
+                
+                <!-- Integration Features -->
+                <div class="feature-card">
+                    <h4>🧩 HR Attendance Integration</h4>
+                    <p>Seamless integration with Odoo's HR attendance module for complete workforce management.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>📍 Work Location Support</h4>
+                    <p>Link devices to specific work locations for better attendance management.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>📆 Resource Calendar Integration</h4>
+                    <p>Works with Odoo's resource calendar for shift management and scheduling.</p>
+                </div>
+                
+                <!-- Additional Tools -->
+                <div class="feature-card">
+                    <h4>🔄 Attendance Recheck Tool <span class="highlight-badge">KEY</span></h4>
+                    <p>Wizard to reprocess selected attendance periods with different algorithms when needed.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>🧾 Custom Status Codes</h4>
+                    <p>Support for custom device status codes to differentiate check-in/out events and special cases.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>📊 Attendance Analytics</h4>
+                    <p>Visual dashboards and reports for analyzing attendance data and patterns.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section" style="width: 100%; max-width: 100%;">
+            <h2>Quick Setup & Configuration</h2>
+            
+            <div class="row" style="margin-bottom: 30px; align-items: center; width: 100%;">
+                <div class="col-6">
+                    <h3>Configuring the ZKTeco Device</h3>
+                    <p>This module works with all ZKTeco devices that support the Push protocol. Follow these steps:</p>
+                    
+                    <div class="steps-container">
+                        <div class="step">
+                            <div class="step-title">Access Device Settings</div>
+                            <p>Navigate to the Communication settings on your ZKTeco device.</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-title">Configure Server Connection</div>
+                            <p>Enter your Odoo server's IP address or domain name, and the appropriate port.</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-title">Enable Push Protocol</div>
+                            <p>Make sure the device is set to push attendance data to the server.</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-title">Test Connection</div>
+                            <p>Once configured, your device will automatically connect to Odoo.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-6">
+                    <div class="gif-container" style="width: 100%; max-width: 100%; text-align: center; border: 1px solid #eee; padding: 10px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                        <img src="device_setting.png" alt="ZKTeco Device Settings" style="width: 100%; max-width: 100%; height: auto; object-fit: contain;">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row" style="margin-top: 20px; align-items: center; width: 100%;">
+                <div class="col-6">
+                    <div class="gif-container" style="width: 100%; max-width: 100%; text-align: center; border: 1px solid #eee; padding: 10px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                        <img src="setting.png" alt="Odoo Module Configuration" style="width: 100%; max-width: 100%; height: auto; object-fit: contain;">
+                    </div>
+                </div>
+                
+                <div class="col-6">
+                    <h3>Configuring the Odoo Module</h3>
+                    <p>After installing the module, follow these steps to set up your Odoo environment:</p>
+                    
+                    <div class="steps-container">
+                        <div class="step">
+                            <div class="step-title">Auto-Detection in Action</div>
+                            <p>Devices are automatically detected when they connect to your Odoo server!</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-title">Link Employees</div>
+                            <p>Map your Odoo employees to the users in your ZKTeco device.</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-title">Configure Attendance Options</div>
+                            <p>Set up check-in/check-out detection based on your organizational needs.</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-title">Start Tracking</div>
+                            <p>Once configured, the system will automatically record attendance as employees use the device.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Attendance Log Handling & Policy Options</h2>
+            <p>The system provides multiple configuration options to manage employee check-in and check-out logs effectively, with advanced policy settings for different organizational needs:</p>
+            
+            <div class="row" style="margin-top: 25px;">
+                <div class="col-6">
+                    <div style="background: #f8f9fa; border-radius: 8px; padding: 20px; height: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <h4>1. Flexible Period (Default Policy)</h4>
+                        <p>Best for most organizations using a single device for both check-in and check-out:</p>
+                        <ul>
+                            <li>Automatically alternates between check-in and check-out logs.</li>
+                            <li>First record is considered as Check-in, second as Check-out.</li>
+                            <li>Configurable grace period to avoid duplicate records.</li>
+                            <li>Simple to set up and maintain.</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="col-6">
+                    <div style="background: #f8f9fa; border-radius: 8px; padding: 20px; height: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <h4>2. Device Status Code Based</h4>
+                        <p>For devices that support multiple status codes:</p>
+                        <ul>
+                            <li>Use different status codes for check-in and check-out.</li>
+                            <li>Define the appropriate status codes in the configuration.</li>
+                            <li>The system matches the attendance log's status code.</li>
+                            <li>Great for multi-purpose devices.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row" style="margin-top: 20px;">
+                <div class="col-6">
+                    <div style="background: #f8f9fa; border-radius: 8px; padding: 20px; height: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <h4>3. First Check Time Policy <span class="highlight-badge">POLICY</span></h4>
+                        <p>For organizations with fixed shifts:</p>
+                        <ul>
+                            <li>Define specific time windows for check-in (e.g., 7-9 AM).</li>
+                            <li>Records within this window are automatically treated as check-ins.</li>
+                            <li>Records outside this window are processed as check-outs if a check-in exists.</li>
+                            <li>Perfect for organizations with fixed shift timings.</li>
+                        </ul>
+                        <div style="margin-top: 15px;">
+                            <img src="first_check_policy.png" alt="First Check Policy Configuration" style="width: 100%; height: auto; object-fit: contain; border-radius: 5px;">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-6">
+                    <div style="background: #f8f9fa; border-radius: 8px; padding: 20px; height: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <h4>4. Schedule Based Policy</h4>
+                        <p>For organizations with multiple shifts:</p>
+                        <ul>
+                            <li>Configure employee work schedules in the HR module.</li>
+                            <li>The system determines check-in/out based on defined shifts.</li>
+                            <li>Supports overnight shifts and multiple check-ins per day.</li>
+                            <li>Ideal for complex shift patterns and 24/7 operations.</li>
+                        </ul>
+                        <div style="margin-top: 15px;">
+                            <img src="work_schedule.png" alt="Work Schedule Configuration" style="width: 100%; height: auto; object-fit: contain; border-radius: 5px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row" style="margin-top: 20px;">
+                <div class="col-6">
+                    <div style="background: #f8f9fa; border-radius: 8px; padding: 20px; height: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <h4>5. Fingerprint Status Policy <span class="highlight-badge">POLICY</span></h4>
+                        <p>For advanced biometric verification control:</p>
+                        <ul>
+                            <li>Define how different fingerprint verification statuses are handled.</li>
+                            <li>Configure policies for each verification type (1:1, 1:N, password, etc.).</li>
+                            <li>Set acceptance thresholds for different verification methods.</li>
+                            <li>Enhance security by rejecting low-confidence verifications.</li>
+                        </ul>
+                        <div style="margin-top: 15px;">
+                            <img src="fp_policy.png" alt="Fingerprint Policy Configuration" style="width: 100%; height: auto; object-fit: contain; border-radius: 5px;">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-6">
+                    <div style="background: #f8f9fa; border-radius: 8px; padding: 20px; height: 100%; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <h4>6. Duplicate Protection Policy <span class="highlight-badge">POLICY</span></h4>
+                        <p>For preventing duplicate attendance records:</p>
+                        <ul>
+                            <li>Configure grace periods to prevent duplicate punches.</li>
+                            <li>Set different grace periods for check-in vs. check-out.</li>
+                            <li>Intelligent detection of repeated scans within configurable timeframes.</li>
+                            <li>Option to automatically mark or ignore duplicate records.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="container" style="margin-top: 25px;">
+                <div class="row">
+                    <div class="col">
+                        <div class="gif-container" style="margin: 0 auto; max-width: 800px;">
+                            <img src="recheck_attendanc.png" alt="Attendance Recheck Tool" style="width: 100%; height: auto; object-fit: contain;">
+                            <p style="margin-top: 10px; font-style: italic; color: #666;">The powerful attendance recheck tool allows administrators to reprocess attendance records with different algorithms or policy settings</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row" style="margin-top: 25px;">
+                <div class="col">
+                    <div style="background: #f5f0f7; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <h4 style="color: #875A7B; text-align: center;">Policy Combination Support</h4>
+                        <p style="text-align: center;">The module allows you to combine multiple policies for maximum flexibility:</p>
+                        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 15px;">
+                            <div style="background: white; padding: 10px 15px; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                <span style="font-weight: 600;">Schedule + Fingerprint Policy</span>
+                            </div>
+                            <div style="background: white; padding: 10px 15px; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                <span style="font-weight: 600;">First Check + Duplicate Protection</span>
+                            </div>
+                            <div style="background: white; padding: 10px 15px; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                <span style="font-weight: 600;">Status Code + Fingerprint Policy</span>
+                            </div>
+                        </div>
+                        <p style="text-align: center; margin-top: 15px;">Create the perfect attendance policy configuration for your organization's unique needs!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Feature Demonstrations</h2>
+            <p class="text-center" style="font-size: 16px; margin-bottom: 30px;">See how the ZKTeco Push Attendance Integration works in real-world scenarios</p>
+            
+            <div class="container">
+                <!-- Custom feature demo 1 -->
+                <div class="row" style="margin-bottom: 40px;">
+                    <div class="col">
+                        <div class="gif-container" style="margin: 0 auto; max-width: 900px;">
+                            <h3 style="text-align: center; margin-bottom: 15px;">Real-time attendance tracking</h3>
+                            <img src="user_image.png" alt="Real-time attendance tracking" style="width: 100%; height: auto; object-fit: contain; border-radius: 5px;">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Custom feature demo 2 -->
+                <div class="row" style="margin-bottom: 40px;">
+                    <div class="col">
+                        <div class="gif-container" style="margin: 0 auto; max-width: 900px;">
+                            <h3 style="text-align: center; margin-bottom: 15px;">Fingerprint management</h3>
+                            <img src="fp_policy.png" alt="Fingerprint management" style="width: 100%; height: auto; object-fit: contain; border-radius: 5px;">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Custom feature demo 3 -->
+                <div class="row">
+                    <div class="col">
+                        <div class="gif-container" style="margin: 0 auto; max-width: 900px;">
+                            <h3 style="text-align: center; margin-bottom: 15px;">Device administration</h3>
+                            <img src="device_setting.png" alt="Device administration" style="width: 100%; height: auto; object-fit: contain; border-radius: 5px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="alert alert-success" style="margin-top: 30px; text-align: center;">
+                <strong>✓ No IP/DNS Configuration Required</strong> | <strong>✓ Works Behind Firewalls</strong> | <strong>✓ Real-time Data Transfer</strong>
+            </div>
+        </div>
+        
+        <!-- New section with the exact screenshots from the message -->
+        <div class="section">
+            <h2>Live Module Demonstration</h2>
+            <p class="text-center" style="font-size: 16px; margin-bottom: 30px;">See the module in action with real-world examples</p>
+            
+            <div class="container">
+                <!-- First image from message -->
+                <div class="row" style="margin-bottom: 40px;">
+                    <div class="col">
+                        <div class="gif-container" style="margin: 0 auto; max-width: 1000px;">
+                            <img src="recheck_attendanc.png" alt="Real-time attendance tracking" style="width: 100%; height: auto; object-fit: contain; border-radius: 5px;">
+                            <p style="margin-top: 15px; text-align: center; font-weight: 600; font-size: 18px; color: #555;">Real-time attendance tracking</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Second image from message -->
+                <div class="row" style="margin-bottom: 40px;">
+                    <div class="col">
+                        <div class="gif-container" style="margin: 0 auto; max-width: 1000px;">
+                            <img src="fp_policy.png" alt="Fingerprint management" style="width: 100%; height: auto; object-fit: contain; border-radius: 5px;">
+                            <p style="margin-top: 15px; text-align: center; font-weight: 600; font-size: 18px; color: #555;">Fingerprint management</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Third image from message -->
+                <div class="row">
+                    <div class="col">
+                        <div class="gif-container" style="margin: 0 auto; max-width: 1000px;">
+                            <img src="schedule_action.png" alt="ZKTeco device operation" style="width: 100%; height: auto; object-fit: contain; border-radius: 5px;">
+                            <p style="margin-top: 15px; text-align: center; font-weight: 600; font-size: 18px; color: #555;">ZKTeco device operation</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- New section with the screenshots from the message -->
+        <div class="section">
+            <h2>Module Screenshots & Features</h2>
+            <p class="text-center" style="font-size: 16px; margin-bottom: 30px;">Explore the key interfaces and functionality of the ZKTeco Push Attendance module</p>
+            
+            <div class="container">
+                <!-- First screenshot -->
+                <div class="row" style="margin-bottom: 40px;">
+                    <div class="col">
+                        <div class="gif-container" style="margin: 0 auto; max-width: 1000px;">
+                            <h3 style="text-align: center; margin-bottom: 15px;">Real-time attendance tracking interface</h3>
+                            <img src="first_check_policy.png" alt="Attendance tracking interface" style="width: 100%; height: auto; object-fit: contain; border-radius: 5px;">
+                            <p style="margin-top: 15px; text-align: center; font-weight: 500; color: #555;">Complete attendance management with real-time synchronization</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Second screenshot -->
+                <div class="row" style="margin-bottom: 40px;">
+                    <div class="col">
+                        <div class="gif-container" style="margin: 0 auto; max-width: 1000px;">
+                            <h3 style="text-align: center; margin-bottom: 15px;">Fingerprint management system</h3>
+                            <img src="work_schedule.png" alt="Fingerprint management" style="width: 100%; height: auto; object-fit: contain; border-radius: 5px;">
+                            <p style="margin-top: 15px; text-align: center; font-weight: 500; color: #555;">Efficiently manage employee biometric templates across multiple devices</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Third screenshot -->
+                <div class="row">
+                    <div class="col">
+                        <div class="gif-container" style="margin: 0 auto; max-width: 1000px;">
+                            <h3 style="text-align: center; margin-bottom: 15px;">ZKTeco device operation</h3>
+                            <img src="device_list1.png" alt="ZKTeco device operation" style="width: 100%; height: auto; object-fit: contain; border-radius: 5px;">
+                            <p style="margin-top: 15px; text-align: center; font-weight: 500; color: #555;">Monitor and manage all connected devices from a centralized interface</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Module vs. Other Solutions</h2>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>This Module</th>
+                            <th>Other Solutions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>IP/DNS Configuration</td>
+                            <td><span class="success">Not Required ✓</span></td>
+                            <td><span class="danger">Required ✗</span></td>
+                        </tr>
+                        <tr>
+                            <td>Firewall Compatibility</td>
+                            <td><span class="success">Works Behind Firewalls ✓</span></td>
+                            <td><span class="danger">Needs Port Forwarding ✗</span></td>
+                        </tr>
+                        <tr>
+                            <td>Data Transfer</td>
+                            <td><span class="success">Real-time Push ✓</span></td>
+                            <td><span class="danger">Polling ✗</span></td>
+                        </tr>
+                        <tr>
+                            <td>Device Support</td>
+                            <td><span class="success">All ZKTeco Models ✓</span></td>
+                            <td><span class="danger">Limited Models ✗</span></td>
+                        </tr>
+                        <tr>
+                            <td>Biometric Management</td>
+                            <td><span class="success">Complete ✓</span></td>
+                            <td><span class="danger">Limited ✗</span></td>
+                        </tr>
+                        <tr>
+                            <td>Auto Device Detection</td>
+                            <td><span class="success">Supported ✓</span></td>
+                            <td><span class="danger">Not Supported ✗</span></td>
+                        </tr>
+                        <tr>
+                            <td>Face Template Management</td>
+                            <td><span class="success">Full Support ✓</span></td>
+                            <td><span class="danger">Limited/None ✗</span></td>
+                        </tr>
+                        <tr>
+                            <td>Odoo 16-17 Performance</td>
+                            <td><span class="success">Optimized ✓</span></td>
+                            <td><span class="danger">Basic ✗</span></td>
+                        </tr>
+                        <tr>
+                            <td>Odoo 17 Support</td>
+                            <td><span class="success">Fully Optimized ✓</span></td>
+                            <td><span class="danger">Limited/None ✗</span></td>
+                        </tr>
+                        <tr>
+                            <td>Odoo 18 Compatibility</td>
+                            <td><span class="success">Compatible ✓</span></td>
+                            <td><span class="danger">Often Not Compatible ✗</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Supported Devices</h2>
+            
+            <div class="alert alert-success text-center">
+                <strong>Works with ALL ZKTeco Push-compatible Devices!</strong>
+            </div>
+            
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="gif-container" style="margin: 20px auto; max-width: 900px;">
+                            <img src="device_list.png" alt="Supported ZKTeco Devices" style="width: 100%; height: auto; object-fit: contain;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="device-list">
+                <div class="device-category">
+                    <h4>2.4" TFT Devices (ZLM60 Platform)</h4>
+                    <p>BioPro SA40, SC800</p>
+                </div>
+                
+                <div class="device-category">
+                    <h4>2.8" TFT and 3" TFT Devices</h4>
+                    <p>BioPro Series: ST30, MH20, MH30, MH40, ST40, ST40-A, SA10, SA20, SA30</p>
+                    <p>MB Series: MB1000, MB2000, MB160, MB360, MB460, MB10, MB20</p>
+                    <p>IN Series, UA Series, K Series, C Series, F Series</p>
+                </div>
+                
+                <div class="device-category">
+                    <h4>3.5" TFT Devices</h4>
+                    <p>iClock Series: iClock260, iClock360, iClock580, iClock660, iClock680, iClock700, iClock880, iClock990</p>
+                    <p>S Series: S500, S560, S880, S900, S922</p>
+                </div>
+                
+                <div class="device-category">
+                    <h4>4.3" TFT Devices</h4>
+                    <p>iFace Series, iFace Plus Series</p>
+                </div>
+                
+                <div class="device-category">
+                    <h4>Green Label and Visible Light Facial Devices</h4>
+                    <p>G Series, SpeedFace Series, FaceDepot, ProMA Series, ProFace X Series, Horus Series, BioFace Series</p>
+                </div>
+                
+                <div class="device-category">
+                    <h4>Extension Reader Support</h4>
+                    <p>ZK9500, SLK20R (USB Connection)</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Video Tutorials</h2>
+            <p class="text-center" style="font-size: 16px; margin-bottom: 25px;">Watch comprehensive tutorials showing how to set up and use the module</p>
+            
+            <div class="container">
+                <!-- First Video - English Tutorial -->
+                <div class="row" style="margin-bottom: 30px;">
+                    <div class="col">
+                        <div class="video-card" style="max-width: 800px; margin: 0 auto;">
+                            <h3>English Tutorial</h3>
+                            <a href="https://youtu.be/OpTUIyJ1ick" target="_blank" class="video-thumbnail">
+                                <img src="mb200.png" alt="English Tutorial" style="width: 100%; height: auto; object-fit: contain;">
+                            </a>
+                            <p style="margin-top: 15px; font-size: 16px;">Complete tutorial in English showing device setup and configuration</p>
+                            <a href="https://youtu.be/OpTUIyJ1ick" target="_blank" class="btn btn-primary">Watch Tutorial</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Second Video - Arabic Tutorial -->
+                <div class="row">
+                    <div class="col">
+                        <div class="video-card" style="max-width: 800px; margin: 0 auto;">
+                            <h3>Arabic Tutorial</h3>
+                            <a href="https://youtu.be/BMT4DdYjntU" target="_blank" class="video-thumbnail">
+                                <img src="user_image.png" alt="Arabic Tutorial" style="width: 100%; height: auto; object-fit: contain;">
+                            </a>
+                            <p style="margin-top: 15px; font-size: 16px;">شرح كامل باللغة العربية لكيفية إعداد وتكوين الجهاز</p>
+                            <a href="https://youtu.be/BMT4DdYjntU" target="_blank" class="btn btn-primary">Watch Tutorial</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section text-center" style="background: linear-gradient(135deg, #faf7fc, #fff);">
+            <h2>About the Author</h2>
+            <p><strong>Ahmed Nour</strong></p>
+            <p>✉️ <a href="mailto:ahmednour@outlook.com">ahmednour@outlook.com</a></p>
+            <p>🌐 <a href="https://odoosa.net" target="_blank">https://odoosa.net</a></p>
+            
+            <div style="margin-top: 25px;">
+                <h3>Need Help?</h3>
+                <p>We're here to assist you with any questions or custom implementation needs</p>
+                <div style="margin: 20px 0;">
+                    <a href="https://odoosa.net" target="_blank" class="btn btn-primary">Visit Website</a>
+                    <a href="mailto:ahmednour@outlook.com" class="btn btn-outline">Contact Support</a>
+                </div>
+                
+                <div style="margin-top: 30px; background: #f8f9fa; padding: 20px; border-radius: 8px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    <h4 style="margin-top: 0;">Get Premium Support</h4>
+                    <p>Purchase includes access to ongoing module updates and priority support. For custom implementation, training, or additional device setup, contact us directly.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div class="container">
+            <p>© 2024 Ahmed Nour - All Rights Reserved</p>
+        </div>
+    </div>
+</body>
+</html> 

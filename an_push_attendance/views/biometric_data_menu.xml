@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Biometric Data Menu Item - Temporarily commented out
+    <menuitem 
+        id="menu_biometric_data" 
+        name="Biometric Data" 
+        parent="an_push_attendance.menu_device_users_section" 
+        sequence="50" 
+        action="action_biometric_data"
+        groups="an_push_attendance.group_attendance_devices_admin"/>
+    -->
+</odoo>

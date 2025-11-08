@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_attendance_recheck_wizard_form" model="ir.ui.view">
+        <field name="name">attendance.recheck.wizard.form</field>
+        <field name="model">attendance.recheck.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Recheck Attendance Period">
+    <group>
+        <group>
+            <field name="selection_type" widget="radio"/>
+            <field name="employee_ids" widget="many2many_tags"
+                   invisible="selection_type != 'employee'"
+                   required="selection_type == 'employee'"/>
+            <field name="department_id"
+                   invisible="selection_type != 'department'"
+                   required="selection_type == 'department'"/>
+        </group>
+        <group>
+            <field name="date_selection" widget="radio"/>
+            <field name="year"
+                   invisible="date_selection != 'month'"
+                   required="date_selection == 'month'"/>
+            <field name="month"
+                   invisible="date_selection != 'month'"
+                   required="date_selection == 'month'"/>
+            <field name="start_date"
+                   invisible="date_selection != 'custom'"
+                   required="date_selection == 'custom'"/>
+            <field name="end_date"
+                   invisible="date_selection != 'custom'"
+                   required="date_selection == 'custom'"/>
+        </group>
+    </group>
+    <group string="Processing Options">
+        <group>
+            <field name="do_recheck"/>
+            <field name="do_process"/>
+            <field name="do_hr_attendance"/>
+        </group>
+    </group>
+    <footer>
+        <button name="action_recheck_period" string="Process" type="object" class="btn-primary"/>
+        <button string="Cancel" class="btn-secondary" special="cancel"/>
+    </footer>
+</form>
+        </field>
+    </record>
+
+    <record id="action_attendance_recheck_wizard" model="ir.actions.act_window">
+        <field name="name">Recheck Attendance Period</field>
+        <field name="res_model">attendance.recheck.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Menu is defined in menu_items.xml -->
+
+    <!-- Add action to attendance records menu -->
+    <record id="action_attendance_recheck_server" model="ir.actions.server">
+        <field name="name">Recheck Period</field>
+        <field name="model_id" ref="model_attendance_record"/>
+        <field name="binding_model_id" ref="model_attendance_record"/>
+        <field name="state">code</field>
+        <field name="code">
+action = {
+    'type': 'ir.actions.act_window',
+    'name': 'Recheck Attendance Period',
+    'res_model': 'attendance.recheck.wizard',
+    'view_mode': 'form',
+    'target': 'new',
+    'context': env.context,
+}
+        </field>
+    </record>
+</odoo> 

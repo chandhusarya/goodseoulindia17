@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Kanban View -->
+    <record id="view_user_picture_kanban" model="ir.ui.view">
+        <field name="name">user.picture.kanban</field>
+        <field name="model">user.picture</field>
+        <field name="arch" type="xml">
+            <kanban default_order="create_date desc">
+                <field name="id"/>
+                <field name="image"/>
+                <field name="file_name"/>
+                <field name="user_id"/>
+                <field name="create_date"/>
+                <field name="device_id"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click d-flex align-items-center p-2 w-100">
+                            <div class="o_kanban_image me-3">
+                                <field name="image" widget="image" options="{'size': [120, 120]}" class="rounded"/>
+                            </div>
+                            <div class="d-flex flex-column justify-content-between flex-grow-1">
+                                <div>
+                                    <span class="fw-bold fs-4"><field name="file_name"/></span>
+                                    <div class="text-muted mt-2">
+                                        <field name="user_id"/>
+                                    </div>
+                                </div>
+                                <div class="text-end text-muted">
+                                    <field name="create_date"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <!-- Tree View -->
+    <record id="view_user_picture_tree" model="ir.ui.view">
+        <field name="name">user.picture.tree</field>
+        <field name="model">user.picture</field>
+        <field name="arch" type="xml">
+            <tree string="User Pictures">
+                <field name="device_id"/>
+                <field name="user_id"/>
+                <field name="file_name"/>
+                <field name="size"/>
+                <field name="create_date"/>
+                <field name="write_date"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_user_picture_form" model="ir.ui.view">
+        <field name="name">user.picture.form</field>
+        <field name="model">user.picture</field>
+        <field name="arch" type="xml">
+            <form string="User Picture">
+                <header>
+                    <field name="active" widget="boolean_toggle"/>
+                </header>
+                <sheet>
+                    <field name="image" widget="image" class="oe_avatar" options="{'preview_image': 'image', 'size': [180, 180]}"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="file_name" placeholder="File Name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="device_id"/>
+                            <field name="user_id"/>
+                            <field name="size"/>
+                        </group>
+                        <group>
+                            <field name="create_date"/>
+                            <field name="write_date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Raw Content" groups="base.group_system">
+                            <field name="content"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+        <!-- Search View -->
+    <record id="view_user_picture_search" model="ir.ui.view">
+        <field name="name">user.picture.search</field>
+        <field name="model">user.picture</field>
+        <field name="arch" type="xml">
+            <search string="Search User Pictures">
+                <field name="file_name"/>
+                <field name="user_id"/>
+                <field name="device_id"/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Device" name="groupby_device" domain="[]" context="{'group_by': 'device_id'}"/>
+                    <filter string="User" name="groupby_user" domain="[]" context="{'group_by': 'user_id'}"/>
+                    <filter string="Creation Date" name="groupby_create_date" domain="[]" context="{'group_by': 'create_date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Main Action -->
+    <record id="action_user_picture" model="ir.actions.act_window">
+        <field name="name">User Pictures</field>
+        <field name="res_model">user.picture</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="search_view_id" ref="view_user_picture_search"/>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No user pictures found
+            </p>
+            <p>
+                Pictures will appear here when uploaded from attendance devices.
+            </p>
+        </field>
+    </record>
+</odoo>

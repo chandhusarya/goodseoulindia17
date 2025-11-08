@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- List View (previously Tree View) -->
+    <record id="setting_attendence_view_view_list" model="ir.ui.view">
+        <field name="name">setting_attendence_view_view_list</field>
+        <field name="model">attendance.config.settings</field>
+        <field name="arch" type="xml">
+            <tree string="Attendance Settings" editable="bottom">
+                <field name="employee_link_field"/>
+                <field name="default_grace_period"/>
+                <field name="default_policy_type"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="setting_attendence_view_form" model="ir.ui.view">
+        <field name="name">setting_attendence_view_form</field>
+        <field name="model">attendance.config.settings</field>
+        <field name="arch" type="xml">
+            <form string="Attendance Settings">
+                <sheet>
+                    <group>
+                        <group string="Employee Link Settings">
+                            <field name="employee_link_field"/>
+                        </group>
+                        <group string="Default Policy Settings">
+                            <field name="default_grace_period"/>
+                            <field name="default_day_start_time" widget="float_time"/>
+                            <field name="default_policy_type"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_attendance_config_settings" model="ir.actions.act_window">
+        <field name="name">Attendance Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">attendance.config.settings</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="setting_attendence_view_view_list"/>
+    </record>
+</odoo>

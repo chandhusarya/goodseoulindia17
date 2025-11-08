@@ -1,0 +1,80 @@
+<odoo>
+
+
+<record id="view_fp_status_policy_form" model="ir.ui.view">
+    <field name="name">fp.status.policy.form</field>
+    <field name="model">fp.status.policy</field>
+    <field name="arch" type="xml">
+        <form>
+            <sheet>
+                <div class="oe_button_box" name="button_box">
+                    <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                        <field name="active" widget="boolean_button"/>
+                    </button>
+                </div>
+                <group>
+                    <group string="Basic Settings">
+                        <field name="name"/>
+                        <field name="policy_type"/>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                        <field name="is_default" readonly="1"/>
+                        <field name="grace_period"/>
+                    </group>
+                    <group string="Time Settings">
+                        <field name="checkin_start_time" widget="float_time"
+                               invisible="policy_type != 'first_check_time'"/>
+                        <field name="checkin_end_time" widget="float_time"
+                               invisible="policy_type != 'first_check_time'"/>
+                        <field name="device_checkin_code" 
+                               invisible="policy_type != 'device_status_code'"
+                               required="policy_type == 'device_status_code'"/>
+                        <field name="device_checkout_code" 
+                               invisible="policy_type != 'device_status_code'"
+                               required="policy_type == 'device_status_code'"/>
+                    </group>
+                </group>
+                <group>
+                    <group string="Day Transition Settings">
+                        <field name="allow_next_day"
+                               invisible="policy_type == 'first_check_time'"/>
+                        <field name="next_day_limit" widget="float_time"
+                               invisible="not allow_next_day or policy_type == 'first_check_time'"/>
+                        <field name="previous_day_limit" widget="float_time"
+                               invisible="policy_type == 'first_check_time'"/>
+                        <field name="ignore_holidays"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page string="Assigned Employees" name="assigned_employees">
+                        <field name="employee_ids"/>
+                    </page>
+                </notebook>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+
+<record id="view_fp_status_policy_tree" model="ir.ui.view">
+    <field name="name">fp.status.policy.tree</field>
+    <field name="model">fp.status.policy</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="name"/>
+            <field name="start_date"/>
+            <field name="end_date"/>
+            <field name="is_default"/>
+            <field name="policy_type"/>
+            <field name="active"/>
+        </tree>
+    </field>
+</record>
+
+    <!-- Action for Fingerprint Status Policies -->
+    <record id="action_fp_status_policy" model="ir.actions.act_window">
+        <field name="name">Fingerprint Status Policies</field>
+        <field name="res_model">fp.status.policy</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

@@ -1,0 +1,96 @@
+<odoo>
+<!--    <record id="ir_cron_attendances_process" model="ir.cron">-->
+<!--        <field name="name">Process Attendance</field>-->
+<!--        <field eval="True" name="active"/>-->
+<!--        <field name="interval_number">1</field>-->
+<!--        <field name="interval_type">days</field>-->
+<!--        <field name="numbercall">-1</field>-->
+<!--        <field name="model_id" ref="model_attendance_record"/>-->
+<!--        <field name="state">code</field>-->
+<!--        <field name="code">model.process_data()</field>-->
+<!--    </record>-->
+
+    <record id="view_attendance_record_tree" model="ir.ui.view">
+        <field name="name">attendance.record.tree</field>
+        <field name="model">attendance.record</field>
+        <field name="arch" type="xml">
+            <tree string="Attendance Records">
+                <field name="device_id"/>
+                <field name="pin"/>
+                <field name="timestamp"/>
+                <field name="status"/>
+<!--                <field name="verify"/>-->
+<!--                <field name="workcode"/>-->
+<!--                <field name="reserved_1"/>-->
+<!--                <field name="reserved_2"/>-->
+                <field name="check_status"/>
+                <field name="shift_day_period"/>
+                <field name="day_period"/>
+                <field name="mapped_employee_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_attendance_record_form" model="ir.ui.view">
+        <field name="name">attendance.record.form</field>
+        <field name="model">attendance.record</field>
+        <field name="arch" type="xml">
+            <form string="Attendance Record">
+                <sheet>
+                    <group>
+                        <field name="device_id" readonly="id != False" groups="an_push_attendance.group_attendance_devices_user"/>
+                        <field name="device_id" groups="an_push_attendance.group_attendance_devices_admin"/>
+                        <field name="pin" readonly="id != False" groups="an_push_attendance.group_attendance_devices_user"/>
+                        <field name="pin" groups="an_push_attendance.group_attendance_devices_admin"/>
+                        <field name="timestamp"/>
+                        <field name="status"/>
+                        <field name="verify" groups="an_push_attendance.group_attendance_devices_admin"/>
+                        <field name="workcode" groups="an_push_attendance.group_attendance_devices_admin"/>
+                        <field name="reserved_1" groups="an_push_attendance.group_attendance_devices_admin"/>
+                        <field name="reserved_2" groups="an_push_attendance.group_attendance_devices_admin"/>
+                        <field name="check_status"/>
+                        <field name="mapped_employee_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="view_attendance_record_search" model="ir.ui.view">
+    <field name="name">attendance.record.search</field>
+    <field name="model">attendance.record</field>
+    <field name="arch" type="xml">
+        <search>
+            <field name="pin"/>
+            <field name="device_id"/>
+            <field name="mapped_employee_id"/>
+            <filter name="today" string="Today" domain="[('date_temps','=',context_today().strftime('%Y-%m-%d'))]"/>
+            <filter name="this_week" string="This Week" domain="[('date_temps','>=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d'))]"/>
+            <group expand="0" string="Group By">
+                <filter name="group_by_employee" string="Employee" context="{'group_by': 'mapped_employee_id'}"/>
+                <filter name="group_by_device" string="Device" context="{'group_by': 'device_id'}"/>
+                <filter name="group_by_date" string="Date" context="{'group_by': 'date_temps'}"/>
+            </group>
+        </search>
+    </field>
+</record>
+
+    <record id="action_attendance_record" model="ir.actions.act_window">
+        <field name="name">Attendance Records</field>
+        <field name="res_model">attendance.record</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_attendance_record_tree"/>
+    </record>
+
+    <!-- Action to recheck statuses -->
+    <record id="action_recheck_statuses" model="ir.actions.server">
+        <field name="name">Recheck Attendance Statuses</field>
+        <field name="model_id" ref="model_attendance_record"/>
+        <field name="binding_model_id" ref="model_attendance_record"/>
+        <field name="binding_view_types">tree,form</field>
+        <field name="state">code</field>
+        <field name="code">records.recheck_statuses()</field>
+    </record>
+
+</odoo>

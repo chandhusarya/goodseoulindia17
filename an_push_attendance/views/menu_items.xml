@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Main Menu -->
+    <menuitem 
+        id="menu_attendance_devices_root" 
+        name="Attendance Devices" 
+        sequence="10" 
+        groups="an_push_attendance.group_attendance_devices_user,an_push_attendance.group_attendance_devices_admin"
+        web_icon="an_push_attendance,static/description/icon.png"/>
+
+    <!-- Attendance Records Section -->
+    <menuitem 
+        id="menu_attendance_records_section" 
+        name="Attendance" 
+        parent="menu_attendance_devices_root" 
+        sequence="10"/>
+
+    <menuitem 
+        id="menu_attendance_records" 
+        name="Attendance Records" 
+        parent="menu_attendance_records_section" 
+        sequence="10" 
+        action="action_attendance_record"/>
+
+    <menuitem 
+        id="menu_attendance_process" 
+        name="Attendance Process" 
+        parent="menu_attendance_records_section" 
+        sequence="20"
+        action="action_attendance_process"/>
+
+    <menuitem 
+        id="menu_attendance_recheck" 
+        name="Recheck Attendance" 
+        parent="menu_attendance_records_section" 
+        sequence="30"
+        action="action_attendance_recheck_wizard"/>
+
+    <!-- Devices Section -->
+    <menuitem 
+        id="menu_attendance_devices_section" 
+        name="Devices" 
+        parent="menu_attendance_devices_root" 
+        sequence="20"/>
+
+    <menuitem 
+        id="menu_attendance_devices" 
+        name="Devices" 
+        parent="menu_attendance_devices_section" 
+        sequence="10" 
+        action="action_attendance_device"/>
+
+    <menuitem 
+        id="menu_device_commands" 
+        name="Device Commands" 
+        parent="menu_attendance_devices_section" 
+        sequence="20" 
+        action="action_device_command"/>
+
+    <menuitem 
+        id="menu_operation_logs" 
+        name="Operation Logs" 
+        parent="menu_attendance_devices_section" 
+        sequence="30" 
+        action="action_operation_log"
+        groups="an_push_attendance.group_attendance_devices_admin"/>
+
+    <!-- Users Section -->
+    <menuitem 
+        id="menu_device_users_section" 
+        name="Users" 
+        parent="menu_attendance_devices_root" 
+        sequence="30"/>
+
+    <menuitem 
+        id="menu_device_users" 
+        name="Device Users" 
+        parent="menu_device_users_section" 
+        sequence="10" 
+        action="action_device_user"/>
+
+    <menuitem 
+        id="menu_fingerprint_templates" 
+        name="Fingerprint Templates" 
+        parent="menu_device_users_section" 
+        sequence="20" 
+        action="action_fingerprint_template"
+        groups="an_push_attendance.group_attendance_devices_admin"/>
+
+    <menuitem 
+        id="menu_face_templates" 
+        name="Face Templates" 
+        parent="menu_device_users_section" 
+        sequence="30" 
+        action="action_face_template"
+        groups="an_push_attendance.group_attendance_devices_admin"/>
+
+    <menuitem 
+        id="menu_user_pictures" 
+        name="User Pictures" 
+        parent="menu_device_users_section" 
+        sequence="40" 
+        action="action_user_picture"
+        groups="an_push_attendance.group_attendance_devices_admin"/>
+
+    <!-- Configuration Section -->
+    <menuitem 
+        id="menu_configuration_section" 
+        name="Configuration" 
+        parent="menu_attendance_devices_root" 
+        sequence="100"
+        groups="an_push_attendance.group_attendance_devices_admin"/>
+
+    <menuitem 
+        id="menu_fp_status_policies" 
+        name="Fingerprint Status Policies" 
+        parent="menu_configuration_section" 
+        sequence="10" 
+        action="action_fp_status_policy"/>
+
+    <menuitem 
+        id="menu_attendance_settings" 
+        name="Settings" 
+        parent="menu_configuration_section" 
+        sequence="20" 
+        action="action_attendance_config_settings"/>
+
+</odoo>

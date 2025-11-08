@@ -1,0 +1,1725 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* an_push_attendance
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-03-11 19:14+0000\n"
+"PO-Revision-Date: 2025-03-11 19:14+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__attlog_stamp
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "ATTLOG Stamp"
+msgstr "ختم سجل الحضور"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__attphoto_stamp
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "ATTPHOTO Stamp"
+msgstr "ختم صورة الحضور"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__message_needaction
+msgid "Action Needed"
+msgstr "إجراء مطلوب"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__active
+#: model:ir.model.fields,field_description:an_push_attendance.field_face_template__active
+#: model:ir.model.fields,field_description:an_push_attendance.field_fp_status_policy__active
+#: model:ir.model.fields,field_description:an_push_attendance.field_user_picture__active
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__face_template__state__active
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_user_picture_search
+msgid "Active"
+msgstr "نشط"
+
+#. module: an_push_attendance
+#: model:ir.model.constraint,message:an_push_attendance.constraint_face_template_unique_device_user_fid_active
+msgid "Active face template with this FID already exists for this user!"
+msgstr "قالب الوجه النشط مع معرف الوجه هذا موجود بالفعل لهذا المستخدم!"
+
+
+
+
+
+
+
+
+
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_process__shift_day_period__afternoon
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_record__shift_day_period__afternoon
+msgid "Afternoon"
+msgstr "فترة بعد الظهر"
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_recheck_wizard__selection_type__all
+msgid "All Employees"
+msgstr "جميع الموظفين"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_fp_status_policy__allow_next_day
+msgid "Allow Next Day Check-out"
+msgstr "السماح بتسجيل الخروج في اليوم التالي"
+
+
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__face_template__state__archived
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_user_picture_search
+msgid "Archived"
+msgstr "مؤرشف"
+
+
+
+
+
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__trans_flag_attlog
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "AttLog"
+msgstr "سجل الحضور"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__trans_flag_attphoto
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "AttPhoto"
+msgstr "صورة الحضور"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__message_attachment_count
+msgid "Attachment Count"
+msgstr "عدد المرفقات"
+
+#. module: an_push_attendance
+#: model:ir.model,name:an_push_attendance.model_hr_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_process__attendance_id
+msgid "Attendance"
+msgstr "الحضور"
+
+#. module: an_push_attendance
+#: model:ir.model,name:an_push_attendance.model_attendance_config_settings
+msgid "Attendance Configuration Settings"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__attendance_count
+msgid "Attendance Count"
+msgstr "عدد الحضور"
+
+#. module: an_push_attendance
+#: model:ir.model,name:an_push_attendance.model_attendance_device
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_tree
+msgid "Attendance Device"
+msgstr "جهاز الحضور"
+
+#. module: an_push_attendance
+#: model:ir.actions.act_window,name:an_push_attendance.action_attendance_device
+#: model:ir.ui.menu,name:an_push_attendance.menu_attendance_devices_root
+msgid "Attendance Devices"
+msgstr "أجهزة الحضور"
+
+#. module: an_push_attendance
+#: model:res.groups,name:an_push_attendance.group_attendance_devices
+msgid "Attendance Devices Access"
+msgstr "صلاحية الوصول لأجهزة الحضور"
+
+#. module: an_push_attendance
+#: model:ir.actions.act_window,name:an_push_attendance.action_attendance_process
+#: model:ir.model,name:an_push_attendance.model_attendance_process
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_record__attendance_process_id
+#: model:ir.ui.menu,name:an_push_attendance.menu_attendance_process
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_process_form
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_process_tree
+msgid "Attendance Process"
+msgstr "عملية الحضور"
+
+#. module: an_push_attendance
+#: model:ir.model,name:an_push_attendance.model_attendance_recheck_wizard
+msgid "Attendance Recheck Wizard"
+msgstr "معالج إعادة التحقق من الحضور"
+
+#. module: an_push_attendance
+#: model:ir.model,name:an_push_attendance.model_attendance_record
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_process__attendance_record_ids
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_record_form
+msgid "Attendance Record"
+msgstr "سجل الحضور"
+
+#. module: an_push_attendance
+#: model:ir.actions.act_window,name:an_push_attendance.action_attendance_record
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__attendance_record_ids
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_user__attendance_record_ids
+#: model:ir.ui.menu,name:an_push_attendance.menu_attendance_records
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_record_tree
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_device_user_form
+msgid "Attendance Records"
+msgstr "سجلات الحضور"
+
+#. module: an_push_attendance
+#: model:ir.actions.act_window,name:an_push_attendance.action_attendance_config_settings
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.setting_attendence_view_form
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.setting_attendence_view_view_tree
+msgid "Attendance Settings"
+msgstr "إعدادات الحضور"
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_recheck_wizard__month__8
+msgid "August"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_config_settings__default_day_start_time
+msgid "Default Day Start Time"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_config_settings__default_grace_period
+msgid "Default Grace Period (minutes)"
+msgstr ""
+
+#. module: an_push_attendance
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.setting_attendence_view_form
+msgid "Default Policy Settings"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_config_settings__default_policy_type
+msgid "Default Policy Type"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,help:an_push_attendance.field_attendance_config_settings__default_grace_period
+msgid "Default grace period in minutes if no policy is specified"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,help:an_push_attendance.field_attendance_config_settings__default_day_start_time
+msgid "Default hour when the working day starts (0-23)"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,help:an_push_attendance.field_attendance_config_settings__default_policy_type
+msgid "Default policy type for employees without specific policy"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__delay
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "Delay"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_recheck_wizard__department_id
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_recheck_wizard__selection_type__department
+msgid "Department"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_process__device_id
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_record__device_id
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_command__device_id
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_user__device_id
+#: model:ir.model.fields,field_description:an_push_attendance.field_face_template__device_id
+#: model:ir.model.fields,field_description:an_push_attendance.field_fingerprint_template__device_id
+#: model:ir.model.fields,field_description:an_push_attendance.field_operation_log__device_id
+#: model:ir.model.fields,field_description:an_push_attendance.field_user_picture__device_id
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_process_search
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_record_search
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_device_command_search
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_device_user_search
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_face_template_search
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_fingerprint_template_search
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_user_picture_search
+msgid "Device"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_fp_status_policy__device_checkin_code
+msgid "Device Check-in Code"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_fp_status_policy__device_checkout_code
+msgid "Device Check-out Code"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model,name:an_push_attendance.model_device_command
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_device_command_form
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_device_command_tree
+msgid "Device Command"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.actions.act_window,name:an_push_attendance.action_device_command
+#: model:ir.ui.menu,name:an_push_attendance.menu_device_commands
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "Device Commands"
+msgstr "أوامر الجهاز"
+
+#. module: an_push_attendance
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "Device Info"
+msgstr "معلومات الجهاز"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__name
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_tree
+msgid "Device Name"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__device_name_info
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "Device Name Info"
+msgstr "معلومات اسم الجهاز"
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__fp_status_policy__policy_type__device_status_code
+msgid "Device Status Code"
+msgstr "رمز حالة الجهاز"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__device_time_zone
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "Device Time Zone"
+msgstr "المنطقة الزمنية للجهاز"
+
+#. module: an_push_attendance
+#: model:ir.model,name:an_push_attendance.model_device_user
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_device_user_form
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_device_user_tree
+msgid "Device User Info"
+msgstr "معلومات مستخدم الجهاز"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_record__device_user_name
+msgid "Device User Name"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.actions.act_window,name:an_push_attendance.action_device_user
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__device_user_ids
+#: model:ir.ui.menu,name:an_push_attendance.menu_device_users
+#: model:ir.ui.menu,name:an_push_attendance.menu_device_users_section
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "Device Users"
+msgstr "مستخدمو الجهاز"
+
+#. module: an_push_attendance
+#: model:ir.ui.menu,name:an_push_attendance.menu_attendance_devices
+#: model:ir.ui.menu,name:an_push_attendance.menu_attendance_devices_section
+msgid "Devices"
+msgstr "الأجهزة"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_config_settings__display_name
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__display_name
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_process__display_name
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_recheck_wizard__display_name
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_record__display_name
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_command__display_name
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_user__display_name
+#: model:ir.model.fields,field_description:an_push_attendance.field_face_template__display_name
+#: model:ir.model.fields,field_description:an_push_attendance.field_fingerprint_template__display_name
+#: model:ir.model.fields,field_description:an_push_attendance.field_fp_status_policy__display_name
+#: model:ir.model.fields,field_description:an_push_attendance.field_operation_log__display_name
+#: model:ir.model.fields,field_description:an_push_attendance.field_user_picture__display_name
+msgid "Display Name"
+msgstr "اسم العرض"
+
+#. module: an_push_attendance
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "Download Attendance"
+msgstr "تنزيل سجلات الحضور"
+
+#. module: an_push_attendance
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "Download User Info"
+msgstr "تنزيل معلومات المستخدم"
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__face_template__state__draft
+msgid "Draft"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_record__is_duplicate
+msgid "Duplicate Entry"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.constraint,message:an_push_attendance.constraint_attendance_record_unique_attendance_device_pin_timestamp
+msgid "Duplicate attendance record detected!"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__eet
+msgid "EET"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__est
+msgid "EST"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__est5edt
+msgid "EST5EDT"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__egypt
+msgid "Egypt"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__eire
+msgid "Eire"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model,name:an_push_attendance.model_hr_employee
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_process__employee_id
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_user__employee_id
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_process_search
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_record_search
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_device_user_search
+msgid "Employee"
+msgstr "الموظف"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_config_settings__employee_link_field
+msgid "Employee Link Field"
+msgstr "حقل ربط الموظف"
+
+#. module: an_push_attendance
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.setting_attendence_view_form
+msgid "Employee Link Settings"
+msgstr "إعدادات ربط الموظف"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_recheck_wizard__employee_ids
+#: model:ir.model.fields,field_description:an_push_attendance.field_fp_status_policy__employee_ids
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_recheck_wizard__selection_type__employee
+msgid "Employees"
+msgstr "الموظفين"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__encrypt
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "Encrypt"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_recheck_wizard__end_date
+#: model:ir.model.fields,field_description:an_push_attendance.field_fp_status_policy__end_date
+msgid "End Date"
+msgstr "تاريخ الانتهاء"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_resource_calendar__end_in
+#: model:ir.model.fields,field_description:an_push_attendance.field_resource_calendar_attendance__end_in
+msgid "End In"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_resource_calendar__end_out
+#: model:ir.model.fields,field_description:an_push_attendance.field_resource_calendar_attendance__end_out
+msgid "End Out"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_resource_calendar__end_period
+#: model:ir.model.fields,field_description:an_push_attendance.field_resource_calendar_attendance__end_period
+msgid "End Period"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,help:an_push_attendance.field_resource_calendar__end_period
+msgid "End of acceptable attendance period"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,help:an_push_attendance.field_resource_calendar_attendance__end_period
+msgid "End of acceptable attendance period for this shift"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,help:an_push_attendance.field_fp_status_policy__checkin_end_time
+msgid ""
+"End of check-in period (0-23). If less than start time, it means next day."
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__trans_flag_enrollfp
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "EnrollFP"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__trans_flag_enrolluser
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "EnrollUser"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__error_delay
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "Error Delay"
+msgstr "تأخير الخطأ"
+
+
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_face_template__fid
+msgid "Face ID"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model,name:an_push_attendance.model_face_template
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_face_template_form
+msgid "Face Template"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.actions.act_window,name:an_push_attendance.action_face_template
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__face_template_count
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__face_template_ids
+#: model:ir.ui.menu,name:an_push_attendance.menu_face_templates
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_face_template_tree
+msgid "Face Templates"
+msgstr "قوالب الوجه"
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__device_command__status__failed
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_device_command_search
+msgid "Failed"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_recheck_wizard__month__2
+msgid "February"
+msgstr ""
+
+#. module: an_push_attendance
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "Fetch Device Info"
+msgstr "جلب معلومات الجهاز"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_user_picture__file_name
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_user_picture_form
+msgid "File Name"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_hr_employee__fingerprint_no
+msgid "Finger Print No"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__fp_count
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_tree
+msgid "Fingerprint Count"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_fingerprint_template__fid
+msgid "Fingerprint ID"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_hr_employee__fp_policy_ids
+msgid "Fingerprint Policies"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.actions.act_window,name:an_push_attendance.action_fp_status_policy
+#: model:ir.ui.menu,name:an_push_attendance.menu_fp_status_policies
+msgid "Fingerprint Status Policies"
+msgstr "سياسات حالة البصمة"
+
+#. module: an_push_attendance
+#: model:ir.model,name:an_push_attendance.model_fp_status_policy
+#: model:ir.model.fields,field_description:an_push_attendance.field_resource_calendar__fp_status_policy_id
+msgid "Fingerprint Status Policy"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model,name:an_push_attendance.model_fingerprint_template
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_fingerprint_template_form
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_fingerprint_template_tree
+msgid "Fingerprint Template"
+msgstr "قوالب البصمة"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__fingerprint_template_count
+msgid "Fingerprint Template Count"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.actions.act_window,name:an_push_attendance.action_fingerprint_template
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_user__fingerprint_template_ids
+#: model:ir.ui.menu,name:an_push_attendance.menu_fingerprint_templates
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_device_user_form
+msgid "Fingerprint Templates"
+msgstr "قوالب البصمة"
+
+#. module: an_push_attendance
+#: model:ir.model.constraint,message:an_push_attendance.constraint_fingerprint_template_unique_device_user_fid
+msgid "Fingerprint template with this FID already exists for this user!"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__fw_version
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_tree
+msgid "Firmware Version"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_config_settings__default_policy_type__first_check_time
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__fp_status_policy__policy_type__first_check_time
+msgid "First Check Time"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_config_settings__default_policy_type__flexible_period
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__fp_status_policy__policy_type__flexible_period
+msgid "Flexible Period"
+msgstr "فترة مرنة"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,help:an_push_attendance.field_fp_status_policy__policy_type
+msgid ""
+"Flexible Period: Alternates check-in/check-out based on sequence.\n"
+"First Check Time: Uses time windows to determine check-in/check-out.\n"
+"Compute with Calendar: Uses employee's work schedule.\n"
+"Device Status Code: Uses the raw status code from the device (0=check-in, 1=check-out by default)."
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__message_follower_ids
+msgid "Followers"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__message_partner_ids
+msgid "Followers (Partners)"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__gb
+msgid "GB"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__gb-eire
+msgid "GB-Eire"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__gmt
+msgid "GMT"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__gmt+0
+msgid "GMT+0"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__gmt-0
+msgid "GMT-0"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__gmt0
+msgid "GMT0"
+msgstr ""
+
+#. module: an_push_attendance
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "General Settings"
+msgstr "الإعدادات العامة"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_fp_status_policy__grace_period
+msgid "Grace Period (minutes)"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__greenwich
+msgid "Greenwich"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_user__group
+msgid "Group"
+msgstr ""
+
+#. module: an_push_attendance
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_search
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_process_search
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_record_search
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_device_command_search
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_device_user_search
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_face_template_search
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_fingerprint_template_search
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_user_picture_search
+msgid "Group By"
+msgstr "تجميع حسب"
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__hst
+msgid "HST"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__has_message
+msgid "Has Message"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_record__day_period__holiday
+msgid "Holiday"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__hongkong
+msgid "Hongkong"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_config_settings__id
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__id
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_process__id
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_recheck_wizard__id
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_record__id
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_command__id
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_user__id
+#: model:ir.model.fields,field_description:an_push_attendance.field_face_template__id
+#: model:ir.model.fields,field_description:an_push_attendance.field_fingerprint_template__id
+#: model:ir.model.fields,field_description:an_push_attendance.field_fp_status_policy__id
+#: model:ir.model.fields,field_description:an_push_attendance.field_operation_log__id
+#: model:ir.model.fields,field_description:an_push_attendance.field_user_picture__id
+msgid "ID"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__ip_address
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "IP Address"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__iceland
+msgid "Iceland"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,help:an_push_attendance.field_attendance_device__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,help:an_push_attendance.field_attendance_device__message_has_error
+#: model:ir.model.fields,help:an_push_attendance.field_attendance_device__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_fp_status_policy__ignore_holidays
+msgid "Ignore Holidays"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_user_picture__image
+msgid "Image"
+msgstr ""
+
+
+
+#. module: an_push_attendance
+#: model:ir.model.fields,help:an_push_attendance.field_attendance_record__is_duplicate
+msgid ""
+"Indicates if this record is a potential duplicate based on grace period."
+msgstr ""
+
+#. module: an_push_attendance
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_face_template_search
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_fingerprint_template_search
+msgid "Invalid"
+msgstr ""
+
+
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_fp_status_policy__is_default
+msgid "Is Default Policy"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__message_is_follower
+msgid "Is Follower"
+msgstr ""
+
+
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_operation_log__log_content_large
+msgid "Large Content"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__last_handshake
+msgid "Last Handshake"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_config_settings____last_update
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device____last_update
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_process____last_update
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_recheck_wizard____last_update
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_record____last_update
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_command____last_update
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_user____last_update
+#: model:ir.model.fields,field_description:an_push_attendance.field_face_template____last_update
+#: model:ir.model.fields,field_description:an_push_attendance.field_fingerprint_template____last_update
+#: model:ir.model.fields,field_description:an_push_attendance.field_fp_status_policy____last_update
+#: model:ir.model.fields,field_description:an_push_attendance.field_operation_log____last_update
+#: model:ir.model.fields,field_description:an_push_attendance.field_user_picture____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_command__last_retry
+msgid "Last Retry"
+msgstr ""
+
+#. module: an_push_attendance
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_tree
+msgid "Last Sync"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_face_template__last_update
+msgid "Last Updated"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_config_settings__write_uid
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__write_uid
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_process__write_uid
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_recheck_wizard__write_uid
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_record__write_uid
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_command__write_uid
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_user__write_uid
+#: model:ir.model.fields,field_description:an_push_attendance.field_face_template__write_uid
+#: model:ir.model.fields,field_description:an_push_attendance.field_fingerprint_template__write_uid
+#: model:ir.model.fields,field_description:an_push_attendance.field_fp_status_policy__write_uid
+#: model:ir.model.fields,field_description:an_push_attendance.field_operation_log__write_uid
+#: model:ir.model.fields,field_description:an_push_attendance.field_user_picture__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_config_settings__write_date
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__write_date
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_process__write_date
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_recheck_wizard__write_date
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_record__write_date
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_command__write_date
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_user__write_date
+#: model:ir.model.fields,field_description:an_push_attendance.field_face_template__write_date
+#: model:ir.model.fields,field_description:an_push_attendance.field_fingerprint_template__write_date
+#: model:ir.model.fields,field_description:an_push_attendance.field_fp_status_policy__write_date
+#: model:ir.model.fields,field_description:an_push_attendance.field_operation_log__write_date
+#: model:ir.model.fields,field_description:an_push_attendance.field_user_picture__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__libya
+msgid "Libya"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__location
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_search
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_tree
+msgid "Location"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_operation_log__log_content
+msgid "Log Content"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__mac
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_tree
+msgid "MAC Address"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__met
+msgid "MET"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__mst
+msgid "MST"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__mst7mdt
+msgid "MST7MDT"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__message_main_attachment_id
+msgid "Main Attachment"
+msgstr ""
+
+#. module: an_push_attendance
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "Map Device Users"
+msgstr "ربط مستخدمي الجهاز"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_record__mapped_employee_id
+msgid "Mapped Employee"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_recheck_wizard__month__3
+msgid "March"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__max_att_log_count
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "Max Attendance Log Count"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__max_face_count
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "Max Face Count"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__max_user_count
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "Max User Count"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__max_user_photo_count
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "Max User Photo Count"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_recheck_wizard__month__5
+msgid "May"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_user_picture__image_medium
+msgid "Medium Image"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__message_has_error
+msgid "Message Delivery error"
+msgstr "خطأ في تسليم الرسالة"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__message_ids
+msgid "Messages"
+msgstr "الرسائل"
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__mexico/bajanorte
+msgid "Mexico/BajaNorte"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__mexico/bajasur
+msgid "Mexico/BajaSur"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__mexico/general
+msgid "Mexico/General"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_recheck_wizard__month
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_recheck_wizard__date_selection__month
+msgid "Month"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_process__shift_day_period__morning
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_record__shift_day_period__morning
+msgid "Morning"
+msgstr "فترة الصباح"
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__nz
+msgid "NZ"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__nz-chat
+msgid "NZ-CHAT"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_user__name
+msgid "Name"
+msgstr "الاسم"
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__navajo
+msgid "Navajo"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_fp_status_policy__next_day_limit
+msgid "Next Day Limit (hours)"
+msgstr ""
+
+#. module: an_push_attendance
+#: model_terms:ir.actions.act_window,help:an_push_attendance.action_user_picture
+msgid "No user pictures found"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_recheck_wizard__month__11
+msgid "November"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__message_needaction_counter
+msgid "Number of Actions"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__message_has_error_counter
+msgid "Number of errors"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,help:an_push_attendance.field_attendance_device__message_needaction_counter
+msgid "Number of messages requiring action"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,help:an_push_attendance.field_attendance_device__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__oem_vendor
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "OEM Vendor"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__operlog_stamp
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "OPERLOG Stamp"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_recheck_wizard__month__10
+msgid "October"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__trans_flag_oplog
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "OpLog"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model,name:an_push_attendance.model_operation_log
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_operation_log_form
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_operation_log_tree
+msgid "Operation Log"
+msgstr "سجل العمل"
+
+#. module: an_push_attendance
+#: model:ir.actions.act_window,name:an_push_attendance.action_operation_log
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__operation_log_count
+#: model:ir.ui.menu,name:an_push_attendance.menu_operation_logs
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "Operation Logs"
+msgstr "سجلات العمل"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_record__pin
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_user__pin
+msgid "PIN"
+msgstr "رقم التعريف الشخصي"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_user__post_data
+msgid "POST Data"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__prc
+msgid "PRC"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__pst8pdt
+msgid "PST8PDT"
+msgstr ""
+
+
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_user__password
+msgid "Password"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__picture_count
+msgid "Pictures"
+msgstr ""
+
+#. module: an_push_attendance
+#: model_terms:ir.actions.act_window,help:an_push_attendance.action_user_picture
+msgid "Pictures will appear here when uploaded from attendance devices."
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__platform
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_tree
+msgid "Platform"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__poland
+msgid "Poland"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_fp_status_policy__name
+msgid "Policy Name"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_fp_status_policy__policy_type
+msgid "Policy Type"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__portugal
+msgid "Portugal"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_fp_status_policy__previous_day_limit
+msgid "Previous Day Check-in Limit (Hours)"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_user__privilege
+msgid "Privilege"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_hr_attendance__process_id
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_recheck_wizard_form
+msgid "Process"
+msgstr "معالجة"
+
+#. module: an_push_attendance
+#: model:ir.actions.server,name:an_push_attendance.ir_cron_process_attendance_data_ir_actions_server
+#: model:ir.cron,cron_name:an_push_attendance.ir_cron_process_attendance_data
+msgid "Process Attendance Data"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.actions.server,name:an_push_attendance.ir_cron_process_to_hr_attendance_ir_actions_server
+#: model:ir.cron,cron_name:an_push_attendance.ir_cron_process_to_hr_attendance
+msgid "Process Attendance Process to HR Attendance"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.actions.server,name:an_push_attendance.ir_cron_attendance_process_ir_actions_server
+#: model:ir.cron,cron_name:an_push_attendance.ir_cron_attendance_process
+msgid "Process Attendance Records"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.actions.server,name:an_push_attendance.ir_cron_process_attendance_records_ir_actions_server
+#: model:ir.cron,cron_name:an_push_attendance.ir_cron_process_attendance_records
+msgid "Process Attendance Records to Process"
+msgstr ""
+
+#. module: an_push_attendance
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_operation_log_form
+msgid "Process Log"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_recheck_wizard__do_process
+msgid "Process to Attendance Process"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_recheck_wizard__do_hr_attendance
+msgid "Process to HR Attendance"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_operation_log__processed
+msgid "Processed"
+msgstr ""
+
+#. module: an_push_attendance
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_recheck_wizard_form
+msgid "Processing Options"
+msgstr "خيارات المعالجة"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_operation_log__processing_result
+msgid "Processing Result"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__push_version
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "Push Version"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__roc
+msgid "ROC"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__rok
+msgid "ROK"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_user_picture__content
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_user_picture_form
+msgid "Raw Content"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__realtime
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "Realtime"
+msgstr ""
+
+#. module: an_push_attendance
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "Reboot Device"
+msgstr "إعادة تشغيل الجهاز"
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__device_command__status__received
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_device_command_search
+msgid "Received"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_recheck_wizard__do_recheck
+#: model:ir.ui.menu,name:an_push_attendance.menu_attendance_recheck
+msgid "Recheck Attendance"
+msgstr "إعادة التحقق من الحضور"
+
+#. module: an_push_attendance
+#: model:ir.actions.act_window,name:an_push_attendance.action_attendance_recheck_wizard
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_recheck_wizard_form
+msgid "Recheck Attendance Period"
+msgstr "فترة التحقق من الحضور"
+
+#. module: an_push_attendance
+#: model:ir.actions.server,name:an_push_attendance.action_attendance_recheck_server
+msgid "Recheck Period"
+msgstr "إعادة التحقق من الفترة"
+
+#. module: an_push_attendance
+#: model:ir.actions.server,name:an_push_attendance.action_recheck_statuses
+msgid "Recheck Statuses"
+msgstr "إعادة التحقق من الحالات"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,help:an_push_attendance.field_attendance_recheck_wizard__do_recheck
+msgid "Recompute check-in/out status for attendance records"
+msgstr "إعادة حساب حالة تسجيل الدخول/الخروج لسجلات الحضور"
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_record__day_period__regular
+msgid "Regular Day"
+msgstr "يوم عادي"
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_record__check_status__repeated
+msgid "Repeated"
+msgstr "مكرر"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_record__reserved_1
+msgid "Reserved 1"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_record__reserved_2
+msgid "Reserved 2"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.actions.server,name:an_push_attendance.action_reset_and_reprocess_selected
+msgid "Reset and Reprocess Selected Records"
+msgstr "إعادة تعيين ومعالجة السجلات المحددة"
+
+#. module: an_push_attendance
+#: model:ir.model,name:an_push_attendance.model_resource_calendar
+msgid "Resource Working Time"
+msgstr "فترة عمل المَورِد "
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__response_value
+msgid "Response Value"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_command__result
+msgid "Result"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_command__retry_count
+msgid "Retry Count"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_record__schedule_line_id
+msgid "Schedule Line"
+msgstr ""
+
+#. module: an_push_attendance
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_user_picture_search
+msgid "Search User Pictures"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_recheck_wizard__selection_type
+msgid "Selection Type"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__device_command__status__sent
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_device_command_search
+msgid "Sent"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_recheck_wizard__month__9
+msgid "September"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__serial_number
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_tree
+msgid "Serial Number"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__server_ver
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "Server Version"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.ui.menu,name:an_push_attendance.menu_attendance_settings
+msgid "Settings"
+msgstr "الإعدادات"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_record__shift_line_id
+msgid "Shift Line"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_process__shift_day_period
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_record__shift_day_period
+msgid "Shift Period"
+msgstr "فترة التغيير"
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__singapore
+msgid "Singapore"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_face_template__size
+#: model:ir.model.fields,field_description:an_push_attendance.field_fingerprint_template__size
+#: model:ir.model.fields,field_description:an_push_attendance.field_user_picture__size
+msgid "Size"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_user_picture__image_small
+msgid "Small Image"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_config_settings__smart_search
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__smart_search
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_process__smart_search
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_recheck_wizard__smart_search
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_record__smart_search
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_command__smart_search
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_user__smart_search
+#: model:ir.model.fields,field_description:an_push_attendance.field_face_template__smart_search
+#: model:ir.model.fields,field_description:an_push_attendance.field_fingerprint_template__smart_search
+#: model:ir.model.fields,field_description:an_push_attendance.field_fp_status_policy__smart_search
+#: model:ir.model.fields,field_description:an_push_attendance.field_hr_attendance__smart_search
+#: model:ir.model.fields,field_description:an_push_attendance.field_hr_employee__smart_search
+#: model:ir.model.fields,field_description:an_push_attendance.field_operation_log__smart_search
+#: model:ir.model.fields,field_description:an_push_attendance.field_resource_calendar__smart_search
+#: model:ir.model.fields,field_description:an_push_attendance.field_resource_calendar_attendance__smart_search
+#: model:ir.model.fields,field_description:an_push_attendance.field_user_picture__smart_search
+msgid "Smart Search"
+msgstr "بحث ذكي"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_recheck_wizard__start_date
+#: model:ir.model.fields,field_description:an_push_attendance.field_fp_status_policy__start_date
+msgid "Start Date"
+msgstr "تاريخ البدء"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_resource_calendar__start_in
+#: model:ir.model.fields,field_description:an_push_attendance.field_resource_calendar_attendance__start_in
+msgid "Start In"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_resource_calendar__start_out
+#: model:ir.model.fields,field_description:an_push_attendance.field_resource_calendar_attendance__start_out
+msgid "Start Out"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_resource_calendar__start_period
+#: model:ir.model.fields,field_description:an_push_attendance.field_resource_calendar_attendance__start_period
+msgid "Start Period"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,help:an_push_attendance.field_resource_calendar__start_period
+msgid "Start of acceptable attendance period"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,help:an_push_attendance.field_resource_calendar_attendance__start_period
+msgid "Start of acceptable attendance period for this shift"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,help:an_push_attendance.field_fp_status_policy__checkin_start_time
+msgid "Start of check-in period (0-23)"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_record__status
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_command__status
+#: model:ir.model.fields,field_description:an_push_attendance.field_face_template__state
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_device_command_search
+msgid "Status"
+msgstr "الحالة"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__table_name_stamp
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "Table Name Stamp"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_face_template__template
+#: model:ir.model.fields,field_description:an_push_attendance.field_fingerprint_template__template
+msgid "Template"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.constraint,message:an_push_attendance.constraint_hr_employee_fingerprint_no_unique
+msgid "The Finger Print No must be unique."
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,help:an_push_attendance.field_fp_status_policy__device_checkin_code
+msgid "The status code from the device that represents a check-in (usually 0)"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,help:an_push_attendance.field_fp_status_policy__device_checkout_code
+msgid ""
+"The status code from the device that represents a check-out (usually 1)"
+msgstr ""
+
+#. module: an_push_attendance
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_process_search
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_record_search
+msgid "This Week"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.constraint,message:an_push_attendance.constraint_operation_log_unique_device_content_hash
+msgid "This log content already exists for this device!"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.constraint,message:an_push_attendance.constraint_user_picture_unique_device_user_file
+msgid "This picture filename already exists for this user!"
+msgstr ""
+
+#. module: an_push_attendance
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_fp_status_policy_form
+msgid "Time Settings"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__time_zone
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_user__time_zone
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "Time Zone"
+msgstr "المنطقة الزمنية للجهاز"
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__device_command__status__timeout
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_device_command_search
+msgid "Timeout"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_command__timeout_minutes
+msgid "Timeout (minutes)"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_record__timestamp
+msgid "Timestamp"
+msgstr "الطابع الزمني"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_record__timestamp_accurates
+msgid "Timestamp accurate"
+msgstr "الطابع الزمني الدقيق"
+
+#. module: an_push_attendance
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_process_search
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_record_search
+msgid "Today"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__trans_interval
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "Trans Interval"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__trans_times
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "Trans Times"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__trans_flag_transdata
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "TransData"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__transaction_count
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_tree
+msgid "Transaction Count"
+msgstr ""
+
+
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__utc
+msgid "UTC"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__universal
+msgid "Universal"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_face_template__user_id
+#: model:ir.model.fields,field_description:an_push_attendance.field_fingerprint_template__user_id
+#: model:ir.model.fields,field_description:an_push_attendance.field_user_picture__user_id
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_face_template_search
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_fingerprint_template_search
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_user_picture_search
+msgid "User"
+msgstr "المستخدم"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__user_count
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_tree
+msgid "User Count"
+msgstr "عدد المستخدمين"
+
+#. module: an_push_attendance
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "User PIC"
+msgstr "صورة المستخدم"
+
+#. module: an_push_attendance
+#: model:ir.model,name:an_push_attendance.model_user_picture
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_user_picture_form
+msgid "User Picture"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.actions.act_window,name:an_push_attendance.action_user_picture
+#: model:ir.ui.menu,name:an_push_attendance.menu_user_pictures
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_user_picture_tree
+msgid "User Pictures"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.constraint,message:an_push_attendance.constraint_device_user_unique_device_pin
+msgid "User with this PIN already exists on this device!"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__trans_flag_userpic
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "UserPic"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_face_template__valid
+#: model:ir.model.fields,field_description:an_push_attendance.field_fingerprint_template__valid
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_face_template_search
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_fingerprint_template_search
+msgid "Valid"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_record__verify
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_user__verify
+msgid "Verify"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_face_template__version
+msgid "Version"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_device_user__vice_card
+msgid "Vice Card"
+msgstr ""
+
+#. module: an_push_attendance
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_device_user_form
+msgid "View Fingerprint Templates"
+msgstr "عرض قوالب البصمة"
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__w-su
+msgid "W-SU"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__wet
+msgid "WET"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__website_message_ids
+msgid "Website Messages"
+msgstr "رسائل الموقع"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,help:an_push_attendance.field_attendance_device__website_message_ids
+msgid "Website communication history"
+msgstr "سجل اتصالات الموقع"
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_record__day_period__weekend
+msgid "Weekend"
+msgstr "عطلة نهاية الأسبوع"
+
+#. module: an_push_attendance
+#: model:ir.model,name:an_push_attendance.model_resource_calendar_attendance
+msgid "Work Detail"
+msgstr "تفاصيل العمل"
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_record__workcode
+msgid "Workcode"
+msgstr ""
+
+#. module: an_push_attendance
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_resource_calendar_attendance_tree_inherits
+msgid "Working Time"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_recheck_wizard__year
+msgid "Year"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields,field_description:an_push_attendance.field_attendance_device__zkfp_version
+#: model_terms:ir.ui.view,arch_db:an_push_attendance.view_attendance_device_form
+msgid "ZKFP Version"
+msgstr ""
+
+#. module: an_push_attendance
+#: model:ir.model.fields.selection,name:an_push_attendance.selection__attendance_device__device_time_zone__zulu
+msgid "Zulu"
+msgstr ""

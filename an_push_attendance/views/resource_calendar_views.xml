@@ -1,0 +1,47 @@
+<odoo>
+<record id="view_resource_calendar_form_inherit" model="ir.ui.view">
+    <field name="name">resource.calendar.form.inherit</field>
+    <field name="model">resource.calendar</field>
+    <field name="inherit_id" ref="resource.resource_calendar_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='tz']" position="after">
+            <field name="start_period" widget="float_time"/>
+            <field name="end_period" widget="float_time"/>
+        </xpath>
+    </field>
+</record>
+
+    <record id="view_resource_calendar_attendance_tree_inherits" model="ir.ui.view">
+        <field name="name">resource.calendar.attendance.tree.inherits</field>
+        <field name="model">resource.calendar.attendance</field>
+        <field name="inherit_id" ref="resource.view_resource_calendar_attendance_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list | //tree" position="replace">
+                <tree string="Working Time" editable="top">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="dayofweek"/>
+                    <field name="day_period"/>
+                    <field name="hour_from" widget="float_time"/>
+                    <field name="hour_to" widget="float_time"/>
+                    <field name="start_period" widget="float_time"/>
+                    <field name="end_period" widget="float_time"/>
+                    <field name="date_from" optional="hide"/>
+                    <field name="date_to" optional="hide"/>
+                </tree>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_resource_calendar_attendance_form_inherits" model="ir.ui.view">
+        <field name="name">resource.calendar.attendance.form.inherits</field>
+        <field name="model">resource.calendar.attendance</field>
+        <field name="inherit_id" ref="resource.view_resource_calendar_attendance_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='hour_to']" position="after">
+                <field name="start_period" widget="float_time"/>
+                <field name="end_period" widget="float_time"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

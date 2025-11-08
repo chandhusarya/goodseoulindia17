@@ -1,0 +1,26 @@
+<odoo>
+    <record id="action_recheck_statuses" model="ir.actions.server">
+        <field name="name">Recheck Statuses</field>
+        <field name="model_id" ref="model_attendance_record"/>
+        <field name="binding_model_id" ref="model_attendance_record"/>
+        <field name="state">code</field>
+        <field name="code">action = env['attendance.record'].browse(env.context.get('active_ids')).recheck_statuses()</field>
+    </record>
+
+
+
+    <!-- Add new server action for reset and reprocess -->
+    <record id="action_reset_and_reprocess_selected" model="ir.actions.server">
+        <field name="name">Reset and Reprocess Selected Records</field>
+        <field name="model_id" ref="model_attendance_record"/>
+        <field name="binding_model_id" ref="model_attendance_record"/>
+        <field name="binding_type">action</field>
+        <field name="state">code</field>
+        <field name="code">
+if records:
+    action = records.reset_and_reprocess_selected()
+        </field>
+    </record>
+
+
+</odoo>
