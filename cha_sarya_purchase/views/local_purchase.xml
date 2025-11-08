@@ -29,7 +29,7 @@
 						<button name="action_cancel" type="object" string="Cancel" invisible="state != 'new'"/>
 						<button name="reset_to_draft" type="object" string="Reset To Draft"
                                 invisible="state in ('new', 'cancel', 'confirm')"/>
-                        <field name="state" widget="statusbar" statusbar_visible="new,manager,manager_approved,finance,confirm"/>
+                        <field name="state" widget="statusbar" statusbar_visible="new,manager,confirm"/>
                     </header>
                     <sheet>
 
@@ -65,15 +65,15 @@
                                 <field name="pos_id"
                                        options="{'no_create_edit': True, 'no_create': True}"
                                        required="1"
-                                       force_save="1"
+                                       force_save="1"  readonly="state == 'confirm'"
                                 />
                                 <field name="picking_type_id"
                                        options="{'no_create_edit': True, 'no_create': True}"
                                        invisible="1"/>
-                                <field name="move_id" invisible="state != 'confirm'"/>
-                                <field name="picking_id" invisible="state != 'confirm'"/>
-                                <field name="landed_cost" invisible="state != 'confirm'"/>
-                                <field name="confirm_date" invisible="confirm_date == False"/>
+                                <field name="move_id"  readonly="state == 'confirm'" invisible="state != 'confirm'"/>
+                                <field name="picking_id"  readonly="state == 'confirm'" invisible="state != 'confirm'"/>
+                                <field name="landed_cost"  readonly="state == 'confirm'" invisible="state != 'confirm'"/>
+                                <field name="confirm_date"  readonly="state == 'confirm'" invisible="confirm_date == False"/>
                             </group>
                         </group>
                         <notebook>

@@ -568,6 +568,8 @@ class LocalPurchase(models.Model):
 
     def action_confirm(self):
         #self.create_bill()
+        if self.picking_id:
+            raise UserError("Goods Receipt Note already created.")
         self.create_picking()
         self.state = 'confirm'
 
