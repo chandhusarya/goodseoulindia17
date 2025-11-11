@@ -191,7 +191,7 @@ class InternalStockTransfer(models.Model):
         MoveLine = self.env['stock.move.line']
 
         picking = Picking.create({
-            'picking_type_id': self.env.ref('stock.picking_type_internal').id,  # Internal Transfer Type
+            'picking_type_id': self.env['stock.picking.type'].search([('code', '=', 'internal')], limit=1).id, #self.env.ref('stock.picking_type_internal').id,  # Internal Transfer Type
             'location_id': self.transfer_location_id.id,
             'location_dest_id': self.location_src_id.id,
             'origin': self.name,
@@ -260,7 +260,7 @@ class InternalStockTransfer(models.Model):
         MoveLine = self.env['stock.move.line']
 
         picking = Picking.create({
-            'picking_type_id': self.env.ref('stock.picking_type_internal').id,  # Internal Transfer Type
+            'picking_type_id': self.env['stock.picking.type'].search([('code', '=', 'internal')], limit=1).id,#self.env.ref('stock.picking_type_internal').id,  # Internal Transfer Type
             'location_id': self.transfer_location_id.id,
             'location_dest_id': self.location_src_id.id,
             'origin': self.name,
@@ -330,7 +330,7 @@ class InternalStockTransfer(models.Model):
         MoveLine = self.env['stock.move.line']
 
         picking = Picking.create({
-            'picking_type_id': self.env.ref('stock.picking_type_internal').id,  # Internal Transfer Type
+            'picking_type_id': self.env['stock.picking.type'].search([('code', '=', 'internal')], limit=1).id,#self.env.ref('stock.picking_type_internal').id,  # Internal Transfer Type
             'location_id': self.transfer_location_id.id,
             'location_dest_id': self.scrap_location_id.id,
             'origin': self.name,
@@ -450,7 +450,7 @@ class InternalStockTransfer(models.Model):
             MoveLine = self.env['stock.move.line']
 
             picking = Picking.create({
-                'picking_type_id': self.env.ref('stock.picking_type_internal').id,  # Internal Transfer Type
+                'picking_type_id': self.env['stock.picking.type'].search([('code', '=', 'internal')], limit=1).id, #self.env.ref('stock.picking_type_internal').id,  # Internal Transfer Type
                 'location_id': transfer.transfer_location_id.id,
                 'location_dest_id': transfer.location_dest_id.id,
                 'origin': self.name,
