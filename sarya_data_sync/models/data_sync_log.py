@@ -56,8 +56,9 @@ class DataSyncLog(models.Model):
     def data_sync_request(self, model, fields, domain, config_domain, outlet_code):
         try:
             if model not in ('product.category', 'pos.category'):
-                if self.env.user and self.env.user.company_id:
-                    domain += [('company_id', '=', self.env.user.company_id.id)]
+                if model not in ('pos.order.type'):
+                    if self.env.user and self.env.user.company_id:
+                        domain += [('company_id', '=', self.env.user.company_id.id)]
                 if model in ('product.template', 'pos.payment.method', 'product.pricelist', 'product.pricelist.item'):
                     terminals = self.env['pos.config'].sudo().search(config_domain)
                     product_template_ids = []
