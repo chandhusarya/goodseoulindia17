@@ -13,3 +13,21 @@ class ResPartner(models.Model):
         required=True)#('account_type', '=', 'liability_payable'),
     delivery_contact = fields.Char(string='Delivery Contact')
 
+    msme_category = fields.Selection([
+		('non_msme', 'Not Registered (Non-MSME)'),
+		('micro_enterprise', 'Micro Enterprise'),
+		('small_enterprise', 'Small Enterprise'),
+		('medium_enterprise', 'Medium Enterprise')], "MSME Category")
+
+    urn = fields.Char(string='Udyam Registration Number')
+
+    udyam_file_name = fields.Char('Udyam File Name')
+    udyam_file = fields.Binary("Udyam Certificate (PDF)")
+
+    msme_validity = fields.Date('MSME Validity (if any)')
+    registration_date = fields.Date('Registration Date')
+
+
+
+
+
