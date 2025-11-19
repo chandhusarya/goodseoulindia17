@@ -1,0 +1,31 @@
+# -*- coding: utf-8 -*-
+
+{
+    'name': 'Stock Count',
+    'description': """Stock Count""",
+    'summary': """Stock Count""",
+    'version': '17.0.0.0.0',
+    'category': 'Point of Sale',
+    'sequence': 10,
+    'author': 'SHUBIN VS',
+    'company': 'Sarya',
+    'maintainer': 'Sarya',
+    'website': "https://www.sarya.ae",
+    # 'support': 'support@sarya.com',
+    'depends': ['point_of_sale', 'sarya_pos_custom', 'stock'],
+    'data': [
+        'data/ir_sequence_data.xml',
+        'security/security.xml',
+        'security/ir.model.access.csv',
+        'views/pos_config_view.xml',
+        'views/stock_count_line_view.xml',
+        'views/stock_count_approvals_view.xml',
+        'views/stock_count_view.xml',
+        'views/menu.xml',
+    ],
+    'images': ['static/description/icon.png'],
+    'license': 'LGPL-3',
+    'installable': True,
+    'auto_install': False,
+    'application': False,
+}
