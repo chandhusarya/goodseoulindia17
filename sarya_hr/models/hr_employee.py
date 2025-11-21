@@ -68,7 +68,11 @@ class Employee(models.Model):
     def _compute_probation_completion(self):
         for employee in self:
             if employee.probation_period > 0:
-                employee.probation_completion_date = employee.first_contract_date + relativedelta(months=employee.probation_period)
+                if employee.first_contract_date:
+                    employee.probation_completion_date = employee.first_contract_date + relativedelta(
+                        months=employee.probation_period)
+                else:
+                    employee.probation_completion_date = False
             else:
                 employee.probation_completion_date = False
 
