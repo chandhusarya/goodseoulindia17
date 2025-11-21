@@ -1,6 +1,7 @@
 from odoo import fields, models, api, _
 from odoo.tools import float_utils, float_compare
 from odoo.exceptions import UserError
+from odoo.tools import float_is_zero
 
 
 
@@ -109,7 +110,7 @@ class OutletTransfer(models.Model):
                 raise UserError(_("You cannot enter Quantity in zero or negative"))
             if not line.lot_id:
                 raise UserError(_("Please enter the lot"))
-        picking_type_id = self.env['stock.picking.type'].search([('code', '=', 'internal'),('company_id', '=', self.company_id.id)])
+        picking_type_id = self.env['stock.picking.type'].search([('code', '=', 'internal'),('company_id', '=', self.company_id.id), ('warehouse_id', '=', self.to_outlet.warehouse_id.id)], limit=1)
         from_outlet = self.from_outlet.lpo_picking_type_id.default_location_dest_id
         to_outlet = self.to_outlet.lpo_picking_type_id.default_location_dest_id
         picking = self.env['stock.picking'].create({
@@ -150,6 +151,42 @@ class OutletTransfer(models.Model):
             if record.from_outlet and record.to_outlet:
                 if record.from_outlet == record.to_outlet:
                     raise UserError("From Outlet and To Outlet cannot be same")
+
+    def _create_outlet_transfer_wh_svl(self, forced_quantity=None):
+        """Create a `stock.valuation.layer` from `self`.
+
+        :param forced_quantity: under some circunstances, the quantity to value is different than
+            the initial demand of the move (Default value = None)
+        """
+        svl_vals_list = []
+        for picking in self.picking_ids:
+            for move in picking.move_ids:
+                move = move.with_company(move.company_id)
+                valued_move_lines = move._get_internal_move_lines()
+                valued_quantity = 0
+
+
+                for valued_move_line in valued_move_lines:
+                    quant = self.env['stock.quant'].search([
+                        ('product_id', '=', valued_move_line.product_id.id),
+                        ('location_id', '=', valued_move_line.location_dest_id.id),
+                        ('quantity', '>', 0),
+                        ('lot_id', '=', valued_move_line.lot_id.id),
+                    ])
+                    valued_quantity += quant.available_quantity
+                if float_is_zero(forced_quantity or valued_quantity, precision_rounding=move.product_id.uom_id.rounding):
+                    continue
+                svl_vals = move.product_id._prepare_intenal_wh_svl_vals(forced_quantity or valued_quantity,
+                                                                        move.company_id,
+                                                                        move.location_id.warehouse_id.id,
+                                                                        move.location_dest_id.warehouse_id.id)
+                svl_vals.update(move._prepare_common_svl_vals_internal_wh())
+                if forced_quantity:
+                    svl_vals['description'] = 'Correction of %s (modification of past move)' % (move.picking_id.name or move.name)
+                svl_vals['description'] += svl_vals.pop('rounding_adjustment', '')
+                svl_vals_list.append(svl_vals)
+
+        return self.env['stock.valuation.layer'].sudo().create(svl_vals_list)
 
 class OutletTransferLines(models.Model):
     _name = 'outlet.transfer.line'
