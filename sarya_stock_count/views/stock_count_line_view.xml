@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="stock_count_line_form_view" model="ir.ui.view">
+            <field name="name">stock.count.line.form.view</field>
+            <field name="model">stock.count.line</field>
+            <field name="arch" type="xml">
+                <form string="Stock Count Line form">
+                    <sheet>
+
+                        <header>
+                            <field name="state" clickable="1" widget="statusbar"
+                                   statusbar_visible="draft,progress,done"/>
+                        </header>
+
+                        <group>
+                            <group>
+                                <field name="product_name"/>
+                                <field name="product_id" domain="[('type','=','product')]"
+                                       readonly="1" invisible="0" force_save="1"/>
+
+                                <field name="primary_packaging_id"
+                                       options="{'no_create': True, 'no_open': True}"/>
+
+                                <field name="location_id"
+                                       groups="stock.group_stock_multi_locations"
+                                       domain="[('usage', '=', 'internal')]"
+                                       options="{'no_create': True, 'no_open': True}"
+                                       required="1" readonly="1"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+
+                        <div class="row">
+
+                            <!-- Column 1 -->
+                            <div class="col-3">
+                                <group>
+                                    <field name="opening_qty" force_save="1"/>
+                                    <field name="grn_qty" force_save="1"/>
+                                    <field name="transfer_in_qty" force_save="1"/>
+                                    <field name="transfer_out_qty" force_save="1"/>
+                                </group>
+                            </div>
+
+                            <!-- Column 2 -->
+                            <div class="col-3">
+                                <group>
+                                    <field name="wastage_qty" force_save="1"/>
+                                    <field name="adjustment_qty" force_save="1"/>
+                                    <field name="sale_qty" force_save="1"/>
+                                    <field name="sale_return_qty" force_save="1"/>
+                                </group>
+                            </div>
+
+                            <!-- Column 3 -->
+                            <div class="col-3 alert alert-info">
+                                <group>
+                                    <field name="is_counted_qty_entered"/>
+                                    <field name="counted_qty"
+                                           readonly="parent.state == 'done'"/>
+                                    <field name="theoretical_qty" force_save="1"/>
+                                    <field name="stock_diff_quantity" force_save="1"/>
+                                    <field name="price" string="Unit Price" readonly="1" force_save="1" invisible="1"/>
+                                </group>
+                            </div>
+
+                        </div>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="view_stock_count_line_tree" model="ir.ui.view">
+            <field name="name">stock.count.line.tree</field>
+            <field name="model">stock.count.line</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="stock_count_id"/>
+                    <field name="product_id"/>
+                    <field name="theoretical_qty"/>
+                    <field name="counted_qty"/>
+                    <field name="stock_diff_quantity"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_stock_count_line_kanban" model="ir.ui.view">
+            <field name="name">stock.count.line.kanban</field>
+            <field name="model">stock.count.line</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile" create="0">
+                    <field name="product_id" domain="[('type','=','product')]"/>
+                    <field name="location_id" domain="[('id', 'child_of', parent.location_id)]"
+                           groups="stock.group_stock_multi_locations"/>
+                    <field name="theoretical_qty" force_save="1"/>
+                    <field name="counted_qty" string="Real Quantity"/>
+                    <field name="stock_diff_quantity" string="Difference"/>
+                    <field name="state" invisible="True"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click_edit
+                                                           #{record.counted_qty.raw_value!=record.theoretical_qty.raw_value ? 'oe_kanban_color_6' : ''}
+                                                           #{record.theoretical_qty.raw_value&lt;0 ? 'oe_kanban_color_2' : ''}">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <strong>
+                                            <field name='product_id'/>
+                                        </strong>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 text-muted">
+                                        <span>Location :
+                                            <t t-esc='record.location_id.value'/>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 text-muted">
+                                        <span>Real Quantity :
+                                            <t t-esc='record.counted_qty.value'/>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 text-muted">
+                                        <span>Theoretical Qty :
+                                            <t t-esc='record.theoretical_qty.value'/>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 text-muted">
+                                        <span>Difference :
+                                            <t t-esc='record.stock_diff_quantity.value'/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="stock_count_line_action" model="ir.actions.act_window">
+            <field name="name">Stock Count Lines</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.count.line</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{'create':False, 'delete': False}</field>
+        </record>
+
+    </data>
+</odoo>

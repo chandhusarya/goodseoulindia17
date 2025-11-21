@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_employee_form_account" model="ir.ui.view">
+            <field name="name">hr.employee.view.form.inherit.mrp.workorder.hr</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='identification_group']" position='after'>
+                     <group string="Office WIFI Acess" name="identification_group">
+                         <field name="wifi_login" string="WiFi Login" readonly="1"/>
+                         <field name="wifi_password" string="WiFi Password" readonly="1"/>
+
+                         <button type="object"
+                                 name="action_generate_wifi_credentials"
+                                 string="Generate WiFi Credentials"
+                                 invisible="wifi_login"
+                                 class="oe_highlight"/>
+
+                         <button type="object"
+                                 name="action_revoke_wifi_credentials"
+                                 string="Revoke WiFi Credentials"
+                                 invisible="not wifi_login"
+                                 class="oe_highlight"/>
+
+
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

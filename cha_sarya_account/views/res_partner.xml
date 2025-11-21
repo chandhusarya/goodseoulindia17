@@ -10,6 +10,16 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='vat']" position="after">
                     <field name="fssai_no" required="0"/>
+
+                    <field name="msme_category" invisible="not supplier_rank"/>
+                    <field name="urn" invisible="not supplier_rank"/>
+
+                    <field name="udyam_file_name" invisible="1"/>
+                    <field name="udyam_file" filename="udyam_file_name" invisible="not supplier_rank"/>
+
+                    <field name="msme_validity" invisible="not supplier_rank"/>
+                    <field name="registration_date" invisible="not supplier_rank"/>
+
                 </xpath>
                 <xpath expr="//field[@name='mobile']" position="after">
                     <field name="delivery_contact" widget="phone"/>
