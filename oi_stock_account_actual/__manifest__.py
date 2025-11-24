@@ -21,10 +21,10 @@
         'stock_account', 'purchase_stock'
     ],
     "data": [
-        'view/product_template.xml',
-        'view/product_category.xml',
-        'view/stock_move.xml',
-        'view/stock_valuation_layer.xml'
+        # 'view/product_template.xml',
+        # 'view/product_category.xml',
+        # 'view/stock_move.xml',
+        # 'view/stock_valuation_layer.xml'
     ],
     'qweb' : [
            

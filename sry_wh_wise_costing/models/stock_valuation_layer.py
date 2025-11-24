@@ -60,7 +60,7 @@ class StockValuationLayer(models.Model):
             + location_dest_id_match
         ))
 
-        print("layer_ids ==>> ", layer_ids)
+        # print("layer_ids ==>> ", layer_ids)
 
         return [('id', 'in', layer_ids)]
 
