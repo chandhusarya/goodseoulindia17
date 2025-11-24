@@ -3,12 +3,15 @@ from odoo.exceptions import UserError, ValidationError, AccessError
 import random
 import re
 import psycopg2
+from twilio.rest import Client
+import json
 
 class HrEmployee(models.Model):
     _inherit = "hr.employee"
 
     wifi_login = fields.Char(string="WiFi Login")
     wifi_password = fields.Char(string="WiFi Password")
+    do_not_send_whatsapp = fields.Boolean(string="Do Not Send WhatsApp")
 
 
     def get_radius_connection(self):
@@ -132,14 +135,36 @@ class HrEmployee(models.Model):
                     """
                 cur.execute(sql, (username, password))
                 conn.commit()
-
-                print(f"✅ User '{username}' created successfully.")
-
                 cur.close()
                 conn.close()
 
             except Exception as e:
                 raise UserError(_("Error %s" % str(e)))
+
+            if not employee.do_not_send_whatsapp:
+
+                account_sid = self.env['ir.config_parameter'].sudo().get_param('twilio.account_sid', False)
+                auth_token = self.env['ir.config_parameter'].sudo().get_param('twilio.auth_token', False)
+                from_number = self.env['ir.config_parameter'].sudo().get_param('twilio.from', False)
+                if employee.whatsapp_number:
+                    to_number = employee.whatsapp_number
+                else:
+                    # Fallback to mobile or work phone if whatsapp number is not available
+                    to_number = employee.mobile_phone and employee.mobile_phone or employee.work_phone
+
+                if account_sid and auth_token and from_number and to_number:
+                    message = "Wi-Fi Username: %s Wi-Fi Password: %s Please keep these credentials confidential" % (username, password)
+
+                    from_number = "whatsapp:%s" % from_number
+                    to_number = to_number.replace(" ", '')
+                    to_number = "whatsapp:%s" % to_number
+                    content_variables = json.dumps({"1": message})
+                    client = Client(account_sid, auth_token)
+                    tillow_message = client.messages.create(
+                        from_=from_number,
+                        content_sid='HX8431695760490729c5a86227e1638cb5',
+                        content_variables=content_variables,
+                        to=to_number)
 
 
 
@@ -236,6 +261,7 @@ class HrEmployeePublic(models.Model):
 
     wifi_login = fields.Char(string="WiFi Login")
     wifi_password = fields.Char(string="WiFi Password")
+    do_not_send_whatsapp = fields.Boolean(string="Do Not Send WhatsApp")
 
 
 
