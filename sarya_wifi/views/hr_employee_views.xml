@@ -11,6 +11,8 @@
                          <field name="wifi_login" string="WiFi Login" readonly="1"/>
                          <field name="wifi_password" string="WiFi Password" readonly="1"/>
 
+                         <field name="do_not_send_whatsapp"/>
+
                          <button type="object"
                                  name="action_generate_wifi_credentials"
                                  string="Generate WiFi Credentials"
