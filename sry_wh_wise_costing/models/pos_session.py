@@ -36,40 +36,40 @@ class POSSession(models.Model):
                         '''
                         Normal
                         '''
-                        # for line in self.move_id.line_ids:
-                        #     if line.name == 'Difference at closing PoS session' :
-                        #         if line.debit == .01:
-                        #             credit = credit - .01
-                        #         if line.credit == .01:
-                        #             debit = debit - .01
-                        #     print("Debit Line:", line.account_id.name, " Debit:", line.debit, " Credit:", line.credit)
-                        #
-                        # if len(stock_out_line) > 1:
-                        #     stock_out_line1 = stock_out_line.filtered(lambda l: l.debit > 0)
-                        #     stock_out_line2 = stock_out_line.filtered(lambda l: l.credit > 0)
-                        #     self.move_id.write({
-                        #         'line_ids': [
-                        #             (1, cogs_line.id, {'debit': balance, 'credit': 0}),
-                        #             (1, stock_out_line1.id, {'debit': credit, 'credit': 0}),
-                        #             (1, stock_out_line2.id, {'debit': 0, 'credit': debit}),
-                        #         ]
-                        #     })
-                        # else:
-                        #     self.move_id.write({
-                        #         'line_ids': [
-                        #             (1, cogs_line.id, {'debit': balance, 'credit': 0}),
-                        #             (1, stock_out_line.id, {'debit': credit, 'credit': debit}),
-                        #         ]
-                        #     })
+                        for line in self.move_id.line_ids:
+                            if line.name == 'Difference at closing PoS session' :
+                                if line.debit == .01:
+                                    credit = credit - .01
+                                if line.credit == .01:
+                                    debit = debit - .01
+                            print("Debit Line:", line.account_id.name, " Debit:", line.debit, " Credit:", line.credit)
+
+                        if len(stock_out_line) > 1:
+                            stock_out_line1 = stock_out_line.filtered(lambda l: l.debit > 0)
+                            stock_out_line2 = stock_out_line.filtered(lambda l: l.credit > 0)
+                            self.move_id.write({
+                                'line_ids': [
+                                    (1, cogs_line.id, {'debit': balance, 'credit': 0}),
+                                    (1, stock_out_line1.id, {'debit': credit, 'credit': 0}),
+                                    (1, stock_out_line2.id, {'debit': 0, 'credit': debit}),
+                                ]
+                            })
+                        else:
+                            self.move_id.write({
+                                'line_ids': [
+                                    (1, cogs_line.id, {'debit': balance, 'credit': 0}),
+                                    (1, stock_out_line.id, {'debit': credit, 'credit': debit}),
+                                ]
+                            })
                         '''
                         Refund
                         '''
-                        self.move_id.write({
-                            'line_ids': [
-                                (1, cogs_line.id, {'debit': 0, 'credit': balance}),
-                                (1, stock_out_line.id, {'debit': credit, 'credit': debit}),
-                            ]
-                        })
+                        # self.move_id.write({
+                        #     'line_ids': [
+                        #         (1, cogs_line.id, {'debit': 0, 'credit': balance}),
+                        #         (1, stock_out_line.id, {'debit': credit, 'credit': debit}),
+                        #     ]
+                        # })
 
                         # cogs_line.debit = balance
                         # cogs_line.credit = 0

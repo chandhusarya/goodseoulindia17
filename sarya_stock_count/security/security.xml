@@ -27,7 +27,7 @@
         </record>
 
         <!--        Stock Count line user, manager rule-->
-        <record id="stock_count_user" model="ir.rule">
+        <record id="stock_count_line_user" model="ir.rule">
             <field name="name">Stock Count line User</field>
             <field name="model_id" ref="sarya_stock_count.model_stock_count"/>
             <field name="domain_force">[('pos_config_id','in',user.get_allowed_pos_for_current_company().ids)]
@@ -37,7 +37,7 @@
         </record>
 
         <!--        stock count admin rule-->
-        <record id="stock_count_manager" model="ir.rule">
+        <record id="stock_count_line_manager" model="ir.rule">
             <field name="name">Stock Count line Manager</field>
             <field name="model_id" ref="sarya_stock_count.model_stock_count"/>
             <field name="domain_force">[]</field>

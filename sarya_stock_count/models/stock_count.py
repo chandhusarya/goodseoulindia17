@@ -146,6 +146,7 @@ class StockCount(models.Model):
             vals = {'state': 'progress', 'date': fields.Datetime.now()}
             vals.update(
                 {'product_count_line_ids': [(0, 0, line_values) for line_values in inventory._get_stock_count_lines_values()]})
+            print("vals", vals)
             inventory.write(vals)
         for inv_line in self.product_count_line_ids:
             if inv_line.product_id:
