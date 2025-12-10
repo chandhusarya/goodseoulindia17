@@ -126,6 +126,7 @@ class StockCountLine(models.Model):
             ('stock_count_id.pos_config_id', '=', self.stock_count_id.pos_config_id.id),
             ('location_id', '=', self.location_id.id),
             ('state', '=', 'done'),
+            ('is_counted_qty_entered', '=', True),
             ('id', '!=', self.id),
         ]
         previous_stock_count_obj = self.env['stock.count.line'].sudo().search(domain, order='id desc', limit=1)
