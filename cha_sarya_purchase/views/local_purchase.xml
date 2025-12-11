@@ -22,8 +22,10 @@
                                 groups="cha_sarya_purchase.local_purchase_order_finance_approval"
                                 type="object" string="Create Advance Payment"
                                 invisible="state != 'confirm'"/>
+						<button name="create_bill"
+                                type="object" string="Create Bill"
+                                invisible="state != 'confirm'"/>
 
-                        <button name="correct_cost" type="object" groups="base.group_no_one" string="Correct Cost"/>
 
                         <button name="print_receipt" type="object" string="Print Receipt" invisible="not move_id"/>
 						<button name="action_cancel" type="object" string="Cancel" invisible="state != 'new'"/>
@@ -32,6 +34,25 @@
                         <field name="state" widget="statusbar" statusbar_visible="new,manager,confirm"/>
                     </header>
                     <sheet>
+
+                        <div class="oe_button_box" name="button_box">
+
+                            <button name="action_view_pickings"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-truck"
+                                    invisible="picking_count == 0">
+                                <field name="picking_count" widget="statinfo" string="Pickings"/>
+                            </button>
+
+                            <button name="action_view_bills"
+                                    type="object"
+                                    class="oe_stat_button"
+                                    icon="fa-file-invoice"
+                                    invisible="bill_count == 0">
+                                <field name="bill_count" widget="statinfo" string="Bills"/>
+                            </button>
+                        </div>
 
                         <widget name="web_ribbon"
                             title="Pending GRN"
@@ -90,6 +111,7 @@
 									           groups="product.group_stock_packaging" force_save="1"/>
                                         <field name="qty"/>
                                         <field name="qty_received"/>
+                                        <field name="qty_invoiced"/>
 
                                         <field name="unit_price"/>
                                         <field name="tax_ids"
@@ -136,6 +158,7 @@
                                         <field name="tax_amount"/>
                                         <field name="total_untaxed"/>
                                         <field name="total"/>
+                                        <field name="is_billed" optional="hide" readonly="1"/>
                                     </tree>
                                 </field>
                             </page>

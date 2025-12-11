@@ -21,6 +21,8 @@
         'views/local_purchase.xml',
         'views/res_partner.xml',
         'views/office_purchase.xml',
+        'views/picking_view.xml',
+        'views/bill_view.xml',
         'report/report_local_purchase.xml',
         'report/report_office_purchase.xml'
     ],

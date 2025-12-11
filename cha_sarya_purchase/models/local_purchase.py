@@ -64,157 +64,51 @@ class LocalPurchase(models.Model):
     confirm_date = fields.Datetime(string='Confirmation Date', readonly=True, copy=False)
     send_by_email = fields.Boolean(string='Send by Email', default=True)
 
+    # ********************
+    # Smart Button
+    # ********************
 
+    picking_count = fields.Integer(compute="_compute_picking_count")
+    bill_count = fields.Integer(compute="_compute_bill_count")
 
+    @api.depends()
+    def _compute_picking_count(self):
+        for rec in self:
+            rec.picking_count = self.env['stock.picking'].search_count([
+                ('local_purchase_id', '=', rec.id)
+            ])
 
-    def correct_cost(self):
+    @api.depends()
+    def _compute_bill_count(self):
+        for rec in self:
+            rec.bill_count = self.env['account.move'].search_count([
+                ('local_purchase_id', '=', rec.id),
+                ('move_type', '=', 'in_invoice')
+            ])
 
-        invoice_numbers = ["BILL/2024/0623",
-                            "BILL/2024/0623",
-                            "BILL/2024/0623",
-                            "BILL/2024/0623",
-                            "BILL/2024/0624",
-                            "BILL/2024/0624",
-                            "BILL/2025/0019",
-                            "BILL/2024/0626",
-                            "BILL/2024/0626",
-                            "BILL/2024/0648",
-                            "BILL/2024/0627",
-                            "BILL/2024/0647",
-                            "BILL/2024/0615",
-                            "BILL/2024/0615",
-                            "BILL/2024/0631",
-                            "BILL/2024/0629",
-                            "BILL/2024/0629",
-                            "BILL/2024/0632",
-                            "BILL/2024/0633",
-                            "BILL/2025/0032",
-                            "BILL/2025/0032"]
-
-        for number in invoice_numbers:
-            invoices = self.env['account.move'].search([('name', '=', number)])
-            print(number, " ========= " , invoices)
-            for invoice in invoices:
-                lpo = self.env['local.purchase'].search([('move_id', '=', invoice.id)], limit=1)
-                picking = lpo.picking_id
-                valuation_layer = picking.move_ids.stock_valuation_layer_ids
-                print(valuation_layer, "    ====::====   ", picking.move_ids)
-                for layer in valuation_layer:
-                    account_move_id = layer.account_move_id
-                    account_move_id.button_draft()
-                    account_move_id.write({'date': invoice.invoice_date})
-                    account_move_id.action_post()
-
-
-
-    def correct_invoice(self):
-
-        menu_costs = {
-            "Good Seoul QSR (FP) Corn Dog Cheese": 18659.46,
-            "Good Seoul QSR (FP) Korean Fried Chicken Sweet And Spicy": 16087.74,
-            "Good Seoul QSR (FP) Topokki Spicy": 20678.20,
-            "Good Seoul QSR (FP) Topokki Carbonara": 43123.55,
-            "Good Seoul QSR (FP) Korean Fried Chicken Hot And Spicy": 11204.65,
-            "Good Seoul QSR (FP) Korean Fried Chicken Kbbq": 15591.30,
-            "Good Seoul QSR (FP) Dumpling Pops Buldak": 9671.78,
-            "Good Seoul QSR (FP) Matcha Bubble Tea regular": 1789.57,
-            "Good Seoul QSR (FP) Classic Bubble Tea regular": 1379.60,
-            "Good Seoul QSR (FP) Chocolate bubble tea regular": 2455.31,
-            "Good Seoul QSR (FP) Kimchi Fries Medium": 2113.88,
-            "Good Seoul QSR (FP) Demisoda Apple 250ml": 5898.02,
-            "Good Seoul QSR (FP) Corn Dog Chicken": 11017.22,
-            "Good Seoul QSR (FP) Mango Bingsu": 4806.40,
-            "Good Seoul QSR (FP) Strawberry Bingsu": 3794.88,
-            "Good Seoul QSR (FP) Taro Bubble Tea regular": 2072.82,
-            "Good Seoul QSR (FP) Korean Fried Chicken Honey": 3664.74,
-            "Good Seoul QSR (FP) Fries Medium": 1113.57,
-            "Good Seoul QSR (FP) Kimchi Fries Large": 924.55,
-            "Good Seoul QSR (FP) Cream Taiyaki / Hotteok": 1668.35,
-            "Good Seoul QSR (FP) Fries Large": 483.40,
-            "Good Seoul QSR (FP) Dumpling Pops Vegetable": 3368.94,
-            "Good Seoul QSR (FP) Korean Fried Chicken Soy Garlic": 7337.69,
-            "Good Seoul QSR (FP) Korean Fried Chicken Volcano": 5671.43,
-            "Good Seoul QSR (FP) TOTE BAG (RED)": 284.00,
-            "Good Seoul QSR (FP) Milkis Can Drink 250ml": 5288.16,
-            "Good Seoul QSR (FP) Korean Sweet Pancake / Bungeoppang": 460.45,
-            "Good Seoul QSR (FP) Dumpling Kimchi 4PC": 106.58,
-            "Good Seoul QSR (FP) Dumpling Vegetable 4PC": 881.61,
-            "Good Seoul QSR (FP) Dumpling Spicy Noodle 4PC": 221.72,
-            "Good Seoul QSR (FP) WHITE T-SHIRT": 474.18
+    def action_view_pickings(self):
+        return {
+            'name': 'Related Pickings',
+            'type': 'ir.actions.act_window',
+            'res_model': 'stock.picking',
+            'view_mode': 'tree,form',
+            'domain': [('local_purchase_id', '=', self.id)],
         }
 
-        invoice = self.env['account.move'].browse(14210)
-
-        print("ddddddddddddddddddddddddddddddddd")
-
-        for line in invoice.invoice_line_ids:
-
-            print(line.product_id.name)
-
-            if line.product_id.name in menu_costs:
-                cost_value = menu_costs[line.product_id.name]
-                unit_cost = cost_value / line.quantity
-
-                sign = -1 if invoice.move_type == 'out_refund' else 1
-                price_unit = unit_cost
-                amount_currency = sign * line.quantity * price_unit
-
-                accounts = line.product_id.product_tmpl_id.get_product_accounts(fiscal_pos=invoice.fiscal_position_id)
-                debit_interim_account = accounts['stock_output']
-                credit_expense_account = accounts['expense'] or invoice.journal_id.default_account_id
-
-                lines_vals_list = []
-
-                lines_vals_list.append({
-                    'name': line.name[:64],
-                    'move_id': invoice.id,
-                    'partner_id': invoice.commercial_partner_id.id,
-                    'product_id': line.product_id.id,
-                    'product_uom_id': line.product_uom_id.id,
-                    'quantity': line.quantity,
-                    'price_unit': price_unit,
-                    'amount_currency': -amount_currency,
-                    'account_id': debit_interim_account.id,
-                    'display_type': 'cogs',
-                    'tax_ids': [],
-                    'cogs_origin_id': line.id,
-                })
-
-                # Add expense account line.
-                lines_vals_list.append({
-                    'name': line.name[:64],
-                    'move_id': invoice.id,
-                    'partner_id': invoice.commercial_partner_id.id,
-                    'product_id': line.product_id.id,
-                    'product_uom_id': line.product_uom_id.id,
-                    'quantity': line.quantity,
-                    'price_unit': -price_unit,
-                    'amount_currency': amount_currency,
-                    'account_id': credit_expense_account.id,
-                    'analytic_distribution': line.analytic_distribution,
-                    'display_type': 'cogs',
-                    'tax_ids': [],
-                    'cogs_origin_id': line.id,
-                })
-
-                self.env['account.move.line'].create(lines_vals_list)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    def action_view_bills(self):
+        return {
+            'name': 'Vendor Bills',
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.move',
+            'view_mode': 'tree,form',
+            'domain': [
+                ('local_purchase_id', '=', self.id),
+                ('move_type', '=', 'in_invoice')
+            ],
+        }
+    # ********************
+    # Smart Button End
+    # ********************
 
 
 
@@ -299,29 +193,36 @@ class LocalPurchase(models.Model):
     def _find_grn_status(self):
         for po in self:
             grn_pending = False
-            if po.picking_id and po.picking_id.state not in ('done', 'cancel'):
-                grn_pending = True
+            pickings = self.env['stock.picking'].search([('local_purchase_id', '=', po.id)])
+            for picking in pickings:
+                if picking.state not in ('done', 'cancel'):
+                    grn_pending = True
             po.grn_pending = grn_pending
 
     def _search_grn_pending(self, operator, value):
-        """Allow searching and filtering on computed field grn_pending"""
+        """Search for GRN pending based on related stock pickings"""
         if operator not in ('=', '!='):
-            # Only logical operators are supported here
             return []
 
-        # If we want GRN pending = True
+        # Pending = there exists at least one picking linked via local_purchase_id not done/cancel
         if (operator == '=' and value) or (operator == '!=' and not value):
-            # Pickings that are not done or cancelled
-            return [('picking_id.state', 'not in', ['done', 'cancel'])]
+            return [
+                ('id', 'in', self.env['stock.picking'].search([
+                    ('local_purchase_id', '!=', False),
+                    ('state', 'not in', ['done', 'cancel'])
+                ]).mapped('local_purchase_id').ids)
+            ]
 
-        # If we want GRN pending = False
+        # Not pending = either no picking or all pickings done/cancel
         elif (operator == '=' and not value) or (operator == '!=' and value):
-            # Either no picking or picking done/cancelled
-            return ['|', ('picking_id', '=', False), ('picking_id.state', 'in', ['done', 'cancel'])]
+            return [
+                ('id', 'not in', self.env['stock.picking'].search([
+                    ('local_purchase_id', '!=', False),
+                    ('state', 'not in', ['done', 'cancel'])
+                ]).mapped('local_purchase_id').ids)
+            ]
 
         return []
-
-
 
     @api.depends('line_ids.qty', 'line_ids.unit_price', 'line_ids.tax_ids')
     def _compute_total(self):
@@ -459,6 +360,11 @@ class LocalPurchase(models.Model):
         self.state = 'new'
 
     def create_bill(self):
+        print("lllllllllllllllllllllllllllllllllllllllll")
+        print("lllllllllllllllllllllllllllllllllllllllll")
+        print("lllllllllllllllllllllllllllllllllllllllll")
+        print("lllllllllllllllllllllllllllllllllllllllll")
+        print("lllllllllllllllllllllllllllllllllllllllll")
         # account_id = self.account_id or False
         acc_payable_id = self.vendor_id and self.vendor_id.property_account_payable_id or False
         local_purchase_journal_id = self.env.company.local_purchase_journal_id or False
@@ -479,7 +385,7 @@ class LocalPurchase(models.Model):
             if not purchase.vendor_id.l10n_in_gst_treatment:
                 raise UserError("Please contact fiance to configure Gst treatment for the vendor!")
             for line in purchase.line_ids:
-                total_qty = line.qty_received * line.packaging_id.qty
+                total_qty = (line.qty_received - line.qty_invoiced) * line.packaging_id.qty
                 if total_qty == 0:
                     continue
                 # Recalculate unit price from total including GST
@@ -487,16 +393,16 @@ class LocalPurchase(models.Model):
                 invoice_lines.append((0, 0, {
                     'product_id': line.product_id and line.product_id.id or False,
                     'name': line.name,
-                    'quantity': line.qty_received * line.packaging_id.qty,
+                    'quantity': (line.qty_received - line.qty_invoiced) * line.packaging_id.qty,
                     'package_id': line.packaging_id.id,
                     'analytic_distribution' : analytic_distribution,
-                    'product_packaging_qty': line.qty_received,
+                    'product_packaging_qty': (line.qty_received - line.qty_invoiced),
                     'price_unit': unit_price_for_bill,#line.unit_price/line.packaging_id.qty,
                     'pkg_unit_price': unit_price_for_bill * line.packaging_id.qty,#line.unit_price,
                     'tax_ids': [],
                 }))
             if purchase.landed_cost_ids:
-                for landed_line in purchase.landed_cost_ids:
+                for landed_line in purchase.landed_cost_ids.filtered(lambda l: not l.is_billed):
                     invoice_lines.append((0, 0, {
                         'product_id': landed_line.product_id and landed_line.product_id.id or False,
                         'name': landed_line.product_id.display_name,
@@ -504,6 +410,10 @@ class LocalPurchase(models.Model):
                         'pkg_unit_price': landed_line.price_unit,
                         'tax_amount': landed_line.tax_amount,
                     }))
+                    landed_line.is_billed = True
+            print("invoice_lines", invoice_lines)
+            if len(invoice_lines) == 0:
+                raise UserError("No invoiceable lines found!")
             move_vals = {
                 'partner_id': purchase.vendor_id.id,
                 'invoice_date': purchase.date,
@@ -513,12 +423,13 @@ class LocalPurchase(models.Model):
                 'ref': purchase.ref,
                 'invoice_origin': purchase.name,
                 'invoice_line_ids': invoice_lines,
-                'l10n_in_gst_treatment': purchase.vendor_id.l10n_in_gst_treatment
+                'l10n_in_gst_treatment': purchase.vendor_id.l10n_in_gst_treatment,
+                'local_purchase_id': purchase.id,
             }
             move_id = move_obj.with_context(check_move_validity=False).create(move_vals)
             # move_id.with_context(check_move_validity=False)._recompute_dynamic_lines()
             move_id.sudo().action_post()
-            purchase.write({'move_id': move_id.id})
+            # purchase.write({'move_id': move_id.id})
 
             if purchase.purchase_type == 'local_purchase':
                 #Register payment for the invoice
@@ -527,8 +438,8 @@ class LocalPurchase(models.Model):
                     .with_context(active_model='account.move', active_ids=move_id.ids) \
                     .create({'journal_id': purchase.payment_journal_id.id}) \
                     ._create_payments()
-            if self.pvr_request_id:
-                self.pvr_request_id.state = 'completed'
+            # if self.pvr_request_id:
+            #     self.pvr_request_id.state = 'completed'
 
 
 
@@ -549,7 +460,7 @@ class LocalPurchase(models.Model):
             'location_dest_id': location_dest_id and location_dest_id.id,
             'location_id': location_id and location_id.id,
             'company_id': self.company_id.id,
-            'pvr_lpo_request_id': self.id if self.pvr_request_id else False
+            'local_purchase_id': self.id,
         }
 
         picking = self.env['stock.picking'].create(picking_vals)
@@ -646,6 +557,7 @@ class LocalPurchaseLines(models.Model):
         domain="[('purchase', '=', True), ('product_id', '=', product_id)]")
     qty = fields.Float(string='Qty Ordered')
     qty_received = fields.Float(string='Qty Received', compute='_compute_qty_received')
+    qty_invoiced = fields.Float(string='Qty Invoiced', compute='_compute_qty_invoiced')
     unit_price = fields.Float(string='Unit Price')
     tax_amount = fields.Float(string='Tax Amount', compute='_compute_total')
     total_untaxed = fields.Float(string='Total Untaxed', compute='_compute_total')
@@ -695,22 +607,41 @@ class LocalPurchaseLines(models.Model):
         for rec in self:
             local_purchase_id = rec.local_purchase_id
             qty_received = 0
-            if local_purchase_id.picking_id:
-                picking_id = local_purchase_id.picking_id
-                for move in picking_id.move_ids_without_package:
-                    if move.state == 'done' and move.product_id.id == rec.product_id.id:
-                        qty_received += move.quantity
+            picking_ids = self.env['stock.picking'].search(
+                [('local_purchase_id', '=', local_purchase_id.id), ('state', '=', 'done')])
+            if picking_ids:
+                for picking_id in picking_ids:
+                    print(picking_id, "  ====  ")
+                    print(picking_id.state, "  ====  ")
+                    for move in picking_id.move_ids_without_package:
+                        print("move", move.state, "  ====  ")
+                        if move.state == 'done' and move.product_id.id == rec.product_id.id:
+                            qty_received += move.quantity
             if qty_received > 0:
                 qty_received = qty_received/rec.packaging_id.qty
             rec.qty_received = qty_received
+
+    def _compute_qty_invoiced(self):
+        for rec in self:
+            local_purchase_id = rec.local_purchase_id
+            qty_invoiced = 0
+            bills = self.env['account.move'].search([('local_purchase_id', '=', local_purchase_id.id),
+                                                     ('move_type', '=', 'in_invoice'),
+                                                     ('state', '=', 'posted')])
+            if local_purchase_id.picking_id:
+                for bill in bills:
+                    for line in bill.invoice_line_ids:
+                        if bill.state == 'posted' and line.product_id.id == rec.product_id.id:
+                            qty_invoiced += line.product_packaging_qty
+            rec.qty_invoiced = qty_invoiced
+
+
 
     @api.depends('qty', 'unit_price', 'tax_ids')
     def _compute_total(self):
         for rec in self:
             tax_results = self.env['account.tax']._compute_taxes([rec._convert_to_tax_base_line_dict()])
             totals = next(iter(tax_results['totals'].values()))
-            print("tax_results['totals']", tax_results['totals'])
-            print("totals", totals)
             rec.tax_amount = totals['amount_tax']
             rec.total_untaxed = rec.qty * rec.unit_price
             rec.total = (rec.qty * rec.unit_price) + rec.tax_amount
@@ -800,18 +731,27 @@ class LocalPurchaseLines(models.Model):
 class StockDelivery(models.Model):
     _inherit = 'stock.picking'
 
+    local_purchase_id = fields.Many2one(comodel_name='local.purchase', string='Local Purchase')
+
     def button_validate(self):
         res = super(StockDelivery, self).button_validate()
-        local_lpo = self.env['local.purchase'].search([('picking_id', '=', self.id)])
+        local_lpo = False
+        if self.local_purchase_id:
+            local_lpo = self.local_purchase_id
         for picking in self:
-            if local_lpo.landed_cost_ids:
+            if local_lpo.landed_cost_ids.filtered(lambda l: not l.is_billed):
+                print("888888888888888888888888888888888888888888888")
+                print("888888888888888888888888888888888888888888888")
+                print("888888888888888888888888888888888888888888888")
+                print("888888888888888888888888888888888888888888888")
+                print("888888888888888888888888888888888888888888888")
                 if picking.picking_type_id.code == "incoming":
                     landed_cost = self.env["stock.landed.cost"].create({
                         "picking_ids": [(6, 0, [picking.id])],
                         "state": "draft",
                     })
                     landed_cost_lines = []
-                    for line in local_lpo.landed_cost_ids:
+                    for line in local_lpo.landed_cost_ids.filtered(lambda l: not l.is_billed):
                         landed_cost_lines.append(({
                             'product_id': line.product_id and line.product_id.id or False,
                             'price_unit': line.total,
@@ -846,8 +786,6 @@ class StockDelivery(models.Model):
                                 str(landed_cost.id))
                             self.send_notification(employees, message, subject, button_url)
                     local_lpo.landed_cost = landed_cost.id
-        if local_lpo:
-            local_lpo.create_bill()
         return res
 
 
@@ -862,6 +800,7 @@ class LandedCostLine(models.Model):
     total_untaxed = fields.Float(string='Total Untaxed', compute='_compute_total')
     total = fields.Float(string='Total', compute='_compute_total')
     tax_ids = fields.Many2many(comodel_name='account.tax', string='Taxes')
+    is_billed = fields.Boolean(string='Is Billed', default=False)
 
     @api.depends('price_unit', 'tax_ids')
     def _compute_total(self):
@@ -914,3 +853,10 @@ class LandedCostLine(models.Model):
             # self.name = False
             # self.packaging_id = False
             self.tax_ids = False
+
+
+
+class AccountMove(models.Model):
+    _inherit = 'account.move'
+
+    local_purchase_id = fields.Many2one(comodel_name='local.purchase', string='Local Purchase')

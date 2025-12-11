@@ -80,13 +80,13 @@
                     </group>
                     <notebook invisible="state == 'draft'">
                         <page string="Inventory Count Session">
-                            <button name="action_reset_counted_qty" invisible="state != 'progress'"
-                                    string="⇒ Set Counted quantities to 0"
-                                    type="object" class="oe_link oe_right" groups="stock.group_stock_user"/>
-                            <br/>
-                            <button name="action_set_is_counted_qty_entered" invisible="state != 'progress'"
-                                    string="⇒ Set Is Real Qty Entered As True"
-                                    type="object" class="oe_link oe_right" groups="base.group_no_one"/>
+<!--                            <button name="action_reset_counted_qty" invisible="state != 'progress'"-->
+<!--                                    string="⇒ Set Counted quantities to 0"-->
+<!--                                    type="object" class="oe_link oe_right" groups="stock.group_stock_user"/>-->
+<!--                            <br/>-->
+<!--                            <button name="action_set_is_counted_qty_entered" invisible="state != 'progress'"-->
+<!--                                    string="⇒ Set Is Real Qty Entered As True"-->
+<!--                                    type="object" class="oe_link oe_right" groups="base.group_no_one"/>-->
                             <field name="product_count_line_ids" string="Inventory Details" mode="kanban"
                                    readonly="state != 'progress'">
                                 <kanban class="o_kanban_mobile" create="0" delete="0">
@@ -150,13 +150,13 @@
                             </ul>
                         </page>
                         <page string="Inventory Count Recheck Session">
-                            <button name="action_reset_counted_qty" invisible="state != 'progress'"
-                                    string="⇒ Set Counted quantities to 0"
-                                    type="object" class="oe_link oe_right" groups="stock.group_stock_user"/>
-                            <br/>
-                            <button name="action_set_is_counted_qty_entered" invisible="state != 'progress'"
-                                    string="⇒ Set Is Real Qty Entered As True"
-                                    type="object" class="oe_link oe_right" groups="base.group_no_one"/>
+<!--                            <button name="action_reset_counted_qty" invisible="state != 'progress'"-->
+<!--                                    string="⇒ Set Counted quantities to 0"-->
+<!--                                    type="object" class="oe_link oe_right" groups="stock.group_stock_user"/>-->
+<!--                            <br/>-->
+<!--                            <button name="action_set_is_counted_qty_entered" invisible="state != 'progress'"-->
+<!--                                    string="⇒ Set Is Real Qty Entered As True"-->
+<!--                                    type="object" class="oe_link oe_right" groups="base.group_no_one"/>-->
                             <field name="line_ids" string="Inventory Details" mode="kanban"
                                    readonly="state != 'progress'">
                                 <kanban class="o_kanban_mobile" create="0" delete="0">

@@ -46,4 +46,5 @@ class ResUsers(models.Model):
                     ('company_id', '=', self.env.company.id),
                     ('user_ids', 'in', self.id)
                 ]).mapped('pos_config_id')
+        print("Allowed POS for user", self.name, "in company", self.env.company.name, "are:", confs)
         return confs
