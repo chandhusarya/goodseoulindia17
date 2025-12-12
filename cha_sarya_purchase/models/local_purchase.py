@@ -50,6 +50,7 @@ class LocalPurchase(models.Model):
     total = fields.Float(string='Total', compute='_compute_total', tracking=True)
     company_id = fields.Many2one('res.company', default=lambda self: self.env.company)
     grn_pending = fields.Boolean("GRN Pending",  compute='_find_grn_status', search="_search_grn_pending")
+    invoice_pending = fields.Boolean("Invoice Pending",  compute='_find_invoice_status', search="_search_invoice_pending")
     ref = fields.Char(string='Bill Reference')
     purchase_type = fields.Selection(string='Purchase type',
         selection=[('normal', 'Normal'),
@@ -221,6 +222,36 @@ class LocalPurchase(models.Model):
                     ('state', 'not in', ['done', 'cancel'])
                 ]).mapped('local_purchase_id').ids)
             ]
+
+        return []
+
+
+    def _find_invoice_status(self):
+        for po in self:
+            invoice_pending = False
+            for line in po.line_ids:
+                if line.qty_received - line.qty_invoiced != 0:
+                    invoice_pending = True
+            po.invoice_pending = invoice_pending
+
+    def _search_invoice_pending(self, operator, value):
+        """Search for Invoice pending based on related stock pickings"""
+        if operator not in ('=', '!='):
+            return []
+
+        # Find all POs with at least 1 line where qty_received != qty_invoiced
+        po_lines = self.env['local.purchase.line'].search([('local_purchase_id.company_id', '=', self.env.company.id)])
+        pending_po_ids = po_lines.filtered(
+            lambda l: (l.qty_received - l.qty_invoiced) != 0
+        ).mapped('local_purchase_id').ids
+
+        # If searching invoice_pending = True
+        if (operator == '=' and value) or (operator == '!=' and not value):
+            return [('id', 'in', pending_po_ids)]
+
+        # invoice_pending = False
+        if (operator == '=' and not value) or (operator == '!=' and value):
+            return [('id', 'not in', pending_po_ids)]
 
         return []
 

@@ -196,6 +196,7 @@
                     <field name="vendor_id"/>
                     <field name="grn_pending"/>
                     <filter name="grn_pending_true" string="GRN Pending" domain="[('grn_pending', '=', True)]"/>
+                    <filter name="invoice_pending_true" string="Invoice Pending" domain="[('invoice_pending', '=', True)]"/>
                     <group expand="1" string="Group By">
                         <filter string="User" name="user_id" domain="[]"
                                 context="{'group_by':'user_id'}"/>
