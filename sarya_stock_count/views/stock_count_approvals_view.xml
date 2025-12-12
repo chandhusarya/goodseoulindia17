@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-                <!--    Stock Count Approval List view-->
+        <!--    Stock Count Approval List view-->
 
         <record id="stock_count_approvals_list_view" model="ir.ui.view">
             <field name="name">stock.count.approvals.list.view</field>
             <field name="model">stock.count</field>
             <field name="arch" type="xml">
                 <tree decoration-muted="state == 'cancel'">
-                    <field name="name"/>
                     <field name="date"/>
+                    <field name="name"/>
+                    <field name="pos_config_id"/>
+                    <field name="location_id"/>
+                    <field name="brand_ids" widget="many2many_tags"/>
                     <field name="state"/>
+                    <field name="company_id" optional="hide"/>
                 </tree>
             </field>
         </record>
 
-                <!--    Stock Count Approvals form view    -->
+        <!--    Stock Count Approvals form view    -->
 
-                <record id="stock_count_approvals_form_view" model="ir.ui.view">
+        <record id="stock_count_approvals_form_view" model="ir.ui.view">
             <field name="name">stock.count.approvals.form.view</field>
             <field name="model">stock.count</field>
             <field name="arch" type="xml">
@@ -48,166 +52,95 @@
                                 type="object"/>
                         <field name="state" clickable="1" widget="statusbar" statusbar_visible="draft,progress,done"/>
                     </header>
-                    <div class="oe_title">
-                        <label for="name" class="oe_edit_only"/>
-                        <h1>
-                            <field name="name" required="1" readonly="1"/>
-                        </h1>
-                    </div>
-                    <group>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" required="1" readonly="1"/>
+                            </h1>
+                        </div>
                         <group>
-                            <field name="pos_config_id"
-                                   options="{'no_create_edit': True, 'no_create': True}"
-                                   required="1"
-                                   domain="[('terminal_type', '=', 'primary')]"
-                                   readonly="state != 'draft'"/>
-                            <field name="location_id" domain="[('usage', '=', 'internal')]"
-                                   options="{'no_create': True}" required="1"
-                                   groups="stock.group_stock_multi_locations" readonly="state != 'draft'"/>
-                            <field name="brand_ids" required="1" widget="many2many_tags"
-                                   options="{'no_create': True}" readonly="state != 'draft'"/>
+                            <group>
+                                <field name="pos_config_id"
+                                       options="{'no_create_edit': True, 'no_create': True}"
+                                       required="1"
+                                       domain="[('terminal_type', '=', 'primary')]"
+                                       readonly="state != 'draft'"/>
+                                <field name="location_id" domain="[('usage', '=', 'internal')]"
+                                       options="{'no_create': True}" required="1"
+                                       groups="stock.group_stock_multi_locations" readonly="state != 'draft'"/>
+                                <field name="brand_ids" required="1" widget="many2many_tags"
+                                       options="{'no_create': True}" readonly="state != 'draft'"/>
+                            </group>
+                            <group>
+                                <field name="is_approve_user" invisible="1"/>
+                                <field name="date"/>
+                                <field name="approved_date" invisible="not approved_date"/>
+                                <field name="approved_by" invisible="not approved_by"/>
+                                <field name="validated_date" invisible="not validated_date"/>
+                                <field name="company_id" groups="base.group_multi_company"
+                                       options="{'no_create': True}"/>
+                            </group>
                         </group>
-                        <group>
-                            <field name="is_approve_user" invisible="1"/>
-                            <field name="date"/>
-                            <field name="approved_date" invisible="not approved_date"/>
-                            <field name="approved_by" invisible="not approved_by"/>
-                            <field name="validated_date" invisible="not validated_date"/>
-                            <field name="company_id" groups="base.group_multi_company"
-                                   options="{'no_create': True}"/>
-                        </group>
-                    </group>
-                    <notebook invisible="state == 'draft'">
-<!--                        <page string="Inventory Count Session">-->
-<!--                            <button name="action_reset_counted_qty" invisible="state != 'progress'"-->
-<!--                                    string="⇒ Set Counted quantities to 0"-->
-<!--                                    type="object" class="oe_link oe_right" groups="stock.group_stock_user"/>-->
-<!--                            <br/>-->
-<!--                            <button name="action_set_is_counted_qty_entered" invisible="state != 'progress'"-->
-<!--                                    string="⇒ Set Is Real Qty Entered As True"-->
-<!--                                    type="object" class="oe_link oe_right" groups="base.group_no_one"/>-->
-<!--                            <field name="line_ids" string="Inventory Details" mode="kanban"-->
-<!--                                   readonly="state != 'progress'" >-->
-<!--                                <kanban class="o_kanban_mobile" create="0" delete="0">-->
-<!--                                    <field name="product_id" domain="[('type','=','product')]"/>-->
-<!--                                    <field name="location_id" domain="[('id', 'child_of', parent.location_id)]"-->
-<!--                                           groups="stock.group_stock_multi_locations"/>-->
-<!--                                    <field name="theoretical_qty" force_save="1"/>-->
-<!--                                    <field name="counted_qty" string="Real Quantity"/>-->
-<!--                                    <field name="stock_diff_quantity"/>-->
-<!--                                    <field name="state" invisible="True"/>-->
-<!--                                    <templates>-->
-<!--                                        <t t-name="kanban-box">-->
-<!--                                            <div t-attf-class="oe_kanban_global_click_edit-->
-<!--                                                           #{record.counted_qty.raw_value!=record.theoretical_qty.raw_value ? 'oe_kanban_color_6' : ''}-->
-<!--                                                           #{record.theoretical_qty.raw_value&lt;0 ? 'oe_kanban_color_2' : ''}">-->
-<!--                                                <div class="row">-->
-<!--                                                    <div class="col-12">-->
-<!--                                                        <strong>-->
-<!--                                                            <field name='product_id'/>-->
-<!--                                                        </strong>-->
-<!--                                                    </div>-->
-<!--                                                </div>-->
-<!--                                                <div class="row">-->
-<!--                                                    <div class="col-12 text-muted">-->
-<!--                                                        <span>Location :-->
-<!--                                                            <t t-esc='record.location_id.value'/>-->
-<!--                                                        </span>-->
-<!--                                                    </div>-->
-<!--                                                </div>-->
-<!--                                                <div class="row">-->
-<!--                                                    <div class="col-12 text-muted">-->
-<!--                                                        <span>Theoretical Qty :-->
-<!--                                                            <t t-esc='record.theoretical_qty.value'/>-->
-<!--                                                        </span>-->
-<!--                                                    </div>-->
-<!--                                                </div>-->
-<!--                                                <div class="row">-->
-<!--                                                    <div class="col-12 text-muted">-->
-<!--                                                        <span>Real Quantity :-->
-<!--                                                            <t t-esc='record.counted_qty.value'/>-->
-<!--                                                        </span>-->
-<!--                                                    </div>-->
-<!--                                                </div>-->
-<!--                                                <div class="row">-->
-<!--                                                    <div class="col-12 text-muted">-->
-<!--                                                        <span>Difference :-->
-<!--                                                            <t t-esc='record.stock_diff_quantity.value'/>-->
-<!--                                                        </span>-->
-<!--                                                    </div>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </t>-->
-<!--                                    </templates>-->
-<!--                                </kanban>-->
+                        <notebook invisible="state == 'draft'">
+                            <page string="Inventory Details">
+                                <button name="action_reset_counted_qty" invisible="1"
+                                        string="⇒ Set Counted quantities to 0"
+                                        type="object" class="oe_link oe_right" groups="stock.group_stock_user"/>
+                                <br/>
+                                <button name="action_set_is_counted_qty_entered" invisible="1"
+                                        string="⇒ Set Is Real Qty Entered As True"
+                                        type="object" class="oe_link oe_right" groups="base.group_no_one"/>
+                                <field name="line_ids" string="Inventory Details" mode="tree"
+                                       readonly="state != 'progress'">
+                                    <tree string="Inventory Details"
+                                          decoration-info="counted_qty != theoretical_qty"
+                                          decoration-danger="theoretical_qty &lt; 0" create="0" delete="0">
+                                        <field name="product_name"/>
+                                        <field name="product_id" domain="[('type','=','product')]"
+                                               readonly="1"
+                                               column_invisible="1"
+                                               force_save="1"/>
+                                        <field name="primary_packaging_id"/>
+                                        <field name="location_id" groups="stock.group_stock_multi_locations"
+                                               domain="[('usage', '=', 'internal')]" required="1"
+                                               readonly="parent.state == 'done'" optional="hide"/>
+                                        <field name="opening_qty" force_save="1"/>
+                                        <field name="grn_qty" force_save="1"/>
+                                        <field name="transfer_in_qty" force_save="1"/>
+                                        <field name="transfer_out_qty" force_save="1"/>
+                                        <field name="wastage_qty" force_save="1"/>
+                                        <field name="adjustment_qty" force_save="1"/>
+                                        <field name="sale_qty" force_save="1"/>
+                                        <field name="sale_return_qty" force_save="1"/>
+                                        <field name="theoretical_qty" force_save="1"/>
+                                        <field name="is_counted_qty_entered"/>
+                                        <field name="counted_qty" string="Real Quantity"
+                                               readonly="parent.state == 'done'"/>
+                                        <field name="stock_diff_quantity" force_save="1"/>
+                                        <field name="price" string="Unit Price" readonly="1" force_save="1"
+                                               column_invisible="1"/>
+                                        <field name="state" column_invisible="True"/>
+                                    </tree>
+                                </field>
+                                <h3 class="oe_grey">Notes</h3>
+                                <ul class="oe_grey">
+                                    <li>Inventory adjustments will be made by comparing the theoretical and the checked
+                                        quantities.
+                                    </li>
+                                    <li>You can delete lines to ignore some products.</li>
+                                    <li>If a product is not at the right place, set the checked quantity to 0 and create
+                                        a new line with correct location.
+                                    </li>
+                                </ul>
+                            </page>
+                        </notebook>
+                    </sheet>
 
-<!--                            </field>-->
-<!--                            <h3 class="oe_grey">Notes</h3>-->
-<!--                            <ul class="oe_grey">-->
-<!--                                <li>Inventory adjustments will be made by comparing the theoretical and the checked-->
-<!--                                    quantities.-->
-<!--                                </li>-->
-<!--                                <li>You can delete lines to ignore some products.</li>-->
-<!--                                <li>If a product is not at the right place, set the checked quantity to 0 and create-->
-<!--                                    a new line with correct location.-->
-<!--                                </li>-->
-<!--                            </ul>-->
-<!--                        </page>-->
-                        <page string="Inventory Details">
-                            <button name="action_reset_counted_qty" invisible="state != 'progress'"
-                                    string="⇒ Set Counted quantities to 0"
-                                    type="object" class="oe_link oe_right" groups="stock.group_stock_user"/>
-                            <br/>
-                            <button name="action_set_is_counted_qty_entered" invisible="state != 'progress'"
-                                    string="⇒ Set Is Real Qty Entered As True"
-                                    type="object" class="oe_link oe_right" groups="base.group_no_one"/>
-                            <field name="line_ids" string="Inventory Details" mode="tree"
-                                   readonly="state != 'progress'">
-                                <tree string="Inventory Details"
-                                      decoration-info="counted_qty != theoretical_qty"
-                                      decoration-danger="theoretical_qty &lt; 0" create="0" delete="0">
-                                    <field name="product_name"/>
-                                    <field name="product_id" domain="[('type','=','product')]"
-                                           readonly="1"
-                                           column_invisible="1"
-                                           force_save="1"/>
-                                    <field name="primary_packaging_id"/>
-                                    <field name="location_id" groups="stock.group_stock_multi_locations"
-                                           domain="[('usage', '=', 'internal')]" required="1"
-                                           readonly="parent.state == 'done'" optional="hide"/>
-                                    <field name="opening_qty" force_save="1"/>
-                                    <field name="grn_qty" force_save="1"/>
-                                    <field name="transfer_in_qty" force_save="1"/>
-                                    <field name="transfer_out_qty" force_save="1"/>
-                                    <field name="wastage_qty" force_save="1"/>
-                                    <field name="adjustment_qty" force_save="1"/>
-                                    <field name="sale_qty" force_save="1"/>
-                                    <field name="sale_return_qty" force_save="1"/>
-                                    <field name="theoretical_qty" force_save="1"/>
-                                    <field name="is_counted_qty_entered"/>
-                                    <field name="counted_qty" string="Real Quantity"
-                                           readonly="parent.state == 'done'"/>
-                                    <field name="stock_diff_quantity" force_save="1"/>
-                                    <field name="price" string="Unit Price" readonly="1" force_save="1"
-                                           column_invisible="1"/>
-                                    <field name="state" column_invisible="True"/>
-                                </tree>
-                            </field>
-                            <h3 class="oe_grey">Notes</h3>
-                            <ul class="oe_grey">
-                                <li>Inventory adjustments will be made by comparing the theoretical and the checked
-                                    quantities.
-                                </li>
-                                <li>You can delete lines to ignore some products.</li>
-                                <li>If a product is not at the right place, set the checked quantity to 0 and create
-                                    a new line with correct location.
-                                </li>
-                            </ul>
-                        </page>
-                        <!--                            <page string="Stock Moves" name="stock_move">-->
-                        <!--                                <field name="stock_move_ids" readonly="1"/>-->
-                        <!--                            </page>-->
-                    </notebook>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
                 </form>
             </field>
         </record>

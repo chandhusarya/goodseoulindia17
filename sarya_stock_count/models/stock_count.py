@@ -62,6 +62,7 @@ class StockCount(models.Model):
     brand_ids = fields.Many2many(
         comodel_name='product.manufacturer',
         string='Brand',
+        domain=[('is_show_in_stock_count', '=', True)]
     )
     line_ids = fields.One2many(
         comodel_name='stock.count.line',

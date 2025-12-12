@@ -12,7 +12,7 @@
     'maintainer': 'Sarya',
     'website': "https://www.sarya.ae",
     # 'support': 'support@sarya.com',
-    'depends': ['point_of_sale', 'sarya_pos_custom', 'stock'],
+    'depends': ['point_of_sale', 'sarya_pos_custom', 'stock', 'kg_sarya_inventory'],
     'data': [
         'data/ir_sequence_data.xml',
         'security/security.xml',

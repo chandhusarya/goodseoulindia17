@@ -117,6 +117,10 @@ class Manufacturer(models.Model):
     name = fields.Char(required=True)
     code = fields.Char(required=True)
     sequence_id = fields.Many2one("ir.sequence", string='Sequence', ondelete='cascade')
+    is_show_in_stock_count = fields.Boolean(
+        string='Show in Stock count',
+        default=False
+    )
 
     _sql_constraints = [
         ('code_company_uniq', 'unique (code,company_id)', 'The code of the brand must be unique per company !')
