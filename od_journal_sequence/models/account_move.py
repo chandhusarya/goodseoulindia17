@@ -136,8 +136,6 @@ class AccountMove(models.Model):
             to_post = self
 
         for move in to_post:
-            for line in to_post.line_ids:
-                print("line", line.product_id.name)
             if move.state == 'posted':
                 raise UserError(_('The entry %s (id %s) is already posted.') % (move.name, move.id))
             if not move.line_ids.filtered(lambda line: line.display_type not in ('line_section', 'line_note')):
