@@ -154,7 +154,7 @@ class StockCount(models.Model):
                 inv_line.price = inv_line.product_id.standard_price
 
     def action_validate(self):
-        self.check_move_forward()
+        # self.check_move_forward()
 
         StockMove = self.env['stock.move'].with_context(inventory_mode=False)
         StockQuant = self.env['stock.quant']
