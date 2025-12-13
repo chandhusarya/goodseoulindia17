@@ -47,7 +47,8 @@ class StockCount(models.Model):
         copy=False,
         index=True,
         readonly=True,
-        default='draft'
+        default='draft',
+        tracking=True
     )
     pos_config_id = fields.Many2one(
         comodel_name='pos.config',
