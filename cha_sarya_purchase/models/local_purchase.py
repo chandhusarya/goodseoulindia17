@@ -770,12 +770,7 @@ class StockDelivery(models.Model):
         if self.local_purchase_id:
             local_lpo = self.local_purchase_id
         for picking in self:
-            if local_lpo.landed_cost_ids.filtered(lambda l: not l.is_billed):
-                print("888888888888888888888888888888888888888888888")
-                print("888888888888888888888888888888888888888888888")
-                print("888888888888888888888888888888888888888888888")
-                print("888888888888888888888888888888888888888888888")
-                print("888888888888888888888888888888888888888888888")
+            if local_lpo and local_lpo.landed_cost_ids.filtered(lambda l: not l.is_billed):
                 if picking.picking_type_id.code == "incoming":
                     landed_cost = self.env["stock.landed.cost"].create({
                         "picking_ids": [(6, 0, [picking.id])],
