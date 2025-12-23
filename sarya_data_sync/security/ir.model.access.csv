@@ -10,3 +10,7 @@ access_cash_deposit_wizard,cash.deosit.wizard,model_cash_deposit_wizard,base.gro
 access_pos_kitchen_screen_report,pos.kitchen.screen.report,model_pos_kitchen_screen_report,base.group_user,1,1,1,1
 access_pos_order_report,pos.order.report,model_pos_order_report,base.group_user,1,0,0,0
 access_pos_order_type,pos.order.type,model_pos_order_type,base.group_user,1,1,1,1
+access_pos_foc_reason,access.pos.foc.reason,model_pos_foc_reason,point_of_sale.group_pos_user,1,0,0,0
+access_pos_foc_reason_manager,access.pos.foc.reason.manager,model_pos_foc_reason,point_of_sale.group_pos_manager,1,1,1,1
+access_pos_foc_sub_reason,access.pos.foc.sub.reason,model_pos_foc_sub_reason,point_of_sale.group_pos_user,1,0,0,0
+access_pos_foc_sub_reason_manager,access.pos.foc.sub.reason.manager,model_pos_foc_sub_reason,point_of_sale.group_pos_manager,1,1,1,1

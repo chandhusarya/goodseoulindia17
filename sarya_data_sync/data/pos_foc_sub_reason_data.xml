@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pos_foc_reason_product_taste_1" model="pos.foc.sub.reason">
+        <field name="name">Product Taste</field>
+        <field name="sequence">1</field>
+        <field name="pos_foc_reason_id"
+               ref="sarya_data_sync.pos_foc_reason_unsatisfied_guest"/>
+    </record>
+    <record id="pos_foc_reason_foreign_particle_1" model="pos.foc.sub.reason">
+        <field name="name">Foreign Particle</field>
+        <field name="sequence">1</field>
+        <field name="pos_foc_reason_id"
+               ref="sarya_data_sync.pos_foc_reason_unsatisfied_guest"/>
+    </record>
+    <record id="pos_foc_reason_wrong_order" model="pos.foc.sub.reason">
+        <field name="name">Wrong Order</field>
+        <field name="sequence">1</field>
+        <field name="pos_foc_reason_id"
+               ref="sarya_data_sync.pos_foc_reason_unsatisfied_guest"/>
+    </record>
+    <record id="pos_foc_reason_police" model="pos.foc.sub.reason">
+        <field name="name">Police</field>
+        <field name="sequence">1</field>
+        <field name="pos_foc_reason_id"
+               ref="sarya_data_sync.pos_foc_reason_charity"/>
+    </record>
+    <record id="pos_foc_reason_bmc" model="pos.foc.sub.reason">
+        <field name="name">BMC</field>
+        <field name="sequence">1</field>
+        <field name="pos_foc_reason_id" ref="sarya_data_sync.pos_foc_reason_charity"/>
+    </record>
+    <record id="pos_foc_reason_traffic_police" model="pos.foc.sub.reason">
+        <field name="name">Traffic Police</field>
+        <field name="sequence">1</field>
+        <field name="pos_foc_reason_id" ref="sarya_data_sync.pos_foc_reason_charity"/>
+    </record>
+    <record id="pos_foc_reason_order_delayed" model="pos.foc.sub.reason">
+        <field name="name">Order Delayed</field>
+        <field name="sequence">1</field>
+        <field name="pos_foc_reason_id" ref="sarya_data_sync.pos_foc_reason_cancellation"/>
+    </record>
+    <record id="pos_foc_reason_foreign_particle_2" model="pos.foc.sub.reason">
+        <field name="name">Foreign Particle</field>
+        <field name="sequence">1</field>
+        <field name="pos_foc_reason_id" ref="sarya_data_sync.pos_foc_reason_cancellation"/>
+    </record>
+    <record id="pos_foc_sub_reason_product_taste_2" model="pos.foc.sub.reason">
+        <field name="name">Product Taste</field>
+        <field name="sequence">1</field>
+        <field name="pos_foc_reason_id" ref="sarya_data_sync.pos_foc_reason_cancellation"/>
+    </record>
+    <record id="pos_foc_sub_reason_guest_change_his_mind" model="pos.foc.sub.reason">
+        <field name="name">Guest Change his Mind</field>
+        <field name="sequence">1</field>
+        <field name="pos_foc_reason_id" ref="sarya_data_sync.pos_foc_reason_cancellation"/>
+    </record>
+</odoo>

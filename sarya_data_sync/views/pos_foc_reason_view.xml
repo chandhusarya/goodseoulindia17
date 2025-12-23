@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--    POS FOC Reason List view-->
+
+        <record id="pos_foc_reason_list_view" model="ir.ui.view">
+            <field name="name">pos.foc.reason.list.view</field>
+            <field name="model">pos.foc.reason</field>
+            <field name="arch" type="xml">
+                <tree string="FOC Reason Models">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--    POS FOC Reason Form view-->
+
+        <record id="pos_foc_reason_form_view" model="ir.ui.view">
+            <field name="name">pos.foc.reason.form.view</field>
+            <field name="model">pos.foc.reason</field>
+            <field name="arch" type="xml">
+                <form string="POS FoC Reason form">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name" required="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="is_sub_reason_required" readonly="1"/>
+                        </group>
+                        <notebook>
+                            <page string="Sub Reasons">
+                                <field name="foc_sub_reason_line_ids">
+                                    <list>
+                                        <field name="name"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--    POS FOC Reason action     -->
+
+        <record id="action_pos_foc_reason" model="ir.actions.act_window">
+            <field name="name">POS FOC Reason</field>
+            <field name="res_model">pos.foc.reason</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create New POS FOC Reason Record.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

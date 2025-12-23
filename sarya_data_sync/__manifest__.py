@@ -16,6 +16,8 @@
     'data': [
         'data/ir_sequence_data.xml',
         'data/mail_template_data.xml',
+        'data/pos_foc_reason_data.xml',
+        'data/pos_foc_sub_reason_data.xml',
         'security/ir.model.access.csv',
         'views/data_sync_log_view.xml',
         'views/pos_config_view.xml',
@@ -32,6 +34,7 @@
         'views/pos_order_report_view.xml',
         'views/pos_order_type_view.xml',
         'wizard/cash_deposit_wizard_view.xml',
+        'views/pos_foc_reason_view.xml',
         'views/menu.xml',
     ],
     'images': ['static/description/icon.png'],

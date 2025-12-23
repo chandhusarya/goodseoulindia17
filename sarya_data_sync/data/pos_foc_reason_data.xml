@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pos_foc_reason_guest" model="pos.foc.reason">
+        <field name="name">Guest Sampling</field>
+        <field name="sequence">1</field>
+        <field name="is_sub_reason_required" eval="False"/>
+    </record>
+    <record id="pos_foc_reason_in_house_marketing" model="pos.foc.reason">
+        <field name="name">In house marketing</field>
+        <field name="sequence">2</field>
+        <field name="is_sub_reason_required" eval="False"/>
+    </record>
+    <record id="pos_foc_reason_external_marketing" model="pos.foc.reason">
+        <field name="name">External Marketing</field>
+        <field name="sequence">3</field>
+        <field name="is_sub_reason_required" eval="False"/>
+    </record>
+    <record id="pos_foc_reason_training" model="pos.foc.reason">
+        <field name="name">Training</field>
+        <field name="sequence">4</field>
+        <field name="is_sub_reason_required" eval="False"/>
+    </record>
+    <record id="pos_foc_reason_unsatisfied_guest" model="pos.foc.reason">
+        <field name="name">Unsatisfied Guest</field>
+        <field name="sequence">5</field>
+        <field name="is_sub_reason_required" eval="True"/>
+    </record>
+    <record id="pos_foc_reason_charity" model="pos.foc.reason">
+        <field name="name">Charity</field>
+        <field name="sequence">6</field>
+        <field name="is_sub_reason_required" eval="True"/>
+    </record>
+    <record id="pos_foc_reason_cancellation" model="pos.foc.reason">
+        <field name="name">Cancellation ( Refund )</field>
+        <field name="sequence">7</field>
+        <field name="is_sub_reason_required" eval="True"/>
+    </record>
+    <record id="pos_foc_reason_product_testing" model="pos.foc.reason">
+        <field name="name">Product Testing</field>
+        <field name="sequence">8</field>
+        <field name="is_sub_reason_required" eval="False"/>
+    </record>
+</odoo>
