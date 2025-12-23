@@ -6,3 +6,4 @@ access_pos_wastage_line,pos_wastage_line,model_pos_wastage_line,base.group_user,
 access_outlet_transfer,outlet_transfer,model_outlet_transfer,base.group_user,1,1,1,1
 access_outlet_transfer_line,outlet_transfer_line,model_outlet_transfer_line,base.group_user,1,1,1,1
 access_res_users_pos_allowed,res.users.pos.allowed,model_res_users_pos_allowed,base.group_user,1,1,1,1
+access_pos_wastage_reason,pos_wastage_reason,model_pos_wastage_reason,base.group_user,1,1,1,1

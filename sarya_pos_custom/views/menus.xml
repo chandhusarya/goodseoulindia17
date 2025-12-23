@@ -54,6 +54,10 @@
                   sequence="2"
                   groups="point_of_sale.group_pos_manager,sarya_pos_custom.pos_manager_group"/>
 
+        <menuitem id="menu_pos_wastage_reason"
+                  parent="point_of_sale.menu_point_config_product"
+                  action="sarya_pos_custom.action_pos_wastage_reason"
+                  sequence="10"/>
 
     </data>
 </odoo>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--    POS Wastage Reason List view-->
+
+        <record id="pos_wastage_reason_list_view" model="ir.ui.view">
+            <field name="name">pos.wastage.reason.list.view</field>
+            <field name="model">pos.wastage.reason</field>
+            <field name="arch" type="xml">
+                <tree string="Wastage Reason Models" editable="bottom">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--    POS Wastage Reason action     -->
+
+        <record id="action_pos_wastage_reason" model="ir.actions.act_window">
+            <field name="name">POS Wastage Reason</field>
+            <field name="res_model">pos.wastage.reason</field>
+            <field name="view_mode">tree</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create New POS Wastage Reason Record.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

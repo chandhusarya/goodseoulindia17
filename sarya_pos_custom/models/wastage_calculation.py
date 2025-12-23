@@ -40,6 +40,10 @@ class POSWastage(models.Model):
     pos_config_id = fields.Many2one(
         comodel_name='pos.config',
         string='POS Outlet')
+    pos_wastage_reason_id = fields.Many2one(
+        comodel_name='pos.wastage.reason',
+        string='POS Wastage Reason'
+    )
 
     @api.onchange('pos_config_id')
     def _onchange_pos_config(self):

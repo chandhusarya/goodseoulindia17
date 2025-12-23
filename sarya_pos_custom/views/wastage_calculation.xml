@@ -53,6 +53,7 @@
                                    readonly="state != 'draft'" invisible="1"/>
                             <field name="order_type" string="Reason" widget='radio'
                                    readonly="state != 'draft'"/>
+                            <field name="pos_wastage_reason_id" widget="selection" required="1"/>
                             <field name="comment" required="1" readonly="state == 'done'"/>
                         </group>
                         <group>

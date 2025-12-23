@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="pos_wastage_reason_expired" model="pos.wastage.reason">
+        <field name="name">Expired</field>
+        <field name="sequence">1</field>
+    </record>
+    <record id="pos_wastage_reason_damage" model="pos.wastage.reason">
+        <field name="name">Damage</field>
+        <field name="sequence">2</field>
+    </record>
+    <record id="pos_wastage_reason_spoilage" model="pos.wastage.reason">
+        <field name="name">Spoilage</field>
+        <field name="sequence">3</field>
+    </record>
+</odoo>

@@ -29,6 +29,8 @@
         'views/pos.xml',
         'views/local_purchase_inherit.xml',
         'data/sequence.xml',
+        'data/pos_wastage_reason.xml',
+        'views/pos_wastage_reason_view.xml',
         'views/menus.xml',
         'views/customer_section_views.xml',
         'views/outlet_transfer_views.xml',
