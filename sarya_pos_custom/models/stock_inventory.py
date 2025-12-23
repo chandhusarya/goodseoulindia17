@@ -2,6 +2,10 @@ from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_utils, float_compare
 
+class ProductTemplate(models.Model):
+    _inherit = 'product.template'
+
+    preparation_time = fields.Integer(string='Preparation time (minutes)', help='Time needed to prepare the product before selling it in POS.', default=0)
 
 class StockInventory(models.Model):
     _name = "stock.inventory"
