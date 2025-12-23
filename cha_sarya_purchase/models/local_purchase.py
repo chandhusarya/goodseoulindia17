@@ -188,8 +188,10 @@ class LocalPurchase(models.Model):
     def onchange_vendor_id(self):
         if not self.vendor_id:
             self.fiscal_position_id = False
+            self.purchase_type = 'normal'
         else:
             self.fiscal_position_id = self.env['account.fiscal.position']._get_fiscal_position(self.vendor_id)
+            self.purchase_type = self.vendor_id.purchase_type or 'normal'
 
     def _find_grn_status(self):
         for po in self:

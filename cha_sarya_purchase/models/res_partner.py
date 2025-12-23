@@ -25,6 +25,10 @@ class ResPartner(models.Model):
     total_overdue_vendor = fields.Monetary(compute='_compute_for_followup_vendor', string="Overdue Amount")
     port_of_loading = fields.Many2one('purchase.port.of.discharge', string="Port Of Loading")
     delivery_lead_time = fields.Integer("Delivery Lead Time(Hrs)", tracking=True)
+    purchase_type = fields.Selection(string='Purchase type',
+        selection=[('normal', 'Normal'),
+                   ('local_purchase', 'Local Purchase')], default='normal')
+
 
 
     def _compute_for_followup_vendor(self):
