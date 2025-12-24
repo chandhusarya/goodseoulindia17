@@ -20,3 +20,4 @@ from . import pos_kitchen_screen_report
 from . import pos_order_type
 from . import pos_foc_reason
 from . import pos_foc_sub_reason
+from . import product_pricelist

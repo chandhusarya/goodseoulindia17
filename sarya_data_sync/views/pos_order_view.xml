@@ -23,6 +23,21 @@
                 <field name="buzzer_number" readonly='1' invisible="is_delivery_order"/>
             </xpath>
 
+            <xpath expr="//page[@name='notes']" position="after">
+
+                <!-- IMPORTANT: field must be loaded BEFORE notebook -->
+                <field name="is_foc_pricelist" invisible="1"/>
+
+                <page string="FOC Reason"
+                      name="foc_reason"
+                      invisible="not is_foc_pricelist">
+                    <group>
+                        <field name="foc_reason_id" readonly="1"/>
+                        <field name="foc_sub_reason_id" readonly="1"/>
+                    </group>
+                </page>
+            </xpath>
+
         </field>
     </record>
 

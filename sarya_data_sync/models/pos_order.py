@@ -27,6 +27,20 @@ class PosOrder(models.Model):
         string='Token Number',
         copy=False
     )
+    foc_reason_id = fields.Many2one(
+        comodel_name='pos.foc.reason',
+        string="FOC Reason",
+        copy=False
+    )
+    foc_sub_reason_id = fields.Many2one(
+        comodel_name='pos.foc.sub.reason',
+        string="FOC Sub Reason",
+        copy=False
+    )
+    is_foc_pricelist = fields.Boolean(
+        string='Is FOC Pricelist?',
+        related='pricelist_id.is_foc_pricelist'
+    )
 
     def action_view_kitchen_order_report(self):
         return {

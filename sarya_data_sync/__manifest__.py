@@ -35,6 +35,7 @@
         'views/pos_order_type_view.xml',
         'wizard/cash_deposit_wizard_view.xml',
         'views/pos_foc_reason_view.xml',
+        'views/product_pricelist_view.xml',
         'views/menu.xml',
     ],
     'images': ['static/description/icon.png'],
