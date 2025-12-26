@@ -108,8 +108,7 @@ class OutletTransfer(models.Model):
         for line in self.outlet_transfer_lines:
             if float_compare(line.quantity, 0, precision_rounding=line.product_id.uom_id.rounding) <= 0:
                 raise UserError(_("You cannot enter Quantity in zero or negative"))
-            if not line.lot_id:
-                raise UserError(_("Please enter the lot"))
+
         picking_type_id = self.env['stock.picking.type'].search([('code', '=', 'internal'),('company_id', '=', self.company_id.id), ('warehouse_id', '=', self.to_outlet.warehouse_id.id)], limit=1)
         from_outlet = self.from_outlet.lpo_picking_type_id.default_location_dest_id
         to_outlet = self.to_outlet.lpo_picking_type_id.default_location_dest_id

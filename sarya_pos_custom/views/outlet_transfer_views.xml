@@ -70,8 +70,8 @@
                                                domain="[('section.allow_outlet_transfer','=', True)]"/>
                                         <field name="outlet_transfer_id" column_invisible="1"/>
                                         <field name="packaging" required="True" domain="[('product_id', '=', product_id)]"/>
-                                        <field name="lot_id" domain="[('id', 'in', available_lot_ids)]"
-                                               required="1"/>
+<!--                                        <field name="lot_id" domain="[('id', 'in', available_lot_ids)]"-->
+<!--                                               required="1"/>-->
                                         <field name="available_lot_ids" widget="many2many_tags" column_invisible="1"/>
                                         <field name="available_quantity"/>
                                         <field name="quantity" required="True"/>
