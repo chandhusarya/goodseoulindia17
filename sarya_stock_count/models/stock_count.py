@@ -155,7 +155,7 @@ class StockCount(models.Model):
             inventory.write(vals)
 
     def action_validate(self):
-        # self.check_move_forward()
+        self.check_move_forward()
 
         StockMove = self.env['stock.move'].with_context(inventory_mode=False)
         StockQuant = self.env['stock.quant']
@@ -366,7 +366,7 @@ class StockCount(models.Model):
             raise ValidationError(_('Please configure Stock count approve managers.'))
 
         # Check move forward
-        # self.check_move_forward()
+        self.check_move_forward()
 
         # Check if real qty is entered in all lines
         check_again = self.line_ids.filtered(lambda check: not check.is_counted_qty_entered)
@@ -377,14 +377,14 @@ class StockCount(models.Model):
         self.state = 'send_for_approval'
 
     def action_approve(self):
-        # self.check_move_forward()
+        self.check_move_forward()
 
         self.approved_date = fields.Datetime.now()
         self.state = 'approved'
         self.approved_by = self.env.user.employee_id.id
 
     def action_reject(self):
-        # self.check_move_forward()
+        self.check_move_forward()
 
         self.state = 'rejected'
 
