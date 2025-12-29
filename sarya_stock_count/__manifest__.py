@@ -21,6 +21,7 @@
         'views/stock_count_line_view.xml',
         'views/stock_count_approvals_view.xml',
         'views/stock_count_view.xml',
+        'views/stock_count_configuration_view.xml',
         'views/menu.xml',
     ],
     'images': ['static/description/icon.png'],

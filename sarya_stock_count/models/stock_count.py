@@ -55,6 +55,11 @@ class StockCount(models.Model):
         string='POS Outlet',
         tracking=True,
     )
+    stock_count_config_ids = fields.Many2many(
+        comodel_name='stock.count.config',
+        related='pos_config_id.stock_count_config_ids',
+        string='Stock Count Configs'
+    )
     location_id = fields.Many2one(
         comodel_name='stock.location',
         string="Location",
@@ -145,14 +150,9 @@ class StockCount(models.Model):
 
     def action_start(self):
         for inventory in self.filtered(lambda x: x.state not in ('done', 'cancel')):
-            vals = {'state': 'progress', 'date': fields.Datetime.now()}
-            vals.update(
-                {'product_count_line_ids': [(0, 0, line_values) for line_values in inventory._get_stock_count_lines_values()]})
-            print("vals", vals)
+            vals= {'product_count_line_ids': [(0, 0, line_values) for line_values in inventory._get_stock_count_lines_values()]}
+            vals.update({'state': 'progress', 'date': fields.Datetime.now()})
             inventory.write(vals)
-        for inv_line in self.product_count_line_ids:
-            if inv_line.product_id:
-                inv_line.price = inv_line.product_id.standard_price
 
     def action_validate(self):
         # self.check_move_forward()
@@ -390,18 +390,18 @@ class StockCount(models.Model):
 
     def _get_stock_count_lines_values(self):
         vals = []
-        domain = [
-            ('active', '=', True)
-        ]
-        if self.brand_ids:
-            domain += [
-                ('brand', 'in', self.brand_ids.ids)
-            ]
-        products = self.env['product.product'].search(domain)
-        for rec in products:
+
+        if self.pos_config_id and not self.pos_config_id.stock_count_config_ids:
+            raise ValidationError(_('Please add Stock Count Configuration for this POS Outlet.'))
+
+        # Get all products from all stock count configs (NO duplicates)
+        products = self.pos_config_id.stock_count_config_ids.mapped('allowed_product_ids')
+
+        for product in products:
             vals.append({
-                'product_id': rec.id,
+                'product_id': product.id,
                 'location_id': self.location_id.id,
+                'price': product.standard_price,
             })
 
         return vals

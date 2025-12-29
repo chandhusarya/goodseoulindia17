@@ -13,6 +13,11 @@
                            <field name="stock_count_approve_manager_ids" widget="many2many_tags" options="{'no_create_edit': True, 'no_create': True}" domain="[('company_id', '=', company_id)]"/>
                     </setting>
                 </div>
+                <div id="stock_count_config_ids" class="row mt16 o_settings_container">
+                    <setting>
+                           <field name="stock_count_config_ids" widget="many2many_tags" options="{'no_create_edit': True, 'no_create': True}" domain="[('company_id', '=', company_id)]"/>
+                    </setting>
+                </div>
             </xpath>
         </field>
     </record>
