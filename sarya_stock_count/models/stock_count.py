@@ -55,10 +55,9 @@ class StockCount(models.Model):
         string='POS Outlet',
         tracking=True,
     )
-    stock_count_config_ids = fields.Many2many(
+    stock_count_config_id = fields.Many2one(
         comodel_name='stock.count.config',
-        related='pos_config_id.stock_count_config_ids',
-        string='Stock Count Configs'
+        string='Stock Count Item List'
     )
     location_id = fields.Many2one(
         comodel_name='stock.location',
@@ -391,11 +390,11 @@ class StockCount(models.Model):
     def _get_stock_count_lines_values(self):
         vals = []
 
-        if self.pos_config_id and not self.pos_config_id.stock_count_config_ids:
-            raise ValidationError(_('Please add Stock Count Configuration for this POS Outlet.'))
+        if not self.stock_count_config_id:
+            raise ValidationError(_('Please choose Stock Count Item List.'))
 
         # Get all products from all stock count configs (NO duplicates)
-        products = self.pos_config_id.stock_count_config_ids.mapped('allowed_product_ids')
+        products = self.stock_count_config_id.mapped('allowed_product_ids')
 
         for product in products:
             vals.append({

@@ -10,7 +10,6 @@
             <field name="arch" type="xml">
                 <tree string="Stock Count Conf List">
                     <field name="name" string="Name"/>
-                    <field name="pos_config_id"/>
                     <field name="allowed_product_ids" widget="many2many_tags"/>
                     <field name="company_id" optional="hide"/>
                 </tree>
@@ -33,10 +32,6 @@
                         </div>
                         <group>
                             <group>
-                                <field name="pos_config_id"
-                                       options="{'no_create_edit': True, 'no_create': True}"
-                                       required="1"
-                                       domain="[('terminal_type', '=', 'primary')]"/>
                                 <field name="allowed_product_ids" widget="many2many_tags" required="1"/>
                             </group>
                             <group>
