@@ -1,0 +1,30 @@
+<odoo>
+
+    <menuitem id="menu_sop_root" name="SOP Checklist" sequence="10" groups="base.group_user"
+        web_icon="sarya_checklist,static/description/icon.png"/>
+
+    <menuitem id="menu_sop_operations"
+              name="Operations"
+              parent="menu_sop_root"/>
+
+    <menuitem id="menu_sop_configuration"
+              name="Configuration"
+              parent="menu_sop_root"
+              groups="group_checklist_manager"/>
+
+    <menuitem id="menu_outlet_checklist"
+              name="Outlet Checklists"
+              parent="menu_sop_operations"
+              action="action_outlet_checklist"/>
+
+    <menuitem id="menu_checklist_config"
+              name="Checklist Templates"
+              parent="menu_sop_configuration"
+              action="action_checklist_config"/>
+
+    <menuitem id="menu_responsible_master"
+              name="Responsible Master"
+              parent="menu_sop_configuration"
+              action="action_responsible_master"/>
+
+</odoo>

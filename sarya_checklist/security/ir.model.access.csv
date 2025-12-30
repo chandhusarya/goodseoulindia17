@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_checklist_config_admin,Checklist Config Admin,model_checklist_config,group_checklist_admin,1,1,1,1
+access_checklist_config_line_admin,Checklist Config Line Admin,model_checklist_config_line,group_checklist_admin,1,1,1,1
+
+access_responsible_master_admin,Responsible Master Admin,model_checklist_responsible_master,group_checklist_admin,1,1,1,1
+access_responsible_line_admin,Responsible Line Admin,model_checklist_responsible_line,group_checklist_admin,1,1,1,1
+
+access_outlet_checklist_user,Outlet Checklist User,model_outlet_checklist,group_checklist_user,1,1,0,0
+access_outlet_checklist_line_user,Outlet Checklist Line User,model_outlet_checklist_line,group_checklist_user,1,1,0,0
+
+access_outlet_checklist_manager,Outlet Checklist Manager,model_outlet_checklist,group_checklist_manager,1,1,1,0
+access_outlet_checklist_admin,Outlet Checklist Admin,model_outlet_checklist,group_checklist_admin,1,1,1,1

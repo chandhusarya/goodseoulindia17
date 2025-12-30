@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_outlet_checklist" model="ir.actions.act_window">
+        <field name="name">Outlet Checklists</field>
+        <field name="res_model">outlet.checklist</field>
+        <field name="view_mode">tree,kanban,form</field>
+    </record>
+
+    <record id="view_outlet_checklist_kanban" model="ir.ui.view">
+        <field name="name">outlet.checklist.kanban</field>
+        <field name="model">outlet.checklist</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_example">
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-att-data-id="record.id.raw_value" t-attf-class="o_kanban_record card">
+                            <div class="o_kanban_card_header">
+                                <strong><field name="name"/></strong>
+                            </div>
+                            <div class="o_kanban_card_body">
+                                <div><strong>Outlet:</strong> <field name="outlet_id"/></div>
+                                <div><strong>Responsible:</strong> <field name="responsible_user_ids"/></div>
+                                <div><strong>Valid Till:</strong> <field name="valid_till"/></div>
+                            </div>
+                            <div class="o_kanban_card_footer">
+                                <div><strong>Status:</strong>
+                                    <field name="state" widget="label_selection"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- TREE -->
+    <record id="view_outlet_checklist_tree" model="ir.ui.view">
+        <field name="name">outlet.checklist.tree</field>
+        <field name="model">outlet.checklist</field>
+        <field name="arch" type="xml">
+            <tree decoration-danger="is_expired"
+                  decoration-muted="state=='new'"
+                  decoration-warning="state=='in_progress'"
+                  decoration-success="state=='completed'">
+                <field name="is_expired" column_invisible="1"/>
+                <field name="name"/>
+                <field name="outlet_id"/>
+                <field name="responsible_user_ids"/>
+                <field name="state"/>
+                <field name="valid_till"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- FORM -->
+    <record id="view_outlet_checklist_form" model="ir.ui.view">
+        <field name="name">outlet.checklist.form</field>
+        <field name="model">outlet.checklist</field>
+        <field name="arch" type="xml">
+            <form string="Outlet Checklist">
+                <header>
+
+                    <button name="action_start"
+                            type="object"
+                            string="Start"
+                            invisible="state != 'new'"
+                            class="btn-primary"/>
+
+                    <button name="action_complete"
+                            type="object"
+                            string="Complete"
+                            invisible="state != 'in_progress'"
+                            class="btn-success"/>
+
+                    <field name="state" widget="statusbar"/>
+
+                </header>
+
+                <sheet>
+
+                    <group>
+                        <field name="name" readonly="1"/>
+                        <field name="outlet_id" readonly="1"/>
+                        <field name="responsible_user_ids" readonly="1" widget="many2many_tags"/>
+                        <field name="valid_till" readonly="1"/>
+                    </group>
+
+                    <notebook>
+                        <page string="Checklist">
+                            <field name="line_ids" readonly="state == 'completed'">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="display_type" column_invisible="True"/>
+                                    <field name="name" readonly="1" widget="section_and_note_text"/>
+
+                                    <field name="is_done"
+                                           invisible="display_type != 'line'"/>
+
+                                    <field name="attachment_ids"
+                                           widget="many2many_binary"
+                                           invisible="display_type != 'line'"/>
+                                </tree>
+                            </field>
+                        </page>
+
+                        <page string="Audit">
+                            <field name="completed_on" readonly="1"/>
+                            <field name="completed_by" readonly="1"/>
+                        </page>
+                    </notebook>
+
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+</odoo>
