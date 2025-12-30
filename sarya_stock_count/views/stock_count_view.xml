@@ -13,7 +13,6 @@
                     <field name="name"/>
                     <field name="pos_config_id"/>
                     <field name="location_id"/>
-                    <field name="brand_ids" widget="many2many_tags"/>
                     <field name="state"/>
                     <field name="company_id" optional="hide"/>
                 </tree>
@@ -71,7 +70,9 @@
                                 <field name="location_id" domain="[('usage', '=', 'internal')]"
                                        options="{'no_create': True}" required="1"
                                        groups="stock.group_stock_multi_locations" readonly="state != 'draft'"/>
-                                <field name="brand_ids" required="1" widget="many2many_tags"
+                                <field name="stock_count_config_ids" widget="many2many_tags"
+                                       options="{'no_create': True}" readonly="1"/>
+                                <field name="brand_ids" widget="many2many_tags" invisible="1"
                                        options="{'no_create': True}" readonly="state != 'draft'"/>
                             </group>
                             <group>

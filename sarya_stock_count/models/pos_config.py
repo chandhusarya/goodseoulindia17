@@ -9,3 +9,7 @@ class PosConfig(models.Model):
         comodel_name='hr.employee',
         string='Stock Count Approve Managers'
     )
+    stock_count_config_ids = fields.Many2many(
+        comodel_name='stock.count.config',
+        string='Stock Count Configs'
+    )
