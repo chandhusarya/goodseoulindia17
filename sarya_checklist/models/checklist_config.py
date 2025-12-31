@@ -14,7 +14,7 @@ class ChecklistConfig(models.Model):
         ('monthly', 'Monthly')
     ], required=True)
 
-    validity_hours = fields.Integer(required=True)
+    validity_hours = fields.Float(required=True)
     last_generated_on = fields.Datetime(readonly=True)
 
     responsible_master_id = fields.Many2one(
@@ -25,6 +25,18 @@ class ChecklistConfig(models.Model):
         'config_id',
         string="Checklist Lines"
     )
+
+    def unlink(self):
+        for config in self:
+            existing_checklists = self.env['outlet.checklist'].search([
+                ('config_id', '=', config.id)
+            ])
+            if existing_checklists:
+                raise Exception(
+                    "Cannot delete this checklist configuration because there are "
+                    "existing outlet checklists linked to it that are not completed."
+                )
+        return super(ChecklistConfig, self).unlink()
 
 
     def _create_outlet_checklist_lines(self, outlet_checklist):
@@ -111,7 +123,7 @@ class ChecklistConfigLine(models.Model):
 
     name = fields.Char("Title / Description")
 
-    attachment_required = fields.Boolean()
+    attachment_required = fields.Boolean(default=False, string="Attachment Required")
 
     # UI helpers (same as sale.order.line)
     is_section = fields.Boolean(

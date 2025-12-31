@@ -25,6 +25,10 @@ class OutletChecklist(models.Model):
     valid_till = fields.Datetime()
     completed_on = fields.Datetime()
     completed_by = fields.Many2one('res.users')
+    started_on = fields.Datetime()
+    started_by = fields.Many2one('res.users')
+    employee_id = fields.Many2one('hr.employee', string="Completed By Employee")
+
 
     line_ids = fields.One2many(
         'outlet.checklist.line', 'checklist_id'
@@ -34,6 +38,12 @@ class OutletChecklist(models.Model):
         compute='_compute_is_expired',
         store=True
     )
+
+    def unlink(self):
+        for checklist in self:
+            if checklist.state != 'new':
+                raise UserError("Cannot delete a checklist is not in draft.")
+        return super(OutletChecklist, self).unlink()
 
 
     @api.depends('valid_till', 'state')
@@ -48,6 +58,10 @@ class OutletChecklist(models.Model):
             if checklist.valid_till and now > checklist.valid_till:
                 raise UserError("Cannot start this checklist because it has expired.")
             checklist.state = 'in_progress'
+            checklist.write({
+                'started_on': now,
+                'started_by': self.env.user.id
+            })
             checklist.message_post(body="Checklist started")
 
     def action_complete(self):
@@ -91,7 +105,7 @@ class OutletChecklistLine(models.Model):
 
     name = fields.Char("Description")
 
-    is_done = fields.Boolean()
+    is_done = fields.Boolean(default=False)
     attachment_required = fields.Boolean("Attachment Mandatory")
     remark = fields.Text("Remark")
 
