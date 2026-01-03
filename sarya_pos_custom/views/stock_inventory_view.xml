@@ -228,7 +228,7 @@
         <field name="model">stock.quant</field>
         <field eval="1000" name="priority"/>
         <field name="arch" type="xml">
-            <tree>
+            <tree create="False" edit="False">
                 <field name="create_date" column_invisible="True"/>
                 <field name="write_date" column_invisible="True"/>
                 <field name="id" column_invisible="True"/>
