@@ -78,7 +78,7 @@
 
                             <td style="text-align:center;">
                                 <t t-if="line.is_done">✔</t>
-                                <t t-else>✖</t>
+                                <t t-if="not line.is_done">✖</t>
                             </td>
 
                             <td>
