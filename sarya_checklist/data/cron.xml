@@ -5,8 +5,8 @@
         <field name="model_id" ref="model_checklist_config"/>
         <field name="state">code</field>
         <field name="code">model._cron_generate_outlet_checklists()</field>
-        <field name="interval_number">1</field>
-        <field name="interval_type">hours</field>
+        <field name="interval_number">5</field>
+        <field name="interval_type">minutes</field>
         <field name="numbercall">-1</field>
         <field name="active">True</field>
     </record>
