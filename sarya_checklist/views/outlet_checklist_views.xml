@@ -108,7 +108,7 @@
                         string="Print PDF"
                         type="action"
                         class="btn-secondary"
-                        states="completed"/>
+                        invisible="state != 'completed'"/>
 
 
                     <field name="state" widget="statusbar"/>
