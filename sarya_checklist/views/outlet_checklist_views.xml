@@ -104,6 +104,13 @@
                             invisible="state != 'in_progress'"
                             class="btn-success"/>
 
+                    <button name="%(action_outlet_checklist_report)d"
+                        string="Print PDF"
+                        type="action"
+                        class="btn-secondary"
+                        states="completed"/>
+
+
                     <field name="state" widget="statusbar"/>
 
                 </header>
