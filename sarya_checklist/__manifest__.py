@@ -12,11 +12,11 @@
     "data": [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'report/outlet_checklist_template.xml',
         'views/checklist_config_views.xml',
         'views/responsible_master_views.xml',
         'views/outlet_checklist_views.xml',
         'views/menu.xml',
-        'report/outlet_checklist_template.xml',
         'data/cron.xml',
     ],
 
