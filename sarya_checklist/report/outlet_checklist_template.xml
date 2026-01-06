@@ -106,10 +106,10 @@
         <field name="model">outlet.checklist</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">
-            outlet_sop_checklist.outlet_checklist_template
+            sarya_checklist.outlet_checklist_template
         </field>
         <field name="report_file">
-            outlet_sop_checklist.outlet_checklist_template
+            sarya_checklist.outlet_checklist_template
         </field>
         <field name="print_report_name">
             'Checklist - %s' % (object.name)
