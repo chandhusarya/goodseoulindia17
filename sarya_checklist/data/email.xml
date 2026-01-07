@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="email_template_checklist_completed" model="mail.template">
+        <field name="name">Checklist Completion Notification</field>
+        <field name="model_id" ref="sarya_checklist.model_outlet_checklist"/>
+
+        <!-- Static email -->
+        <field name="email_to">placeholder@example.com</field>
+
+        <!-- Static subject -->
+        <field name="subject">Checklist Completed</field>
+
+        <!-- Body HTML with QWeb expressions, no CDATA -->
+        <field name="body_html" type="html">
+            <div style="margin:0; padding:0; font-size:13px;">
+                Dear User,<br/><br/>
+                The checklist <strong><t t-esc="object.name"/></strong> has been completed.<br/>
+                Completed by: <t t-esc="object.completed_by.name if object.completed_by else 'N/A'"/>.<br/>
+                Completion on: <t t-esc="object.completed_on or 'N/A'"/>.<br/><br/>
+                Thank you
+            </div>
+        </field>
+
+        <field name="report_template_ids" eval="[(4, ref('sarya_checklist.action_outlet_checklist_report'))]"/>
+        <field name="auto_delete" eval="True"/>
+    </record>
+</odoo>
+

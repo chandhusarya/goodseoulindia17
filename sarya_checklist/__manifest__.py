@@ -17,6 +17,7 @@
         'views/responsible_master_views.xml',
         'views/outlet_checklist_views.xml',
         'views/menu.xml',
+        'data/email.xml',
         'data/cron.xml',
     ],
 

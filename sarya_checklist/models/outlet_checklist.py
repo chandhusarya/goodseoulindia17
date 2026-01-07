@@ -39,6 +39,28 @@ class OutletChecklist(models.Model):
         store=True
     )
 
+    def write(self, vals):
+        res = super().write(vals)
+        # Check if state is being updated to 'completed'
+        if 'state' in vals and vals['state'] == 'completed':
+            for record in self:
+                record._send_completion_email()
+
+        return res
+
+    def _send_completion_email(self):
+        self.ensure_one()
+        if not self.config_id or not self.config_id.responsible_master_id.notify_user_ids:
+            return
+
+        template = self.env.ref('sarya_checklist.email_template_checklist_completed')
+        if template:
+            # Get all users to notify from config_id
+            notify_users = self.config_id.responsible_master_id.notify_user_ids  # Many2many or One2many of res.users
+            # Build comma-separated emails
+            email_list = ','.join([u.email for u in notify_users if u.email])
+            template.send_mail(self.id, force_send=True,email_values={'email_to': email_list})
+
     def unlink(self):
         for checklist in self:
             if checklist.state != 'new':

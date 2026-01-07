@@ -99,7 +99,14 @@ class ChecklistConfig(models.Model):
                 for user in line.user_ids:
                     self._notify_user(user, checklist)
 
-            config.last_generated_on = fields.Datetime.now()
+            if config.frequency == 'daily':
+                config.last_generated_on = config.last_generated_on + timedelta(days=1)
+            elif config.frequency == 'weekly':
+                config.last_generated_on = config.last_generated_on + timedelta(weeks=1)
+            elif config.frequency == 'monthly':
+                config.last_generated_on = config.last_generated_on + timedelta(days=30)
+
+
 
 
 

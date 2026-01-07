@@ -8,6 +8,11 @@ class ChecklistResponsibleMaster(models.Model):
     line_ids = fields.One2many(
         'checklist.responsible.line', 'master_id'
     )
+    notify_user_ids = fields.Many2many(
+        'res.users',
+        string="Notify Users",
+        help="User who will receive notification email when checklist is completed."
+    )
 
 
 class ChecklistResponsibleLine(models.Model):

@@ -128,7 +128,7 @@
                     <notebook>
                         <page string="Checklist">
                             <field name="line_ids" readonly="state == 'completed'">
-                                <tree editable="bottom">
+                                <tree editable="bottom" limit="200">
                                     <field name="sequence" widget="handle"/>
                                     <field name="display_type" column_invisible="True"/>
                                     <field name="name" readonly="1" widget="section_and_note_text"/>
