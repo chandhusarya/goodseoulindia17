@@ -352,8 +352,9 @@ class StockCount(models.Model):
         # Difference between now and saved datetime
         diff = now - self.date
 
-        if diff > timedelta(hours=24):
-            raise ValidationError("You cannot proceed. This record is older than 24 hours.")
+        # Temporary commented
+        # if diff > timedelta(hours=24):
+        #     raise ValidationError("You cannot proceed. This record is older than 24 hours.")
 
     def action_send_for_approval(self):
         # Check for empty lines
