@@ -298,7 +298,7 @@ class StockCountLine(models.Model):
     @api.depends('product_id', 'location_id')
     def _compute_adjustment_qty(self):
         StockMoveLine = self.env['stock.move.line'].sudo()
-        locations = self.env['stock.location'].sudo().search([('usage', 'in', ('production'))])
+        locations = self.env['stock.location'].sudo().search([('usage', 'in', ['production'])])
 
         for rec in self:
             if not rec.product_id or not rec.location_id:

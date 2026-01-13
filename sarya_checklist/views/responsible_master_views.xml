@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_responsible_master" model="ir.actions.act_window">
+        <field name="name">Responsible Master</field>
+        <field name="res_model">checklist.responsible.master</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="view_responsible_master_tree" model="ir.ui.view">
+        <field name="name">responsible.master.tree</field>
+        <field name="model">checklist.responsible.master</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_responsible_master_form" model="ir.ui.view">
+        <field name="name">responsible.master.form</field>
+        <field name="model">checklist.responsible.master</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <group>
+                        <field name="notify_user_ids" widget="many2many_tags"/>
+                    </group>
+
+                    <field name="line_ids">
+                        <tree editable="bottom" limit="200">
+                            <field name="outlet_id" required="1"
+                                   options="{'no_create': True, 'no_create_edit': True}"/>
+                            <field name="user_ids" required="1" widget="many2many_tags" options="{'no_create': True, 'no_create_edit': True}"/>
+                        </tree>
+                    </field>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

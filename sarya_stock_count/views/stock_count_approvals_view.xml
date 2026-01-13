@@ -69,8 +69,8 @@
                                 <field name="location_id" domain="[('usage', '=', 'internal')]"
                                        options="{'no_create': True}" required="1"
                                        groups="stock.group_stock_multi_locations" readonly="state != 'draft'"/>
-                                <field name="brand_ids" required="1" widget="many2many_tags"
-                                       options="{'no_create': True}" readonly="state != 'draft'"/>
+<!--                                <field name="brand_ids" required="1" widget="many2many_tags"-->
+<!--                                       options="{'no_create': True}" readonly="state != 'draft'"/>-->
                             </group>
                             <group>
                                 <field name="is_approve_user" invisible="1"/>

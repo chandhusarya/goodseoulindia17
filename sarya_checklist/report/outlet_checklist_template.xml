@@ -1,0 +1,121 @@
+<odoo>
+
+<template id="outlet_checklist_template">
+    <t t-call="web.html_container">
+        <t t-call="web.internal_layout">
+            <t t-foreach="docs" t-as="doc">
+
+            <div class="page">
+
+                <!-- HEADER -->
+                <h2 style="text-align:center;">
+                    SOP CHECKLIST
+                </h2>
+
+                <table class="table table-sm o_main_table">
+                    <tr>
+                        <td><strong>SOP Name</strong></td>
+                        <td><span t-esc="doc.name"/></td>
+                        <td><strong>Outlet</strong></td>
+                        <td><span t-esc="doc.outlet_id.name"/></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Completed By</strong></td>
+                        <td><span t-esc="doc.employee_id.name"/></td>
+                        <td><strong>Status</strong></td>
+                        <td><span t-esc="doc.state"/></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Started On</strong></td>
+                        <td>
+                            <span t-esc="doc.started_on"/>
+                            (<span t-esc="doc.started_by.name"/>)
+                        </td>
+                        <td><strong>Completed On</strong></td>
+                        <td>
+                            <span t-esc="doc.completed_on"/>
+                            (<span t-esc="doc.completed_by.name"/>)
+                        </td>
+                    </tr>
+                </table>
+
+                <br/>
+
+                <!-- CHECKLIST LINES -->
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th style="width:45%">Description</th>
+                            <th style="width:10%">Done</th>
+                            <th style="width:20%">Remark</th>
+                            <th style="width:25%">Attachments</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <t t-foreach="doc.line_ids" t-as="line">
+
+                            <!-- SECTION -->
+                            <tr t-if="line.display_type == 'section'">
+                                <td colspan="4"
+                                    style="background:#e3f2fd;font-weight:bold;">
+                                    <span t-esc="line.name"/>
+                                </td>
+                            </tr>
+
+                            <!-- NOTE -->
+                            <tr t-if="line.display_type == 'note'">
+                                <td colspan="4"
+                                    style="background:#f5f5f5;font-style:italic;">
+                                    <span t-esc="line.name"/>
+                                </td>
+                            </tr>
+
+                            <!-- CHECKLIST LINE -->
+                            <tr t-if="line.display_type == 'line'">
+                                <td>
+                                    <span t-esc="line.name"/>
+                                </td>
+
+                                <td style="text-align:center;">
+                                    <t t-if="line.is_done"><i class="fa fa-check text-success"/></t>
+                                    <t t-if="not line.is_done"><i class="fa fa-times text-danger"/></t>
+                                </td>
+
+                                <td>
+                                    <span t-esc="line.remark"/>
+                                </td>
+
+                                <td>
+                                    <t t-foreach="line.attachment_ids.sudo()" t-as="att">
+                                        <t t-if="'image' in att.mimetype">
+                                                <img t-att-src="'data:%s;base64,%s' % (att.mimetype, att.datas.decode('utf-8'))"
+                                                     style="max-width:100%; margin-top:5px; border:1px solid #28a745;"/>
+                                            </t>
+                                    </t>
+
+                                </td>
+                            </tr>
+
+                        </t>
+                    </tbody>
+                </table>
+
+            </div>
+            </t>
+        </t>
+    </t>
+</template>
+
+    <record id="action_outlet_checklist_report" model="ir.actions.report">
+        <field name="name">Outlet SOP Checklist</field>
+        <field name="model">outlet.checklist</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">sarya_checklist.outlet_checklist_template</field>
+        <field name="report_file">sarya_checklist.outlet_checklist_template</field>
+        <field name="print_report_name">
+            'Checklist - %s' % (object.name)
+        </field>
+    </record>
+
+</odoo>

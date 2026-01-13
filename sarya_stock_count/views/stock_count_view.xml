@@ -13,7 +13,6 @@
                     <field name="name"/>
                     <field name="pos_config_id"/>
                     <field name="location_id"/>
-                    <field name="brand_ids" widget="many2many_tags"/>
                     <field name="state"/>
                     <field name="company_id" optional="hide"/>
                 </tree>
@@ -69,10 +68,12 @@
                                        domain="[('terminal_type', '=', 'primary')]"
                                        readonly="state != 'draft'"/>
                                 <field name="location_id" domain="[('usage', '=', 'internal')]"
-                                       options="{'no_create': True}" required="1"
+                                       options="{'no_create_edit': True, 'no_create': True}" required="1"
                                        groups="stock.group_stock_multi_locations" readonly="state != 'draft'"/>
-                                <field name="brand_ids" required="1" widget="many2many_tags"
-                                       options="{'no_create': True}" readonly="state != 'draft'"/>
+                                <field name="stock_count_config_id"
+                                       options="{'no_create_edit': True, 'no_create': True}" readonly="state != 'draft'"/>
+                                <field name="brand_ids" widget="many2many_tags" invisible="1"
+                                       options="{'no_create_edit': True, 'no_create': True}" readonly="state != 'draft'"/>
                             </group>
                             <group>
                                 <field name="is_approve_user" invisible="1"/>
@@ -81,7 +82,7 @@
                                 <field name="approved_by" invisible="not approved_by"/>
                                 <field name="validated_date" invisible="not validated_date"/>
                                 <field name="company_id" groups="base.group_multi_company"
-                                       options="{'no_create': True}"/>
+                                       options="{'no_create_edit': True, 'no_create': True}"/>
                             </group>
                         </group>
                         <notebook invisible="state == 'draft'">

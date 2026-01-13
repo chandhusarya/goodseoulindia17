@@ -23,5 +23,11 @@
                   groups="point_of_sale.group_pos_manager"
                   parent="sarya_pos_custom.menu_point_of_sale_operation"
                   sequence="53"/>
+
+        <!--    Stock Count Configuration Menu    -->
+        <menuitem id="menu_stock_count_configuration"
+                  parent="point_of_sale.menu_point_config_product"
+                  action="sarya_stock_count.action_stock_count_config"
+                  sequence="10"/>
     </data>
 </odoo>

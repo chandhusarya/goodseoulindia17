@@ -1,6 +1,9 @@
 from odoo import fields, models, api, _
 from odoo.exceptions import ValidationError, UserError
 from datetime import datetime, timedelta
+import logging
+
+_logger = logging.getLogger(__name__)
 
 from twilio.rest import Client
 import json
@@ -812,8 +815,12 @@ class StockDelivery(models.Model):
                                 employee.name, landed_cost.name)
                             button_url = "#id=%s&cids=2&menu_id=697&action=876&model=stock.landed.cost&view_type=form" % (
                                 str(landed_cost.id))
-                            self.send_notification(employees, message, subject, button_url)
+                            try:
+                                self.send_notification(employees, message, subject, button_url)
+                            except Exception:
+                                _logger.error("Failed to send notification for landed cost approval.")
                     local_lpo.landed_cost = landed_cost.id
+                    landed_cost.button_validate()
         return res
 
 
