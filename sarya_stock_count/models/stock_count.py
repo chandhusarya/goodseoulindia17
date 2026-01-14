@@ -162,53 +162,54 @@ class StockCount(models.Model):
         for line in self.line_ids:
             diff_qty = line.stock_diff_quantity
 
-            # Skip if no difference
             if abs(diff_qty) < 0.000001:
                 continue
 
-            # Determine direction
-            is_positive = diff_qty > 0  # stock increase or decrease?
+            is_positive = diff_qty > 0
             balance_qty = abs(diff_qty)
 
             while balance_qty > 0.000001:
 
-                # Get quant
-                quant = StockQuant.search([
+                domain = [
                     ('location_id', '=', line.location_id.id),
-                    ('quantity', '>', 0.0001),
-                    ('product_id', '=', line.product_id.id)
-                ], order="in_date asc", limit=1)
+                    ('product_id', '=', line.product_id.id),
+                ]
 
+                if not is_positive:
+                    domain.append(('quantity', '!=', 0))
+
+                quant = StockQuant.search(domain, order="in_date asc, id asc", limit=1)
+
+                # ------------------------------------------------
+                # Always create quant if none exists (even for -ve)
+                # ------------------------------------------------
                 if not quant:
-                    raise UserError(_(
-                        "Not enough stock for product: %s. Stock required."
-                        % line.product_id.display_name
-                    ))
+                    quant = StockQuant.new({
+                        'product_id': line.product_id.id,
+                        'location_id': line.location_id.id,
+                        'company_id': self.company_id.id,
+                    })
 
                 qty_to_move = balance_qty
 
-                # Prevent taking more than actual quant
-                if not is_positive and qty_to_move > quant.quantity:
-                    qty_to_move = quant.quantity
+                if not is_positive and quant.quantity > 0:
+                    qty_to_move = min(balance_qty, quant.quantity)
 
                 balance_qty -= qty_to_move
 
-                # Prepare move values depending on direction
                 if is_positive:
-                    # Increase stock → inventory → location
                     mv_vals = quant._get_inventory_move_values(
                         qty_to_move,
-                        quant.product_id.with_company(quant.company_id).property_stock_inventory,
-                        quant.location_id,
-                        package_id=quant.package_id
+                        line.product_id.with_company(self.company_id).property_stock_inventory,
+                        line.location_id,
+                        package_id=getattr(quant, 'package_id', False)
                     )
                 else:
-                    # Decrease stock → location → inventory
                     mv_vals = quant._get_inventory_move_values(
                         qty_to_move,
-                        quant.location_id,
-                        quant.product_id.with_company(quant.company_id).property_stock_inventory,
-                        package_id=quant.package_id
+                        line.location_id,
+                        line.product_id.with_company(self.company_id).property_stock_inventory,
+                        package_id=getattr(quant, 'package_id', False)
                     )
 
                 mv_vals.update({
@@ -218,10 +219,9 @@ class StockCount(models.Model):
                     'origin': self.name,
                 })
 
-                move = StockMove.create([mv_vals])
+                move = StockMove.create(mv_vals)
                 move._action_done()
 
-        # Final state update
         self.write({
             'state': 'done',
             'validated_date': fields.Datetime.now()
