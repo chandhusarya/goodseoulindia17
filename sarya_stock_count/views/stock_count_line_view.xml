@@ -50,6 +50,7 @@
                                 <group>
                                     <field name="wastage_qty" force_save="1"/>
                                     <field name="adjustment_qty" force_save="1"/>
+                                    <field name="production_qty" force_save="1"/>
                                     <field name="sale_qty" force_save="1"/>
                                     <field name="sale_return_qty" force_save="1"/>
                                 </group>

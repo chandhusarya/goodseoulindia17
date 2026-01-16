@@ -41,6 +41,11 @@ class PosOrder(models.Model):
         string='Is FOC Pricelist?',
         related='pricelist_id.is_foc_pricelist'
     )
+    payment_change_notes = fields.Html(
+        string="Payment Change Notes",
+        copy=False,
+        sanitize=True
+    )
 
     def action_view_kitchen_order_report(self):
         return {

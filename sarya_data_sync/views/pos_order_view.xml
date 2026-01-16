@@ -6,6 +6,12 @@
         <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
         <field name="arch" type="xml">
 
+            <xpath expr="//page[@name='payments']" position="after">
+                <page string="Payment Change Notes" name="payment_change_notes">
+                    <field name="payment_change_notes" readonly="1"/>
+                </page>
+            </xpath>
+
             <xpath expr="//field[@name='lines']//tree//field[@name='qty']" position="after">
                 <field name="is_hold_preparation_product" readonly="1"/>
                 <field name="recall_done_time" readonly="1" optional="hide"/>

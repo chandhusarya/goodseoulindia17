@@ -78,6 +78,12 @@ class StockCountLine(models.Model):
         compute="_compute_adjustment_qty",
         store=True
     )
+    production_qty = fields.Float(
+        string='Production Qty',
+        digits='Product Unit of Measure',
+        compute="_compute_production_qty",
+        store=True
+    )
     sale_qty = fields.Float(
         string='Sale Qty',
         digits='Product Unit of Measure',
@@ -298,7 +304,10 @@ class StockCountLine(models.Model):
     @api.depends('product_id', 'location_id')
     def _compute_adjustment_qty(self):
         StockMoveLine = self.env['stock.move.line'].sudo()
-        locations = self.env['stock.location'].sudo().search([('usage', 'in', ['production'])])
+        # locations = self.env['stock.location'].sudo().search([('usage', '=', 'inventory')])
+        locations = self.env['stock.location'].search([
+            ('usage', '=', 'inventory'), ('scrap_location', '=', False), ('company_id', '=', self.env.company.id)],
+            limit=1)
 
         for rec in self:
             if not rec.product_id or not rec.location_id:
@@ -339,6 +348,51 @@ class StockCountLine(models.Model):
             adjustment_in_qty = sum(StockMoveLine.search(domain_in).mapped('quantity'))
             adjustment_out_qty = sum(StockMoveLine.search(domain_out).mapped('quantity'))
             rec.adjustment_qty = -(adjustment_in_qty - adjustment_out_qty)
+
+    @api.depends('product_id', 'location_id')
+    def _compute_production_qty(self):
+        StockMoveLine = self.env['stock.move.line'].sudo()
+        locations = self.env['stock.location'].sudo().search([('usage', 'in', ['production'])])
+
+        for rec in self:
+            if not rec.product_id or not rec.location_id:
+                rec.production_qty = 0.0
+                continue
+
+            # Get previous stock count datetime
+            previous_stock_count_obj = rec.check_previous_stock_count_record()
+            start_dt = previous_stock_count_obj.stock_count_id.validated_date if previous_stock_count_obj and previous_stock_count_obj.stock_count_id else False
+
+            # Current inventory datetime (your own field)
+            end_dt = rec.stock_count_id.date if rec.stock_count_id and rec.stock_count_id.date else False
+
+            domain_in = [
+                ('product_id', '=', rec.product_id.id),
+                ('location_id', '=', rec.location_id.id),
+                ('location_dest_id', 'in', locations.ids),
+                ('state', '=', 'done'),
+            ]
+
+            domain_out = [
+                ('product_id', '=', rec.product_id.id),
+                ('location_id', 'in', locations.ids),
+                ('location_dest_id', '=', rec.location_id.id),
+                ('state', '=', 'done'),
+            ]
+
+            # Add start datetime
+            if start_dt:
+                domain_in.append(('date', '>=', start_dt))
+                domain_out.append(('date', '>=', start_dt))
+
+            # Add end datetime
+            if end_dt:
+                domain_in.append(('date', '<=', end_dt))
+                domain_out.append(('date', '<=', end_dt))
+
+            production_in_qty = sum(StockMoveLine.search(domain_in).mapped('quantity'))
+            product_out_qty = sum(StockMoveLine.search(domain_out).mapped('quantity'))
+            rec.production_qty = -(production_in_qty - product_out_qty)
 
     @api.depends('product_id', 'location_id')
     def _compute_sale_qty(self):
