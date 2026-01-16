@@ -30,7 +30,7 @@ class StockMove(models.Model):
                 src_wh = move.location_id.warehouse_id
                 dest_wh = move.location_dest_id.warehouse_id
                 if src_wh and dest_wh and src_wh != dest_wh:
-                    self._create_internal_wh_svl()
+                    move._create_internal_wh_svl()
         return res
 
     def _get_internal_move_lines(self):
