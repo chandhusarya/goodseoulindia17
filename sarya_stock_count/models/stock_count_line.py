@@ -184,7 +184,7 @@ class StockCountLine(models.Model):
 
             # Get previous stock count datetime
             previous_stock_count_obj = rec.check_previous_stock_count_record()
-            start_dt = previous_stock_count_obj.stock_count_id.validated_date if previous_stock_count_obj and previous_stock_count_obj.stock_count_id else False
+            start_dt = previous_stock_count_obj.stock_count_id.date if previous_stock_count_obj and previous_stock_count_obj.stock_count_id else False
 
             # Current inventory datetime (your own field)
             end_dt = rec.stock_count_id.date if rec.stock_count_id and rec.stock_count_id.date else False
@@ -230,7 +230,7 @@ class StockCountLine(models.Model):
 
             # Get previous stock count datetime
             previous_stock_count_obj = rec.check_previous_stock_count_record()
-            start_dt = previous_stock_count_obj.stock_count_id.validated_date if previous_stock_count_obj and previous_stock_count_obj.stock_count_id else False
+            start_dt = previous_stock_count_obj.stock_count_id.date if previous_stock_count_obj and previous_stock_count_obj.stock_count_id else False
 
             # Current inventory datetime (your own field)
             end_dt = rec.stock_count_id.date if rec.stock_count_id and rec.stock_count_id.date else False
@@ -265,7 +265,7 @@ class StockCountLine(models.Model):
 
             # Get previous stock count datetime
             previous_stock_count_obj = rec.check_previous_stock_count_record()
-            start_dt = previous_stock_count_obj.stock_count_id.validated_date if previous_stock_count_obj and previous_stock_count_obj.stock_count_id else False
+            start_dt = previous_stock_count_obj.stock_count_id.date if previous_stock_count_obj and previous_stock_count_obj.stock_count_id else False
 
             # Current inventory datetime (your own field)
             end_dt = rec.stock_count_id.date if rec.stock_count_id and rec.stock_count_id.date else False
@@ -303,7 +303,7 @@ class StockCountLine(models.Model):
 
             # Get previous stock count datetime
             previous_stock_count_obj = rec.check_previous_stock_count_record()
-            start_dt = previous_stock_count_obj.stock_count_id.validated_date if previous_stock_count_obj and previous_stock_count_obj.stock_count_id else False
+            start_dt = previous_stock_count_obj.stock_count_id.date if previous_stock_count_obj and previous_stock_count_obj.stock_count_id else False
 
             # Current inventory datetime (your own field)
             end_dt = rec.stock_count_id.date if rec.stock_count_id and rec.stock_count_id.date else False
@@ -341,7 +341,7 @@ class StockCountLine(models.Model):
 
             # Get previous stock count datetime
             previous_stock_count_obj = rec.check_previous_stock_count_record()
-            start_dt = previous_stock_count_obj.stock_count_id.validated_date if previous_stock_count_obj and previous_stock_count_obj.stock_count_id else False
+            start_dt = previous_stock_count_obj.stock_count_id.date if previous_stock_count_obj and previous_stock_count_obj.stock_count_id else False
 
             # Current inventory datetime (your own field)
             end_dt = rec.stock_count_id.date if rec.stock_count_id and rec.stock_count_id.date else False
@@ -388,7 +388,7 @@ class StockCountLine(models.Model):
 
             # Get previous stock count datetime
             previous_stock_count_obj = rec.check_previous_stock_count_record()
-            start_dt = previous_stock_count_obj.stock_count_id.validated_date if previous_stock_count_obj and previous_stock_count_obj.stock_count_id else False
+            start_dt = previous_stock_count_obj.stock_count_id.date if previous_stock_count_obj and previous_stock_count_obj.stock_count_id else False
 
             # Current inventory datetime (your own field)
             end_dt = rec.stock_count_id.date if rec.stock_count_id and rec.stock_count_id.date else False
@@ -433,7 +433,7 @@ class StockCountLine(models.Model):
 
             # Get previous stock count datetime
             previous_stock_count_obj = rec.check_previous_stock_count_record()
-            start_dt = previous_stock_count_obj.stock_count_id.validated_date if previous_stock_count_obj and previous_stock_count_obj.stock_count_id else False
+            start_dt = previous_stock_count_obj.stock_count_id.date if previous_stock_count_obj and previous_stock_count_obj.stock_count_id else False
 
             # Current inventory datetime (your own field)
             end_dt = rec.stock_count_id.date if rec.stock_count_id and rec.stock_count_id.date else False
@@ -468,7 +468,7 @@ class StockCountLine(models.Model):
 
             # Get previous stock count datetime
             previous_stock_count_obj = rec.check_previous_stock_count_record()
-            start_dt = previous_stock_count_obj.stock_count_id.validated_date if previous_stock_count_obj and previous_stock_count_obj.stock_count_id else False
+            start_dt = previous_stock_count_obj.stock_count_id.date if previous_stock_count_obj and previous_stock_count_obj.stock_count_id else False
 
             # Current inventory datetime (your own field)
             end_dt = rec.stock_count_id.date if rec.stock_count_id and rec.stock_count_id.date else False
