@@ -45,59 +45,59 @@ class StockCountLine(models.Model):
     opening_qty = fields.Float(
         string='Opening Qty',
         digits='Product Unit of Measure',
-        compute="_compute_opening_qty",
-        store=True
+        # compute="_compute_opening_qty",
+        # store=True
     )
     grn_qty = fields.Float(
         string='GRN Qty',
         digits='Product Unit of Measure',
-        compute="_compute_grn_qty",
-        store=True
+        # compute="_compute_grn_qty",
+        # store=True
     )
     transfer_in_qty = fields.Float(
         string='Transfer In Qty',
         digits='Product Unit of Measure',
-        compute="_compute_transfer_in_qty",
-        store=True
+        # compute="_compute_transfer_in_qty",
+        # store=True
     )
     transfer_out_qty = fields.Float(
         string='Transfer Out Qty',
         digits='Product Unit of Measure',
-        compute="_compute_transfer_out_qty",
-        store=True
+        # compute="_compute_transfer_out_qty",
+        # store=True
     )
     wastage_qty = fields.Float(
         string='Wastage Qty',
         digits='Product Unit of Measure',
-        compute="_compute_wastage_qty",
-        store=True
+        # compute="_compute_wastage_qty",
+        # store=True
     )
     adjustment_qty = fields.Float(
         string='Adjustment Qty',
         digits='Product Unit of Measure',
-        compute="_compute_adjustment_qty",
-        store=True
+        # compute="_compute_adjustment_qty",
+        # store=True
     )
     production_qty = fields.Float(
         string='Production Qty',
         digits='Product Unit of Measure',
-        compute="_compute_production_qty",
-        store=True
+        # compute="_compute_production_qty",
+        # store=True
     )
     sale_qty = fields.Float(
         string='Sale Qty',
         digits='Product Unit of Measure',
-        compute="_compute_sale_qty",
-        store=True
+        # compute="_compute_sale_qty",
+        # store=True
     )
     sale_return_qty = fields.Float(
         string='Sale Return Qty',
         digits='Product Unit of Measure',
-        compute="_compute_sale_return_qty",
-        store=True
+        # compute="_compute_sale_return_qty",
+        # store=True
     )
     theoretical_qty = fields.Float(
-        string='Theoretical Qty',
+        string='Theoretical Qty(Calculated)',
         digits='Product Unit of Measure',
         compute="_compute_theoretical_qty",
         store=True
@@ -108,8 +108,19 @@ class StockCountLine(models.Model):
         default=0
     )
     stock_diff_quantity = fields.Float(
-        string='Difference',
+        string='Difference(Theoretical-Counted)',
         compute='_compute_stock_diff_quantity',
+        help="Indicates the gap between the product's theoretical quantity and its counted quantity.",
+        readonly=True,
+        digits='Product Unit of Measure'
+    )
+    system_qty = fields.Float(
+        string='System Qty',
+        digits='Product Unit of Measure',
+    )
+    system_stock_diff_quantity = fields.Float(
+        string='Difference(System Qty-Counted)',
+        compute='_compute_system_stock_diff_quantity',
         help="Indicates the gap between the product's theoretical quantity and its counted quantity.",
         readonly=True,
         digits='Product Unit of Measure'
@@ -126,6 +137,20 @@ class StockCountLine(models.Model):
         default=False
     )
 
+    def compute_all_quantities(self):
+        self.ensure_one()
+        self._compute_opening_qty()
+        self._compute_grn_qty()
+        self._compute_transfer_in_qty()
+        self._compute_transfer_out_qty()
+        self._compute_wastage_qty()
+        self._compute_production_qty()
+        self._compute_adjustment_qty()
+        self._compute_sale_qty()
+        self._compute_sale_return_qty()
+        self._compute_system_qty()
+
+
     def check_previous_stock_count_record(self):
         domain = [
             ('product_id', '=', self.product_id.id),
@@ -138,7 +163,7 @@ class StockCountLine(models.Model):
         previous_stock_count_obj = self.env['stock.count.line'].sudo().search(domain, order='id desc', limit=1)
         return previous_stock_count_obj
 
-    @api.depends('product_id', 'location_id')
+    # @api.depends('product_id', 'location_id')
     def _compute_opening_qty(self):
         for rec in self:
             previous_stock_count_obj = rec.check_previous_stock_count_record()
@@ -147,7 +172,7 @@ class StockCountLine(models.Model):
             else:
                 rec.opening_qty = 0
 
-    @api.depends('product_id', 'location_id')
+    # @api.depends('product_id', 'location_id')
     def _compute_grn_qty(self):
         supplier_loc = self.env.ref('stock.stock_location_suppliers')
         StockMoveLine = self.env['stock.move.line'].sudo()
@@ -193,7 +218,7 @@ class StockCountLine(models.Model):
 
             rec.grn_qty = incoming_qty - outgoing_qty
 
-    @api.depends('product_id', 'location_id')
+    # @api.depends('product_id', 'location_id')
     def _compute_transfer_in_qty(self):
         StockMoveLine = self.env['stock.move.line'].sudo()
         other_internal_locations = self.env['stock.location'].search(
@@ -228,7 +253,7 @@ class StockCountLine(models.Model):
             incoming_qty = sum(StockMoveLine.search(domain_in).mapped('quantity'))
             rec.transfer_in_qty = incoming_qty
 
-    @api.depends('product_id', 'location_id')
+    # @api.depends('product_id', 'location_id')
     def _compute_transfer_out_qty(self):
         StockMoveLine = self.env['stock.move.line'].sudo()
         other_internal_locations = self.env['stock.location'].search(
@@ -263,7 +288,7 @@ class StockCountLine(models.Model):
             outgoing_qty = sum(StockMoveLine.search(domain_out).mapped('quantity'))
             rec.transfer_out_qty = outgoing_qty
 
-    @api.depends('product_id', 'location_id')
+    # @api.depends('product_id', 'location_id')
     def _compute_wastage_qty(self):
         StockMoveLine = self.env['stock.move.line'].sudo()
         # locations = self.env['stock.location'].sudo().search([('usage', '=', 'inventory')])
@@ -301,7 +326,7 @@ class StockCountLine(models.Model):
             wastage_qty = sum(StockMoveLine.search(domain).mapped('quantity'))
             rec.wastage_qty = wastage_qty
 
-    @api.depends('product_id', 'location_id')
+    # @api.depends('product_id', 'location_id')
     def _compute_adjustment_qty(self):
         StockMoveLine = self.env['stock.move.line'].sudo()
         # locations = self.env['stock.location'].sudo().search([('usage', '=', 'inventory')])
@@ -326,6 +351,7 @@ class StockCountLine(models.Model):
                 ('location_id', '=', rec.location_id.id),
                 ('location_dest_id', 'in', locations.ids),
                 ('state', '=', 'done'),
+                ('move_id.stock_count_id', '=', False)
             ]
 
             domain_out = [
@@ -333,6 +359,7 @@ class StockCountLine(models.Model):
                 ('location_id', 'in', locations.ids),
                 ('location_dest_id', '=', rec.location_id.id),
                 ('state', '=', 'done'),
+                ('move_id.stock_count_id', '=', False)
             ]
 
             # Add start datetime
@@ -349,7 +376,7 @@ class StockCountLine(models.Model):
             adjustment_out_qty = sum(StockMoveLine.search(domain_out).mapped('quantity'))
             rec.adjustment_qty = -(adjustment_in_qty - adjustment_out_qty)
 
-    @api.depends('product_id', 'location_id')
+    # @api.depends('product_id', 'location_id')
     def _compute_production_qty(self):
         StockMoveLine = self.env['stock.move.line'].sudo()
         locations = self.env['stock.location'].sudo().search([('usage', 'in', ['production'])])
@@ -394,7 +421,7 @@ class StockCountLine(models.Model):
             product_out_qty = sum(StockMoveLine.search(domain_out).mapped('quantity'))
             rec.production_qty = -(production_in_qty - product_out_qty)
 
-    @api.depends('product_id', 'location_id')
+    # @api.depends('product_id', 'location_id')
     def _compute_sale_qty(self):
         customer_loc = self.env.ref('stock.stock_location_customers')
         StockMoveLine = self.env['stock.move.line'].sudo()
@@ -429,7 +456,7 @@ class StockCountLine(models.Model):
             sale_qty = sum(StockMoveLine.search(domain).mapped('quantity'))
             rec.sale_qty = sale_qty
 
-    @api.depends('product_id', 'location_id')
+    # @api.depends('product_id', 'location_id')
     def _compute_sale_return_qty(self):
         customer_loc = self.env.ref('stock.stock_location_customers')
         StockMoveLine = self.env['stock.move.line'].sudo()
@@ -464,11 +491,21 @@ class StockCountLine(models.Model):
             sale_return_qty = sum(StockMoveLine.search(domain).mapped('quantity'))
             rec.sale_return_qty = sale_return_qty
 
+
+    def _compute_system_qty(self):
+        for rec in self:
+            quant = self.env['stock.quant'].search([
+                ('product_id', '=', rec.product_id.id),
+                ('location_id', '=', rec.location_id.id)
+            ])
+            system_qty = sum(quant.mapped('quantity'))
+            rec.system_qty = system_qty
+
     @api.depends('opening_qty', 'grn_qty', 'transfer_in_qty', 'transfer_out_qty', 'wastage_qty', 'adjustment_qty',
                  'sale_qty', 'sale_return_qty')
     def _compute_theoretical_qty(self):
         for rec in self:
-            rec.theoretical_qty = rec.opening_qty + rec.grn_qty + rec.transfer_in_qty + rec.sale_return_qty + rec.adjustment_qty - rec.transfer_out_qty - rec.wastage_qty - rec.sale_qty
+            rec.theoretical_qty = rec.opening_qty + rec.grn_qty + rec.transfer_in_qty + rec.sale_return_qty + rec.adjustment_qty + rec.production_qty - rec.transfer_out_qty - rec.wastage_qty - rec.sale_qty
 
     def _find_primary_package(self):
         for line in self:
@@ -498,3 +535,12 @@ class StockCountLine(models.Model):
                 rec.stock_diff_quantity = rec.counted_qty - rec.theoretical_qty
             else:
                 rec.stock_diff_quantity = 0
+
+
+    @api.depends('system_qty', 'counted_qty', 'is_counted_qty_entered')
+    def _compute_system_stock_diff_quantity(self):
+        for rec in self:
+            if rec.is_counted_qty_entered:
+                rec.system_stock_diff_quantity = rec.counted_qty - rec.system_qty
+            else:
+                rec.system_stock_diff_quantity = 0

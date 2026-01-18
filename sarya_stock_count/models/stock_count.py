@@ -152,6 +152,9 @@ class StockCount(models.Model):
             vals= {'product_count_line_ids': [(0, 0, line_values) for line_values in inventory._get_stock_count_lines_values()]}
             vals.update({'state': 'progress', 'date': fields.Datetime.now()})
             inventory.write(vals)
+        for line in self.product_count_line_ids:
+            line.compute_all_quantities()
+
 
     def action_validate(self):
         self.check_move_forward()
@@ -160,61 +163,71 @@ class StockCount(models.Model):
         StockQuant = self.env['stock.quant']
 
         for line in self.line_ids:
-            diff_qty = line.stock_diff_quantity
+            product = line.product_id
+            location = line.location_id
+            company = self.company_id
 
-            if abs(diff_qty) < 0.000001:
-                continue
+            inventory_location = product.with_company(
+                company
+            ).property_stock_inventory
 
-            is_positive = diff_qty > 0
-            balance_qty = abs(diff_qty)
+            # ---------------------------------------------------------
+            # Fetch ALL quants
+            # ---------------------------------------------------------
+            quants = StockQuant.search([
+                ('product_id', '=', product.id),
+                ('location_id', '=', location.id),
+                ('company_id', '=', company.id),
+            ], order="in_date asc, id asc")
 
-            while balance_qty > 0.000001:
+            if not quants:
+                main_quant = StockQuant.create({
+                    'product_id': product.id,
+                    'location_id': location.id,
+                    'company_id': company.id,
+                })
+                quants = main_quant
+            else:
+                main_quant = quants[:1]
 
-                domain = [
-                    ('location_id', '=', line.location_id.id),
-                    ('product_id', '=', line.product_id.id),
-                ]
+            # ---------------------------------------------------------
+            # PHASE 1: QUANT CONSOLIDATION
+            # Track its stock impact
+            # ---------------------------------------------------------
+            consolidation_effect = 0.0
 
-                if not is_positive:
-                    domain.append(('quantity', '!=', 0))
+            for quant in quants:
+                if quant == main_quant:
+                    continue
 
-                quant = StockQuant.search(domain, order="in_date asc, id asc", limit=1)
+                if abs(quant.quantity) < 0.000001:
+                    continue
 
-                # ------------------------------------------------
-                # Always create quant if none exists (even for -ve)
-                # ------------------------------------------------
-                if not quant:
-                    quant = StockQuant.new({
-                        'product_id': line.product_id.id,
-                        'location_id': line.location_id.id,
-                        'company_id': self.company_id.id,
-                    })
+                qty = abs(quant.quantity)
 
-                qty_to_move = balance_qty
-
-                if not is_positive and quant.quantity > 0:
-                    qty_to_move = min(balance_qty, quant.quantity)
-
-                balance_qty -= qty_to_move
-
-                if is_positive:
-                    mv_vals = quant._get_inventory_move_values(
-                        qty_to_move,
-                        line.product_id.with_company(self.company_id).property_stock_inventory,
-                        line.location_id,
-                        package_id=getattr(quant, 'package_id', False)
-                    )
+                if quant.quantity > 0:
+                    # Remove extra positive stock
+                    source = location
+                    dest = inventory_location
+                    consolidation_effect -= qty
                 else:
-                    mv_vals = quant._get_inventory_move_values(
-                        qty_to_move,
-                        line.location_id,
-                        line.product_id.with_company(self.company_id).property_stock_inventory,
-                        package_id=getattr(quant, 'package_id', False)
-                    )
+                    # Neutralize negative stock
+                    source = inventory_location
+                    dest = location
+                    consolidation_effect += qty
+
+                mv_vals = quant._get_inventory_move_values(
+                    qty,
+                    source,
+                    dest,
+                )
 
                 mv_vals.update({
-                    'name': "Stock Count : %s, product: %s (qty: %s)" %
-                            (self.name, line.product_id.display_name, qty_to_move),
+                    'name': f"Quant Consolidation : %s, product: %s (qty: %s)" % (
+                        self.name,
+                        product.display_name,
+                        abs(qty)
+                    ),
                     'stock_count_id': self.id,
                     'origin': self.name,
                 })
@@ -222,9 +235,46 @@ class StockCount(models.Model):
                 move = StockMove.create(mv_vals)
                 move._action_done()
 
+            # ---------------------------------------------------------
+            # PHASE 2: APPLY ONLY REMAINING DIFFERENCE
+            # ---------------------------------------------------------
+            initial_diff = line.system_stock_diff_quantity
+            remaining_diff = initial_diff - consolidation_effect
+
+            if abs(remaining_diff) >= 0.000001:
+
+                if remaining_diff > 0:
+                    source = inventory_location
+                    dest = location
+                else:
+                    source = location
+                    dest = inventory_location
+
+                mv_vals = main_quant._get_inventory_move_values(
+                    abs(remaining_diff),
+                    source,
+                    dest,
+                )
+
+                mv_vals.update({
+                    'name': "Stock Count : %s, product: %s (qty: %s)" % (
+                        self.name,
+                        product.display_name,
+                        abs(remaining_diff)
+                    ),
+                    'stock_count_id': self.id,
+                    'origin': self.name,
+                })
+
+                move = StockMove.create(mv_vals)
+                move._action_done()
+
+        # ---------------------------------------------------------
+        # Finalize
+        # ---------------------------------------------------------
         self.write({
             'state': 'done',
-            'validated_date': fields.Datetime.now()
+            'validated_date': fields.Datetime.now(),
         })
 
     # def action_validate(self):

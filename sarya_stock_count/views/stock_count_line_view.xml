@@ -38,21 +38,21 @@
                             <!-- Column 1 -->
                             <div class="col-3">
                                 <group>
-                                    <field name="opening_qty" force_save="1"/>
-                                    <field name="grn_qty" force_save="1"/>
-                                    <field name="transfer_in_qty" force_save="1"/>
-                                    <field name="transfer_out_qty" force_save="1"/>
+                                    <field name="opening_qty" force_save="1" readonly="1"/>
+                                    <field name="grn_qty" force_save="1" readonly="1"/>
+                                    <field name="transfer_in_qty" force_save="1" readonly="1"/>
+                                    <field name="transfer_out_qty" force_save="1" readonly="1"/>
                                 </group>
                             </div>
 
                             <!-- Column 2 -->
                             <div class="col-3">
                                 <group>
-                                    <field name="wastage_qty" force_save="1"/>
-                                    <field name="adjustment_qty" force_save="1"/>
-                                    <field name="production_qty" force_save="1"/>
-                                    <field name="sale_qty" force_save="1"/>
-                                    <field name="sale_return_qty" force_save="1"/>
+                                    <field name="wastage_qty" force_save="1" readonly="1"/>
+                                    <field name="adjustment_qty" force_save="1" readonly="1"/>
+                                    <field name="production_qty" force_save="1" readonly="1"/>
+                                    <field name="sale_qty" force_save="1" readonly="1"/>
+                                    <field name="sale_return_qty" force_save="1" readonly="1"/>
                                 </group>
                             </div>
 
@@ -65,6 +65,8 @@
                                     <field name="theoretical_qty" force_save="1"/>
                                     <field name="stock_diff_quantity" force_save="1"/>
                                     <field name="price" string="Unit Price" readonly="1" force_save="1" invisible="1"/>
+                                    <field name="system_qty" readonly="1" force_save="1"/>
+                                    <field name="system_stock_diff_quantity"/>
                                 </group>
                             </div>
 
@@ -100,6 +102,8 @@
                     <field name="theoretical_qty" force_save="1"/>
                     <field name="counted_qty" string="Real Quantity"/>
                     <field name="stock_diff_quantity" string="Difference"/>
+                    <field name="system_qty" string="System Qty"/>
+                    <field name="system_stock_diff_quantity" string="Difference(System Qty-Counted)"/>
                     <field name="state" invisible="True"/>
                     <templates>
                         <t t-name="kanban-box">
@@ -137,8 +141,24 @@
 
                                 <div class="row">
                                     <div class="col-12 text-muted">
-                                        <span>Difference :
+                                        <span>Difference((Theoretical)-(Counted)) :
                                             <t t-esc='record.stock_diff_quantity.value'/>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 text-muted">
+                                        <span>System Qty :
+                                            <t t-esc='record.system_qty.value'/>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 text-muted">
+                                        <span>Difference((System Qty)-(Counted)) :
+                                            <t t-esc='record.system_stock_diff_quantity.value'/>
                                         </span>
                                     </div>
                                 </div>
