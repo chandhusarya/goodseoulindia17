@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!--        pos kitchen screen report user, manager rule-->
+        <record id="kitchen_screen_user" model="ir.rule">
+            <field name="name">Kitchen Screen User</field>
+            <field name="model_id" ref="sarya_data_sync.model_pos_kitchen_screen_report"/>
+            <field name="domain_force">[('pos_config_id','in',user.get_allowed_pos_for_current_company().ids)]
+            </field>
+            <field name="groups"
+                   eval="[(4,ref('point_of_sale.group_pos_user')), (4,ref('sarya_pos_custom.pos_manager_group'))]"/>
+        </record>
+
+        <!--        pos kitchen screen report admin rule-->
+        <record id="kitchen_screen_manager" model="ir.rule">
+            <field name="name">Kitchen Screen Manager</field>
+            <field name="model_id" ref="sarya_data_sync.model_pos_kitchen_screen_report"/>
+            <field name="domain_force">[]</field>
+            <field name="groups"
+                   eval="[(4,ref('point_of_sale.group_pos_manager'))]"/>
+        </record>
+
+    </data>
+</odoo>

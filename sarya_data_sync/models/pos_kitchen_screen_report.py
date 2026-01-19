@@ -21,19 +21,23 @@ class PosKitchenScreenReport(models.Model):
     )
     pos_config_id = fields.Many2one(
         comodel_name='pos.config',
-        related='pos_order_id.config_id'
+        related='pos_order_id.config_id',
+        store=True
     )
     company_id = fields.Many2one(
         comodel_name='res.company',
-        related='pos_order_id.company_id'
+        related='pos_order_id.company_id',
+        store=True
     )
     bill_no = fields.Char(
         related='pos_order_id.tracking_number',
-        string='BIll No'
+        string='BIll No',
+        store=True
     )
     receipt_no = fields.Char(
         related='pos_order_id.pos_reference',
-        string='Receipt No'
+        string='Receipt No',
+        store=True
     )
     pos_order_line_id = fields.Many2one(
         comodel_name='pos.order.line',
@@ -47,6 +51,7 @@ class PosKitchenScreenReport(models.Model):
     order_received_time = fields.Datetime(
         related='pos_order_id.date_order',
         string='Order Received Time',
+        store=True
     )
     preparation_done_time = fields.Datetime(
         string='Preparation Done Time',
