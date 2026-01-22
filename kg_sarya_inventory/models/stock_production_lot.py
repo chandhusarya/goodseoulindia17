@@ -343,6 +343,34 @@ class MrpBomLine(models.Model):
                     primary_packaging_id = pack.id
             mrp.primary_packaging_id = primary_packaging_id
 
+    @api.model
+    def write(self, vals):
+        """Override write to track quantity changes"""
+        if 'product_qty' in vals:
+            for line in self:
+                old_qty = line.product_qty
+                new_qty = vals['product_qty']
+
+                # Only log if quantity actually changed
+                if old_qty != new_qty:
+                    product_name = line.product_id.display_name
+                    uom_name = line.product_uom_id.name
+
+                    # Post message to the parent BOM's chatter
+                    if line.bom_id:
+                        message = "BOM Line Quantity Updated\nProduct: %s\nPrevious Quantity: %s %s\nNew Quantity: %s %s" % (
+                            product_name, old_qty, uom_name, new_qty, uom_name
+                        )
+
+                        line.bom_id.message_post(
+                            body=message,
+                            subject="BOM Line Quantity Changed",
+                            message_type='notification',
+                            subtype_xmlid='mail.mt_note'
+                        )
+
+        return super(MrpBomLine, self).write(vals)
+
 
 class MrpBom(models.Model):
     _inherit = 'mrp.bom'
