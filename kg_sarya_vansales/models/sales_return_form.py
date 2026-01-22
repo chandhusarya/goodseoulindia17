@@ -398,7 +398,6 @@ class SalesReturnForm(models.Model):
     def create_picking(self):
         self.ensure_one()
         if not self.picking_type_id:
-            ccccccccccccccccccc
             raise UserError(_("You must select an operation type."))
         self._check_qty_exceed()
         picking_vals = self._prepare_picking()
