@@ -15,3 +15,12 @@ class MrpBomComponentLine(models.Model):
     route_type = fields.Char(string='Route Type')
     route_name = fields.Char(string='Route Name')
     link_id = fields.Integer(string='Linked Product Template')
+    primary_packaging_id = fields.Many2one('product.packaging', 'Primary Package', compute='_find_primary_package')
+
+    def _find_primary_package(self):
+        for mrp in self:
+            primary_packaging_id = False
+            for pack in mrp.product_id.packaging_ids:
+                if pack.primary_unit:
+                    primary_packaging_id = pack.id
+            mrp.primary_packaging_id = primary_packaging_id

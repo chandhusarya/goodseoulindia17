@@ -15,11 +15,13 @@
                 <field name="product_id"/>
                 <field name="quantity"/>
                 <field name="uom_id"/>
+                <field name="primary_packaging_id"/>
                 <field name="level"/>
                 <field name="bom_cost"/>
                 <field name="prod_cost"/>
                 <field name="route_type"/>
                 <field name="route_name"/>
+
             </tree>
         </field>
     </record>
@@ -36,6 +38,7 @@
                         <field name="product_id"/>
                         <field name="quantity"/>
                         <field name="uom_id"/>
+                        <field name="primary_packaging_id"/>
                         <field name="parent_id"/>
                         <field name="level"/>
                         <field name="bom_cost"/>
