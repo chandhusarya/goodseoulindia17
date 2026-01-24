@@ -63,6 +63,7 @@ class LocalPurchase(models.Model):
     payment_journal_id = fields.Many2one('account.journal', string="Payment Journal", tracking=True)
     landed_cost_ids = fields.One2many(comodel_name='landed.cost.line', inverse_name='local_purchase_id', string='Landed Costs')
     landed_cost = fields.Many2one(comodel_name='stock.landed.cost',  string='Landed Costs', readonly=True, copy=False)
+    local_purchase_config_id = fields.Many2one('local.purchase.config', string="Purchase Configuration", required=True)
     fiscal_position_id = fields.Many2one('account.fiscal.position', string='Fiscal Position',
                                          domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     confirm_date = fields.Datetime(string='Confirmation Date', readonly=True, copy=False)
@@ -186,6 +187,11 @@ class LocalPurchase(models.Model):
         if self.pos_id and self.pos_id.petty_cash_journal_id:
             payment_journal_id = self.pos_id.petty_cash_journal_id.id
         self.payment_journal_id = payment_journal_id
+
+    @api.onchange('local_purchase_config_id')
+    def _onchange_local_purchase_config_id(self):
+        if self.local_purchase_config_id and self.local_purchase_config_id.operation_type_id:
+            self.picking_type_id = self.local_purchase_config_id.operation_type_id.id
 
     @api.onchange('vendor_id', 'company_id')
     def onchange_vendor_id(self):
@@ -407,11 +413,16 @@ class LocalPurchase(models.Model):
         if not local_purchase_journal_id:
             raise UserError("Accounting configuration not done.\nKindly contact the administrator.")
         move_obj = self.env['account.move']
-        analytic_account_id = self.pos_id and self.pos_id.analytic_account_id or False
+        analytic_account_id = False
+
+        if self.local_purchase_config_id and self.local_purchase_config_id.analytic_account_id:
+            analytic_account_id = self.local_purchase_config_id.analytic_account_id
+        elif self.pos_id and self.pos_id.analytic_account_id:
+            analytic_account_id = self.pos_id.analytic_account_id
         if analytic_account_id:
             analytic_distribution = {analytic_account_id.id: 100}
-        elif self.env.company.factory_analytic_account_id:
-            analytic_distribution = {self.env.company.factory_analytic_account_id.id: 100}
+        # elif self.env.company.factory_analytic_account_id:
+        #     analytic_distribution = {self.env.company.factory_analytic_account_id.id: 100}
         else:
             analytic_distribution = {}
         invoice_lines = []

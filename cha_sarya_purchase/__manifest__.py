@@ -19,6 +19,7 @@
         'views/res_settings.xml',
         'views/purchase.xml',
         'views/local_purchase.xml',
+        'views/local_purchase_config.xml',
         'views/res_partner.xml',
         'views/office_purchase.xml',
         'views/picking_view.xml',
