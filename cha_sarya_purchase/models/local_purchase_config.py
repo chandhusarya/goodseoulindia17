@@ -14,3 +14,8 @@ class LocalPurchaseConfig(models.Model):
         'account.analytic.account', 
         string="Analytic Account"
     )
+    lpo_approver_user_ids = fields.Many2many(
+        comodel_name='res.users',
+        string='LPO Approvers',
+        readonly=False
+    )

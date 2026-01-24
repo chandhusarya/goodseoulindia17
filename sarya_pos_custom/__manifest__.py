@@ -18,7 +18,7 @@
     'version': '17.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['point_of_sale', 'pos_preparation_display', 'cha_sarya_purchase'],
+    'depends': ['point_of_sale', 'pos_preparation_display', 'cha_sarya_purchase', 'sarya_data_sync'],
 
     # always loaded
     'data': [

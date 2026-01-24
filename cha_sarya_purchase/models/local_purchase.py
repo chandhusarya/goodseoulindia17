@@ -63,7 +63,7 @@ class LocalPurchase(models.Model):
     payment_journal_id = fields.Many2one('account.journal', string="Payment Journal", tracking=True)
     landed_cost_ids = fields.One2many(comodel_name='landed.cost.line', inverse_name='local_purchase_id', string='Landed Costs')
     landed_cost = fields.Many2one(comodel_name='stock.landed.cost',  string='Landed Costs', readonly=True, copy=False)
-    local_purchase_config_id = fields.Many2one('local.purchase.config', string="Purchase Configuration", required=True)
+    local_purchase_config_id = fields.Many2one('local.purchase.config', string="Warehouse", required=True)
     fiscal_position_id = fields.Many2one('account.fiscal.position', string='Fiscal Position',
                                          domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     confirm_date = fields.Datetime(string='Confirmation Date', readonly=True, copy=False)
@@ -315,11 +315,16 @@ class LocalPurchase(models.Model):
                 msg = "Payment Terms for the vendor is not configured in the system. Please contact finance"
                 raise ValidationError(msg)
 
+            if not po.picking_type_id:
+                msg = "Operation type is not configured. Please contact IT"
+                raise ValidationError(msg)
+
         self.requested = True
         self.state = 'manager'
 
 
         employee_ids = []
+        purchase_config_user_ids = self.local_purchase_config_id.lpo_approver_user_ids
         lpo_approver_user_ids = self.env.company.lpo_approver_user_ids
         if self.pos_id:
             employees = self.pos_id.sudo().advanced_employee_ids
@@ -327,6 +332,14 @@ class LocalPurchase(models.Model):
                 raise UserError(_("Manager not mapped under Outlet configuration"))
             for employee in employees:
                 employee_ids.append(employee.id)
+        elif purchase_config_user_ids:
+            for user in purchase_config_user_ids:
+                if self.company_id.id in user.company_ids.ids:
+                    employee = self.env['hr.employee'].search([('user_id', '=', user.id)], limit=1)
+                    if employee:
+                        employee_ids.append(employee.id)
+                    elif False:
+                        raise UserError(_("User %s does not have an employee record(MRP Config).") % user.name)
         elif lpo_approver_user_ids:
             for user in lpo_approver_user_ids:
                 if self.company_id.id in user.company_ids.ids:

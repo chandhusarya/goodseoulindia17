@@ -17,6 +17,7 @@
                             <group>
                                 <field name="operation_type_id" options="{'no_create': True}"/>
                                 <field name="analytic_account_id" options="{'no_create': True}"/>
+                                <field name="lpo_approver_user_ids" options="{'no_create': True}"/>
                             </group>
                         </group>
                     </sheet>
