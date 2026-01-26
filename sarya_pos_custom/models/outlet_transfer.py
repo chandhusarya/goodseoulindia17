@@ -243,29 +243,19 @@ class OutletTransferLines(models.Model):
             if move.lot_id and move.quantity and move.primary_quantity > move.lot_id.product_qty:
                 raise UserError(_("Quantity cannot be greater than that of available in the lot"))
 
-    available_lot_ids = fields.Many2many('stock.lot', compute='_compute_available_lots')
+    available_lot_ids = fields.Many2many('stock.lot')
 
     @api.depends('product_id', 'outlet_transfer_id.from_outlet')
     def _compute_available_lots(self):
         for rec in self:
             from_outlet = rec.outlet_transfer_id.from_outlet.lpo_picking_type_id.default_location_dest_id
-            lots = self.env['stock.quant'].search([
+            quants = self.env['stock.quant'].search([
                 ('product_id', '=', rec.product_id.id),
                 ('location_id', '=', from_outlet.id),
-                ('quantity', '>', 0),
-                ('lot_id', '!=', False),
+                ('quantity', '>', 0)
             ])
-            rec.available_lot_ids = lots.mapped('lot_id')
-            if rec.lot_id:
-                quant = self.env['stock.quant'].search([
-                    ('product_id', '=', rec.product_id.id),
-                    ('location_id', '=', from_outlet.id),
-                    ('quantity', '>', 0),
-                    ('lot_id', '=', rec.lot_id.id),
-                ])
-                rec.available_quantity = quant.available_quantity
-            else:
-                rec.available_quantity = 0.0
+            for quant in quants:
+                rec.available_quantity += quant.available_quantity
 
 
 
