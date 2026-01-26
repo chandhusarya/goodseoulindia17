@@ -254,8 +254,11 @@ class OutletTransferLines(models.Model):
                 ('location_id', '=', from_outlet.id),
                 ('quantity', '>', 0)
             ])
-            for quant in quants:
-                rec.available_quantity += quant.available_quantity
+            if quants:
+                for quant in quants:
+                    rec.available_quantity += quant.available_quantity
+            else:
+                rec.available_quantity = 0
 
 
 
