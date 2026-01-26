@@ -61,11 +61,14 @@ class InternalStockTransfer(models.Model):
 
     from_wh_responsible_employee = fields.Many2many('hr.employee', 'from_wh_responsible_employee', 'transfer_id',
                                                 'employee_id', string='From WH Responsible')
+    from_wh_responsible_user = fields.Many2many('res.users', 'from_wh_responsible_user', 'transfer_id', 'user_id', string='From WH Responsible')
 
     to_wh_responsible_employee = fields.Many2many('hr.employee', 'to_wh_responsible_employee', 'transfer_id',
                                            'employee_id', string='To WH Responsible')
+    to_wh_responsible_user = fields.Many2many('res.users', 'to_wh_responsible_user', 'transfer_id',
+                                                  'user_id', string='To WH Responsible')
 
-    stock_required_on = fields.Date("Stock Required On (Vehicle Availability Date)")
+    stock_required_on = fields.Date("Stock Required On")
 
     total_product_weight = fields.Float(string="Total Weight", compute="_compute_total_product_weight")
     total_product_gross_weight = fields.Float(string="Total Weight", compute="_compute_total_product_weight")
@@ -158,19 +161,16 @@ class InternalStockTransfer(models.Model):
                            if line_detail.resolution == 'scrap':
                                  items_to_scrap.append({
                                       'product_id': line.product_id.id,
-                                      'lot_id': line_detail.lot_id.id,
                                       'quantity': line_detail.missing_stock
                                  })
                            elif line_detail.resolution == 'move_to_from_wh':
                                items_to_move_from_wh.append({
                                       'product_id': line.product_id.id,
-                                      'lot_id': line_detail.lot_id.id,
                                       'quantity': line_detail.missing_stock
                                  })
                            elif line_detail.resolution == 'move_to_to_wh':
                                 items_to_move_to_wh.append({
                                       'product_id': line.product_id.id,
-                                      'lot_id': line_detail.lot_id.id,
                                       'quantity': line_detail.missing_stock
                                  })
 
@@ -191,7 +191,7 @@ class InternalStockTransfer(models.Model):
         MoveLine = self.env['stock.move.line']
 
         picking = Picking.create({
-            'picking_type_id': self.env['stock.picking.type'].search([('code', '=', 'internal')], limit=1).id, #self.env.ref('stock.picking_type_internal').id,  # Internal Transfer Type
+            'picking_type_id': self.env['stock.picking.type'].search([('code', '=', 'internal')], order='id asc', limit=1).id,#self.env.ref('stock.picking_type_internal').id,  # Internal Transfer Type
             'location_id': self.transfer_location_id.id,
             'location_dest_id': self.location_src_id.id,
             'origin': self.name,
@@ -202,18 +202,18 @@ class InternalStockTransfer(models.Model):
         grouped_item = {}
         for item in items_to_move_to_wh:
             product_id_str = str(item['product_id'])
-            lot_id = item['lot_id']
+            # lot_id = item['lot_id']
 
             if product_id_str not in grouped_item:
                 grouped_item[product_id_str] = []
 
             # Check if lot already exists for the product
             found = False
-            for entry in grouped_item[product_id_str]:
-                if entry['lot_id'] == lot_id:
-                    entry['quantity'] += item['quantity']
-                    found = True
-                    break
+            # for entry in grouped_item[product_id_str]:
+            #     if entry['lot_id'] == lot_id:
+            #         entry['quantity'] += item['quantity']
+            #         found = True
+            #         break
             if not found:
                 grouped_item[product_id_str].append(item.copy())
 
@@ -237,7 +237,6 @@ class InternalStockTransfer(models.Model):
                 stock_quant = self.env['stock.quant'].search([
                     ('location_id', '=', self.transfer_location_id.id),
                     ('product_id', '=', product.id),
-                    ('lot_id', '=', item['lot_id']),
                     ('quantity', '>=', item['quantity'])])
                 MoveLine.create({
                     'move_id': new_move.id,
@@ -248,7 +247,6 @@ class InternalStockTransfer(models.Model):
                     'location_id': self.transfer_location_id.id,
                     'location_dest_id': self.location_src_id.id,
                     'quant_id': stock_quant.id,
-                    'lot_id': item['lot_id'],
                 })
         picking.action_confirm()
         picking.button_validate()
@@ -260,7 +258,7 @@ class InternalStockTransfer(models.Model):
         MoveLine = self.env['stock.move.line']
 
         picking = Picking.create({
-            'picking_type_id': self.env['stock.picking.type'].search([('code', '=', 'internal')], limit=1).id,#self.env.ref('stock.picking_type_internal').id,  # Internal Transfer Type
+            'picking_type_id': self.env['stock.picking.type'].search([('code', '=', 'internal')], order='id asc', limit=1).id,#self.env.ref('stock.picking_type_internal').id,  # Internal Transfer Type
             'location_id': self.transfer_location_id.id,
             'location_dest_id': self.location_src_id.id,
             'origin': self.name,
@@ -271,18 +269,18 @@ class InternalStockTransfer(models.Model):
         grouped_item = {}
         for item in items_to_move_from_wh:
             product_id_str = str(item['product_id'])
-            lot_id = item['lot_id']
+            # lot_id = item['lot_id']
 
             if product_id_str not in grouped_item:
                 grouped_item[product_id_str] = []
 
             # Check if lot already exists for the product
             found = False
-            for entry in grouped_item[product_id_str]:
-                if entry['lot_id'] == lot_id:
-                    entry['quantity'] += item['quantity']
-                    found = True
-                    break
+            # for entry in grouped_item[product_id_str]:
+            #     if entry['lot_id'] == lot_id:
+            #         entry['quantity'] += item['quantity']
+            #         found = True
+            #         break
             if not found:
                 grouped_item[product_id_str].append(item.copy())
 
@@ -306,7 +304,6 @@ class InternalStockTransfer(models.Model):
                 stock_quant = self.env['stock.quant'].search([
                     ('location_id', '=', self.transfer_location_id.id),
                     ('product_id', '=', product.id),
-                    ('lot_id', '=', item['lot_id']),
                     ('quantity', '>=', item['quantity'])])
                 MoveLine.create({
                     'move_id': new_move.id,
@@ -317,7 +314,6 @@ class InternalStockTransfer(models.Model):
                     'location_id': self.transfer_location_id.id,
                     'location_dest_id': self.location_src_id.id,
                     'quant_id': stock_quant.id,
-                    'lot_id': item['lot_id'],
                 })
         picking.action_confirm()
         picking.button_validate()
@@ -330,7 +326,7 @@ class InternalStockTransfer(models.Model):
         MoveLine = self.env['stock.move.line']
 
         picking = Picking.create({
-            'picking_type_id': self.env['stock.picking.type'].search([('code', '=', 'internal')], limit=1).id,#self.env.ref('stock.picking_type_internal').id,  # Internal Transfer Type
+            'picking_type_id': self.env['stock.picking.type'].search([('code', '=', 'internal')], order='id asc', limit=1).id,#self.env.ref('stock.picking_type_internal').id,  # Internal Transfer Type
             'location_id': self.transfer_location_id.id,
             'location_dest_id': self.scrap_location_id.id,
             'origin': self.name,
@@ -341,18 +337,18 @@ class InternalStockTransfer(models.Model):
         grouped_item = {}
         for item in items_to_scrap:
             product_id_str = str(item['product_id'])
-            lot_id = item['lot_id']
+            # lot_id = item['lot_id']
 
             if product_id_str not in grouped_item:
                 grouped_item[product_id_str] = []
 
             # Check if lot already exists for the product
             found = False
-            for entry in grouped_item[product_id_str]:
-                if entry['lot_id'] == lot_id:
-                    entry['quantity'] += item['quantity']
-                    found = True
-                    break
+            # for entry in grouped_item[product_id_str]:
+            #     if entry['lot_id'] == lot_id:
+            #         entry['quantity'] += item['quantity']
+            #         found = True
+            #         break
             if not found:
                 grouped_item[product_id_str].append(item.copy())
 
@@ -376,7 +372,6 @@ class InternalStockTransfer(models.Model):
                 stock_quant = self.env['stock.quant'].search([
                     ('location_id', '=', self.transfer_location_id.id),
                     ('product_id', '=', product.id),
-                    ('lot_id', '=', item['lot_id']),
                     ('quantity', '>=', item['quantity'])])
                 MoveLine.create({
                     'move_id': new_move.id,
@@ -387,7 +382,6 @@ class InternalStockTransfer(models.Model):
                     'location_id': self.transfer_location_id.id,
                     'location_dest_id': self.scrap_location_id.id,
                     'quant_id': stock_quant.id,
-                    'lot_id': item['lot_id'],
                 })
         picking.action_confirm()
         picking.button_validate()
@@ -413,7 +407,7 @@ class InternalStockTransfer(models.Model):
             Move = self.env['stock.move']
 
             picking = Picking.create({
-                'picking_type_id': self.env['stock.picking.type'].search([('code', '=', 'internal')], limit=1).id,#.ref('stock.picking_type_internal').id,  # Internal Transfer Type
+                'picking_type_id': self.env['stock.picking.type'].search([('code', '=', 'internal')], order='id asc', limit=1).id,#self.env.ref('stock.picking_type_internal').id,  # Internal Transfer Type
                 'location_id': self.location_src_id.id,
                 'location_dest_id': self.transfer_location_id.id,
                 'origin': self.name,
@@ -433,8 +427,13 @@ class InternalStockTransfer(models.Model):
                     'state': 'draft',  # Ensures proper reservation
                 })
 
+            if not transfer.from_wh_responsible_user.employee_id:
+                raise ValidationError(_(
+                    "The selected From Warehouse Responsible User is not linked to any employee. "
+                    "Please assign an employee to this user."
+                ))
 
-            transfer.send_notification(transfer.from_wh_responsible_employee,
+            val = transfer.send_notification(transfer.from_wh_responsible_user.employee_id,
                                        "Request Number: %s, From Location: %s , To Location: %s. Please arrange requested stock needs to be shipped on %s" % (transfer.name,
                                         transfer.location_src_id.name, transfer.location_dest_id.name,
                                         transfer.stock_required_on and str(transfer.stock_required_on) or 'NA'),
@@ -450,7 +449,7 @@ class InternalStockTransfer(models.Model):
             MoveLine = self.env['stock.move.line']
 
             picking = Picking.create({
-                'picking_type_id': self.env['stock.picking.type'].search([('code', '=', 'internal')], limit=1).id, #self.env.ref('stock.picking_type_internal').id,  # Internal Transfer Type
+                'picking_type_id': self.env['stock.picking.type'].search([('code', '=', 'internal')], order='id asc', limit=1).id,#self.env.ref('stock.picking_type_internal').id,  # Internal Transfer Type
                 'location_id': transfer.transfer_location_id.id,
                 'location_dest_id': transfer.location_dest_id.id,
                 'origin': self.name,
@@ -471,8 +470,7 @@ class InternalStockTransfer(models.Model):
                 for move_line in move.move_line_ids:
                     stock_quant = self.env['stock.quant'].search([
                                         ('location_id', '=', transfer.transfer_location_id.id),
-                                        ('product_id', '=', move_line.product_id.id),
-                                        ('lot_id', '=', move_line.lot_id.id)])
+                                        ('product_id', '=', move_line.product_id.id)])
                     MoveLine.create({
                         'move_id': new_move.id,
                         'picking_id': picking.id,
@@ -482,10 +480,15 @@ class InternalStockTransfer(models.Model):
                         'location_id': transfer.transfer_location_id.id,
                         'location_dest_id': transfer.location_dest_id.id,
                         'quant_id': stock_quant.id,
-                        'lot_id': move_line.lot_id.id,
                     })
 
-            transfer.send_notification(transfer.to_wh_responsible_employee,
+            if not transfer.to_wh_responsible_user.employee_id:
+                raise ValidationError(_(
+                    "The selected To Warehouse Responsible User is not linked to any employee. "
+                    "Please assign an employee to this user."
+                ))
+
+            val = transfer.send_notification(transfer.to_wh_responsible_user.employee_id,
                                        "Request Number: %s, From Location: %s , To Location: %s, Please process GRN upon arrival of Goods" % (
                                        transfer.name, transfer.location_src_id.name, transfer.location_dest_id.name),
                                        "Stock Transfer GRN")
@@ -506,14 +509,12 @@ class InternalStockTransfer(models.Model):
                     if line.product_id.id == move.product_id.id:
                         is_stock_updated = False
                         for detail in line.line_detail:
-                            if detail.lot_id.id == move_line.lot_id.id:
-                                detail.stock_received += move_line.quantity
-                                is_stock_updated = True
+                            detail.stock_received += move_line.quantity
+                            is_stock_updated = True
 
                         if not is_stock_updated:
                             self.env['internal.stock.transfer.details'].create({
                                 'transfer_line_id': line.id,
-                                'lot_id': move_line.lot_id.id,
                                 'stock_received': move_line.quantity,
                             })
 
@@ -527,14 +528,12 @@ class InternalStockTransfer(models.Model):
 
                         is_stock_updated = False
                         for detail in line.line_detail:
-                            if detail.lot_id.id == move_line.lot_id.id:
-                                detail.stock_transferred += move_line.quantity
-                                is_stock_updated = True
+                            detail.stock_transferred += move_line.quantity
+                            is_stock_updated = True
 
                         if not is_stock_updated:
                             self.env['internal.stock.transfer.details'].create({
                                 'transfer_line_id': line.id,
-                                'lot_id': move_line.lot_id.id,
                                 'stock_transferred': move_line.quantity,
                                 'stock_received': 0.0
                             })
@@ -642,7 +641,7 @@ class InternalStockTransferDetails(models.Model):
 
     transfer_line_id = fields.Many2one('internal.stock.transfer.lines', 'Transfer Line')
     lot_id = fields.Many2one('stock.lot', 'Lot Number')
-    expiration_date = fields.Datetime('Expiration Date', related='lot_id.expiration_date')
+    # expiration_date = fields.Datetime('Expiration Date', related='lot_id.expiration_date')
     stock_transferred = fields.Float(string='From WH Qty')
     stock_received = fields.Float(string='To WH GRN Qty')
     missing_stock = fields.Float(string='Transit Missing Qty', compute='_compute_missing_stock')
