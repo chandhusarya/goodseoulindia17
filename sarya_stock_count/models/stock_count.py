@@ -412,7 +412,7 @@ class StockCount(models.Model):
             raise ValidationError(_('Please add at least one line before sending for approval.'))
 
         # Check configuration
-        if not self.pos_config_id.stock_count_approve_manager_ids:
+        if not self.pos_config_id.sudo().stock_count_approve_manager_ids:
             raise ValidationError(_('Please configure Stock count approve managers.'))
 
         # Check move forward
