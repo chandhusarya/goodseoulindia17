@@ -169,7 +169,7 @@
             <field name="res_model">stock.count</field>
             <field name="view_mode">tree,form</field>
             <field name="search_view_id" ref="stock_count_approvals_search_view"/>
-            <field name="domain">[('state', 'in', ['send_for_approval', 'done'])]</field>
+            <field name="domain">[('state', 'in', ['send_for_approval', 'approved', 'done'])]</field>
             <field name="context">{'create':False, 'delete': False, 'search_default_Waiting_approval':1}</field>
             <field name="view_ids"
                    eval="[(5, 0, 0),
