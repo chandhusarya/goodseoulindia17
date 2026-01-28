@@ -109,6 +109,7 @@
 									           groups="product.group_stock_packaging" force_save="1"/>
                                         <field name="qty"/>
                                         <field name="qty_received"/>
+                                        <field name="qty_invoiced"/>
 
                                         <field name="unit_price"/>
                                         <field name="tax_ids"
@@ -189,6 +190,7 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">local.purchase</field>
             <field name="view_mode">tree,form</field>
+            <field name="domain">[('local_purchase_config_id', '!=', False)]</field>
         </record>
 
 

@@ -229,7 +229,7 @@ class StockCount(models.Model):
                         abs(qty)
                     ),
                     'stock_count_id': self.id,
-                    'origin': self.name,
+                    'origin': self.name + '-' + self.pos_config_id.name,
                 })
 
                 move = StockMove.create(mv_vals)
