@@ -262,6 +262,7 @@
             <field name="res_model">stock.count</field>
             <field name="view_mode">tree,form</field>
             <field name="search_view_id" ref="stock_count_search_view"/>
+            <field name="domain">[('state', 'not in', ['cancel'])]</field>
             <field name="view_ids"
                    eval="[(5, 0, 0),
                           (0, 0, {'view_mode': 'tree', 'view_id': ref('stock_count_list_view')}),
