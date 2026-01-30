@@ -671,12 +671,13 @@ class LocalPurchaseLines(models.Model):
                 [('local_purchase_id', '=', local_purchase_id.id), ('state', '=', 'done')])
             if picking_ids:
                 for picking_id in picking_ids:
-                    print(picking_id, "  ====  ")
-                    print(picking_id.state, "  ====  ")
+                    picking_code = picking_id.picking_type_id.code
                     for move in picking_id.move_ids_without_package:
-                        print("move", move.state, "  ====  ")
                         if move.state == 'done' and move.product_id.id == rec.product_id.id:
-                            qty_received += move.quantity
+                            if picking_code == 'incoming':
+                                qty_received += move.quantity
+                            elif picking_code == 'outgoing':
+                                qty_received -=move.quantity
             if qty_received > 0:
                 qty_received = qty_received/rec.packaging_id.qty
             rec.qty_received = qty_received
