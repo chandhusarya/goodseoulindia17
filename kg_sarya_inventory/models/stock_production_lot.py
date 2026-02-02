@@ -371,6 +371,29 @@ class MrpBomLine(models.Model):
 
         return super(MrpBomLine, self).write(vals)
 
+    def unlink(self):
+        """Override unlink to track line deletion"""
+        # Store information before deletion
+        for line in self:
+            if line.bom_id:
+                product_name = line.product_id.display_name
+                product_qty = line.product_qty
+                uom_name = line.product_uom_id.name
+
+                # Post message to the parent BOM's chatter
+                message = "BOM Line Removed\nProduct: %s\nQuantity: %s %s" % (
+                    product_name, product_qty, uom_name
+                )
+
+                line.bom_id.message_post(
+                    body=message,
+                    subject="BOM Line Deleted",
+                    message_type='notification',
+                    subtype_xmlid='mail.mt_note'
+                )
+
+        return super(MrpBomLine, self).unlink()
+
 
 class MrpBom(models.Model):
     _inherit = 'mrp.bom'
