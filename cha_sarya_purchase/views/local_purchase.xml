@@ -28,7 +28,7 @@
 
 
                         <button name="print_receipt" type="object" string="Print Receipt" invisible="not move_id"/>
-						<button name="action_cancel" type="object" string="Cancel" invisible="state != 'new'"/>
+						<button name="action_cancel" type="object" string="Cancel" invisible="state not in ('new', 'manager')"/>
 						<button name="reset_to_draft" type="object" string="Reset To Draft"
                                 invisible="state in ('new', 'cancel', 'confirm')"/>
                         <field name="state" widget="statusbar" statusbar_visible="new,manager,confirm"/>
@@ -95,6 +95,7 @@
                                 <field name="picking_id"  readonly="state == 'confirm'" invisible="state != 'confirm'"/>
                                 <field name="landed_cost"  readonly="state == 'confirm'" invisible="state != 'confirm'"/>
                                 <field name="confirm_date"  readonly="state == 'confirm'" invisible="confirm_date == False"/>
+                                <field name="is_no_invoice" readonly="state == 'confirm'"/>
                             </group>
                         </group>
                         <notebook>

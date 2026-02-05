@@ -75,6 +75,7 @@ class LocalPurchase(models.Model):
 
     picking_count = fields.Integer(compute="_compute_picking_count")
     bill_count = fields.Integer(compute="_compute_bill_count")
+    is_no_invoice = fields.Boolean(string="No Invoice", default=False)
 
     @api.depends()
     def _compute_picking_count(self):
@@ -251,7 +252,8 @@ class LocalPurchase(models.Model):
             return []
 
         # Find all POs with at least 1 line where qty_received != qty_invoiced
-        po_lines = self.env['local.purchase.line'].search([('local_purchase_id.company_id', '=', self.env.company.id)])
+        po_lines = self.env['local.purchase.line'].search([('local_purchase_id.company_id', '=', self.env.company.id),
+                                                           ('is_no_invoice', '=', False)])
         pending_po_ids = po_lines.filtered(
             lambda l: (l.qty_received - l.qty_invoiced) != 0
         ).mapped('local_purchase_id').ids
@@ -407,19 +409,19 @@ class LocalPurchase(models.Model):
 
 
     def action_cancel(self):
-        if self.move_id:
-            self.move_id.button_draft()
-        self.state = 'cancel'
+        for record in self:
+            pickings = self.env['stock.picking'].search_count([
+                ('local_purchase_id', '=', record.id)
+            ])
+            for picking in pickings:
+                if picking.state != 'done':
+                    picking.action_cancel()
+            record.state = 'cancel'
 
     def reset_to_draft(self):
         self.state = 'new'
 
     def create_bill(self):
-        print("lllllllllllllllllllllllllllllllllllllllll")
-        print("lllllllllllllllllllllllllllllllllllllllll")
-        print("lllllllllllllllllllllllllllllllllllllllll")
-        print("lllllllllllllllllllllllllllllllllllllllll")
-        print("lllllllllllllllllllllllllllllllllllllllll")
         # account_id = self.account_id or False
         acc_payable_id = self.vendor_id and self.vendor_id.property_account_payable_id or False
         local_purchase_journal_id = self.env.company.local_purchase_journal_id or False
